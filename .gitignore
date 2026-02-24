@@ -20,6 +20,19 @@ xcshareddata/
 *.moved-aside
 *.xcsettings
 
+# 数据库文件（新增）
+*.db
+*.db-journal
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite3-journal
+*.realm
+*.realm.lock
+*.realm.management/
+data/    # 若db文件统一放在data目录，可忽略整个目录
+
 # Swift Package Manager (按需取消注释)
 # Packages/
 # Package.pins
