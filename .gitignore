@@ -1,0 +1,55 @@
+# Xcode 编译产物与用户配置
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+*.xcworkspace/xcshareddata/
+build/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+!default.xcworkspace
+*.xcuserstate
+project.xcworkspace/
+xcshareddata/
+*.moved-aside
+*.xcsettings
+
+# Swift Package Manager (按需取消注释)
+# Packages/
+# Package.pins
+# Package.resolved
+
+# CocoaPods (按需取消注释)
+# Pods/
+# Podfile.lock
+
+# Carthage (按需取消注释)
+# Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# 工具/缓存
+iOSInjectionProject/
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
