@@ -17,6 +17,7 @@ final class LLDatabaseManager {
     private let wordListsTable = "word_lists"
     private let categoriesTable = "categories"
     private let wordsTable = "words"
+    private let wrongRecordsTable = "wrong_records"
     
     private init() {
         let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
@@ -45,7 +46,21 @@ final class LLDatabaseManager {
         // 注意：不需要 createTables()，因为数据库文件已经包含了所有表和数据
         // 只在数据库文件不存在时才需要创建表
         
+        // 检查并创建错题表（如果不存在）
+        createWrongRecordsTableIfNeeded()
+        
         print("✅ 数据库连接已打开")
+    }
+    
+    /// 检查并创建错题表（如果不存在）
+    private func createWrongRecordsTableIfNeeded() {
+        do {
+            // 尝试创建表（如果已存在则忽略）
+            try database.create(table: wrongRecordsTable, of: LLDBWrongRecord.self)
+            print("✅ 错题表检查完成")
+        } catch {
+            print("⚠️ 错题表创建失败（可能已存在）：\(error)")
+        }
     }
     
     private func createTables() {
@@ -61,6 +76,10 @@ final class LLDatabaseManager {
             // 创建单词表
             try database.create(table: wordsTable, of: LLDBWord.self)
             print("✅ 单词表创建成功")
+            
+            // 创建错题表
+            try database.create(table: wrongRecordsTable, of: LLDBWrongRecord.self)
+            print("✅ 错题表创建成功")
             
             // 初始化默认分类
             try initializeDefaultCategories()
@@ -256,5 +275,176 @@ final class LLDatabaseManager {
             where: condition,
             limit: 100
         )
+    }
+    
+    // MARK: - 错题记录管理
+    
+    /// 添加或更新错题记录（如果已存在则增加错误次数）
+    func addOrUpdateWrongRecord(wordId: String, listId: String, word: String, meaning: String) throws {
+        // 先查询是否已存在
+        let existing = try database.getObject(
+            on: LLDBWrongRecord.Properties.all,
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
+        ) as LLDBWrongRecord?
+        
+        if let record = existing {
+            // 已存在，更新错误次数和时间
+            record.errorCount += 1
+            record.lastErrorAt = Date().timeIntervalSince1970
+            record.updatedAt = Date().timeIntervalSince1970
+            
+            try database.update(
+                table: wrongRecordsTable,
+                on: [
+                    LLDBWrongRecord.Properties.errorCount,
+                    LLDBWrongRecord.Properties.lastErrorAt,
+                    LLDBWrongRecord.Properties.updatedAt
+                ],
+                with: record,
+                where: LLDBWrongRecord.Properties.id == record.id ?? 0
+            )
+        } else {
+            // 不存在，插入新记录
+            let newRecord = LLDBWrongRecord(
+                wordId: wordId,
+                listId: listId,
+                word: word,
+                meaning: meaning,
+                errorCount: 1
+            )
+            try database.insert(objects: newRecord, intoTable: wrongRecordsTable)
+        }
+    }
+    
+    /// 获取某个词库的所有未复习错题，按错误次数降序
+    func getWrongRecords(forListId listId: String, onlyUnreviewed: Bool = true) throws -> [LLDBWrongRecord] {
+        var condition = LLDBWrongRecord.Properties.listId == listId
+        if onlyUnreviewed {
+            condition = condition && LLDBWrongRecord.Properties.isReviewed == false
+        }
+        
+        return try database.getObjects(
+            on: LLDBWrongRecord.Properties.all,
+            fromTable: wrongRecordsTable,
+            where: condition,
+            orderBy: [LLDBWrongRecord.Properties.errorCount.asOrder(by: .descending)]
+        )
+    }
+    
+    /// 获取所有未复习错题
+    func getAllUnreviewedWrongRecords() throws -> [LLDBWrongRecord] {
+        return try database.getObjects(
+            on: LLDBWrongRecord.Properties.all,
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.isReviewed == false,
+            orderBy: [
+                LLDBWrongRecord.Properties.errorCount.asOrder(by: .descending),
+                LLDBWrongRecord.Properties.lastErrorAt.asOrder(by: .descending)
+            ]
+        )
+    }
+    
+    /// 统计某个词库的未复习错题数量
+    func getWrongRecordCount(forListId listId: String? = nil, onlyUnreviewed: Bool = true) throws -> Int {
+        var condition: Condition?
+        
+        if let listId = listId, onlyUnreviewed {
+            condition = LLDBWrongRecord.Properties.listId == listId && LLDBWrongRecord.Properties.isReviewed == false
+        } else if let listId = listId {
+            condition = LLDBWrongRecord.Properties.listId == listId
+        } else if onlyUnreviewed {
+            condition = LLDBWrongRecord.Properties.isReviewed == false
+        }
+        
+        let count = try database.getValue(
+            on: LLDBWrongRecord.Properties.id.count(),
+            fromTable: wrongRecordsTable,
+            where: condition
+        ).int32Value
+        
+        return Int(count)
+    }
+    
+    /// 查询某个单词是否在错题本中
+    func isWordInWrongBook(wordId: String, listId: String) throws -> Bool {
+        let record = try database.getObject(
+            on: LLDBWrongRecord.Properties.id,
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
+        ) as LLDBWrongRecord?
+        
+        return record != nil
+    }
+    
+    /// 获取某个单词的错误次数
+    func getWordErrorCount(wordId: String, listId: String) throws -> Int {
+        let record = try database.getObject(
+            on: LLDBWrongRecord.Properties.errorCount,
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
+        ) as LLDBWrongRecord?
+        
+        return record?.errorCount ?? 0
+    }
+    
+    /// 标记错题为已复习
+    func markWrongRecordAsReviewed(wordId: String, listId: String) throws {
+        guard let record = try database.getObject(
+            on: LLDBWrongRecord.Properties.all,
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
+        ) as LLDBWrongRecord? else {
+            return
+        }
+        
+        let now = Date().timeIntervalSince1970
+        record.isReviewed = true
+        record.reviewedAt = now
+        record.reviewCount += 1
+        record.updatedAt = now
+        
+        try database.update(
+            table: wrongRecordsTable,
+            on: [
+                LLDBWrongRecord.Properties.isReviewed,
+                LLDBWrongRecord.Properties.reviewedAt,
+                LLDBWrongRecord.Properties.reviewCount,
+                LLDBWrongRecord.Properties.updatedAt
+            ],
+            with: record,
+            where: LLDBWrongRecord.Properties.id == record.id ?? 0
+        )
+    }
+    
+    /// 删除错题记录
+    func deleteWrongRecord(wordId: String, listId: String) throws {
+        try database.delete(
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
+        )
+    }
+    
+    /// 删除某个词库的所有错题记录
+    func deleteWrongRecords(forListId listId: String) throws {
+        try database.delete(
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.listId == listId
+        )
+    }
+    
+    /// 删除所有已复习的错题记录
+    func deleteReviewedWrongRecords() throws {
+        try database.delete(
+            fromTable: wrongRecordsTable,
+            where: LLDBWrongRecord.Properties.isReviewed == true
+        )
+    }
+    
+    /// 批量标记错题为已复习
+    func markWrongRecordsAsReviewed(wordIds: [String], listId: String) throws {
+        for wordId in wordIds {
+            try markWrongRecordAsReviewed(wordId: wordId, listId: listId)
+        }
     }
 }

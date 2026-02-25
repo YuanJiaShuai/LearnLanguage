@@ -19,7 +19,9 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     // private let hintLabel = NSTextField()   // 移除提示
     
     private var currentEntry: LLWordEntry?
+    private var currentListId: String?
     private var completedCount = 0
+    private var currentWordErrorCount = 0  // 当前单词的累计错误次数
     
     // MARK: - Callbacks
     
@@ -81,8 +83,10 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     // MARK: - Public Methods
     
     /// 开始练习
-    func startPractice(with entry: LLWordEntry) {
+    func startPractice(with entry: LLWordEntry, listId: String? = nil) {
         currentEntry = entry
+        currentListId = listId
+        currentWordErrorCount = 0  // 重置错误计数
         displayView.reset(word: entry.text)
         
         // 设置释义
@@ -151,10 +155,47 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         } else {
             // 错误输入
             LLTypingSoundManager.shared.playWrongSound()
+            
+            // 累计错误次数
+            currentWordErrorCount += 1
+            
+            // 检查是否需要添加到错题本
+            checkAndAddToWrongBook()
         }
     }
     
     // MARK: - Private Methods
+    
+    /// 检查并添加到错题本
+    private func checkAndAddToWrongBook() {
+        guard let entry = currentEntry,
+              let listId = currentListId else {
+            return
+        }
+        
+        let settings = LLSettingsStore.shared.settings
+        let threshold = settings.addToWrongBookAfterErrors
+        
+        // 如果设置为"不记录"，直接返回
+        if threshold == 999 {
+            return
+        }
+        
+        // 如果错误次数达到阈值，添加到错题本
+        if currentWordErrorCount >= threshold {
+            do {
+                try LLDatabaseManager.shared.addOrUpdateWrongRecord(
+                    wordId: entry.id,
+                    listId: listId,
+                    word: entry.text,
+                    meaning: entry.meaning
+                )
+                print("✅ 已添加到错题本：\(entry.text)（错误\(currentWordErrorCount)次）")
+            } catch {
+                print("❌ 添加到错题本失败：\(error)")
+            }
+        }
+    }
     
     private func handleWordCompleted() {
         guard let entry = currentEntry else { return }

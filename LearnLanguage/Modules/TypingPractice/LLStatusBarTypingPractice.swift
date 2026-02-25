@@ -32,7 +32,7 @@ class LLStatusBarTypingPractice {
                 ?? LLTypingPracticeManager.shared.getNextWord()
             
             if let word = wordToPractice {
-                viewController?.startPractice(with: word)
+                viewController?.startPractice(with: word, listId: currentListId)
             }
         }
         
@@ -113,7 +113,7 @@ class LLStatusBarTypingPractice {
                     
                     // 获取下一个单词（此时状态栏已经刷新到下一个单词了）
                     if let nextWord = LLTypingPracticeManager.shared.getCurrentStatusBarWord() {
-                        vc.startPractice(with: nextWord)
+                        vc.startPractice(with: nextWord, listId: currentListId)
                     } else {
                         vc.resetView()
                         vc.targetWordLabel.stringValue = "没有更多单词了！"

@@ -71,7 +71,7 @@ final class LLSettingsTabViewController: NSViewController {
     private var panelAlphaSlider: NSSlider!
     private var panelWidthField: NSTextField!
     private var panelHeightField: NSTextField!
-    private var typingPracticeEnabledCheck: NSButton!
+    private var typingDictationModeCheck: NSButton!
     private var typingPracticeShowMeaningCheck: NSButton!
     private var typingInputStylePopup: NSPopUpButton!
     private var autoShowAnswerPopup: NSPopUpButton!
@@ -311,10 +311,10 @@ final class LLSettingsTabViewController: NSViewController {
         panelWidthField = createNumberField(value: "400")
         panelHeightField = createNumberField(value: "200")
         
-        typingPracticeEnabledCheck = NSButton(checkboxWithTitle: "启用打字练习", target: self, action: #selector(saveSettings))
-        typingPracticeShowMeaningCheck = NSButton(checkboxWithTitle: "打字练习显示释义", target: self, action: #selector(saveSettings))
+        typingDictationModeCheck = NSButton(checkboxWithTitle: "听写模式（隐藏单词）", target: self, action: #selector(saveSettings))
+        typingPracticeShowMeaningCheck = NSButton(checkboxWithTitle: "显示释义", target: self, action: #selector(saveSettings))
         
-        let typingStack = NSStackView(views: [typingPracticeEnabledCheck, typingPracticeShowMeaningCheck])
+        let typingStack = NSStackView(views: [typingDictationModeCheck, typingPracticeShowMeaningCheck])
         typingStack.orientation = .horizontal
         typingStack.spacing = 16
         
@@ -436,7 +436,8 @@ final class LLSettingsTabViewController: NSViewController {
         panelAlphaSlider.doubleValue = s.floatingPanelAlpha
         panelWidthField.stringValue = "\(Int(s.floatingPanelWidth))"
         panelHeightField.stringValue = "\(Int(s.floatingPanelHeight))"
-        typingPracticeEnabledCheck.state = s.typingPracticeEnabled ? .on : .off
+        typingDictationModeCheck.state = s.typingDictationMode ? .on : .off
+        typingPracticeShowMeaningCheck.state = s.typingPracticeShowMeaning ? .on : .off
         typingPracticeShowMeaningCheck.state = s.typingPracticeShowMeaning ? .on : .off
         if let index = LLTypingInputStyle.allCases.firstIndex(of: s.typingInputStyle) {
             typingInputStylePopup.selectItem(at: index)
@@ -491,7 +492,8 @@ final class LLSettingsTabViewController: NSViewController {
         s.floatingPanelAlpha = panelAlphaSlider.doubleValue
         s.floatingPanelWidth = CGFloat(Int(panelWidthField.stringValue) ?? 400)
         s.floatingPanelHeight = CGFloat(Int(panelHeightField.stringValue) ?? 200)
-        s.typingPracticeEnabled = typingPracticeEnabledCheck.state == .on
+        s.typingDictationMode = typingDictationModeCheck.state == .on
+        s.typingPracticeShowMeaning = typingPracticeShowMeaningCheck.state == .on
         s.typingPracticeShowMeaning = typingPracticeShowMeaningCheck.state == .on
         
         // 打字练习输入框样式

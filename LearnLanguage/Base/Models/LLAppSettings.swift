@@ -163,8 +163,8 @@ struct LLAppSettings: Codable {
     var reviewCountPerDay: Int
     var reminderEnabled: Bool
     var reminderTime: Date
-    var typingPracticeEnabled: Bool
     var typingPracticeShowMeaning: Bool
+    var typingDictationMode: Bool  // 听写模式（隐藏单词）
     var typingInputStyle: LLTypingInputStyle  // 打字练习输入框样式
     var autoShowAnswerAfterErrors: Int  // 自动显示答案（错误N次后）
     var addToWrongBookAfterErrors: Int  // 记录到错题本（错误N次后）
@@ -193,8 +193,8 @@ struct LLAppSettings: Codable {
         reviewCountPerDay: 50,
         reminderEnabled: false,
         reminderTime: Calendar.current.date(from: DateComponents(hour: 9, minute: 0)) ?? Date(),
-        typingPracticeEnabled: true,
         typingPracticeShowMeaning: true,
+        typingDictationMode: false,
         typingInputStyle: .perLetter,
         autoShowAnswerAfterErrors: 3,
         addToWrongBookAfterErrors: 2,

@@ -285,6 +285,7 @@ final class LLProgressTabViewController: NSViewController {
         // 创建内容容器
         let contentView = NSView()
         contentView.wantsLayer = true
+        contentView.translatesAutoresizingMaskIntoConstraints = false  // 关键：禁用自动转换
         wrongScrollView.documentView = contentView
         
         // 关键：设置 contentView 的宽度约束
@@ -478,10 +479,17 @@ final class LLProgressTabViewController: NSViewController {
         
         listView.subviews.forEach { $0.removeFromSuperview() }
         
-        let allRecords = LLLearningStore.shared.allRecords()
-        let wrongRecords = allRecords.filter { record in
-            (listId == nil || record.listId == listId) && record.feedback == .unknown
-        }.sorted { $0.lastSeenAt > $1.lastSeenAt }
+        // 从数据库读取错题记录
+        var wrongRecords: [LLDBWrongRecord] = []
+        do {
+            if let listId = listId {
+                wrongRecords = try LLDatabaseManager.shared.getWrongRecords(forListId: listId, onlyUnreviewed: true)
+            } else {
+                wrongRecords = try LLDatabaseManager.shared.getAllUnreviewedWrongRecords()
+            }
+        } catch {
+            print("❌ 加载错题记录失败：\(error)")
+        }
         
         // 使用新的 View 组件更新错题数量
         wrongRecordCard?.updateCount(wrongRecords.count)
@@ -497,10 +505,9 @@ final class LLProgressTabViewController: NSViewController {
             listView.addSubview(emptyLabel)
             emptyLabel.snp.makeConstraints { make in
                 make.center.equalToSuperview()
-                make.width.equalTo(scrollView)
             }
             listView.snp.makeConstraints { make in
-                make.width.equalTo(scrollView)
+                make.width.equalTo(scrollView).priority(.required)
                 make.height.equalTo(100)
             }
             return
@@ -511,20 +518,19 @@ final class LLProgressTabViewController: NSViewController {
         listView.addSubview(container)
         container.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.width.equalTo(scrollView)
+            make.width.equalTo(scrollView).priority(.required)
         }
         
         var lastView: NSView?
         for (index, record) in wrongRecords.enumerated() {
-            let (wordText, wordMean) = getWordInfo(wordId: record.wordId, listId: record.listId)
             let itemView = LLWrongRecordItemView(
                 wordId: record.wordId,
-                wordText: wordText,
-                wordMean: wordMean,
+                wordText: record.word,
+                wordMean: record.meaning,
                 showBorder: index < wrongRecords.count - 1
             )
             itemView.onMarkAsKnown = { [weak self] wordId in
-                self?.markAsKnown(wordId: wordId)
+                self?.markAsKnown(wordId: wordId, listId: record.listId)
             }
             itemView.onReview = { [weak self] wordId in
                 self?.reviewWord(wordId: wordId)
@@ -549,10 +555,14 @@ final class LLProgressTabViewController: NSViewController {
         }
     }
     
-    @objc private func markAsKnown(wordId: String) {
-        // TODO: 实现标记为已掌握的逻辑
-        print("标记为已掌握: \(wordId)")
-        loadData()
+    @objc private func markAsKnown(wordId: String, listId: String) {
+        do {
+            try LLDatabaseManager.shared.markWrongRecordAsReviewed(wordId: wordId, listId: listId)
+            print("✅ 已标记为已掌握: \(wordId)")
+            loadData()
+        } catch {
+            print("❌ 标记失败：\(error)")
+        }
     }
     
     @objc private func reviewWord(wordId: String) {

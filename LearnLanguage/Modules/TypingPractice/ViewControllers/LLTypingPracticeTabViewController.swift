@@ -103,10 +103,6 @@ class LLTypingPracticeTabViewController: NSViewController {
     private func loadNextWord() {
         // 检查打字练习是否启用
         let settings = LLSettingsStore.shared.settings
-        if !settings.typingPracticeEnabled {
-            showMessage("打字练习功能已被禁用\n请在设置中启用打字练习功能")
-            return
-        }
         
         // 获取当前词库
         guard let currentListId = LLSettingsStore.shared.currentListId else {
