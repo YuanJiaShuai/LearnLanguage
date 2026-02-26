@@ -97,6 +97,10 @@ final class LLProgressTabViewController: NSViewController {
     private var todayRecordCard: LLTodayRecordCardView!
     private var wrongRecordCard: LLWrongRecordCardView!
     
+    // 错题记录表格
+    private var wrongTableView: NSTableView?
+    private var wrongRecords: [LLDBWrongRecord] = []
+    
     // 当前选中的标签
     private enum Tab {
         case stat
@@ -200,6 +204,7 @@ final class LLProgressTabViewController: NSViewController {
         // 创建内容容器
         let contentView = NSView()
         contentView.wantsLayer = true
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         statScrollView.documentView = contentView
         
         // 关键：设置 contentView 的宽度约束
@@ -276,35 +281,78 @@ final class LLProgressTabViewController: NSViewController {
     }
     
     private func setupWrongContent() {
-        // 添加滚动视图
-        wrongContentView.addSubview(wrongScrollView)
-        wrongScrollView.snp.makeConstraints { make in
+        // 创建表格容器
+        let tableContainer = NSView()
+        tableContainer.wantsLayer = true
+        tableContainer.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
+        tableContainer.layer?.cornerRadius = 8
+        tableContainer.layer?.borderWidth = 1
+        tableContainer.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
+        
+        wrongContentView.addSubview(tableContainer)
+        tableContainer.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        // 创建内容容器
-        let contentView = NSView()
-        contentView.wantsLayer = true
-        contentView.translatesAutoresizingMaskIntoConstraints = false  // 关键：禁用自动转换
-        wrongScrollView.documentView = contentView
+        // 创建 TableView
+        let tableView = NSTableView()
+        tableView.style = .fullWidth
+        tableView.rowHeight = 60
+        tableView.backgroundColor = .clear
+        tableView.gridStyleMask = [.solidHorizontalGridLineMask]
+        tableView.gridColor = LLAppearanceManager.shared.colors.borderColor
+        tableView.usesAlternatingRowBackgroundColors = false
+        tableView.selectionHighlightStyle = .regular
         
-        // 关键：设置 contentView 的宽度约束
-        contentView.snp.makeConstraints { make in
-            make.width.equalTo(wrongScrollView)
+        // 添加列
+        let audioColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("audio"))
+        audioColumn.title = "发音"
+        audioColumn.width = 70
+        audioColumn.minWidth = 60
+        tableView.addTableColumn(audioColumn)
+        
+        let wordColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("word"))
+        wordColumn.title = "单词"
+        wordColumn.width = 130
+        wordColumn.minWidth = 100
+        tableView.addTableColumn(wordColumn)
+        
+        let meaningColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("meaning"))
+        meaningColumn.title = "释义"
+        meaningColumn.width = 180
+        meaningColumn.minWidth = 150
+        tableView.addTableColumn(meaningColumn)
+        
+        let errorCountColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("errorCount"))
+        errorCountColumn.title = "错误次数"
+        errorCountColumn.width = 90
+        errorCountColumn.minWidth = 80
+        tableView.addTableColumn(errorCountColumn)
+        
+        let actionColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("action"))
+        actionColumn.title = "操作"
+        actionColumn.width = 140
+        actionColumn.minWidth = 120
+        tableView.addTableColumn(actionColumn)
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        // 创建滚动视图
+        let scrollView = NSScrollView()
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = true
+        scrollView.borderType = .noBorder
+        scrollView.documentView = tableView
+        
+        tableContainer.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(20)
         }
         
-        // 使用新的 View 组件创建错题记录卡片
-        wrongRecordCard = LLWrongRecordCardView()
-        wrongRecordCard.onBatchReviewButtonClicked = { [weak self] in
-            self?.batchReview()
-        }
-        contentView.addSubview(wrongRecordCard)
-        wrongRecordCard.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.trailing.equalToSuperview()
-            make.height.greaterThanOrEqualTo(400)
-            make.bottom.equalToSuperview().offset(-20)
-        }
+        // 保存引用
+        wrongTableView = tableView
     }
     
     // MARK: - Actions
@@ -473,85 +521,23 @@ final class LLProgressTabViewController: NSViewController {
     }
     
     private func loadWrongRecords(listId: String?) {
-        // 使用新的 View 组件获取滚动视图
-        guard let scrollView = wrongRecordCard?.getScrollView() else { return }
-        guard let listView = wrongRecordCard?.getListView() else { return }
-        
-        listView.subviews.forEach { $0.removeFromSuperview() }
-        
         // 从数据库读取错题记录
-        var wrongRecords: [LLDBWrongRecord] = []
         do {
             if let listId = listId {
                 wrongRecords = try LLDatabaseManager.shared.getWrongRecords(forListId: listId, onlyUnreviewed: true)
             } else {
                 wrongRecords = try LLDatabaseManager.shared.getAllUnreviewedWrongRecords()
             }
+            
+            print("✅ 加载了 \(wrongRecords.count) 条错题记录")
+            
+            // 刷新表格
+            wrongTableView?.reloadData()
+            
         } catch {
             print("❌ 加载错题记录失败：\(error)")
-        }
-        
-        // 使用新的 View 组件更新错题数量
-        wrongRecordCard?.updateCount(wrongRecords.count)
-        
-        if wrongRecords.isEmpty {
-            let emptyLabel = NSTextField(labelWithString: "暂无错题记录，继续加油！")
-            emptyLabel.font = NSFont.systemFont(ofSize: 14)
-            emptyLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-            emptyLabel.isEditable = false
-            emptyLabel.isBezeled = false
-            emptyLabel.drawsBackground = false
-            emptyLabel.alignment = .center
-            listView.addSubview(emptyLabel)
-            emptyLabel.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
-            listView.snp.makeConstraints { make in
-                make.width.equalTo(scrollView).priority(.required)
-                make.height.equalTo(100)
-            }
-            return
-        }
-        
-        let container = NSView()
-        container.wantsLayer = true
-        listView.addSubview(container)
-        container.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.width.equalTo(scrollView).priority(.required)
-        }
-        
-        var lastView: NSView?
-        for (index, record) in wrongRecords.enumerated() {
-            let itemView = LLWrongRecordItemView(
-                wordId: record.wordId,
-                wordText: record.word,
-                wordMean: record.meaning,
-                showBorder: index < wrongRecords.count - 1
-            )
-            itemView.onMarkAsKnown = { [weak self] wordId in
-                self?.markAsKnown(wordId: wordId, listId: record.listId)
-            }
-            itemView.onReview = { [weak self] wordId in
-                self?.reviewWord(wordId: wordId)
-            }
-            container.addSubview(itemView)
-            itemView.snp.makeConstraints { make in
-                if let last = lastView {
-                    make.top.equalTo(last.snp.bottom)
-                } else {
-                    make.top.equalToSuperview().offset(8)
-                }
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(60)
-            }
-            lastView = itemView
-        }
-        
-        if let last = lastView {
-            last.snp.makeConstraints { make in
-                make.bottom.equalToSuperview().offset(-8)
-            }
+            wrongRecords = []
+            wrongTableView?.reloadData()
         }
     }
     
@@ -640,6 +626,204 @@ final class LLProgressTabViewController: NSViewController {
             return "❓"
         case .unknown:
             return "❌"
+        }
+    }
+}
+
+// MARK: - NSTableViewDataSource
+
+extension LLProgressTabViewController: NSTableViewDataSource {
+    
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return wrongRecords.count
+    }
+}
+
+// MARK: - NSTableViewDelegate
+
+extension LLProgressTabViewController: NSTableViewDelegate {
+    
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        guard row < wrongRecords.count else { return nil }
+        
+        let record = wrongRecords[row]
+        let columnId = tableColumn?.identifier.rawValue ?? ""
+        
+        let cellView = NSTableCellView()
+        let textField = NSTextField(labelWithString: "")
+        textField.isEditable = false
+        textField.isBezeled = false
+        textField.drawsBackground = false
+        textField.font = NSFont.systemFont(ofSize: 13)
+        textField.textColor = LLAppearanceManager.shared.colors.primaryText
+        
+        cellView.addSubview(textField)
+        textField.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+            make.centerY.equalToSuperview()
+        }
+        
+        switch columnId {
+        case "audio":
+            // 创建按钮容器
+            let buttonContainer = NSView()
+            cellView.addSubview(buttonContainer)
+            buttonContainer.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+            
+            // 美式发音按钮
+            let usButton = NSButton(title: "🇺🇸", target: self, action: #selector(didClickPlayUS(_:)))
+            usButton.bezelStyle = .rounded
+            usButton.controlSize = .small
+            usButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
+            usButton.tag = row
+            
+            // 英式发音按钮
+            let ukButton = NSButton(title: "🇬🇧", target: self, action: #selector(didClickPlayUK(_:)))
+            ukButton.bezelStyle = .rounded
+            ukButton.controlSize = .small
+            ukButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
+            ukButton.tag = row
+            
+            buttonContainer.addSubview(usButton)
+            buttonContainer.addSubview(ukButton)
+            
+            usButton.snp.makeConstraints { make in
+                make.top.leading.trailing.equalToSuperview()
+                make.width.equalTo(50)
+                make.height.equalTo(20)
+            }
+            
+            ukButton.snp.makeConstraints { make in
+                make.top.equalTo(usButton.snp.bottom).offset(4)
+                make.leading.trailing.bottom.equalToSuperview()
+                make.width.equalTo(50)
+                make.height.equalTo(20)
+            }
+            
+            textField.removeFromSuperview()
+            
+        case "word":
+            textField.stringValue = record.word
+            textField.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
+            
+        case "meaning":
+            textField.stringValue = record.meaning
+            textField.lineBreakMode = .byTruncatingTail
+            
+        case "errorCount":
+            textField.stringValue = "\(record.errorCount) 次"
+            textField.alignment = .center
+            textField.textColor = NSColor(srgbRed: 1.0, green: 0.23, blue: 0.19, alpha: 1)
+            
+        case "action":
+            // 创建按钮容器
+            let buttonContainer = NSView()
+            cellView.addSubview(buttonContainer)
+            buttonContainer.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+            
+            // 标记为已掌握按钮
+            let markButton = NSButton(title: "✓ 已掌握", target: self, action: #selector(didClickMarkAsKnown(_:)))
+            markButton.bezelStyle = .rounded
+            markButton.controlSize = .small
+            markButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
+            markButton.tag = row
+            markButton.wantsLayer = true
+            markButton.layer?.backgroundColor = NSColor.systemGreen.withAlphaComponent(0.1).cgColor
+            markButton.layer?.cornerRadius = 4
+            markButton.contentTintColor = .systemGreen
+            
+            // 立即复习按钮
+            let reviewButton = NSButton(title: "🔄 复习", target: self, action: #selector(didClickReview(_:)))
+            reviewButton.bezelStyle = .rounded
+            reviewButton.controlSize = .small
+            reviewButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
+            reviewButton.tag = row
+            reviewButton.wantsLayer = true
+            reviewButton.layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.1).cgColor
+            reviewButton.layer?.cornerRadius = 4
+            reviewButton.contentTintColor = .systemBlue
+            
+            buttonContainer.addSubview(markButton)
+            buttonContainer.addSubview(reviewButton)
+            
+            markButton.snp.makeConstraints { make in
+                make.leading.top.bottom.equalToSuperview()
+                make.width.equalTo(65)
+                make.height.equalTo(24)
+            }
+            
+            reviewButton.snp.makeConstraints { make in
+                make.leading.equalTo(markButton.snp.trailing).offset(8)
+                make.trailing.top.bottom.equalToSuperview()
+                make.width.equalTo(55)
+                make.height.equalTo(24)
+            }
+            
+            textField.removeFromSuperview()
+            
+        default:
+            break
+        }
+        
+        return cellView
+    }
+    
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        return false
+    }
+    
+    @objc private func didClickMarkAsKnown(_ sender: NSButton) {
+        let row = sender.tag
+        guard row < wrongRecords.count else { return }
+        
+        let record = wrongRecords[row]
+        markAsKnown(wordId: record.wordId, listId: record.listId)
+    }
+    
+    @objc private func didClickReview(_ sender: NSButton) {
+        let row = sender.tag
+        guard row < wrongRecords.count else { return }
+        
+        let record = wrongRecords[row]
+        reviewWord(wordId: record.wordId)
+    }
+    
+    @objc private func didClickPlayUS(_ sender: NSButton) {
+        let row = sender.tag
+        guard row < wrongRecords.count else { return }
+        let record = wrongRecords[row]
+        
+        print("🔊 播放美式发音：\(record.word)")
+        
+        // 使用语音管理器播放美式发音
+        LLPronunciationManager.shared.speak(word: record.word, accent: .us) { success, error in
+            if let error = error {
+                print("❌ 播放失败：\(error.localizedDescription)")
+            } else if success {
+                print("✅ 播放完成")
+            }
+        }
+    }
+    
+    @objc private func didClickPlayUK(_ sender: NSButton) {
+        let row = sender.tag
+        guard row < wrongRecords.count else { return }
+        let record = wrongRecords[row]
+        
+        print("🔊 播放英式发音：\(record.word)")
+        
+        // 使用语音管理器播放英式发音
+        LLPronunciationManager.shared.speak(word: record.word, accent: .uk) { success, error in
+            if let error = error {
+                print("❌ 播放失败：\(error.localizedDescription)")
+            } else if success {
+                print("✅ 播放完成")
+            }
         }
     }
 }
