@@ -18,6 +18,7 @@ final class LLDatabaseManager {
     private let categoriesTable = "categories"
     private let wordsTable = "words"
     private let wrongRecordsTable = "wrong_records"
+    private let learningProgressTable = "learning_progress"
     
     private init() {
         let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
@@ -60,6 +61,14 @@ final class LLDatabaseManager {
             print("✅ 错题表检查完成")
         } catch {
             print("⚠️ 错题表创建失败（可能已存在）：\(error)")
+        }
+        
+        do {
+            // 创建学习进度表
+            try database.create(table: learningProgressTable, of: LLDBLearningProgress.self)
+            print("✅ 学习进度表检查完成")
+        } catch {
+            print("⚠️ 学习进度表创建失败（可能已存在）：\(error)")
         }
     }
     
@@ -446,5 +455,208 @@ final class LLDatabaseManager {
         for wordId in wordIds {
             try markWrongRecordAsReviewed(wordId: wordId, listId: listId)
         }
+    }
+    
+    // MARK: - 学习进度管理
+    
+    /// 记录学习进度（第一次学习或更新）
+    func recordLearningProgress(wordId: String, wordListId: String, feedback: String) throws {
+        // 查询是否已存在记录
+        let existing = try database.getObject(
+            on: LLDBLearningProgress.Properties.all,
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordId == wordId && LLDBLearningProgress.Properties.wordListId == wordListId
+        ) as LLDBLearningProgress?
+        
+        let now = Date().timeIntervalSince1970
+        
+        if let record = existing {
+            // 已存在，更新记录
+            record.learnCount += 1
+            record.lastFeedback = feedback
+            record.lastSeenAt = now
+            record.updatedAt = now
+            
+            // 更新反馈计数
+            switch feedback {
+            case "know":
+                record.correctCount += 1
+                record.status = 2  // 已掌握
+            case "unclear":
+                record.unclearCount += 1
+                // 如果之前是已掌握，降级为学习中
+                if record.status == 2 {
+                    record.status = 1
+                }
+            case "unknown":
+                record.wrongCount += 1
+                record.status = 1  // 学习中
+            default:
+                break
+            }
+            
+            try database.update(
+                table: learningProgressTable,
+                on: [
+                    LLDBLearningProgress.Properties.learnCount,
+                    LLDBLearningProgress.Properties.lastFeedback,
+                    LLDBLearningProgress.Properties.status,
+                    LLDBLearningProgress.Properties.correctCount,
+                    LLDBLearningProgress.Properties.unclearCount,
+                    LLDBLearningProgress.Properties.wrongCount,
+                    LLDBLearningProgress.Properties.lastSeenAt,
+                    LLDBLearningProgress.Properties.updatedAt
+                ],
+                with: record,
+                where: LLDBLearningProgress.Properties.id == record.id ?? 0
+            )
+            
+            print("✅ 更新学习记录：\(wordId)，反馈：\(feedback)")
+            
+        } else {
+            // 不存在，插入新记录
+            let newRecord = LLDBLearningProgress(
+                wordId: wordId,
+                wordListId: wordListId,
+                feedback: feedback
+            )
+            
+            try database.insert(objects: newRecord, intoTable: learningProgressTable)
+            
+            // 第一次学习，更新词库的 learned_words 计数
+            try updateWordListLearnedCount(wordListId: wordListId, increment: 1)
+            
+            print("✅ 新增学习记录：\(wordId)，反馈：\(feedback)")
+        }
+    }
+    
+    /// 更新词库的已学习单词数（增量更新）
+    private func updateWordListLearnedCount(wordListId: String, increment: Int) throws {
+        guard let listId = Int(wordListId),
+              let wordList = try getWordList(id: listId) else {
+            return
+        }
+        
+        wordList.learnedWords = max(0, wordList.learnedWords + increment)
+        try updateWordList(wordList, on: [.learnedWords])
+    }
+    
+    /// 重新计算词库的已学习单词数（完整计算）
+    func recalculateWordListLearnedCount(wordListId: String) throws {
+        let count = try database.getValue(
+            on: LLDBLearningProgress.Properties.id.count(),
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId
+        ).int32Value
+        
+        guard let listId = Int(wordListId),
+              let wordList = try getWordList(id: listId) else {
+            return
+        }
+        
+        wordList.learnedWords = Int(count)
+        try updateWordList(wordList, on: [.learnedWords])
+    }
+    
+    /// 获取某个词库的学习进度统计
+    func getWordListProgressStats(wordListId: String) throws -> (total: Int, learned: Int, mastered: Int, learning: Int) {
+        // 总单词数
+        guard let listId = Int(wordListId) else {
+            return (0, 0, 0, 0)
+        }
+        let total = try getWordCount(forWordListId: listId)
+        
+        // 已学习数（有学习记录的）
+        let learned = try database.getValue(
+            on: LLDBLearningProgress.Properties.id.count(),
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId
+        ).int32Value
+        
+        // 已掌握数（status = 2）
+        let mastered = try database.getValue(
+            on: LLDBLearningProgress.Properties.id.count(),
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId && LLDBLearningProgress.Properties.status == 2
+        ).int32Value
+        
+        // 学习中（status = 1）
+        let learning = try database.getValue(
+            on: LLDBLearningProgress.Properties.id.count(),
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId && LLDBLearningProgress.Properties.status == 1
+        ).int32Value
+        
+        return (total, Int(learned), Int(mastered), Int(learning))
+    }
+    
+    /// 获取某个单词的学习进度
+    func getLearningProgress(wordId: String, wordListId: String) throws -> LLDBLearningProgress? {
+        return try database.getObject(
+            on: LLDBLearningProgress.Properties.all,
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordId == wordId && LLDBLearningProgress.Properties.wordListId == wordListId
+        )
+    }
+    
+    /// 获取某个词库的所有学习记录
+    func getAllLearningProgress(wordListId: String) throws -> [LLDBLearningProgress] {
+        return try database.getObjects(
+            on: LLDBLearningProgress.Properties.all,
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId,
+            orderBy: [LLDBLearningProgress.Properties.lastSeenAt.asOrder(by: .descending)]
+        )
+    }
+    
+    /// 获取今日学习的单词数
+    func getTodayLearnedCount(wordListId: String? = nil) throws -> Int {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let todayTimestamp = today.timeIntervalSince1970
+        
+        var condition = LLDBLearningProgress.Properties.lastSeenAt >= todayTimestamp
+        if let listId = wordListId {
+            condition = condition && LLDBLearningProgress.Properties.wordListId == listId
+        }
+        
+        let count = try database.getValue(
+            on: LLDBLearningProgress.Properties.id.count(),
+            fromTable: learningProgressTable,
+            where: condition
+        ).int32Value
+        
+        return Int(count)
+    }
+    
+    /// 删除某个词库的所有学习记录
+    func deleteLearningProgress(wordListId: String) throws {
+        try database.delete(
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId
+        )
+    }
+    
+    /// 记录打字练习
+    func recordTypingPractice(wordId: String, wordListId: String) throws {
+        guard let record = try getLearningProgress(wordId: wordId, wordListId: wordListId) else {
+            return
+        }
+        
+        let now = Date().timeIntervalSince1970
+        record.typingPracticeCount += 1
+        record.lastTypingAt = now
+        record.updatedAt = now
+        
+        try database.update(
+            table: learningProgressTable,
+            on: [
+                LLDBLearningProgress.Properties.typingPracticeCount,
+                LLDBLearningProgress.Properties.lastTypingAt,
+                LLDBLearningProgress.Properties.updatedAt
+            ],
+            with: record,
+            where: LLDBLearningProgress.Properties.id == record.id ?? 0
+        )
     }
 }

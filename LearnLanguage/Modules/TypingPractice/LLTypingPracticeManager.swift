@@ -44,6 +44,35 @@ class LLTypingPracticeManager {
         // 记录反馈到学习存储
         LLLearningStore.shared.recordFeedback(wordId: entry.id, listId: listId, feedback: feedback)
         
+        // 记录到数据库学习进度表
+        do {
+            let feedbackString: String
+            switch feedback {
+            case .know:
+                feedbackString = "know"
+            case .unclear:
+                feedbackString = "unclear"
+            case .unknown:
+                feedbackString = "unknown"
+            }
+            
+            try LLDatabaseManager.shared.recordLearningProgress(
+                wordId: entry.id,
+                wordListId: listId,
+                feedback: feedbackString
+            )
+            
+            // 记录打字练习
+            try LLDatabaseManager.shared.recordTypingPractice(
+                wordId: entry.id,
+                wordListId: listId
+            )
+            
+            print("✅ 已记录学习进度：\(entry.text) - \(feedbackString)")
+        } catch {
+            print("❌ 记录学习进度失败：\(error)")
+        }
+        
         // 同步刷新状态栏（显示下一个单词）
         LLStatusBarManager.shared.refreshStatusBar()
     }

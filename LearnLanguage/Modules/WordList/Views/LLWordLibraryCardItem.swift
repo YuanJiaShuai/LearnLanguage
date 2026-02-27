@@ -38,11 +38,19 @@ class LLWordLibraryCardItem: NSCollectionViewItem {
         self.onCardClicked = onClicked
         cardView.data = wordList
         
-        // 计算已学习数量
-        let learnedCount = LLLearningStore.shared.allRecords()
-            .filter { $0.listId == wordList.id }
-            .count
-        cardView.learnedCount = learnedCount
+        // 从数据库获取学习进度
+        do {
+            let stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: wordList.id)
+            cardView.learnedCount = stats.learned
+            print("📊 词库 \(wordList.name) 学习进度：\(stats.learned)/\(stats.total)")
+        } catch {
+            print("❌ 获取学习进度失败：\(error)")
+            // 降级方案：使用旧的 LLLearningStore
+            let learnedCount = LLLearningStore.shared.allRecords()
+                .filter { $0.listId == wordList.id }
+                .count
+            cardView.learnedCount = learnedCount
+        }
         
         // 检查是否是当前正在学习的词库
         let currentListId = LLSettingsStore.shared.currentListId
