@@ -27,14 +27,18 @@ final class LLWordListTabViewController: NSViewController {
     private lazy var newWordLibButton: NSButton = {
         let button = NSButton(title: "新建词库", target: self, action: #selector(didClickNewWordLib))
         button.bezelStyle = .rounded
-        button.controlSize = .regular
+        button.controlSize = .large
         button.image = NSImage(systemSymbolName: "plus", accessibilityDescription: nil)
-        button.imagePosition = .imageLeft
+        button.imagePosition = .imageLeading
         button.image?.isTemplate = true
         button.contentTintColor = .white
+        button.font = NSFont.systemFont(ofSize: 14, weight: .medium)
         button.wantsLayer = true
-        button.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
-        button.layer?.cornerRadius = 6
+        button.layer?.backgroundColor = NSColor.systemBlue.cgColor
+        button.layer?.cornerRadius = 8
+        button.isBordered = false
+        button.imageHugsTitle = true  // 让图标和文字靠近
+        
         return button
     }()
     
@@ -430,7 +434,7 @@ extension LLWordListTabViewController: NSCollectionViewDelegateFlowLayout {
         // 使用更精确的计算，避免累积误差
         let itemWidth = (availableWidth / itemsPerRow).rounded(.down)
         
-        return NSSize(width: itemWidth, height: 120)
+        return NSSize(width: itemWidth, height: 90)
     }
 }
 

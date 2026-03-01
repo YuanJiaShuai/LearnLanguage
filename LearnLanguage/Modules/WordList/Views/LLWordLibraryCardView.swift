@@ -47,78 +47,87 @@ final class LLWordLibraryCardView: NSView {
     
     private func setupUI() {
         wantsLayer = true
-        layer?.cornerRadius = 8
+        layer?.cornerRadius = 12
         layer?.borderWidth = 1
-        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
+        layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
         layer?.backgroundColor = NSColor.white.cgColor
         
-        let stackView = NSStackView()
-        stackView.orientation = .vertical
-        stackView.spacing = 8
-        addSubview(stackView)
+        // 图标和标题容器
+        let headerStack = NSStackView()
+        headerStack.orientation = .horizontal
+        headerStack.spacing = 8
+        headerStack.alignment = .centerY
+        addSubview(headerStack)
         
-        stackView.snp.makeConstraints { make in
+        headerStack.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(-16)
         }
         
+        // 图标
         iconView.image = NSImage(systemSymbolName: "book.fill", accessibilityDescription: nil)
-        iconView.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+        iconView.contentTintColor = NSColor.systemBlue
         iconView.snp.makeConstraints { make in
-            make.width.height.equalTo(14)
+            make.width.height.equalTo(18)
         }
-        let nameStack = NSStackView()
-        nameStack.orientation = .horizontal
-        nameStack.spacing = 6
-        nameStack.addArrangedSubview(iconView)
-        nameLabel.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
+        headerStack.addArrangedSubview(iconView)
+        
+        // 标题
+        nameLabel.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
         nameLabel.textColor = LLAppearanceManager.shared.colors.primaryText
         nameLabel.lineBreakMode = .byTruncatingTail
-        nameStack.addArrangedSubview(nameLabel)
+        headerStack.addArrangedSubview(nameLabel)
         
         // 学习中徽章
-        learningBadge.font = NSFont.systemFont(ofSize: 10, weight: .medium)
+        learningBadge.font = NSFont.systemFont(ofSize: 11, weight: .medium)
         learningBadge.textColor = .white
         learningBadge.alignment = .center
         learningBadge.wantsLayer = true
-        learningBadge.layer?.cornerRadius = 3
-        learningBadge.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
+        learningBadge.layer?.cornerRadius = 9
+        learningBadge.layer?.backgroundColor = NSColor.systemBlue.cgColor
         learningBadge.stringValue = "学习中"
         learningBadge.isHidden = true
         learningBadge.snp.makeConstraints { make in
-            make.width.equalTo(50)
+            make.width.equalTo(56)
             make.height.equalTo(18)
         }
-        nameStack.addArrangedSubview(learningBadge)
+        headerStack.addArrangedSubview(learningBadge)
         
-        stackView.addArrangedSubview(nameStack)
-        
-        countLabel.font = NSFont.systemFont(ofSize: 12)
+        // 进度文字
+        countLabel.font = NSFont.systemFont(ofSize: 13)
         countLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-        stackView.addArrangedSubview(countLabel)
-        
-        progressBar.wantsLayer = true
-        progressBar.layer?.cornerRadius = 2
-        progressBar.layer?.backgroundColor = LLAppearanceManager.shared.colors.borderColor.cgColor
-        progressBar.snp.makeConstraints { make in
-            make.height.equalTo(4)
+        addSubview(countLabel)
+        countLabel.snp.makeConstraints { make in
+            make.top.equalTo(headerStack.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
         }
-        progressFill.wantsLayer = true
-        progressFill.layer?.cornerRadius = 2
-        progressFill.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
         
+        // 进度条
+        progressBar.wantsLayer = true
+        progressBar.layer?.cornerRadius = 1.5
+        progressBar.layer?.backgroundColor = NSColor.systemGray.withAlphaComponent(0.15).cgColor
+        addSubview(progressBar)
+        progressBar.snp.makeConstraints { make in
+            make.top.equalTo(countLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(3)
+            make.bottom.equalToSuperview().offset(-16)
+        }
+        
+        progressFill.wantsLayer = true
+        progressFill.layer?.cornerRadius = 1.5
+        progressFill.layer?.backgroundColor = NSColor.systemBlue.cgColor
         progressBar.addSubview(progressFill)
         progressFill.snp.makeConstraints { make in
             make.top.leading.bottom.equalToSuperview()
             progressFillWidthConstraint = make.width.equalTo(0).constraint
         }
         
-        stackView.addArrangedSubview(progressBar)
-        
         // 鼠标事件
-        let trackingArea = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self, userInfo: nil)
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect], owner: self, userInfo: nil)
         addTrackingArea(trackingArea)
     }
     
@@ -134,21 +143,20 @@ final class LLWordLibraryCardView: NSView {
     }
     
     private func updateSelection() {
-        let c = LLAppearanceManager.shared.colors
         CATransaction.begin()
         CATransaction.setAnimationDuration(0.2)
         if isSelected {
-            layer?.borderColor = c.accentColor.cgColor
-            layer?.backgroundColor = c.accentLightBackground.cgColor
+            layer?.borderColor = NSColor.systemBlue.cgColor
             layer?.borderWidth = 2
+            layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05).cgColor
             iconView.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: nil)
-            iconView.contentTintColor = c.accentColor
+            iconView.contentTintColor = NSColor.systemBlue
         } else {
-            layer?.borderColor = c.borderColor.cgColor
-            layer?.backgroundColor = NSColor.white.cgColor
+            layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
             layer?.borderWidth = 1
+            layer?.backgroundColor = NSColor.white.cgColor
             iconView.image = NSImage(systemSymbolName: "book.fill", accessibilityDescription: nil)
-            iconView.contentTintColor = c.accentColor
+            iconView.contentTintColor = NSColor.systemBlue
         }
         CATransaction.commit()
     }
@@ -160,18 +168,46 @@ final class LLWordLibraryCardView: NSView {
     }
     
     override func mouseEntered(with event: NSEvent) {
-        if !isSelected {
-            layer?.borderColor = LLAppearanceManager.shared.colors.accentColor.cgColor
+        if !isSelected && !isCurrentLearning {
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.2
+                layer?.borderWidth = 1
+                layer?.borderColor = NSColor.systemBlue.cgColor
+                layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.03).cgColor
+            }
         }
     }
     
     override func mouseExited(with event: NSEvent) {
         if !isSelected {
-            layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.2
+                // 如果是正在学习的词库，保持边框为 2 和浅蓝色背景
+                if isCurrentLearning {
+                    layer?.borderWidth = 2
+                    layer?.borderColor = NSColor.systemBlue.cgColor
+                    layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05).cgColor
+                } else {
+                    layer?.borderWidth = 1
+                    layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
+                    layer?.backgroundColor = NSColor.white.cgColor
+                }
+            }
         }
     }
     
     private func updateLearningBadge() {
-        learningBadge.isHidden = !isCurrentLearning
+        learningBadge.isHidden = true  // 始终隐藏徽章
+        
+        // 如果是正在学习的词库，设置边框为 2 和浅蓝色背景
+        if isCurrentLearning && !isSelected {
+            layer?.borderWidth = 2
+            layer?.borderColor = NSColor.systemBlue.cgColor
+            layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05).cgColor
+        } else if !isSelected {
+            layer?.borderWidth = 1
+            layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
+            layer?.backgroundColor = NSColor.white.cgColor
+        }
     }
 }

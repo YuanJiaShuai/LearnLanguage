@@ -97,7 +97,7 @@ final class LLSettingsTabViewController: NSViewController {
     
     private func setupUI() {
         view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.white.cgColor
+        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.mainBackground.cgColor
         
         // 添加标题
         view.addSubview(titleLabel)
