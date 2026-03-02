@@ -33,18 +33,18 @@ final class LLShortcutCardView: NSView {
         var badgeColor: NSColor {
             switch self {
             case .wordList:
-                return LLAppearanceManager.shared.colors.accentColor
+                return NSColor.systemBlue
             case .wrongWords:
-                return LLAppearanceManager.shared.colors.errorColor
+                return NSColor.systemBlue
             }
         }
         
         var iconColor: NSColor {
             switch self {
             case .wordList:
-                return LLAppearanceManager.shared.colors.accentColor
+                return NSColor.systemBlue
             case .wrongWords:
-                return LLAppearanceManager.shared.colors.errorColor
+                return NSColor.systemBlue
             }
         }
     }
@@ -71,20 +71,43 @@ final class LLShortcutCardView: NSView {
     
     private lazy var titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: cardType.placeholderTitle)
-        label.font = NSFont.systemFont(ofSize: 13, weight: .medium)
+        label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText
+        label.lineBreakMode = .byTruncatingTail
+        label.isBezeled = false
+        label.isEditable = false
+        label.drawsBackground = false
+        return label
+    }()
+    
+    private lazy var nameLabel: NSTextField = {
+        let label = NSTextField(labelWithString: "")
+        label.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.lineBreakMode = .byTruncatingTail
+        label.isBezeled = false
+        label.isEditable = false
+        label.drawsBackground = false
         return label
     }()
     
     private lazy var badgeLabel: NSTextField = {
         let label = NSTextField(labelWithString: "0")
-        label.font = NSFont.systemFont(ofSize: 11)
+        label.font = NSFont.systemFont(ofSize: 10, weight: .medium)
         label.textColor = .white
         label.alignment = .center
+        label.isBezeled = false
+        label.isEditable = false
+        label.drawsBackground = false
         label.wantsLayer = true
-        label.layer?.cornerRadius = 9
+        label.layer?.cornerRadius = 8
         label.layer?.backgroundColor = cardType.badgeColor.cgColor
+        // 关键：设置垂直居中
+        label.usesSingleLineMode = true
+        label.cell?.usesSingleLineMode = true
+        label.cell?.wraps = false
+        label.cell?.isScrollable = false
+        label.lineBreakMode = .byClipping
         return label
     }()
     
@@ -105,32 +128,50 @@ final class LLShortcutCardView: NSView {
     
     private func setupUI() {
         addSubview(containerView)
-        containerView.addSubview(iconView)
-        containerView.addSubview(titleLabel)
-        containerView.addSubview(badgeLabel)
+        
+        // 顶部容器：图标 + 标题 + 角标
+        let topContainer = NSView()
+        containerView.addSubview(topContainer)
+        topContainer.addSubview(iconView)
+        topContainer.addSubview(titleLabel)
+        topContainer.addSubview(badgeLabel)
+        
+        // 底部：词库名称
+        containerView.addSubview(nameLabel)
         
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(36)
+            make.height.equalTo(52)
+        }
+        
+        topContainer.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(18)
         }
         
         iconView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(14)
+            make.width.height.equalTo(12)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(iconView.snp.trailing).offset(8)
+            make.leading.equalTo(iconView.snp.trailing).offset(6)
             make.centerY.equalToSuperview()
-            make.trailing.lessThanOrEqualTo(badgeLabel.snp.leading).offset(-8)
         }
         
         badgeLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.leading.equalTo(titleLabel.snp.trailing).offset(6)
+            make.trailing.lessThanOrEqualToSuperview()
             make.centerY.equalToSuperview()
-            make.width.greaterThanOrEqualTo(40)
-            make.height.equalTo(20)
+            make.width.greaterThanOrEqualTo(32)
+            make.height.equalTo(16)
+        }
+        
+        nameLabel.snp.makeConstraints { make in
+            make.top.equalTo(topContainer.snp.bottom).offset(6)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -146,7 +187,7 @@ final class LLShortcutCardView: NSView {
     // MARK: - Public Methods
     
     func updateContent(title: String, badge: String) {
-        titleLabel.stringValue = title
+        nameLabel.stringValue = title
         badgeLabel.stringValue = badge
     }
 }

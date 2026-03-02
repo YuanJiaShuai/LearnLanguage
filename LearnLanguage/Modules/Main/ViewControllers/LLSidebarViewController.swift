@@ -197,27 +197,27 @@ final class LLSidebarViewController: NSViewController {
         currentWordLibTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
+            make.trailing.equalToSuperview().offset(-12)
             make.height.equalTo(16)
         }
         
         currentWordLibCardView.snp.makeConstraints { make in
             make.top.equalTo(currentWordLibTitleLabel.snp.bottom).offset(10)
             make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
+            make.trailing.equalToSuperview().offset(-12)
         }
         
         wrongWordsTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(currentWordLibCardView.snp.bottom).offset(10)
             make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
+            make.trailing.equalToSuperview().offset(-12)
             make.height.equalTo(16)
         }
         
         wrongWordsCardView.snp.makeConstraints { make in
             make.top.equalTo(wrongWordsTitleLabel.snp.bottom).offset(10)
             make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
+            make.trailing.equalToSuperview().offset(-12)
             make.bottom.equalToSuperview().offset(-6)
         }
         
