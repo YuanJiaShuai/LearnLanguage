@@ -20,7 +20,7 @@ final class LLWordListStorage {
             let dbWordLists = try LLDatabaseManager.shared.getAllWordLists()
             return dbWordLists.compactMap { convertToWordList($0) }
         } catch {
-            print("❌ 获取词库列表失败：\(error)")
+            LLLogger.error("❌ 获取词库列表失败：\(error)")
             return []
         }
     }
@@ -29,7 +29,7 @@ final class LLWordListStorage {
     func list(byId id: String) -> WordList? {
         // 尝试解析 ID（可能是数字 ID 或字符串 ID）
         guard let numericId = Int(id) else {
-            print("❌ 无效的词库 ID：\(id)")
+            LLLogger.error("❌ 无效的词库 ID：\(id)")
             return nil
         }
         
@@ -42,7 +42,7 @@ final class LLWordListStorage {
             let dbWords = try LLDatabaseManager.shared.getWords(forWordListId: numericId)
             return convertToWordList(dbWordList, words: dbWords)
         } catch {
-            print("❌ 获取词库失败：\(error)")
+            LLLogger.error("❌ 获取词库失败：\(error)")
             return nil
         }
     }
@@ -59,7 +59,7 @@ final class LLWordListStorage {
             let dbWordLists = try LLDatabaseManager.shared.getWordListByCategoryId(categoryId)
             return dbWordLists.compactMap { convertToWordList($0) }
         } catch {
-            print("❌ 获取分类词库失败：\(error)")
+            LLLogger.error("❌ 获取分类词库失败：\(error)")
             return []
         }
     }
@@ -100,26 +100,26 @@ final class LLWordListStorage {
                 try LLDatabaseManager.shared.insertWords(dbWords)
             }
             
-            print("✅ 词库添加成功：\(list.name)")
+            LLLogger.info("✅ 词库添加成功：\(list.name)")
             
             // 发送通知
             NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
             
         } catch {
-            print("❌ 添加词库失败：\(error)")
+            LLLogger.error("❌ 添加词库失败：\(error)")
         }
     }
     
     /// 更新词库
     func updateList(_ list: WordList) {
         guard let numericId = Int(list.id) else {
-            print("❌ 无效的词库 ID：\(list.id)")
+            LLLogger.error("❌ 无效的词库 ID：\(list.id)")
             return
         }
         
         do {
             guard let dbWordList = try LLDatabaseManager.shared.getWordList(id: numericId) else {
-                print("❌ 词库不存在：\(list.id)")
+                LLLogger.error("❌ 词库不存在：\(list.id)")
                 return
             }
             
@@ -128,20 +128,20 @@ final class LLWordListStorage {
             
             try LLDatabaseManager.shared.updateWordList(dbWordList, on: [.name, .totalWords])
             
-            print("✅ 词库更新成功：\(list.name)")
+            LLLogger.info("✅ 词库更新成功：\(list.name)")
             
             // 发送通知
             NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
             
         } catch {
-            print("❌ 更新词库失败：\(error)")
+            LLLogger.error("❌ 更新词库失败：\(error)")
         }
     }
     
     /// 删除词库
     func removeList(id: String) {
         guard let numericId = Int(id) else {
-            print("❌ 无效的词库 ID：\(id)")
+            LLLogger.error("❌ 无效的词库 ID：\(id)")
             return
         }
         
@@ -152,13 +152,13 @@ final class LLWordListStorage {
             // 再删除词库
             try LLDatabaseManager.shared.deleteWordList(id: numericId)
             
-            print("✅ 词库删除成功")
+            LLLogger.info("✅ 词库删除成功")
             
             // 发送通知
             NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
             
         } catch {
-            print("❌ 删除词库失败：\(error)")
+            LLLogger.error("❌ 删除词库失败：\(error)")
         }
     }
     

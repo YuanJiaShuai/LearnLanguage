@@ -63,7 +63,7 @@ final class LLLocalPronunciationProvider: NSObject, LLPronunciationProviderProto
         // 开始发音
         synthesizer.speak(utterance)
         
-        print("🔊 本地发音：\(word) [\(accent.displayName)]")
+        LLLogger.debug("🔊 本地发音：\(word) [\(accent.displayName)]")
     }
     
     func stop() {
@@ -114,7 +114,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             return
         }
         
-        print("🔊 有道发音：\(word) [\(accent.displayName)] - \(urlString)")
+        LLLogger.debug("🔊 有道发音：\(word) [\(accent.displayName)] - \(urlString)")
         
         // 使用 URLSession.shared，它会自动处理系统代理
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
@@ -122,8 +122,8 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             
             if let error = error {
                 DispatchQueue.main.async {
-                    print("❌ 播放失败：\(error.localizedDescription)")
-                    print("💡 提示：请检查网络连接或代理设置，也可以尝试使用本地发音")
+                    LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
+                    LLLogger.info("💡 提示：请检查网络连接或代理设置，也可以尝试使用本地发音")
                     self.completion?(false, error)
                     self.completion = nil
                 }
@@ -132,11 +132,11 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             
             // 检查 HTTP 响应状态
             if let httpResponse = response as? HTTPURLResponse {
-                print("📡 HTTP 状态码：\(httpResponse.statusCode)")
+                LLLogger.debug("📡 HTTP 状态码：\(httpResponse.statusCode)")
                 if httpResponse.statusCode != 200 {
                     DispatchQueue.main.async {
                         let error = NSError(domain: "LLPronunciation", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "服务器返回错误：\(httpResponse.statusCode)"])
-                        print("❌ 播放失败：HTTP \(httpResponse.statusCode)")
+                        LLLogger.error("❌ 播放失败：HTTP \(httpResponse.statusCode)")
                         self.completion?(false, error)
                         self.completion = nil
                     }
@@ -147,14 +147,14 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             guard let data = data, !data.isEmpty else {
                 DispatchQueue.main.async {
                     let error = NSError(domain: "LLPronunciation", code: -2, userInfo: [NSLocalizedDescriptionKey: "无音频数据"])
-                    print("❌ 播放失败：无音频数据")
+                    LLLogger.error("❌ 播放失败：无音频数据")
                     self.completion?(false, error)
                     self.completion = nil
                 }
                 return
             }
             
-            print("📦 收到音频数据：\(data.count) 字节")
+            LLLogger.debug("📦 收到音频数据：\(data.count) 字节")
             
             do {
                 // 播放音频
@@ -169,9 +169,9 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
                 
                 DispatchQueue.main.async {
                     if success {
-                        print("✅ 播放成功")
+                        LLLogger.info("✅ 播放成功")
                     } else {
-                        print("❌ 播放失败：无法启动播放器")
+                        LLLogger.error("❌ 播放失败：无法启动播放器")
                     }
                     self.completion?(success, success ? nil : NSError(domain: "LLPronunciation", code: -3, userInfo: [NSLocalizedDescriptionKey: "播放器启动失败"]))
                     self.completion = nil
@@ -179,7 +179,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
                 
             } catch {
                 DispatchQueue.main.async {
-                    print("❌ 播放失败：\(error.localizedDescription)")
+                    LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
                     self.completion?(false, error)
                     self.completion = nil
                 }
@@ -203,7 +203,7 @@ final class LLGooglePronunciationProvider: LLPronunciationProviderProtocol {
     
     func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
         // TODO: 实现 Google TTS
-        print("🔊 Google 发音：\(word) [\(accent.displayName)] - 待实现")
+        LLLogger.info("🔊 Google 发音：\(word) [\(accent.displayName)] - 待实现")
         completion?(false, NSError(domain: "LLPronunciation", code: -999, userInfo: [NSLocalizedDescriptionKey: "Google TTS 尚未实现"]))
     }
     
@@ -222,7 +222,7 @@ final class LLAzurePronunciationProvider: LLPronunciationProviderProtocol {
     
     func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
         // TODO: 实现 Azure Speech
-        print("🔊 Azure 发音：\(word) [\(accent.displayName)] - 待实现")
+        LLLogger.info("🔊 Azure 发音：\(word) [\(accent.displayName)] - 待实现")
         completion?(false, NSError(domain: "LLPronunciation", code: -999, userInfo: [NSLocalizedDescriptionKey: "Azure Speech 尚未实现"]))
     }
     
@@ -273,7 +273,7 @@ final class LLPronunciationManager {
         
         // 检查是否启用发音
         guard settings.pronunciationEnabled else {
-            print("⚠️ 发音功能已禁用")
+            LLLogger.warn("⚠️ 发音功能已禁用")
             completion?(false, NSError(domain: "LLPronunciation", code: -100, userInfo: [NSLocalizedDescriptionKey: "发音功能已禁用"]))
             return
         }
@@ -299,7 +299,7 @@ final class LLPronunciationManager {
         let settings = LLSettingsStore.shared.settings
         
         guard settings.pronunciationEnabled else {
-            print("⚠️ 发音功能已禁用")
+            LLLogger.warn("⚠️ 发音功能已禁用")
             completion?(false, NSError(domain: "LLPronunciation", code: -100, userInfo: [NSLocalizedDescriptionKey: "发音功能已禁用"]))
             return
         }
@@ -346,7 +346,7 @@ final class LLPronunciationManager {
     func testProvider(_ provider: LLPronunciationProvider, completion: @escaping (Bool) -> Void) {
         providers[provider]?.speak(word: "test", accent: .us, rate: 0.5) { success, error in
             if let error = error {
-                print("❌ 测试 \(provider.displayName) 失败：\(error.localizedDescription)")
+                LLLogger.error("❌ 测试 \(provider.displayName) 失败：\(error.localizedDescription)")
             }
             completion(success)
         }

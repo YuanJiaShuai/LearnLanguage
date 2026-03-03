@@ -20,7 +20,7 @@ final class LLMMKVManager {
         MMKV.initialize(rootDir: nil)
         mmkv = MMKV.default()
         
-        print("✅ MMKV 初始化成功")
+        LLLogger.info("✅ MMKV 初始化成功")
         
         // 首次启动时从 UserDefaults 迁移数据
         migrateFromUserDefaultsIfNeeded()
@@ -43,7 +43,7 @@ final class LLMMKVManager {
         case let v as Data:
             mmkv?.set(v, forKey: key)
         default:
-            print("⚠️ MMKV 不支持的类型：\(type(of: value))")
+            LLLogger.warn("⚠️ MMKV 不支持的类型：\(type(of: value))")
         }
     }
     
@@ -77,7 +77,7 @@ final class LLMMKVManager {
     
     func clearAll() {
         mmkv?.clearAll()
-        print("🗑️ MMKV 所有数据已清空")
+        LLLogger.info("🗑️ MMKV 所有数据已清空")
     }
     
     func allKeys() -> [String] {
@@ -95,7 +95,7 @@ final class LLMMKVManager {
             return
         }
         
-        print("🔄 开始从 UserDefaults 迁移数据到 MMKV...")
+        LLLogger.info("🔄 开始从 UserDefaults 迁移数据到 MMKV...")
         
         let ud = UserDefaults.standard
         var migratedCount = 0
@@ -139,7 +139,7 @@ final class LLMMKVManager {
         // 标记迁移完成
         set(true, forKey: migrationKey)
         
-        print("✅ 数据迁移完成，共迁移 \(migratedCount) 个配置项")
+        LLLogger.info("✅ 数据迁移完成，共迁移 \(migratedCount) 个配置项")
     }
 }
 
@@ -386,18 +386,18 @@ extension LLMMKVManager {
     
     /// 打印所有配置（用于调试）
     func printAllConfigs() {
-        print("\n" + String(repeating: "=", count: 60))
-        print("📋 MMKV 所有配置：")
-        print(String(repeating: "=", count: 60))
+        LLLogger.debug("\n" + String(repeating: "=", count: 60))
+        LLLogger.debug("📋 MMKV 所有配置：")
+        LLLogger.debug(String(repeating: "=", count: 60))
         
         let keys = allKeys().sorted()
         for key in keys {
             if let value = mmkv?.object(of: NSObject.self, forKey: key) {
-                print("  \(key): \(value)")
+                LLLogger.debug("  \(key): \(value)")
             }
         }
         
-        print(String(repeating: "=", count: 60) + "\n")
+        LLLogger.debug(String(repeating: "=", count: 60) + "\n")
     }
     
     /// 导出配置为字典（用于备份）

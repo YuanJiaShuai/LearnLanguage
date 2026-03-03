@@ -46,18 +46,18 @@ final class LLStatusBarFeedbackView: NSView {
         
         images = imageNames.compactMap { name in
             if let image = NSImage(named: name) {
-                print("✅ 成功加载图片: \(name)")
+                LLLogger.debug("✅ 成功加载图片: \(name)")
                 image.isTemplate = true
                 return image
             } else {
-                print("⚠️ 加载图片失败: \(name)")
+                LLLogger.warn("⚠️ 加载图片失败: \(name)")
                 return nil
             }
         }
         
         // 如果自定义图片加载失败，使用系统图标作为后备
         if images.count < 4 {
-            print("⚠️ 自定义图片加载不完整，使用系统图标作为后备")
+            LLLogger.warn("⚠️ 自定义图片加载不完整，使用系统图标作为后备")
             images = [
                 NSImage(systemSymbolName: "eye.fill", accessibilityDescription: "显示"),
                 NSImage(systemSymbolName: "hand.thumbsup.fill", accessibilityDescription: "认识"),
@@ -66,7 +66,7 @@ final class LLStatusBarFeedbackView: NSView {
             ].compactMap { $0 }
             images.forEach { $0.isTemplate = true }
         } else {
-            print("✅ 所有自定义图片加载成功")
+            LLLogger.debug("✅ 所有自定义图片加载成功")
         }
     }
     

@@ -209,7 +209,7 @@ final class LLWordListDetailViewController: NSViewController {
     
     private func loadWords() {
         guard let listId = Int(wordListId) else {
-            print("❌ 无效的词库 ID：\(wordListId)")
+            LLLogger.error("❌ 无效的词库 ID：\(wordListId)")
             return
         }
         
@@ -218,7 +218,7 @@ final class LLWordListDetailViewController: NSViewController {
             allWords = try LLDatabaseManager.shared.getWords(forWordListId: listId)
             filteredWords = allWords
             
-            print("✅ 加载了 \(allWords.count) 个单词")
+            LLLogger.info("✅ 加载了 \(allWords.count) 个单词")
             
             // 更新标题和统计信息
             titleLabel.stringValue = wordListName
@@ -231,7 +231,7 @@ final class LLWordListDetailViewController: NSViewController {
             tableView.reloadData()
             
         } catch {
-            print("❌ 加载单词失败：\(error)")
+            LLLogger.error("❌ 加载单词失败：\(error)")
             
             // 显示错误提示
             let alert = NSAlert()
@@ -286,7 +286,7 @@ final class LLWordListDetailViewController: NSViewController {
     }
     
     @objc private func didClickStartLearning() {
-        print("🎯 开始学习词库：\(wordListName) (ID: \(wordListId))")
+        LLLogger.info("🎯 开始学习词库：\(wordListName) (ID: \(wordListId))")
         
         // 1. 设置当前词库为默认词库
         LLSettingsStore.shared.currentListId = wordListId
@@ -297,7 +297,7 @@ final class LLWordListDetailViewController: NSViewController {
         // 3. 关闭当前页面
         dismiss(self)
         
-        print("✅ 已设置当前词库为：\(wordListName)")
+        LLLogger.info("✅ 已设置当前词库为：\(wordListName)")
     }
 }
 
@@ -348,14 +348,14 @@ extension LLWordListDetailViewController {
         guard row < filteredWords.count else { return }
         let word = filteredWords[row]
         
-        print("🔊 播放美式发音：\(word.word)")
+        LLLogger.debug("🔊 播放美式发音：\(word.word)")
         
         // 使用语音管理器播放美式发音
         LLPronunciationManager.shared.speak(word: word.word, accent: .us) { success, error in
             if let error = error {
-                print("❌ 播放失败：\(error.localizedDescription)")
+                LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
             } else if success {
-                print("✅ 播放完成")
+                LLLogger.info("✅ 播放完成")
             }
         }
     }
@@ -365,14 +365,14 @@ extension LLWordListDetailViewController {
         guard row < filteredWords.count else { return }
         let word = filteredWords[row]
         
-        print("🔊 播放英式发音：\(word.word)")
+        LLLogger.debug("🔊 播放英式发音：\(word.word)")
         
         // 使用语音管理器播放英式发音
         LLPronunciationManager.shared.speak(word: word.word, accent: .uk) { success, error in
             if let error = error {
-                print("❌ 播放失败：\(error.localizedDescription)")
+                LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
             } else if success {
-                print("✅ 播放完成")
+                LLLogger.info("✅ 播放完成")
             }
         }
     }

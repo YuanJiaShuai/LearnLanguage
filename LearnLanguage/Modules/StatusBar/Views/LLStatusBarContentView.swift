@@ -60,17 +60,17 @@ final class LLStatusBarContentView: NSControl {
         self.wantsLayer = true
         
         // 调试：打印外观信息
-        print("🎨 LLStatusBarContentView 初始化")
-        print("🎨 effectiveAppearance: \(effectiveAppearance.name)")
+        LLLogger.debug("🎨 LLStatusBarContentView 初始化")
+        LLLogger.debug("🎨 effectiveAppearance: \(effectiveAppearance.name)")
         
         setupUI()
     }
     
     override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
-        print("🎨 LLStatusBarContentView 移动到窗口")
-        print("🎨 window?.effectiveAppearance: \(window?.effectiveAppearance.name.rawValue ?? "nil")")
-        print("🎨 effectiveAppearance: \(effectiveAppearance.name)")
+        LLLogger.debug("🎨 LLStatusBarContentView 移动到窗口")
+        LLLogger.debug("🎨 window?.effectiveAppearance: \(window?.effectiveAppearance.name.rawValue ?? "nil")")
+        LLLogger.debug("🎨 effectiveAppearance: \(effectiveAppearance.name)")
     }
     
     override var intrinsicContentSize: NSSize {

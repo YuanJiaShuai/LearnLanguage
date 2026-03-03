@@ -255,7 +255,7 @@ final class LLWordListTabViewController: NSViewController {
                 typeFilterPopUp.addItem(withTitle: category.name)
             }
         } catch {
-            print("❌ 加载分类失败：\(error)")
+            LLLogger.error("❌ 加载分类失败：\(error)")
             typeFilterPopUp.addItems(withTitles: ["官方词库", "自定义词库"])
         }
     }
@@ -264,7 +264,7 @@ final class LLWordListTabViewController: NSViewController {
         // 从数据库加载词库数据
         do {
             let dbWordLists = try LLDatabaseManager.shared.getAllWordLists()
-            print("📊 从数据库加载了 \(dbWordLists.count) 个词库")
+            LLLogger.debug("📊 从数据库加载了 \(dbWordLists.count) 个词库")
             
             // 转换为 WordList 模型
             allLists = dbWordLists.compactMap { dbList -> WordList? in
@@ -289,10 +289,10 @@ final class LLWordListTabViewController: NSViewController {
                 )
             }
             
-            print("✅ 转换后得到 \(allLists.count) 个词库")
+            LLLogger.debug("✅ 转换后得到 \(allLists.count) 个词库")
             
         } catch {
-            print("❌ 从数据库加载词库失败：\(error)")
+            LLLogger.error("❌ 从数据库加载词库失败：\(error)")
             allLists = LLWordListStorage.shared.allLists()
         }
         
@@ -323,7 +323,7 @@ final class LLWordListTabViewController: NSViewController {
         }
         
         filteredLists = result
-        print("🔍 筛选后得到 \(filteredLists.count) 个词库")
+        LLLogger.debug("🔍 筛选后得到 \(filteredLists.count) 个词库")
         
         // 更新标题
         cardTitleLabel.stringValue = "词库管理（共 \(filteredLists.count) 个）"
@@ -444,7 +444,7 @@ extension LLWordListTabViewController {
     
     /// 显示词库详情页
     private func showWordListDetail(wordList: WordList) {
-        print("🔍 打开词库详情：\(wordList.name)")
+        LLLogger.info("🔍 打开词库详情：\(wordList.name)")
         
         // 创建详情页
         let detailVC = LLWordListDetailViewController(

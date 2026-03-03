@@ -401,7 +401,7 @@ final class LLProgressTabViewController: NSViewController {
         
         if alert.runModal() == .alertFirstButtonReturn {
             // TODO: 实现批量复习逻辑
-            print("开始批量复习错题")
+            LLLogger.info("开始批量复习错题")
         }
     }
     
@@ -414,7 +414,7 @@ final class LLProgressTabViewController: NSViewController {
         savePanel.begin { response in
             if response == .OK, let url = savePanel.url {
                 // TODO: 实现导出逻辑
-                print("导出到: \(url.path)")
+                LLLogger.info("导出到: \(url.path)")
             }
         }
     }
@@ -529,13 +529,13 @@ final class LLProgressTabViewController: NSViewController {
                 wrongRecords = try LLDatabaseManager.shared.getAllUnreviewedWrongRecords()
             }
             
-            print("✅ 加载了 \(wrongRecords.count) 条错题记录")
+            LLLogger.info("✅ 加载了 \(wrongRecords.count) 条错题记录")
             
             // 刷新表格
             wrongTableView?.reloadData()
             
         } catch {
-            print("❌ 加载错题记录失败：\(error)")
+            LLLogger.error("❌ 加载错题记录失败：\(error)")
             wrongRecords = []
             wrongTableView?.reloadData()
         }
@@ -544,16 +544,16 @@ final class LLProgressTabViewController: NSViewController {
     @objc private func markAsKnown(wordId: String, listId: String) {
         do {
             try LLDatabaseManager.shared.markWrongRecordAsReviewed(wordId: wordId, listId: listId)
-            print("✅ 已标记为已掌握: \(wordId)")
+            LLLogger.info("✅ 已标记为已掌握: \(wordId)")
             loadData()
         } catch {
-            print("❌ 标记失败：\(error)")
+            LLLogger.error("❌ 标记失败：\(error)")
         }
     }
     
     @objc private func reviewWord(wordId: String) {
         // TODO: 实现立即复习的逻辑
-        print("立即复习: \(wordId)")
+        LLLogger.info("立即复习: \(wordId)")
     }
     
     private func showWordListSelector() {
@@ -595,7 +595,7 @@ final class LLProgressTabViewController: NSViewController {
         if response == .alertFirstButtonReturn {
             if let selectedId = popUpButton.selectedItem?.representedObject as? String {
                 LLSettingsStore.shared.currentListId = selectedId
-                print("✅ 已切换到词库: \(popUpButton.titleOfSelectedItem ?? "")")
+                LLLogger.info("✅ 已切换到词库: \(popUpButton.titleOfSelectedItem ?? "")")
             }
         }
     }
@@ -798,14 +798,14 @@ extension LLProgressTabViewController: NSTableViewDelegate {
         guard row < wrongRecords.count else { return }
         let record = wrongRecords[row]
         
-        print("🔊 播放美式发音：\(record.word)")
+        LLLogger.debug("🔊 播放美式发音：\(record.word)")
         
         // 使用语音管理器播放美式发音
         LLPronunciationManager.shared.speak(word: record.word, accent: .us) { success, error in
             if let error = error {
-                print("❌ 播放失败：\(error.localizedDescription)")
+                LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
             } else if success {
-                print("✅ 播放完成")
+                LLLogger.info("✅ 播放完成")
             }
         }
     }
@@ -815,14 +815,14 @@ extension LLProgressTabViewController: NSTableViewDelegate {
         guard row < wrongRecords.count else { return }
         let record = wrongRecords[row]
         
-        print("🔊 播放英式发音：\(record.word)")
+        LLLogger.debug("🔊 播放英式发音：\(record.word)")
         
         // 使用语音管理器播放英式发音
         LLPronunciationManager.shared.speak(word: record.word, accent: .uk) { success, error in
             if let error = error {
-                print("❌ 播放失败：\(error.localizedDescription)")
+                LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
             } else if success {
-                print("✅ 播放完成")
+                LLLogger.info("✅ 播放完成")
             }
         }
     }

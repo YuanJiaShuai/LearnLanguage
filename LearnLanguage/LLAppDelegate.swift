@@ -29,7 +29,7 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         // 3. 创建主窗口（但不显示）
         setupMainWindow()
         
-        print("🎉 应用启动完成！")
+        LLLogger.info("🎉 应用启动完成！")
     }
     
     // MARK: - Setup
@@ -71,7 +71,7 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         mainWindow?.minSize = NSSize(width: 900, height: 600)
         mainWindow?.maxSize = NSSize(width: 900, height: 600)
         
-        print("✅ 主窗口已创建（隐藏状态）")
+        LLLogger.info("✅ 主窗口已创建（隐藏状态）")
     }
     
     // MARK: - Status Bar Actions
@@ -95,8 +95,8 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         }
         
         // 调试：打印菜单外观
-        print("🎨 创建菜单时的外观: \(menu.appearance?.name.rawValue ?? "nil (跟随系统)")")
-        print("🎨 NSApp.effectiveAppearance: \(NSApp.effectiveAppearance.name)")
+        LLLogger.debug("🎨 创建菜单时的外观: \(menu.appearance?.name.rawValue ?? "nil (跟随系统)")")
+        LLLogger.debug("🎨 NSApp.effectiveAppearance: \(NSApp.effectiveAppearance.name)")
         
         menu.addItem(NSMenuItem(title: "打开主界面", action: #selector(showMainWindow), keyEquivalent: ""))
         
@@ -116,7 +116,7 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         exitItem.target = self
         menu.addItem(exitItem)
         
-        print("🎨 菜单创建完成，外观: \(menu.appearance?.name.rawValue ?? "nil (跟随系统)")")
+        LLLogger.debug("🎨 菜单创建完成，外观: \(menu.appearance?.name.rawValue ?? "nil (跟随系统)")")
         
         return menu
     }
@@ -124,11 +124,11 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Window Management
     
     @objc func showMainWindow() {
-        print("📱 显示主窗口")
+        LLLogger.info("📱 显示主窗口")
         
         // 检查窗口是否存在或已被释放
         if mainWindow == nil || mainWindow?.contentView == nil {
-            print("⚠️ 主窗口为 nil 或已释放，重新创建")
+            LLLogger.warn("⚠️ 主窗口为 nil 或已释放，重新创建")
             setupMainWindow()
         }
         
@@ -189,7 +189,7 @@ extension LLAppDelegate: NSWindowDelegate {
     /// 窗口即将关闭时调用
     func windowWillClose(_ notification: Notification) {
         if let window = notification.object as? NSWindow, window == mainWindow {
-            print("🔄 主窗口即将关闭，清理引用")
+            LLLogger.info("🔄 主窗口即将关闭，清理引用")
             // 将 mainWindow 设为 nil，下次打开时会重新创建
             mainWindow = nil
         }

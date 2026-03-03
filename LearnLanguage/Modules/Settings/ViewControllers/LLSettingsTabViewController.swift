@@ -525,7 +525,7 @@ final class LLSettingsTabViewController: NSViewController {
         var s = LLSettingsStore.shared.settings
         s.launchAtLogin = LaunchAtLogin.isEnabled
         LLSettingsStore.shared.settings = s
-        print("开机自启动已\(LaunchAtLogin.isEnabled ? "开启" : "关闭")")
+        LLLogger.info("开机自启动已\(LaunchAtLogin.isEnabled ? "开启" : "关闭")")
     }
     
     @objc private func onStatusBarWidthChanged() {

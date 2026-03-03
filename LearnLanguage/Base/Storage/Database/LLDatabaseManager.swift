@@ -24,21 +24,20 @@ final class LLDatabaseManager {
         let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
         dbPath = documentPath + "/LearnLanguage.db"
         
-        print("\n" + String(repeating: "=", count: 60))
-        print("📁 数据库路径：")
-        print("   \(dbPath)")
-        print(String(repeating: "=", count: 60) + "\n")
+        LLLogger.info("\n" + String(repeating: "=", count: 60))
+        LLLogger.info("📁 数据库路径：")
+        LLLogger.info("   \(dbPath)")
+        LLLogger.info(String(repeating: "=", count: 60) + "\n")
         
         // 注意：不在这里打开数据库，等待 LLDatabaseInitializer 完成文件准备
         // database = Database(withPath: dbPath)
         // createTables()
-        // print("✅ 数据库初始化成功")
     }
     
     /// 打开数据库连接（在数据库文件准备好后调用）
     func openDatabase() {
         guard database == nil else {
-            print("⚠️ 数据库已经打开")
+            LLLogger.warn("⚠️ 数据库已经打开")
             return
         }
         
@@ -50,7 +49,7 @@ final class LLDatabaseManager {
         // 检查并创建错题表（如果不存在）
         createWrongRecordsTableIfNeeded()
         
-        print("✅ 数据库连接已打开")
+        LLLogger.info("✅ 数据库连接已打开")
     }
     
     /// 检查并创建错题表（如果不存在）
@@ -58,17 +57,17 @@ final class LLDatabaseManager {
         do {
             // 尝试创建表（如果已存在则忽略）
             try database.create(table: wrongRecordsTable, of: LLDBWrongRecord.self)
-            print("✅ 错题表检查完成")
+            LLLogger.info("✅ 错题表检查完成")
         } catch {
-            print("⚠️ 错题表创建失败（可能已存在）：\(error)")
+            LLLogger.warn("⚠️ 错题表创建失败（可能已存在）：\(error)")
         }
         
         do {
             // 创建学习进度表
             try database.create(table: learningProgressTable, of: LLDBLearningProgress.self)
-            print("✅ 学习进度表检查完成")
+            LLLogger.info("✅ 学习进度表检查完成")
         } catch {
-            print("⚠️ 学习进度表创建失败（可能已存在）：\(error)")
+            LLLogger.warn("⚠️ 学习进度表创建失败（可能已存在）：\(error)")
         }
     }
     
@@ -76,25 +75,25 @@ final class LLDatabaseManager {
         do {
             // 创建分类表
             try database.create(table: categoriesTable, of: LLDBWordListCategory.self)
-            print("✅ 分类表创建成功")
+            LLLogger.info("✅ 分类表创建成功")
             
             // 创建词库表
             try database.create(table: wordListsTable, of: LLDBWordList.self)
-            print("✅ 词库表创建成功")
+            LLLogger.info("✅ 词库表创建成功")
             
             // 创建单词表
             try database.create(table: wordsTable, of: LLDBWord.self)
-            print("✅ 单词表创建成功")
+            LLLogger.info("✅ 单词表创建成功")
             
             // 创建错题表
             try database.create(table: wrongRecordsTable, of: LLDBWrongRecord.self)
-            print("✅ 错题表创建成功")
+            LLLogger.info("✅ 错题表创建成功")
             
             // 初始化默认分类
             try initializeDefaultCategories()
             
         } catch {
-            print("❌ 创建表失败：\(error)")
+            LLLogger.error("❌ 创建表失败：\(error)")
         }
     }
     
@@ -115,7 +114,7 @@ final class LLDatabaseManager {
             LLDBWordListCategory(name: "其他语言", description: "其他语言学习", icon: "character.bubble.fill", color: "#AA96DA", sortOrder: 5)
         ]
         try database.insert(objects: categories, intoTable: categoriesTable)
-        print("✅ 默认分类初始化成功")
+        LLLogger.info("✅ 默认分类初始化成功")
     }
     
     // MARK: - CRUD
@@ -511,7 +510,7 @@ final class LLDatabaseManager {
                 where: LLDBLearningProgress.Properties.id == record.id ?? 0
             )
             
-            print("✅ 更新学习记录：\(wordId)，反馈：\(feedback)")
+            LLLogger.info("✅ 更新学习记录：\(wordId)，反馈：\(feedback)")
             
         } else {
             // 不存在，插入新记录
@@ -526,7 +525,7 @@ final class LLDatabaseManager {
             // 第一次学习，更新词库的 learned_words 计数
             try updateWordListLearnedCount(wordListId: wordListId, increment: 1)
             
-            print("✅ 新增学习记录：\(wordId)，反馈：\(feedback)")
+            LLLogger.info("✅ 新增学习记录：\(wordId)，反馈：\(feedback)")
         }
     }
     

@@ -20,9 +20,12 @@ final class LLAppInitializer {
     
     /// 执行应用启动时的所有初始化操作
     func performStartupInitialization() {
-        print("\n" + String(repeating: "=", count: 60))
-        print("🚀 开始应用初始化...")
-        print(String(repeating: "=", count: 60))
+        // 0. 初始化日志系统（最优先）
+        LLLogger.setup()
+        
+        LLLogger.info("\n" + String(repeating: "=", count: 60))
+        LLLogger.info("🚀 开始应用初始化...")
+        LLLogger.info(String(repeating: "=", count: 60))
         
         // 1. 初始化 MMKV（会自动从 UserDefaults 迁移数据）
         initializeMMKV()
@@ -46,23 +49,23 @@ final class LLAppInitializer {
         // - 初始化通知服务
         // 等等...
         
-        print(String(repeating: "=", count: 60))
-        print("✅ 应用初始化完成")
-        print(String(repeating: "=", count: 60) + "\n")
+        LLLogger.info(String(repeating: "=", count: 60))
+        LLLogger.info("✅ 应用初始化完成")
+        LLLogger.info(String(repeating: "=", count: 60) + "\n")
     }
     
     // MARK: - 私有初始化方法
     
     /// 初始化 MMKV 存储
     private func initializeMMKV() {
-        print("\n📦 初始化 MMKV...")
+        LLLogger.info("\n📦 初始化 MMKV...")
         _ = LLMMKVManager.shared
-        print("✅ MMKV 初始化完成")
+        LLLogger.info("✅ MMKV 初始化完成")
     }
     
     /// 初始化数据库
     private func initializeDatabase() {
-        print("\n🗄️ 初始化数据库...")
+        LLLogger.info("\n🗄️ 初始化数据库...")
         
         // 1. 先初始化数据库文件（复制、版本检查等）
         LLDatabaseInitializer.shared.initializeDatabase()
@@ -76,28 +79,28 @@ final class LLAppInitializer {
     
     /// 初始化键盘快捷键
     private func initializeKeyboardShortcuts() {
-        print("\n⌨️ 初始化键盘快捷键...")
+        LLLogger.info("\n⌨️ 初始化键盘快捷键...")
         _ = LLKeyboardShortcutManager.shared
-        print("✅ 键盘快捷键初始化完成")
+        LLLogger.info("✅ 键盘快捷键初始化完成")
     }
     
     /// 初始化外观设置
     private func initializeAppearance() {
-        print("\n🎨 初始化外观设置...")
+        LLLogger.info("\n🎨 初始化外观设置...")
         // 设置应用跟随系统外观
         LLAppearanceManager.shared.setTheme(.system)
-        print("✅ 外观设置初始化完成")
+        LLLogger.info("✅ 外观设置初始化完成")
     }
     
     /// 初始化用户设置
     private func initializeUserSettings() {
-        print("\n⚙️ 初始化用户设置...")
+        LLLogger.info("\n⚙️ 初始化用户设置...")
         
         // 检查是否是首次启动
         let isFirstLaunch = !LLMMKVManager.shared.hasLaunched
         
         if isFirstLaunch {
-            print("   🎉 首次启动，设置默认配置...")
+            LLLogger.info("   🎉 首次启动，设置默认配置...")
             
             // 设置默认词库（如果有的话）
             setDefaultWordList()
@@ -106,9 +109,9 @@ final class LLAppInitializer {
             LLMMKVManager.shared.hasLaunched = true
             LLMMKVManager.shared.firstLaunchDate = Date()
             
-            print("   ✅ 默认配置已设置")
+            LLLogger.info("   ✅ 默认配置已设置")
         } else {
-            print("   ℹ️ 非首次启动，跳过默认配置")
+            LLLogger.info("   ℹ️ 非首次启动，跳过默认配置")
         }
     }
     
@@ -123,7 +126,7 @@ final class LLAppInitializer {
                 LLSettingsStore.shared.currentListId = String(id)
             }
         } catch {
-            print("   ⚠️ 设置默认词库失败：\(error)")
+            LLLogger.warn("   ⚠️ 设置默认词库失败：\(error)")
         }
     }
     
@@ -131,7 +134,7 @@ final class LLAppInitializer {
     
     /// 强制重新初始化所有数据（用于测试或重置）
     func forceReinitializeAll() {
-        print("\n⚠️ 强制重新初始化所有数据...")
+        LLLogger.warn("\n⚠️ 强制重新初始化所有数据...")
         
         let alert = NSAlert()
         alert.messageText = "确认重新初始化"
@@ -150,12 +153,12 @@ final class LLAppInitializer {
             // 清除设置
             clearSettings()
             
-            print("✅ 重新初始化完成")
+            LLLogger.info("✅ 重新初始化完成")
             
             // 显示通知
             showNotification(title: "重新初始化完成", message: "所有数据已重置")
         } else {
-            print("❌ 用户取消了重新初始化")
+            LLLogger.info("❌ 用户取消了重新初始化")
         }
     }
     
@@ -168,14 +171,14 @@ final class LLAppInitializer {
         
         if fileManager.fileExists(atPath: recordsFile.path) {
             try? fileManager.removeItem(at: recordsFile)
-            print("   🗑️ 已清除学习记录")
+            LLLogger.info("   🗑️ 已清除学习记录")
         }
     }
     
     /// 清除设置
     private func clearSettings() {
         LLMMKVManager.shared.clearAll()
-        print("   🗑️ 已清除所有设置")
+        LLLogger.info("   🗑️ 已清除所有设置")
     }
     
     /// 显示系统通知
@@ -189,7 +192,7 @@ final class LLAppInitializer {
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request) { error in
                 if let error = error {
-                    print("⚠️ 通知发送失败：\(error)")
+                    LLLogger.warn("⚠️ 通知发送失败：\(error)")
                 }
             }
         } else {
@@ -205,24 +208,24 @@ final class LLAppInitializer {
     
     /// 检查数据库完整性
     func checkDatabaseIntegrity() {
-        print("\n🔍 检查数据库完整性...")
+        LLLogger.info("\n🔍 检查数据库完整性...")
         
         do {
             let db = LLDatabaseManager.shared
             
             // 检查分类数量
             let categories = try db.getAllCategories()
-            print("   📂 分类数量：\(categories.count)")
+            LLLogger.info("   📂 分类数量：\(categories.count)")
             
             // 检查词库数量
             let wordLists = try db.getAllWordLists()
-            print("   📚 词库数量：\(wordLists.count)")
+            LLLogger.info("   📚 词库数量：\(wordLists.count)")
             
             // 检查每个分类下的词库数量
             for category in categories {
                 guard let categoryId = category.id else { continue }
                 let lists = try db.getWordListByCategoryId(categoryId)
-                print("   - \(category.name)：\(lists.count) 个词库")
+                LLLogger.info("   - \(category.name)：\(lists.count) 个词库")
             }
             
             // 检查有单词的词库数量
@@ -238,23 +241,23 @@ final class LLAppInitializer {
                 }
             }
             
-            print("   📖 有单词的词库：\(wordListsWithWords) / \(wordLists.count)")
-            print("   📝 总单词数：\(totalWords)")
+            LLLogger.info("   📖 有单词的词库：\(wordListsWithWords) / \(wordLists.count)")
+            LLLogger.info("   📝 总单词数：\(totalWords)")
             
             if wordListsWithWords == 0 {
-                print("   ⚠️ 警告：没有词库包含单词数据！")
+                LLLogger.warn("   ⚠️ 警告：没有词库包含单词数据！")
             }
             
-            print("✅ 数据库完整性检查完成\n")
+            LLLogger.info("✅ 数据库完整性检查完成\n")
             
         } catch {
-            print("❌ 数据库完整性检查失败：\(error)\n")
+            LLLogger.error("❌ 数据库完整性检查失败：\(error)\n")
         }
     }
     
     /// 修复数据库（尝试重新导入数据）
     func repairDatabase() {
-        print("\n🔧 开始修复数据库...")
+        LLLogger.info("\n🔧 开始修复数据库...")
         
         let alert = NSAlert()
         alert.messageText = "修复数据库"

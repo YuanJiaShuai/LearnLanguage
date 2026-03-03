@@ -91,7 +91,7 @@ final class LLStatusBarManager {
         // 刷新显示
         refreshStatusBar()
         
-        print("✅ 状态栏初始化完成")
+        LLLogger.info("✅ 状态栏初始化完成")
     }
     
     /// 重新加载状态栏（用于设置改变后）
@@ -105,19 +105,19 @@ final class LLStatusBarManager {
         // 重新初始化
         setupStatusBar()
         
-        print("✅ 状态栏已重新加载")
+        LLLogger.info("✅ 状态栏已重新加载")
     }
     
     /// 刷新状态栏显示
     @objc func refreshStatusBar() {
-        print("🔄 刷新状态栏...")
+        LLLogger.debug("🔄 刷新状态栏...")
         
         let settings = LLSettingsStore.shared.settings
         
         // 如果设置了不显示内容
         if !settings.statusBarShowContent {
             contentView?.updateContent(word: "", phonetic: "", meaning: "")
-            print("✅ 状态栏隐藏内容")
+            LLLogger.info("✅ 状态栏隐藏内容")
             return
         }
         
@@ -125,7 +125,7 @@ final class LLStatusBarManager {
         guard let listId = LLSettingsStore.shared.currentListId,
               let list = LLWordListStorage.shared.list(byId: listId),
               let next = LLLearningStore.shared.nextWord(in: list) else {
-            print("⚠️ 没有找到当前词库或下一个单词，显示默认文本")
+            LLLogger.warn("⚠️ 没有找到当前词库或下一个单词，显示默认文本")
             contentView?.updateContent(word: "LearnLanguage", phonetic: "", meaning: "")
             currentEntry = nil
             currentListId = nil
@@ -142,13 +142,13 @@ final class LLStatusBarManager {
         let meaning = next.meaning
         
         contentView?.updateContent(word: word, phonetic: phonetic, meaning: meaning)
-        print("✅ 状态栏显示: \(word) \(phonetic) - \(meaning)")
+        LLLogger.debug("✅ 状态栏显示: \(word) \(phonetic) - \(meaning)")
     }
     
     /// 记录反馈
     func recordFeedback(_ feedback: LLWordFeedback) {
         guard let entry = currentEntry, let listId = currentListId else {
-            print("⚠️ 没有当前单词，无法记录反馈")
+            LLLogger.warn("⚠️ 没有当前单词，无法记录反馈")
             return
         }
         
@@ -165,7 +165,7 @@ final class LLStatusBarManager {
             object: feedback
         )
         
-        print("✅ 已记录反馈: \(feedback)")
+        LLLogger.info("✅ 已记录反馈: \(feedback)")
         
         // 刷新显示下一个单词
         refreshStatusBar()
@@ -210,7 +210,7 @@ final class LLStatusBarManager {
             }
         }
         
-        print("✅ 主状态栏项已创建，宽度: \(length)")
+        LLLogger.debug("✅ 主状态栏项已创建，宽度: \(length)")
     }
     
     @objc private func statusItemClicked(_ sender: Any) {

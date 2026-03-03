@@ -45,37 +45,37 @@ final class LLDatabaseInitializer {
     
     /// 初始化数据库（在 App 启动时调用）
     func initializeDatabase() {
-        print("\n" + String(repeating: "=", count: 60))
-        print("🗄️ 开始数据库初始化...")
-        print(String(repeating: "=", count: 60))
+        LLLogger.info("\n" + String(repeating: "=", count: 60))
+        LLLogger.info("🗄️ 开始数据库初始化...")
+        LLLogger.info(String(repeating: "=", count: 60))
         
         let fileManager = FileManager.default
         let localExists = fileManager.fileExists(atPath: localDBPath)
         
         if !localExists {
             // 首次安装：直接复制数据库
-            print("📦 首次安装，复制数据库文件...")
+            LLLogger.info("📦 首次安装，复制数据库文件...")
             copyDatabaseFromResources()
             saveCurrentVersion()
         } else {
             // 检查版本号
             let savedVersion = getSavedVersion()
-            print("📊 本地数据库版本：\(savedVersion)")
-            print("📊 资源数据库版本：\(currentDBVersion)")
+            LLLogger.info("📊 本地数据库版本：\(savedVersion)")
+            LLLogger.info("📊 资源数据库版本：\(currentDBVersion)")
             
             if savedVersion < currentDBVersion {
                 // 需要更新
-                print("🔄 检测到数据库更新，开始增量更新...")
+                LLLogger.info("🔄 检测到数据库更新，开始增量更新...")
                 performIncrementalUpdate(from: savedVersion, to: currentDBVersion)
                 saveCurrentVersion()
             } else {
-                print("✅ 数据库已是最新版本")
+                LLLogger.info("✅ 数据库已是最新版本")
             }
         }
         
-        print(String(repeating: "=", count: 60))
-        print("✅ 数据库初始化完成")
-        print(String(repeating: "=", count: 60) + "\n")
+        LLLogger.info(String(repeating: "=", count: 60))
+        LLLogger.info("✅ 数据库初始化完成")
+        LLLogger.info(String(repeating: "=", count: 60) + "\n")
     }
     
     // MARK: - 私有方法
@@ -83,7 +83,7 @@ final class LLDatabaseInitializer {
     /// 从 Resources 复制数据库到本地
     private func copyDatabaseFromResources() {
         guard let resourcePath = resourceDBPath else {
-            print("❌ 错误：找不到 Resources 中的数据库文件")
+            LLLogger.error("❌ 错误：找不到 Resources 中的数据库文件")
             return
         }
         
@@ -111,19 +111,19 @@ final class LLDatabaseInitializer {
             // 设置文件为可读写
             try fileManager.setAttributes([.posixPermissions: 0o666], ofItemAtPath: localDBPath)
             
-            print("✅ 数据库文件复制成功")
-            print("   源路径：\(resourcePath)")
-            print("   目标路径：\(localDBPath)")
+            LLLogger.info("✅ 数据库文件复制成功")
+            LLLogger.info("   源路径：\(resourcePath)")
+            LLLogger.info("   目标路径：\(localDBPath)")
             
         } catch {
-            print("❌ 复制数据库文件失败：\(error)")
+            LLLogger.error("❌ 复制数据库文件失败：\(error)")
         }
     }
     
     /// 执行增量更新
     private func performIncrementalUpdate(from oldVersion: Int, to newVersion: Int) {
         guard let resourcePath = resourceDBPath else {
-            print("❌ 错误：找不到 Resources 中的数据库文件")
+            LLLogger.error("❌ 错误：找不到 Resources 中的数据库文件")
             return
         }
         
@@ -134,7 +134,7 @@ final class LLDatabaseInitializer {
             // 打开资源数据库
             let resourceDB = Database(withPath: resourcePath)
             
-            print("\n📝 开始增量更新...")
+            LLLogger.info("\n📝 开始增量更新...")
             
             // 1. 更新分类
             try updateCategories(from: resourceDB, to: localDB)
@@ -145,16 +145,16 @@ final class LLDatabaseInitializer {
             // 3. 更新单词数据
             try updateWords(from: resourceDB, to: localDB)
             
-            print("✅ 增量更新完成\n")
+            LLLogger.info("✅ 增量更新完成\n")
             
         } catch {
-            print("❌ 增量更新失败：\(error)")
+            LLLogger.error("❌ 增量更新失败：\(error)")
         }
     }
     
     /// 更新分类数据
     private func updateCategories(from sourceDB: Database, to targetDB: Database) throws {
-        print("\n📂 更新分类数据...")
+        LLLogger.info("\n📂 更新分类数据...")
         
         let tableName = "categories"
         
@@ -176,18 +176,18 @@ final class LLDatabaseInitializer {
         
         if !newCategories.isEmpty {
             try targetDB.insert(objects: newCategories, intoTable: tableName)
-            print("   ✅ 新增 \(newCategories.count) 个分类")
+            LLLogger.info("   ✅ 新增 \(newCategories.count) 个分类")
             for category in newCategories {
-                print("      - \(category.name)")
+                LLLogger.info("      - \(category.name)")
             }
         } else {
-            print("   ⏭️ 没有新增分类")
+            LLLogger.info("   ⏭️ 没有新增分类")
         }
     }
     
     /// 更新词库列表数据
     private func updateWordLists(from sourceDB: Database, to targetDB: Database) throws {
-        print("\n📚 更新词库列表...")
+        LLLogger.info("\n📚 更新词库列表...")
         
         let tableName = "word_lists"
         
@@ -217,23 +217,23 @@ final class LLDatabaseInitializer {
             }
             
             try targetDB.insert(objects: newWordLists, intoTable: tableName)
-            print("   ✅ 新增 \(newWordLists.count) 个词库")
+            LLLogger.info("   ✅ 新增 \(newWordLists.count) 个词库")
             
             // 显示前10个
             for (index, wordList) in newWordLists.prefix(10).enumerated() {
-                print("      \(index + 1). \(wordList.name) (\(wordList.totalWords) 词)")
+                LLLogger.info("      \(index + 1). \(wordList.name) (\(wordList.totalWords) 词)")
             }
             if newWordLists.count > 10 {
-                print("      ... 还有 \(newWordLists.count - 10) 个词库")
+                LLLogger.info("      ... 还有 \(newWordLists.count - 10) 个词库")
             }
         } else {
-            print("   ⏭️ 没有新增词库")
+            LLLogger.info("   ⏭️ 没有新增词库")
         }
     }
     
     /// 更新单词数据
     private func updateWords(from sourceDB: Database, to targetDB: Database) throws {
-        print("\n📖 更新单词数据...")
+        LLLogger.info("\n📖 更新单词数据...")
         
         let wordListTable = "word_lists"
         let wordsTable = "words"
@@ -299,16 +299,16 @@ final class LLDatabaseInitializer {
                     updatedWordListCount += 1
                     
                     if updatedWordListCount <= 5 {
-                        print("   ✅ \(localWordList.name): 导入 \(sourceWords.count) 个单词")
+                        LLLogger.info("   ✅ \(localWordList.name): 导入 \(sourceWords.count) 个单词")
                     }
                 }
             }
         }
         
         if totalNewWords > 0 {
-            print("   ✅ 共为 \(updatedWordListCount) 个词库导入了 \(totalNewWords) 个单词")
+            LLLogger.info("   ✅ 共为 \(updatedWordListCount) 个词库导入了 \(totalNewWords) 个单词")
         } else {
-            print("   ⏭️ 没有需要导入的单词")
+            LLLogger.info("   ⏭️ 没有需要导入的单词")
         }
     }
     
@@ -323,27 +323,27 @@ final class LLDatabaseInitializer {
     private func saveCurrentVersion() {
         UserDefaults.standard.set(currentDBVersion, forKey: versionKey)
         UserDefaults.standard.synchronize()
-        print("💾 已保存数据库版本号：\(currentDBVersion)")
+        LLLogger.info("💾 已保存数据库版本号：\(currentDBVersion)")
     }
     
     // MARK: - 工具方法
     
     /// 强制重新初始化数据库（用于测试）
     func forceReinitialize() {
-        print("\n⚠️ 强制重新初始化数据库...")
+        LLLogger.warn("\n⚠️ 强制重新初始化数据库...")
         
         let fileManager = FileManager.default
         
         // 删除本地数据库
         if fileManager.fileExists(atPath: localDBPath) {
             try? fileManager.removeItem(atPath: localDBPath)
-            print("   🗑️ 已删除本地数据库")
+            LLLogger.info("   🗑️ 已删除本地数据库")
         }
         
         // 清除版本号
         UserDefaults.standard.removeObject(forKey: versionKey)
         UserDefaults.standard.synchronize()
-        print("   🗑️ 已清除版本号")
+        LLLogger.info("   🗑️ 已清除版本号")
         
         // 重新初始化
         initializeDatabase()
@@ -370,14 +370,14 @@ final class LLDatabaseInitializer {
                 fromTable: "words"
             ).int32Value
             
-            print("\n📊 数据库统计信息：")
-            print("   - 分类数：\(categoryCount)")
-            print("   - 词库数：\(wordListCount)")
-            print("   - 单词数：\(wordCount)")
-            print("   - 版本号：\(getSavedVersion())\n")
+            LLLogger.info("\n📊 数据库统计信息：")
+            LLLogger.info("   - 分类数：\(categoryCount)")
+            LLLogger.info("   - 词库数：\(wordListCount)")
+            LLLogger.info("   - 单词数：\(wordCount)")
+            LLLogger.info("   - 版本号：\(getSavedVersion())\n")
             
         } catch {
-            print("❌ 获取统计信息失败：\(error)")
+            LLLogger.error("❌ 获取统计信息失败：\(error)")
         }
     }
 }

@@ -68,9 +68,9 @@ class LLTypingPracticeManager {
                 wordListId: listId
             )
             
-            print("✅ 已记录学习进度：\(entry.text) - \(feedbackString)")
+            LLLogger.info("✅ 已记录学习进度：\(entry.text) - \(feedbackString)")
         } catch {
-            print("❌ 记录学习进度失败：\(error)")
+            LLLogger.error("❌ 记录学习进度失败：\(error)")
         }
         
         // 同步刷新状态栏（显示下一个单词）

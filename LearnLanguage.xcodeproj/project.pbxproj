@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8466295C2F56D509004466B1 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8466295B2F56D509004466B1 /* AudioKit */; };
+		8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8466295D2F56D6AB004466B1 /* LLLogger.swift */; };
+		846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 846629602F56D78F004466B1 /* CocoaLumberjack */; };
+		846629632F56D78F004466B1 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 846629622F56D78F004466B1 /* CocoaLumberjackSwift */; };
+		846629652F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 846629642F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend */; };
 		8492259A2F3C6C4F00447E0C /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 849225992F3C6C4F00447E0C /* LaunchAtLogin */; };
 		849226DD2F3C878F00447E0C /* LLTrendCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226BA2F3C878F00447E0C /* LLTrendCardView.swift */; };
 		849226DE2F3C878F00447E0C /* LLStatCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226B82F3C878F00447E0C /* LLStatCardView.swift */; };
@@ -74,6 +79,7 @@
 
 /* Begin PBXFileReference section */
 		1935EDD325ABFFAAB0EB4EBE /* Pods-LearnLanguage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LearnLanguage.release.xcconfig"; path = "Target Support Files/Pods-LearnLanguage/Pods-LearnLanguage.release.xcconfig"; sourceTree = "<group>"; };
+		8466295D2F56D6AB004466B1 /* LLLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLLogger.swift; sourceTree = "<group>"; };
 		8492268F2F3C878F00447E0C /* LLAppInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLAppInitializer.swift; sourceTree = "<group>"; };
 		849226912F3C878F00447E0C /* LLAppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLAppearanceManager.swift; sourceTree = "<group>"; };
 		849226922F3C878F00447E0C /* LLPronunciationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLPronunciationManager.swift; sourceTree = "<group>"; };
@@ -146,8 +152,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */,
+				8466295C2F56D509004466B1 /* AudioKit in Frameworks */,
 				8492259A2F3C6C4F00447E0C /* LaunchAtLogin in Frameworks */,
 				C5993F841617E33BB9BC1598 /* Pods_LearnLanguage.framework in Frameworks */,
+				846629652F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
+				846629632F56D78F004466B1 /* CocoaLumberjackSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				8492268F2F3C878F00447E0C /* LLAppInitializer.swift */,
+				8466295D2F56D6AB004466B1 /* LLLogger.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -578,6 +589,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				849225982F3C6C4F00447E0C /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */,
+				8466295A2F56D509004466B1 /* XCRemoteSwiftPackageReference "AudioKit" */,
+				8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A80BC32E2F378E8900A40D9B /* Products */;
@@ -661,6 +674,7 @@
 				849226E12F3C878F00447E0C /* LLDataTabViewController.swift in Sources */,
 				84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */,
 				849226E22F3C878F00447E0C /* LLDBWord.swift in Sources */,
+				8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */,
 				849226E32F3C878F00447E0C /* LLSettingsStore.swift in Sources */,
 				849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */,
 				849226E52F3C878F00447E0C /* LLWrongRecordItemView.swift in Sources */,
@@ -944,6 +958,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8466295A2F56D509004466B1 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.5;
+			};
+		};
+		8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.9.0;
+			};
+		};
 		849225982F3C6C4F00447E0C /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Legacy";
@@ -955,6 +985,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8466295B2F56D509004466B1 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8466295A2F56D509004466B1 /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = AudioKit;
+		};
+		846629602F56D78F004466B1 /* CocoaLumberjack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjack;
+		};
+		846629622F56D78F004466B1 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		846629642F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwiftLogBackend;
+		};
 		849225992F3C6C4F00447E0C /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 849225982F3C6C4F00447E0C /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */;

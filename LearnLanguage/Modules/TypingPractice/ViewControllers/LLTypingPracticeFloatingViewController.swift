@@ -190,9 +190,9 @@ class LLTypingPracticeFloatingViewController: NSViewController {
                     word: entry.text,
                     meaning: entry.meaning
                 )
-                print("✅ 已添加到错题本：\(entry.text)（错误\(currentWordErrorCount)次）")
+                LLLogger.info("✅ 已添加到错题本：\(entry.text)（错误\(currentWordErrorCount)次）")
             } catch {
-                print("❌ 添加到错题本失败：\(error)")
+                LLLogger.error("❌ 添加到错题本失败：\(error)")
             }
         }
     }
