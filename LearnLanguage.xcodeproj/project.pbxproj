@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8466295C2F56D509004466B1 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8466295B2F56D509004466B1 /* AudioKit */; };
 		8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8466295D2F56D6AB004466B1 /* LLLogger.swift */; };
 		846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 846629602F56D78F004466B1 /* CocoaLumberjack */; };
 		846629632F56D78F004466B1 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 846629622F56D78F004466B1 /* CocoaLumberjackSwift */; };
@@ -153,7 +152,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */,
-				8466295C2F56D509004466B1 /* AudioKit in Frameworks */,
 				8492259A2F3C6C4F00447E0C /* LaunchAtLogin in Frameworks */,
 				C5993F841617E33BB9BC1598 /* Pods_LearnLanguage.framework in Frameworks */,
 				846629652F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
@@ -589,7 +587,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				849225982F3C6C4F00447E0C /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */,
-				8466295A2F56D509004466B1 /* XCRemoteSwiftPackageReference "AudioKit" */,
 				8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -958,14 +955,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8466295A2F56D509004466B1 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.6.5;
-			};
-		};
 		8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack";
@@ -985,11 +974,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8466295B2F56D509004466B1 /* AudioKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8466295A2F56D509004466B1 /* XCRemoteSwiftPackageReference "AudioKit" */;
-			productName = AudioKit;
-		};
 		846629602F56D78F004466B1 /* CocoaLumberjack */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;

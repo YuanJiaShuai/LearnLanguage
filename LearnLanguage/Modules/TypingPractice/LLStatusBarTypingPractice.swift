@@ -77,7 +77,7 @@ class LLStatusBarTypingPractice {
         window?.isOpaque = false
         window?.backgroundColor = .clear
         window?.level = .floating  // 永远在最上层
-        window?.hasShadow = true
+        window?.hasShadow = false
         window?.isMovableByWindowBackground = true
         window?.acceptsMouseMovedEvents = true
         window?.ignoresMouseEvents = false
