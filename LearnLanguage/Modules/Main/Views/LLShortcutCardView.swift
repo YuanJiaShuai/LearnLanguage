@@ -71,8 +71,8 @@ final class LLShortcutCardView: NSView {
     
     private lazy var titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: cardType.placeholderTitle)
-        label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        label.textColor = LLAppearanceManager.shared.colors.secondaryText
+        label.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
+        label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.lineBreakMode = .byTruncatingTail
         label.isBezeled = false
         label.isEditable = false
@@ -82,8 +82,8 @@ final class LLShortcutCardView: NSView {
     
     private lazy var nameLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
-        label.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
-        label.textColor = LLAppearanceManager.shared.colors.primaryText
+        label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.lineBreakMode = .byTruncatingTail
         label.isBezeled = false
         label.isEditable = false

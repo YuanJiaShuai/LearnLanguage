@@ -7,10 +7,6 @@ target 'LearnLanguage' do
   pod 'Alamofire', '~> 5.8'
   pod 'Moya', '~> 15.0'
   
-  # 响应式编程
-  pod 'RxSwift', '~> 6.6'
-  pod 'RxCocoa', '~> 6.6'
-  
   # UI 布局
   pod 'SnapKit', '~> 5.6'
   
@@ -26,9 +22,6 @@ target 'LearnLanguage' do
   
   # 数据可视化
   pod 'DGCharts', '~> 5.1'
-  
-  # 图片加载（可选）
-  pod 'Kingfisher', '~> 7.10'
 end
 
 # 关键：强制所有 Pod 依赖的最低版本也为 12.0

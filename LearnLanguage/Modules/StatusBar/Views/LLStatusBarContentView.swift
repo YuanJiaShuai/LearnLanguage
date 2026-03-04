@@ -186,17 +186,8 @@ final class LLStatusBarContentView: NSControl {
     override func updateLayer() {
         super.updateLayer()
         
-        // 确定文字颜色（根据深色/浅色模式）
-        var textColor: NSColor
-        if #available(macOS 11.0, *) {
-            if effectiveAppearance.name.rawValue.lowercased().contains("dark") {
-                textColor = NSColor.white
-            } else {
-                textColor = NSColor.black
-            }
-        } else {
-            textColor = clicked ? NSColor.white : NSColor.black
-        }
+        // 强制使用白色文字
+        let textColor = NSColor.white
         
         // 更新所有子视图的颜色
         wordPhoneticView.textColor = textColor
