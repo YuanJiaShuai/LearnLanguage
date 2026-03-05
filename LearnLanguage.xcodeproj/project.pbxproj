@@ -73,6 +73,7 @@
 		A88C882B2F3CB589005ACFA6 /* LLSettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C882A2F3CB589005ACFA6 /* LLSettingsCardView.swift */; };
 		A88C882D2F3CBD4D005ACFA6 /* LLMMKVKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */; };
 		A89EAB012F4F41CF002458D0 /* LLDBWrongRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89EAB002F4F41CF002458D0 /* LLDBWrongRecord.swift */; };
+		A8C7584C2F59D3F40071B6CD /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = A8C7584B2F59D3F40071B6CD /* LaunchAtLogin */; };
 		C5993F841617E33BB9BC1598 /* Pods_LearnLanguage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EFF5BF30D8EB34FDFCBE2E /* Pods_LearnLanguage.framework */; };
 /* End PBXBuildFile section */
 
@@ -151,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8C7584C2F59D3F40071B6CD /* LaunchAtLogin in Frameworks */,
 				846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */,
 				8492259A2F3C6C4F00447E0C /* LaunchAtLogin in Frameworks */,
 				C5993F841617E33BB9BC1598 /* Pods_LearnLanguage.framework in Frameworks */,
@@ -586,8 +588,8 @@
 			mainGroup = A80BC3242F378E8900A40D9B;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				849225982F3C6C4F00447E0C /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */,
-				8466295F2F56D78F004466B1 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				A8C758472F59CD2A0071B6CD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				A8C7584A2F59D3F40071B6CD /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A80BC32E2F378E8900A40D9B /* Products */;
@@ -621,9 +623,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LearnLanguage/Pods-LearnLanguage-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LearnLanguage/Pods-LearnLanguage-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -967,6 +973,22 @@
 				kind = branch;
 			};
 		};
+		A8C758472F59CD2A0071B6CD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.9.0;
+			};
+		};
+		A8C7584A2F59D3F40071B6CD /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Legacy";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -988,6 +1010,11 @@
 		849225992F3C6C4F00447E0C /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 849225982F3C6C4F00447E0C /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */;
+			productName = LaunchAtLogin;
+		};
+		A8C7584B2F59D3F40071B6CD /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8C7584A2F59D3F40071B6CD /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */;
 			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
