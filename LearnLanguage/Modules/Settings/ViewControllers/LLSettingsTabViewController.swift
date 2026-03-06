@@ -50,6 +50,7 @@ final class LLSettingsTabViewController: NSViewController {
     private var statusBarContentWidthSlider: NSSlider!
     private var statusBarContentWidthLabel: NSTextField!
     private var showFeedbackButtonsCheck: NSButton!
+    private var statusBarPlaybackIntervalPopup: NSPopUpButton!
     
     // 新增：状态栏显示内容细分控制
     private var statusBarShowWordCheck: NSButton!
@@ -245,11 +246,18 @@ final class LLSettingsTabViewController: NSViewController {
         // 新增：是否显示反馈按钮
         showFeedbackButtonsCheck = NSButton(checkboxWithTitle: "显示反馈按钮", target: self, action: #selector(saveSettings))
         
+        // 新增：播放间隔设置
+        statusBarPlaybackIntervalPopup = NSPopUpButton()
+        statusBarPlaybackIntervalPopup.target = self
+        statusBarPlaybackIntervalPopup.action = #selector(saveSettings)
+        statusBarPlaybackIntervalPopup.addItems(withTitles: LLPlaybackInterval.allDisplayNames)
+        
         card.addFormItem(label: "单词自动切换时间（秒）", control: statusBarIntervalField)
         card.addFormItem(label: "显示内容", control: displayOptionsStack)
         card.addFormItem(label: "滚动设置", control: statusBarAutoScrollCheck)
         card.addFormItem(label: "状态栏显示宽度", control: widthSliderStack)
         card.addFormItem(label: "按钮控制", control: showFeedbackButtonsCheck)
+        card.addFormItem(label: "播放设置", control: statusBarPlaybackIntervalPopup)
         
         return card
     }
@@ -418,6 +426,12 @@ final class LLSettingsTabViewController: NSViewController {
         statusBarShowMeaningCheck.state = s.statusBarShowMeaning ? .on : .off
         statusBarAutoScrollCheck.state = s.statusBarAutoScroll ? .on : .off
         
+        // 新增：播放间隔设置
+        let playbackOption = LLPlaybackInterval.from(seconds: s.statusBarPlaybackInterval)
+        if let index = LLPlaybackInterval.allCases.firstIndex(of: playbackOption) {
+            statusBarPlaybackIntervalPopup.selectItem(at: index)
+        }
+        
         // 复习设置
         reviewModePopup.selectItem(at: 1)
         wrongWordRetryField.stringValue = "3"
@@ -475,6 +489,12 @@ final class LLSettingsTabViewController: NSViewController {
         s.statusBarShowPhoneticSymbol = statusBarShowPhoneticSymbolCheck.state == .on
         s.statusBarShowMeaning = statusBarShowMeaningCheck.state == .on
         s.statusBarAutoScroll = statusBarAutoScrollCheck.state == .on
+        
+        // 新增：播放间隔设置
+        let playbackIndex = statusBarPlaybackIntervalPopup.indexOfSelectedItem
+        if playbackIndex >= 0 && playbackIndex < LLPlaybackInterval.allCases.count {
+            s.statusBarPlaybackInterval = LLPlaybackInterval.allCases[playbackIndex].rawValue
+        }
         
         // 发音设置
         s.pronunciationEnabled = pronunciationCheck.state == .on

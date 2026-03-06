@@ -136,6 +136,41 @@ enum LLAddToWrongBookOption: Int, CaseIterable, Codable {
     }
 }
 
+/// 播放间隔配置
+enum LLPlaybackInterval: Int, CaseIterable, Codable {
+    case once = 0           // 只播放1次
+    case every5s = 5        // 5秒播放一次
+    case every10s = 10      // 10秒播放一次
+    case every20s = 20      // 20秒播放一次
+    case every60s = 60      // 60秒播放一次
+    
+    var displayName: String {
+        switch self {
+        case .once: return "只播放1次"
+        case .every5s: return "5秒播放一次"
+        case .every10s: return "10秒播放一次"
+        case .every20s: return "20秒播放一次"
+        case .every60s: return "60秒播放一次"
+        }
+    }
+    
+    static var allDisplayNames: [String] {
+        allCases.map { $0.displayName }
+    }
+    
+    // 从秒数获取对应的选项
+    static func from(seconds: Int) -> LLPlaybackInterval {
+        switch seconds {
+        case 0: return .once
+        case 5: return .every5s
+        case 10: return .every10s
+        case 20: return .every20s
+        case 60: return .every60s
+        default: return .once
+        }
+    }
+}
+
 /// 应用设置（本地存储）
 struct LLAppSettings: Codable {
     var currentLanguage: LLLearningLanguage
@@ -151,6 +186,7 @@ struct LLAppSettings: Codable {
     var statusBarShowPhoneticSymbol: Bool  // 是否显示音标
     var statusBarShowMeaning: Bool   // 是否显示释义
     var statusBarAutoScroll: Bool    // 释义不够显示时是否自动滚动
+    var statusBarPlaybackInterval: Int  // 播放间隔（秒）
     
     var floatingPanelAlpha: Double
     var floatingPanelWidth: CGFloat   // 浮窗宽度
@@ -182,6 +218,7 @@ struct LLAppSettings: Codable {
         statusBarShowPhoneticSymbol: true,
         statusBarShowMeaning: true,
         statusBarAutoScroll: true,
+        statusBarPlaybackInterval: 0,
         floatingPanelAlpha: 0.55,
         floatingPanelWidth: 400,
         floatingPanelHeight: 200,
