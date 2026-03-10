@@ -40,9 +40,11 @@ final class LLLocalPronunciationProvider: NSObject, LLPronunciationProviderProto
     }
     
     func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
-        // 停止当前发音
+        // 停止当前发音（在后台线程执行，避免主线程 QoS 优先级反转警告）
         if synthesizer.isSpeaking {
-            synthesizer.stopSpeaking(at: .immediate)
+            DispatchQueue.global(qos: .default).async { [weak self] in
+                self?.synthesizer.stopSpeaking(at: .immediate)
+            }
         }
         
         self.completion = completion
@@ -68,7 +70,9 @@ final class LLLocalPronunciationProvider: NSObject, LLPronunciationProviderProto
     
     func stop() {
         if synthesizer.isSpeaking {
-            synthesizer.stopSpeaking(at: .immediate)
+            DispatchQueue.global(qos: .default).async { [weak self] in
+                self?.synthesizer.stopSpeaking(at: .immediate)
+            }
         }
     }
     

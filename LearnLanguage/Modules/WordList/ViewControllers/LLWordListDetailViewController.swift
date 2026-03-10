@@ -297,7 +297,7 @@ final class LLWordListDetailViewController: NSViewController {
         // 1. 设置当前词库为默认词库
         LLSettingsStore.shared.currentListId = wordListId
         
-        // 2. 发送通知刷新侧边栏数据
+        // 2. 发送通知：词库已切换（侧边栏、状态栏等订阅方均会响应）
         NotificationCenter.default.post(name: .currentWordListChanged, object: nil)
         
         // 3. 关闭当前页面

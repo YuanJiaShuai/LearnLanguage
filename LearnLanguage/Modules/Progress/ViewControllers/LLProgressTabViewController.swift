@@ -472,9 +472,9 @@ final class LLProgressTabViewController: NSViewController {
             let cal = Calendar.current
             let today = cal.startOfDay(for: Date())
             todayRecords = allProgress.filter { record in
-                let date = Date(timeIntervalSince1970: record.lastSeenAt)
+                let date = Date(timeIntervalSince1970: record.lastSeenAt ?? 0)
                 return cal.isDate(date, inSameDayAs: today)
-            }.sorted { $0.lastSeenAt > $1.lastSeenAt }
+            }.sorted { ($0.lastSeenAt ?? 0) > ($1.lastSeenAt ?? 0) }
         } catch {
             LLLogger.error("❌ 加载今日学习记录失败：\(error)")
             return
@@ -510,12 +510,12 @@ final class LLProgressTabViewController: NSViewController {
         
         var lastView: NSView?
         for (index, record) in todayRecords.prefix(20).enumerated() {
-            let wordText = getWordText(wordId: record.wordId, listId: record.wordListId)
-            let feedbackIcon = getFeedbackIconFromString(feedback: record.lastFeedback)
+            let wordText = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
+            let feedbackIcon = getFeedbackIconFromString(feedback: record.lastFeedback ?? "")
             let itemView = LLRecordItemView(
                 wordText: wordText,
                 feedbackIcon: feedbackIcon,
-                time: Date(timeIntervalSince1970: record.lastSeenAt),
+                time: Date(timeIntervalSince1970: record.lastSeenAt ?? 0),
                 showBorder: index < todayRecords.count - 1
             )
             container.addSubview(itemView)

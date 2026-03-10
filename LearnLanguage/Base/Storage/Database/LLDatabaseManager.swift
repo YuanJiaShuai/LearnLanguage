@@ -471,7 +471,7 @@ final class LLDatabaseManager {
         
         if let record = existing {
             // 已存在，更新记录
-            record.learnCount += 1
+            record.learnCount = (record.learnCount ?? 0) + 1
             record.lastFeedback = feedback
             record.lastSeenAt = now
             record.updatedAt = now
@@ -479,16 +479,16 @@ final class LLDatabaseManager {
             // 更新反馈计数
             switch feedback {
             case "know":
-                record.correctCount += 1
+                record.correctCount = (record.correctCount ?? 0) + 1
                 record.status = 2  // 已掌握
             case "unclear":
-                record.unclearCount += 1
+                record.unclearCount = (record.unclearCount ?? 0) + 1
                 // 如果之前是已掌握，降级为学习中
                 if record.status == 2 {
                     record.status = 1
                 }
             case "unknown":
-                record.wrongCount += 1
+                record.wrongCount = (record.wrongCount ?? 0) + 1
                 record.status = 1  // 学习中
             default:
                 break
@@ -642,7 +642,7 @@ final class LLDatabaseManager {
                 orderBy: [LLDBLearningProgress.Properties.lastSeenAt.asOrder(by: .ascending)]
             ) as [LLDBLearningProgress]
             
-            let learnedIds = Set(progressList.map { $0.wordId })
+            let learnedIds = Set(progressList.compactMap { $0.wordId })
             
             // 优先返回未学过的（按原始顺序）
             if let notLearned = wordList.entries.first(where: { !learnedIds.contains($0.id) }) {
@@ -651,7 +651,8 @@ final class LLDatabaseManager {
             
             // 全部学过了，返回最早学习的那个（按 lastSeenAt 升序第一个）
             if let earliest = progressList.first,
-               let entry = wordList.entries.first(where: { $0.id == earliest.wordId }) {
+               let earliestWordId = earliest.wordId,
+               let entry = wordList.entries.first(where: { $0.id == earliestWordId }) {
                 return entry
             }
             
@@ -680,7 +681,7 @@ final class LLDatabaseManager {
         }
         
         let now = Date().timeIntervalSince1970
-        record.typingPracticeCount += 1
+        record.typingPracticeCount = (record.typingPracticeCount ?? 0) + 1
         record.lastTypingAt = now
         record.updatedAt = now
         

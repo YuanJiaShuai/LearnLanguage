@@ -129,10 +129,9 @@ final class LLShortcutCardView: NSView {
     private func setupUI() {
         addSubview(containerView)
         
-        // 顶部容器：图标 + 标题 + 角标
+        // 顶部容器：标题 + 角标
         let topContainer = NSView()
         containerView.addSubview(topContainer)
-        topContainer.addSubview(iconView)
         topContainer.addSubview(titleLabel)
         topContainer.addSubview(badgeLabel)
         
@@ -149,14 +148,8 @@ final class LLShortcutCardView: NSView {
             make.height.equalTo(18)
         }
         
-        iconView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(12)
-        }
-        
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(iconView.snp.trailing).offset(6)
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
         }
         

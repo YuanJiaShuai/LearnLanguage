@@ -87,6 +87,13 @@ final class LLSidebarViewController: NSViewController {
         return view
     }()
     
+    private lazy var currentWordLibIconView: NSImageView = {
+        let imageView = NSImageView()
+        imageView.image = NSImage(systemSymbolName: "book.fill", accessibilityDescription: nil)
+        imageView.contentTintColor = LLAppearanceManager.shared.colors.secondaryText
+        return imageView
+    }()
+    
     private lazy var currentWordLibTitleLabel: NSTextField = {
         let label = NSTextField(labelWithString: "当前学习的词库")
         label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
@@ -100,6 +107,13 @@ final class LLSidebarViewController: NSViewController {
             self?.didClickCurrentWordLib()
         }
         return card
+    }()
+    
+    private lazy var wrongWordsIconView: NSImageView = {
+        let imageView = NSImageView()
+        imageView.image = NSImage(systemSymbolName: "exclamationmark.circle.fill", accessibilityDescription: nil)
+        imageView.contentTintColor = LLAppearanceManager.shared.colors.secondaryText
+        return imageView
     }()
     
     private lazy var wrongWordsTitleLabel: NSTextField = {
@@ -183,8 +197,10 @@ final class LLSidebarViewController: NSViewController {
     
     private func setupShortcutSection() {
         view.addSubview(shortcutContainerView)
+        shortcutContainerView.addSubview(currentWordLibIconView)
         shortcutContainerView.addSubview(currentWordLibTitleLabel)
         shortcutContainerView.addSubview(currentWordLibCardView)
+        shortcutContainerView.addSubview(wrongWordsIconView)
         shortcutContainerView.addSubview(wrongWordsTitleLabel)
         shortcutContainerView.addSubview(wrongWordsCardView)
         view.addSubview(middleDivider)
@@ -194,9 +210,15 @@ final class LLSidebarViewController: NSViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        currentWordLibTitleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
+        currentWordLibIconView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
+            make.top.equalToSuperview().offset(10)
+            make.width.height.equalTo(12)
+        }
+        
+        currentWordLibTitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(currentWordLibIconView.snp.trailing).offset(5)
+            make.centerY.equalTo(currentWordLibIconView)
             make.trailing.equalToSuperview().offset(-12)
             make.height.equalTo(16)
         }
@@ -207,9 +229,15 @@ final class LLSidebarViewController: NSViewController {
             make.trailing.equalToSuperview().offset(-12)
         }
         
-        wrongWordsTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(currentWordLibCardView.snp.bottom).offset(10)
+        wrongWordsIconView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
+            make.top.equalTo(currentWordLibCardView.snp.bottom).offset(10)
+            make.width.height.equalTo(12)
+        }
+        
+        wrongWordsTitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(wrongWordsIconView.snp.trailing).offset(5)
+            make.centerY.equalTo(wrongWordsIconView)
             make.trailing.equalToSuperview().offset(-12)
             make.height.equalTo(16)
         }

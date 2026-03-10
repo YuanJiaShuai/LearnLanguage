@@ -65,11 +65,24 @@ final class LLStatusBarManager {
             name: .learnLanguageRefreshStatus,
             object: nil
         )
+        
+        // 监听当前词库切换（刷新状态栏显示的单词）
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onCurrentWordListChanged),
+            name: .currentWordListChanged,
+            object: nil
+        )
     }
     
     @objc private func onSettingsChanged() {
         // 当设置改变时，重新加载状态栏以应用新的宽度和按钮显示设置
         reloadStatusBar()
+    }
+    
+    @objc private func onCurrentWordListChanged() {
+        // 当前词库切换时，刷新状态栏显示新词库的单词
+        refreshStatusBar()
     }
     
     deinit {
