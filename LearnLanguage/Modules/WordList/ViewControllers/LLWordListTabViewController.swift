@@ -333,7 +333,13 @@ final class LLWordListTabViewController: NSViewController {
     }
     
     private func getListStatus(_ list: WordList) -> Int {
-        let learned = LLLearningStore.shared.allRecords().filter { $0.listId == list.id }.count
+        let learned: Int
+        do {
+            let stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: list.id)
+            learned = stats.learned
+        } catch {
+            learned = 0
+        }
         if learned == 0 {
             return 0 // 未开始
         } else if learned >= list.entryCount {

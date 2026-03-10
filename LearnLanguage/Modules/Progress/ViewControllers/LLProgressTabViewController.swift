@@ -425,21 +425,31 @@ final class LLProgressTabViewController: NSViewController {
         guard isViewLoaded else { return }
         
         let listId = LLSettingsStore.shared.currentListId
-        let store = LLLearningStore.shared
         
-        // 获取统计数据
-        let days = store.totalLearningDays(listId: listId)
-        let (know, unclear, unknown) = store.feedbackCounts(listId: listId)
-        let totalWords = know + unclear + unknown
-        let todayCount = store.todayCount(listId: listId)
-        
-        // 使用新的 View 组件更新数据
-        totalWordsCard?.updateNumber("\(totalWords)")
-        streakCard?.updateNumber("\(days)")
-        
-        // 今日进度（假设目标是50个）
-        let todayGoal = 50
-        progressCard?.updateProgress(current: todayCount, total: todayGoal)
+        // 从 WCDB 获取统计数据
+        do {
+            let todayCount = try LLDatabaseManager.shared.getTodayLearnedCount(wordListId: listId)
+            let stats: (total: Int, learned: Int, mastered: Int, learning: Int)
+            if let listId = listId {
+                stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: listId)
+            } else {
+                stats = (0, 0, 0, 0)
+            }
+            let totalWords = stats.learned
+            
+            // 学习天数暂时保留 LLLearningStore 计算（WCDB 暂无此方法）
+            let days = LLLearningStore.shared.totalLearningDays(listId: listId)
+            
+            // 使用新的 View 组件更新数据
+            totalWordsCard?.updateNumber("\(totalWords)")
+            streakCard?.updateNumber("\(days)")
+            
+            // 今日进度（假设目标是50个）
+            let todayGoal = 50
+            progressCard?.updateProgress(current: todayCount, total: todayGoal)
+        } catch {
+            LLLogger.error("❌ 加载统计数据失败：\(error)")
+        }
         
         // 加载今日学习记录
         loadTodayRecords(listId: listId)
@@ -455,12 +465,20 @@ final class LLProgressTabViewController: NSViewController {
         
         listView.subviews.forEach { $0.removeFromSuperview() }
         
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        let allRecords = LLLearningStore.shared.allRecords()
-        let todayRecords = allRecords.filter { record in
-            (listId == nil || record.listId == listId) && cal.isDate(record.lastSeenAt, inSameDayAs: today)
-        }.sorted { $0.lastSeenAt > $1.lastSeenAt }
+        // 从 WCDB 获取今日学习记录
+        let todayRecords: [LLDBLearningProgress]
+        do {
+            let allProgress = try LLDatabaseManager.shared.getAllLearningProgress(wordListId: listId ?? "")
+            let cal = Calendar.current
+            let today = cal.startOfDay(for: Date())
+            todayRecords = allProgress.filter { record in
+                let date = Date(timeIntervalSince1970: record.lastSeenAt)
+                return cal.isDate(date, inSameDayAs: today)
+            }.sorted { $0.lastSeenAt > $1.lastSeenAt }
+        } catch {
+            LLLogger.error("❌ 加载今日学习记录失败：\(error)")
+            return
+        }
         
         if todayRecords.isEmpty {
             let emptyLabel = NSTextField(labelWithString: "今天还没有学习记录")
@@ -492,12 +510,12 @@ final class LLProgressTabViewController: NSViewController {
         
         var lastView: NSView?
         for (index, record) in todayRecords.prefix(20).enumerated() {
-            let wordText = getWordText(wordId: record.wordId, listId: record.listId)
-            let feedbackIcon = getFeedbackIcon(feedback: record.feedback)
+            let wordText = getWordText(wordId: record.wordId, listId: record.wordListId)
+            let feedbackIcon = getFeedbackIconFromString(feedback: record.lastFeedback)
             let itemView = LLRecordItemView(
                 wordText: wordText,
                 feedbackIcon: feedbackIcon,
-                time: record.lastSeenAt,
+                time: Date(timeIntervalSince1970: record.lastSeenAt),
                 showBorder: index < todayRecords.count - 1
             )
             container.addSubview(itemView)
@@ -626,6 +644,15 @@ final class LLProgressTabViewController: NSViewController {
             return "❓"
         case .unknown:
             return "❌"
+        }
+    }
+    
+    private func getFeedbackIconFromString(feedback: String) -> String {
+        switch feedback {
+        case "know":    return "✔️"
+        case "unclear": return "❓"
+        case "unknown": return "❌"
+        default:        return "❓"
         }
     }
 }

@@ -628,6 +628,43 @@ final class LLDatabaseManager {
         return Int(count)
     }
     
+    /// 获取下一个应展示的单词（未学优先，全学完则取最早学习的）
+    func nextWord(in wordList: WordList) -> LLWordEntry? {
+        do {
+            // 获取该词库所有已有学习记录的 wordId 和 lastSeenAt
+            let progressList = try database.getObjects(
+                on: [
+                    LLDBLearningProgress.Properties.wordId,
+                    LLDBLearningProgress.Properties.lastSeenAt
+                ],
+                fromTable: learningProgressTable,
+                where: LLDBLearningProgress.Properties.wordListId == wordList.id,
+                orderBy: [LLDBLearningProgress.Properties.lastSeenAt.asOrder(by: .ascending)]
+            ) as [LLDBLearningProgress]
+            
+            let learnedIds = Set(progressList.map { $0.wordId })
+            
+            // 优先返回未学过的（按原始顺序）
+            if let notLearned = wordList.entries.first(where: { !learnedIds.contains($0.id) }) {
+                return notLearned
+            }
+            
+            // 全部学过了，返回最早学习的那个（按 lastSeenAt 升序第一个）
+            if let earliest = progressList.first,
+               let entry = wordList.entries.first(where: { $0.id == earliest.wordId }) {
+                return entry
+            }
+            
+            // 兜底：返回第一个
+            return wordList.entries.first
+            
+        } catch {
+            LLLogger.error("❌ nextWord 查询失败：\(error)")
+            // 降级：返回第一个单词
+            return wordList.entries.first
+        }
+    }
+    
     /// 删除某个词库的所有学习记录
     func deleteLearningProgress(wordListId: String) throws {
         try database.delete(

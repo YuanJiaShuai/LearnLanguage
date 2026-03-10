@@ -26,8 +26,8 @@ class LLTypingPracticeManager {
             return nil
         }
         
-        // 使用与状态栏相同的逻辑获取下一个单词
-        let nextEntry = LLLearningStore.shared.nextWord(in: wordList)
+        // 使用 WCDB 获取下一个单词
+        let nextEntry = LLDatabaseManager.shared.nextWord(in: wordList)
         currentEntry = nextEntry
         
         return nextEntry
@@ -41,25 +41,12 @@ class LLTypingPracticeManager {
     func recordResult(feedback: LLWordFeedback) {
         guard let entry = currentEntry, let listId = currentListId else { return }
         
-        // 记录反馈到学习存储
-        LLLearningStore.shared.recordFeedback(wordId: entry.id, listId: listId, feedback: feedback)
-        
-        // 记录到数据库学习进度表
+        // 记录到 WCDB 学习进度表
         do {
-            let feedbackString: String
-            switch feedback {
-            case .know:
-                feedbackString = "know"
-            case .unclear:
-                feedbackString = "unclear"
-            case .unknown:
-                feedbackString = "unknown"
-            }
-            
             try LLDatabaseManager.shared.recordLearningProgress(
                 wordId: entry.id,
                 wordListId: listId,
-                feedback: feedbackString
+                feedback: feedback.rawValue
             )
             
             // 记录打字练习
@@ -68,7 +55,7 @@ class LLTypingPracticeManager {
                 wordListId: listId
             )
             
-            LLLogger.info("✅ 已记录学习进度：\(entry.text) - \(feedbackString)")
+            LLLogger.info("✅ 已记录学习进度：\(entry.text) - \(feedback.rawValue)")
         } catch {
             LLLogger.error("❌ 记录学习进度失败：\(error)")
         }
@@ -83,7 +70,7 @@ class LLTypingPracticeManager {
             return false
         }
         
-        return LLLearningStore.shared.nextWord(in: wordList) != nil
+        return LLDatabaseManager.shared.nextWord(in: wordList) != nil
     }
     
     private func getCurrentList() -> WordList? {

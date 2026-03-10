@@ -339,14 +339,26 @@ final class LLSidebarViewController: NSViewController {
         }
         
         currentWordList = list
-        let learned = LLLearningStore.shared.allRecords().filter { $0.listId == currentId }.count
+        let learned: Int
+        do {
+            let stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: currentId)
+            learned = stats.learned
+        } catch {
+            LLLogger.error("❌ 获取学习进度失败：\(error)")
+            learned = 0
+        }
         let badgeText = "\(learned)/\(list.entries.count)"
         
         currentWordLibCardView.updateContent(title: list.name, badge: badgeText)
     }
     
     private func loadWrongWordsCount() {
-        wrongWordCount = LLLearningStore.shared.allRecords().filter { $0.feedback == .unknown }.count
+        do {
+            wrongWordCount = try LLDatabaseManager.shared.getWrongRecordCount(onlyUnreviewed: true)
+        } catch {
+            LLLogger.error("❌ 获取错题数量失败：\(error)")
+            wrongWordCount = 0
+        }
         wrongWordsCardView.updateContent(title: "未复习错题", badge: "\(wrongWordCount)")
     }
 }

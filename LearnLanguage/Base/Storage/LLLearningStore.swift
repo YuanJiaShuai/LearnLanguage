@@ -2,6 +2,12 @@
 //  LLLearningStore.swift
 //  LearnLanguage
 //
+//  ⚠️ DEPRECATED: 此类已废弃，请使用 LLDatabaseManager 替代。
+//  仍保留是因为：
+//  1. exportBackup() 备份功能需要 allRecords()
+//  2. totalLearningDays() 统计功能暂未迁移到 WCDB
+//  3. LLLearningRecord 作为 JSON 格式兼容层
+//
 
 import Foundation
 import AppKit

@@ -303,7 +303,14 @@ final class LLCurrentListCardView: NSView {
         statsStackView.addArrangedSubview(totalStatView)
         
         // 掌握情况
-        let (know, unclear, unknown) = LLLearningStore.shared.feedbackCounts(listId: list.id)
+        let know: Int
+        do {
+            let stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: list.id)
+            know = stats.mastered
+        } catch {
+            LLLogger.error("❌ 获取掌握统计失败：\(error)")
+            know = 0
+        }
         let masteredStatView = createStatView(icon: "✅", title: "已掌握", value: "\(know) 词")
         statsStackView.addArrangedSubview(masteredStatView)
     }

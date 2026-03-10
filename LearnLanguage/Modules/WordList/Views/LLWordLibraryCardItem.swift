@@ -45,11 +45,7 @@ class LLWordLibraryCardItem: NSCollectionViewItem {
             LLLogger.debug("📊 词库 \(wordList.name) 学习进度：\(stats.learned)/\(stats.total)")
         } catch {
             LLLogger.error("❌ 获取学习进度失败：\(error)")
-            // 降级方案：使用旧的 LLLearningStore
-            let learnedCount = LLLearningStore.shared.allRecords()
-                .filter { $0.listId == wordList.id }
-                .count
-            cardView.learnedCount = learnedCount
+            cardView.learnedCount = 0
         }
         
         // 检查是否是当前正在学习的词库

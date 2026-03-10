@@ -56,6 +56,31 @@ final class LLWordPhoneticView: NSView {
         return label
     }()
     
+    // 毛玻璃遮罩层
+    private lazy var wordBlurOverlay: NSVisualEffectView = {
+        let view = NSVisualEffectView()
+        view.blendingMode = .behindWindow
+        view.material = .fullScreenUI
+        view.state = .active
+        view.wantsLayer = true
+        view.layer?.cornerRadius = 3
+        view.layer?.opacity = 0.92
+        view.isHidden = true
+        return view
+    }()
+    
+    private lazy var phoneticBlurOverlay: NSVisualEffectView = {
+        let view = NSVisualEffectView()
+        view.blendingMode = .behindWindow
+        view.material = .fullScreenUI
+        view.state = .active
+        view.wantsLayer = true
+        view.layer?.cornerRadius = 3
+        view.layer?.opacity = 0.92
+        view.isHidden = true
+        return view
+    }()
+    
     // MARK: - Initialization
     
     override init(frame frameRect: NSRect) {
@@ -76,6 +101,8 @@ final class LLWordPhoneticView: NSView {
     private func setupUI() {
         addSubview(wordLabel)
         addSubview(phoneticLabel)
+        addSubview(wordBlurOverlay)
+        addSubview(phoneticBlurOverlay)
         
         // 单词在上方
         wordLabel.snp.makeConstraints { make in
@@ -87,6 +114,25 @@ final class LLWordPhoneticView: NSView {
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(wordLabel.snp.bottom).offset(2)
         }
+        
+        // 毛玻璃遮罩覆盖对应 label
+        wordBlurOverlay.snp.makeConstraints { make in
+            make.edges.equalTo(wordLabel)
+        }
+        
+        phoneticBlurOverlay.snp.makeConstraints { make in
+            make.edges.equalTo(phoneticLabel)
+        }
+    }
+    
+    // MARK: - Public Blur Control
+    
+    func setWordBlurred(_ blurred: Bool) {
+        wordBlurOverlay.isHidden = !blurred
+    }
+    
+    func setPhoneticBlurred(_ blurred: Bool) {
+        phoneticBlurOverlay.isHidden = !blurred
     }
     
     // MARK: - Intrinsic Content Size

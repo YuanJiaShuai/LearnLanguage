@@ -41,6 +41,22 @@ final class LLStatusBarContentView: NSControl {
         view.onFeedback = { [weak self] feedback in
             self?.handleFeedback(feedback)
         }
+        view.onShow = { [weak self] in
+            self?.temporarilyRevealBlurredContent()
+        }
+        return view
+    }()
+    
+    // 毛玻璃遮罩层（仅释义）
+    private lazy var meaningBlurOverlay: NSVisualEffectView = {
+        let view = NSVisualEffectView()
+        view.blendingMode = .behindWindow
+        view.material = .fullScreenUI
+        view.state = .active
+        view.wantsLayer = true
+        view.layer?.cornerRadius = 4
+        view.layer?.opacity = 0.85
+        view.isHidden = true
         return view
     }()
     
@@ -89,6 +105,7 @@ final class LLStatusBarContentView: NSControl {
         addSubview(wordPhoneticView)
         addSubview(scrollingMeaningView)
         addSubview(feedbackView)
+        addSubview(meaningBlurOverlay)
         
         // 单词音标视图在左侧，垂直居中，宽度自适应
         wordPhoneticView.snp.makeConstraints { make in
@@ -105,6 +122,11 @@ final class LLStatusBarContentView: NSControl {
         
         // 反馈按钮和滚动视图重叠，位置和大小完全相同
         feedbackView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollingMeaningView)
+        }
+        
+        // 释义毛玻璃遮罩
+        meaningBlurOverlay.snp.makeConstraints { make in
             make.edges.equalTo(scrollingMeaningView)
         }
     }
@@ -166,6 +188,36 @@ final class LLStatusBarContentView: NSControl {
         LLStatusBarManager.shared.recordFeedback(feedback)
     }
     
+    // 临时显示被毛玻璃遮罩的内容（3秒后恢复）
+    private var revealTimer: Timer?
+    
+    private func temporarilyRevealBlurredContent() {
+        let settings = LLSettingsStore.shared.settings
+        
+        // 如果没有任何遮罩，直接返回
+        let hasWordBlur = !settings.statusBarShowWord
+        let hasPhoneticBlur = !settings.statusBarShowPhoneticSymbol
+        let hasMeaningBlur = !settings.statusBarShowMeaning
+        guard hasWordBlur || hasPhoneticBlur || hasMeaningBlur else { return }
+        
+        // 取消之前的定时器
+        revealTimer?.invalidate()
+        
+        // 临时移除遮罩
+        wordPhoneticView.setWordBlurred(false)
+        wordPhoneticView.setPhoneticBlurred(false)
+        meaningBlurOverlay.isHidden = true
+        
+        // 3秒后恢复遮罩
+        revealTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] _ in
+            guard let self = self else { return }
+            let s = LLSettingsStore.shared.settings
+            self.wordPhoneticView.setWordBlurred(!s.statusBarShowWord)
+            self.wordPhoneticView.setPhoneticBlurred(!s.statusBarShowPhoneticSymbol)
+            self.meaningBlurOverlay.isHidden = s.statusBarShowMeaning
+        }
+    }
+    
     // MARK: - Drawing
     
     override func draw(_ dirtyRect: NSRect) {
@@ -201,27 +253,18 @@ final class LLStatusBarContentView: NSControl {
         self.phoneticText = phonetic
         self.meaningText = meaning
         
+        // 始终更新内容（不清空文字）
+        wordPhoneticView.word = word
+        wordPhoneticView.phonetic = phonetic
+        scrollingMeaningView.text = meaning
+        
         // 获取设置
         let settings = LLSettingsStore.shared.settings
         
-        // 根据设置控制显示内容
-        if settings.statusBarShowWord {
-            wordPhoneticView.word = word
-        } else {
-            wordPhoneticView.word = ""
-        }
-        
-        if settings.statusBarShowPhoneticSymbol {
-            wordPhoneticView.phonetic = phonetic
-        } else {
-            wordPhoneticView.phonetic = ""
-        }
-        
-        if settings.statusBarShowMeaning {
-            scrollingMeaningView.text = meaning
-        } else {
-            scrollingMeaningView.text = ""
-        }
+        // 分别控制单词、音标、释义的毛玻璃遮罩
+        wordPhoneticView.setWordBlurred(!settings.statusBarShowWord)
+        wordPhoneticView.setPhoneticBlurred(!settings.statusBarShowPhoneticSymbol)
+        meaningBlurOverlay.isHidden = settings.statusBarShowMeaning
         
         // 根据设置控制是否强制滚动
         scrollingMeaningView.forcedScroll = !settings.statusBarAutoScroll

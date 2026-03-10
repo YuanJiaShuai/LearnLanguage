@@ -31,6 +31,9 @@ final class LLStatusBarManager {
     /// 当前词库 ID
     private var currentListId: String?
     
+    /// 播放定时器
+    private var playbackTimer: Timer?
+    
     /// 是否处于打字练习模式
     var isTypingPracticeMode = false {
         didSet {
@@ -55,13 +58,7 @@ final class LLStatusBarManager {
     }
     
     private func setupNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshStatusBar),
-            name: .learnLanguageRefreshStatus,
-            object: nil
-        )
-        
+        // 监听设置改变（重新加载状态栏）
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onSettingsChanged),
@@ -76,6 +73,7 @@ final class LLStatusBarManager {
     }
     
     deinit {
+        stopPlaybackTimer()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -91,11 +89,17 @@ final class LLStatusBarManager {
         // 刷新显示
         refreshStatusBar()
         
+        // 启动播放定时器
+        startPlaybackTimer()
+        
         LLLogger.info("✅ 状态栏初始化完成")
     }
     
     /// 重新加载状态栏（用于设置改变后）
     func reloadStatusBar() {
+        // 停止旧定时器
+        stopPlaybackTimer()
+        
         // 移除旧的状态栏项
         if let item = statusItem {
             NSStatusBar.system.removeStatusItem(item)
@@ -124,7 +128,7 @@ final class LLStatusBarManager {
         // 获取下一个单词（打字练习模式不影响状态栏显示）
         guard let listId = LLSettingsStore.shared.currentListId,
               let list = LLWordListStorage.shared.list(byId: listId),
-              let next = LLLearningStore.shared.nextWord(in: list) else {
+              let next = LLDatabaseManager.shared.nextWord(in: list) else {
             LLLogger.warn("⚠️ 没有找到当前词库或下一个单词，显示默认文本")
             contentView?.updateContent(word: "LearnLanguage", phonetic: "", meaning: "")
             currentEntry = nil
@@ -143,6 +147,12 @@ final class LLStatusBarManager {
         
         contentView?.updateContent(word: word, phonetic: phonetic, meaning: meaning)
         LLLogger.debug("✅ 状态栏显示: \(word) \(phonetic) - \(meaning)")
+        
+        // 根据发音设置播放单词发音
+        let interval = settings.statusBarPlaybackInterval
+        if settings.pronunciationEnabled && interval >= 0 {
+            LLPronunciationManager.shared.speak(word: word)
+        }
     }
     
     /// 记录反馈
@@ -152,12 +162,23 @@ final class LLStatusBarManager {
             return
         }
         
-        // 保存反馈
+        // 保存反馈到 JSON（兼容旧逻辑）
         LLLearningStore.shared.recordFeedback(
             wordId: entry.id,
             listId: listId,
             feedback: feedback
         )
+        
+        // 保存反馈到 WCDB（主要存储）
+        do {
+            try LLDatabaseManager.shared.recordLearningProgress(
+                wordId: entry.id,
+                wordListId: listId,
+                feedback: feedback.rawValue
+            )
+        } catch {
+            LLLogger.error("❌ WCDB 记录学习进度失败：\(error)")
+        }
         
         // 发送通知
         NotificationCenter.default.post(
@@ -179,6 +200,42 @@ final class LLStatusBarManager {
     /// 切换打字练习模式
     func toggleTypingPracticeMode() {
         isTypingPracticeMode.toggle()
+    }
+    
+    // MARK: - Playback Timer
+    
+    private func startPlaybackTimer() {
+        stopPlaybackTimer()
+        
+        let settings = LLSettingsStore.shared.settings
+        let interval = settings.statusBarPlaybackInterval
+        
+        // 只播放1次（interval == 0）：不启动定时器
+        guard interval > 0 else {
+            LLLogger.info("⏱ 播放设置：只播放1次，不启动定时器")
+            return
+        }
+        
+        LLLogger.info("⏱ 启动播放定时器，间隔：\(interval)秒")
+        
+        playbackTimer = Timer.scheduledTimer(
+            withTimeInterval: TimeInterval(interval),
+            repeats: true
+        ) { [weak self] _ in
+            LLLogger.debug("⏱ 定时器触发，切换下一个单词")
+            self?.refreshStatusBar()
+        }
+        
+        // 加入 RunLoop 确保在滚动等场景下也能触发
+        if let timer = playbackTimer {
+            RunLoop.main.add(timer, forMode: .common)
+        }
+    }
+    
+    private func stopPlaybackTimer() {
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+        LLLogger.info("⏱ 播放定时器已停止")
     }
     
     // MARK: - Private Methods

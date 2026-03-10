@@ -59,9 +59,13 @@ final class LLSettingsStore {
     func getCurrentListProgress() -> (learned: Int, total: Int, percentage: Double) {
         guard let list = currentWordList else { return (0, 0, 0) }
         let total = list.entryCount
-        let learned = LLLearningStore.shared.allRecords()
-            .filter { $0.listId == list.id && $0.feedback == .know }
-            .count
+        let learned: Int
+        do {
+            let stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: list.id)
+            learned = stats.mastered
+        } catch {
+            learned = 0
+        }
         let percentage = total > 0 ? Double(learned) / Double(total) * 100 : 0
         return (learned, total, percentage)
     }
@@ -69,6 +73,12 @@ final class LLSettingsStore {
     /// 获取当前词库今日学习数量
     func getCurrentListTodayCount() -> Int {
         guard let listId = currentListId else { return 0 }
-        return LLLearningStore.shared.todayCount(listId: listId)
+        let count: Int
+        do {
+            count = try LLDatabaseManager.shared.getTodayLearnedCount(wordListId: listId)
+        } catch {
+            count = 0
+        }
+        return count
     }
 }

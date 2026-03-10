@@ -250,7 +250,13 @@ final class LLWordListDetailViewController: NSViewController {
     
     private func updateLearningButtonTitle() {
         // 检查该词库是否有学习记录
-        let hasLearningRecords = LLLearningStore.shared.allRecords().contains { $0.listId == wordListId }
+        let hasLearningRecords: Bool
+        do {
+            let stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: wordListId)
+            hasLearningRecords = stats.learned > 0
+        } catch {
+            hasLearningRecords = false
+        }
         
         if hasLearningRecords {
             startLearningButton.title = "继续学习"
