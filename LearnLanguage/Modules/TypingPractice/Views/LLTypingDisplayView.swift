@@ -18,10 +18,21 @@ class LLTypingDisplayView: NSView {
     private var letterViews: [LetterView] = []
     private var engine: LLTypingEngine
     
+    /// 字体大小（影响字母大小、下划线宽度/高度等比缩放）
+    var fontSize: CGFloat = 48 {
+        didSet {
+            if oldValue != fontSize {
+                createLetterViews()
+                updateDisplay()
+            }
+        }
+    }
+    
     // MARK: - Initialization
     
-    init(word: String) {
+    init(word: String, fontSize: CGFloat = 48) {
         self.engine = LLTypingEngine(targetWord: word)
+        self.fontSize = fontSize
         super.init(frame: .zero)
         setupUI()
         createLetterViews()
@@ -53,10 +64,16 @@ class LLTypingDisplayView: NSView {
         
         let targetChars = Array(engine.targetWord)
         
+        // 根据字体大小等比计算字母宽度和间距
+        let letterWidth = (fontSize / 48.0) * 32
+        let letterSpacing = inputStyle == .perLetter ? (fontSize / 48.0) * 8 : 0
+        
         for (index, char) in targetChars.enumerated() {
             let letterView = LetterView(
                 char: char,
-                spacing: inputStyle == .perLetter ? 8 : 0
+                fontSize: fontSize,
+                letterWidth: letterWidth,
+                spacing: letterSpacing
             )
             containerView.addSubview(letterView)
             letterViews.append(letterView)
@@ -85,16 +102,11 @@ class LLTypingDisplayView: NSView {
     // MARK: - Public Methods
     
     /// 处理输入字符
-    /// - Parameter char: 输入的字符
-    /// - Returns: 是否正确
     func handleInput(_ char: Character) -> Bool {
         let isCorrect = engine.input(char: char)
         
         if !isCorrect {
-            // 输入错误：播放抖动动画
             playShakeAnimation()
-            
-            // 延迟 0.3 秒后清空并重新开始
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
                 self?.engine.restart()
                 self?.updateDisplay()
@@ -118,77 +130,58 @@ class LLTypingDisplayView: NSView {
         updateDisplay()
     }
     
-    /// 获取引擎状态（供外部读取）
-    var isFinished: Bool {
-        return engine.isFinished
-    }
-    
-    var errorCount: Int {
-        return engine.errorCount
-    }
-    
-    var accuracy: Int {
-        return engine.accuracy
-    }
-    
-    var speed: Int {
-        return engine.speed
-    }
-    
-    var elapsedTime: TimeInterval {
-        return engine.elapsedTime
-    }
+    var isFinished: Bool { engine.isFinished }
+    var errorCount: Int { engine.errorCount }
+    var accuracy: Int { engine.accuracy }
+    var speed: Int { engine.speed }
+    var elapsedTime: TimeInterval { engine.elapsedTime }
     
     // MARK: - Private Methods
     
-    /// 更新显示
     private func updateDisplay() {
         let settings = LLSettingsStore.shared.settings
         let isDictationMode = settings.typingDictationMode
         
         for (index, letterView) in letterViews.enumerated() {
             if index < engine.cursorIndex {
-                // 已输入的字符（总是显示）
                 letterView.setState(.typed, showText: true)
             } else if index == engine.cursorIndex {
-                // 当前字符
                 if engine.lastInputWasError {
                     letterView.setState(.error, showText: !isDictationMode)
                 } else {
                     letterView.setState(.current, showText: !isDictationMode)
                 }
             } else {
-                // 未输入的字符（听写模式下隐藏）
                 letterView.setState(.pending, showText: !isDictationMode)
             }
         }
     }
     
-    /// 播放抖动动画
     private func playShakeAnimation() {
         guard let layer = layer else { return }
-        
         let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
         animation.timingFunction = CAMediaTimingFunction(name: .linear)
         animation.duration = 0.4
         animation.values = [-8, 8, -6, 6, -4, 4, -2, 2, 0]
-        
         layer.add(animation, forKey: "shake")
     }
 }
 
 // MARK: - LetterView
 
-/// 单个字母视图（包含字母和下划线）
 private class LetterView: NSView {
     
     private let label = NSTextField()
     private let underlineView = NSView()
     private let char: Character
+    private let fontSize: CGFloat
+    private let letterWidth: CGFloat
     private let spacing: CGFloat
     
-    init(char: Character, spacing: CGFloat) {
+    init(char: Character, fontSize: CGFloat, letterWidth: CGFloat, spacing: CGFloat) {
         self.char = char
+        self.fontSize = fontSize
+        self.letterWidth = letterWidth
         self.spacing = spacing
         super.init(frame: .zero)
         setupUI()
@@ -201,82 +194,63 @@ private class LetterView: NSView {
     private func setupUI() {
         wantsLayer = true
         
-        // 配置标签
+        // 下划线高度和字母高度等比缩放
+        let underlineHeight = max(2, (fontSize / 48.0) * 3)
+        let labelHeight = (fontSize / 48.0) * 60
+        
         label.isBezeled = false
         label.drawsBackground = false
         label.isEditable = false
         label.isSelectable = false
         label.alignment = .center
-        label.font = NSFont.monospacedSystemFont(ofSize: 48, weight: .regular)
+        label.font = NSFont.monospacedSystemFont(ofSize: fontSize, weight: .regular)
         label.stringValue = String(char)
         
-        // 配置下划线
         underlineView.wantsLayer = true
         underlineView.layer?.backgroundColor = NSColor.systemBlue.cgColor
         
         addSubview(label)
         addSubview(underlineView)
         
-        // 布局
         label.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.width.equalTo(32)
-            make.height.equalTo(60)
+            make.width.equalTo(letterWidth)
+            make.height.equalTo(labelHeight)
         }
         
         underlineView.snp.makeConstraints { make in
             make.top.equalTo(label.snp.bottom).offset(2)
             make.centerX.equalToSuperview()
-            make.width.equalTo(32)
-            make.height.equalTo(3)
+            make.width.equalTo(letterWidth)
+            make.height.equalTo(underlineHeight)
             make.bottom.equalToSuperview()
         }
         
-        // 添加右侧间距
-        if spacing > 0 {
-            self.snp.makeConstraints { make in
-                make.width.equalTo(32 + spacing)
-            }
-        } else {
-            self.snp.makeConstraints { make in
-                make.width.equalTo(32)
-            }
+        let totalWidth = letterWidth + spacing
+        self.snp.makeConstraints { make in
+            make.width.equalTo(totalWidth)
         }
     }
     
     enum State {
-        case pending   // 未输入
-        case current   // 当前
-        case typed     // 已输入
-        case error     // 错误
+        case pending, current, typed, error
     }
     
     func setState(_ state: State, showText: Bool) {
-        // 先清除背景色
         label.layer?.backgroundColor = NSColor.clear.cgColor
+        label.stringValue = showText ? String(char) : ""
         
-        // 设置文字显示/隐藏
-        if showText {
-            label.stringValue = String(char)
-        } else {
-            label.stringValue = ""
-        }
-        
-        // 设置颜色
         switch state {
         case .pending:
             label.textColor = NSColor.gray.withAlphaComponent(0.3)
             underlineView.layer?.backgroundColor = NSColor.gray.withAlphaComponent(0.3).cgColor
-            
         case .current:
             label.textColor = NSColor.gray.withAlphaComponent(0.3)
             underlineView.layer?.backgroundColor = NSColor.systemBlue.cgColor
-            
         case .typed:
             label.textColor = NSColor.systemGreen
             underlineView.layer?.backgroundColor = NSColor.systemGreen.cgColor
-            
         case .error:
             label.textColor = NSColor.white
             label.layer?.backgroundColor = NSColor.systemRed.cgColor
@@ -284,4 +258,3 @@ private class LetterView: NSView {
         }
     }
 }
-

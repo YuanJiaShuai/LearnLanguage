@@ -48,8 +48,12 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     // MARK: - Setup
     
     private func setupUI() {
+        // 根据浮窗高度等比计算字体大小（基准：高度200对应fontSize 48）
+        let settings = LLSettingsStore.shared.settings
+        let fontSize = max(20, (settings.floatingPanelHeight / 200.0) * 48)
+        
         // 单词显示视图
-        displayView = LLTypingDisplayView(word: "")
+        displayView = LLTypingDisplayView(word: "", fontSize: fontSize)
         view.addSubview(displayView)
         
         // 释义标签
@@ -58,18 +62,19 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         meaningLabel.isEditable = false
         meaningLabel.isSelectable = false
         meaningLabel.alignment = .center
-        meaningLabel.font = NSFont.systemFont(ofSize: 16)
+        meaningLabel.font = NSFont.systemFont(ofSize: max(12, fontSize * 0.33))
         meaningLabel.textColor = .secondaryLabelColor
         meaningLabel.lineBreakMode = .byWordWrapping
         meaningLabel.maximumNumberOfLines = 2
         view.addSubview(meaningLabel)
         
         // 布局
+        let displayHeight = max(60, (settings.floatingPanelHeight / 200.0) * 80)
         displayView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-20)
             make.left.right.equalToSuperview()
-            make.height.equalTo(80)
+            make.height.equalTo(displayHeight)
         }
         
         meaningLabel.snp.makeConstraints { make in

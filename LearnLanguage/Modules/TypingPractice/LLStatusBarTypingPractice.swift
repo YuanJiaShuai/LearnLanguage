@@ -16,9 +16,13 @@ class LLStatusBarTypingPractice {
     private init() {}
     
     func show() {
-        if window == nil {
-            createWindow()
+        // 每次显示时重新创建窗口，以应用最新的尺寸设置
+        if let oldWindow = window {
+            oldWindow.orderOut(nil)
+            window = nil
+            viewController = nil
         }
+        createWindow()
         
         window?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
