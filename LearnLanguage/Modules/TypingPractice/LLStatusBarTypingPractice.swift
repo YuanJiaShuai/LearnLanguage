@@ -13,16 +13,37 @@ class LLStatusBarTypingPractice {
     
     static let shared = LLStatusBarTypingPractice()
     
-    private init() {}
+    private init() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onFloatingPanelSettingsChanged),
+            name: .floatingPanelSettingsChanged,
+            object: nil
+        )
+    }
+    
+    @objc private func onFloatingPanelSettingsChanged() {
+        // 如果浮窗正在显示，重建以应用新的尺寸和字体设置
+        if isVisible {
+            show()
+        } else {
+            // 下次显示时会重新创建，清除旧窗口缓存
+            window = nil
+            viewController = nil
+        }
+    }
     
     func show() {
         // 每次显示时重新创建窗口，以应用最新的尺寸设置
+        // 保留旧窗口的位置（左下角原点），避免重建后回到屏幕中央
+        var previousOrigin: NSPoint? = nil
         if let oldWindow = window {
+            previousOrigin = oldWindow.frame.origin
             oldWindow.orderOut(nil)
             window = nil
             viewController = nil
         }
-        createWindow()
+        createWindow(origin: previousOrigin)
         
         window?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
@@ -61,18 +82,19 @@ class LLStatusBarTypingPractice {
         }
     }
     
-    private func createWindow() {
+    private func createWindow(origin: NSPoint? = nil) {
         // 从设置中读取浮窗宽高
         let settings = LLSettingsStore.shared.settings
         let panelWidth: CGFloat = settings.floatingPanelWidth
         let panelHeight: CGFloat = settings.floatingPanelHeight
         
+        // 使用传入的位置，或默认居中
         let screenFrame = NSScreen.main?.visibleFrame ?? NSRect(x: 0, y: 0, width: 800, height: 600)
-        let origin = NSPoint(x: screenFrame.midX - panelWidth / 2, y: screenFrame.midY - panelHeight / 2)
+        let resolvedOrigin = origin ?? NSPoint(x: screenFrame.midX - panelWidth / 2, y: screenFrame.midY - panelHeight / 2)
         
         // 创建自定义的 Panel（可以接收键盘输入的无边框窗口）
         window = FloatingPanel(
-            contentRect: NSRect(origin: origin, size: NSSize(width: panelWidth, height: panelHeight)),
+            contentRect: NSRect(origin: resolvedOrigin, size: NSSize(width: panelWidth, height: panelHeight)),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false

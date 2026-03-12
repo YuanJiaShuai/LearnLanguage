@@ -33,5 +33,8 @@ extension Notification.Name {
     
     /// 打字练习模式改变通知
     static let statusBarTypingPracticeModeChanged = Notification.Name("LLStatusBarTypingPracticeModeChanged")
+    
+    /// 浮窗设置改变通知
+    static let floatingPanelSettingsChanged = Notification.Name("LLFloatingPanelSettingsChanged")
 }
 

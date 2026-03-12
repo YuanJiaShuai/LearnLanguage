@@ -76,7 +76,8 @@ final class LLStatusBarManager {
     }
     
     @objc private func onSettingsChanged() {
-        // 当设置改变时，重新加载状态栏以应用新的宽度和按钮显示设置
+        // 当状态栏设置改变时，重新加载状态栏
+        // 注意：浮窗设置变化（.floatingPanelSettingsChanged）不会触发此方法
         reloadStatusBar()
     }
     
