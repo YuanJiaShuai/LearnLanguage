@@ -109,7 +109,22 @@ class LLStatusBarTypingPractice {
             
             // 设置回调
             vc.onWordCompleted = { [weak self] feedback in
-                LLTypingPracticeManager.shared.recordResult(feedback: feedback)
+                // 注意：反馈已经在 ViewController 中记录过了，这里不要重复记录
+                // 只需要记录打字练习统计
+                if let entry = LLStatusBarManager.shared.getCurrentWord(),
+                   let listId = LLSettingsStore.shared.currentListId {
+                    do {
+                        try LLDatabaseManager.shared.recordTypingPractice(
+                            wordId: entry.id,
+                            wordListId: listId
+                        )
+                    } catch {
+                        LLLogger.error("❌ 记录打字练习失败：\(error)")
+                    }
+                }
+                
+                // 刷新状态栏（显示下一个单词）
+                LLStatusBarManager.shared.refreshStatusBar()
                 
                 // 加载下一个单词（与状态栏同步）
                 if let currentListId = LLSettingsStore.shared.currentListId {

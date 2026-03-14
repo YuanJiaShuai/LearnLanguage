@@ -22,6 +22,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     private var currentListId: String?
     private var completedCount = 0
     private var currentWordErrorCount = 0  // 当前单词的累计错误次数
+    private var hasRecordedFeedback = false  // 标记当前单词是否已记录反馈
     
     // MARK: - Callbacks
     
@@ -92,6 +93,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         currentEntry = entry
         currentListId = listId
         currentWordErrorCount = 0  // 重置错误计数
+        hasRecordedFeedback = false  // 重置反馈记录标记
         displayView.reset(word: entry.text)
         
         // 设置释义
@@ -164,6 +166,12 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             // 累计错误次数
             currentWordErrorCount += 1
             
+            // 只要输错一次，立即记录为"不认识"（只记录一次）
+            if !hasRecordedFeedback {
+                recordFeedbackToDatabase(.unknown)
+                hasRecordedFeedback = true
+            }
+            
             // 检查是否需要添加到错题本
             checkAndAddToWrongBook()
         }
@@ -208,28 +216,61 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         // 播放完成音效
         LLTypingSoundManager.shared.playCompleteSound()
         
-        // 根据错误次数判断反馈
-        let feedback: LLWordFeedback
-        let errors = displayView.errorCount
-        
-        if errors == 0 {
-            feedback = .know
-        } else if errors <= 2 {
-            feedback = .unclear
-        } else {
-            feedback = .unknown
+        // 如果一次性输入正确（没有错误），记录为"认识"
+        if currentWordErrorCount == 0 && !hasRecordedFeedback {
+            recordFeedbackToDatabase(.know)
+            hasRecordedFeedback = true
         }
         
         completedCount += 1
         
         // 延迟 0.4s 后切换下一个单词
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+            // 传递 feedback 用于其他逻辑（如音效、动画等）
+            let feedback: LLWordFeedback = (self?.currentWordErrorCount == 0) ? .know : .unknown
             self?.onWordCompleted?(feedback)
         }
     }
     
     private func skipCurrentWord() {
         // 跳过当前单词，标记为不认识
+        if !hasRecordedFeedback {
+            recordFeedbackToDatabase(.unknown)
+            hasRecordedFeedback = true
+        }
         onWordCompleted?(.unknown)
+    }
+    
+    /// 记录反馈到数据库（只记录一次）
+    private func recordFeedbackToDatabase(_ feedback: LLWordFeedback) {
+        guard let entry = currentEntry, let listId = currentListId else {
+            LLLogger.warn("⚠️ 没有当前单词，无法记录反馈")
+            return
+        }
+        
+        // 保存反馈到 JSON（兼容旧逻辑）
+        LLLearningStore.shared.recordFeedback(
+            wordId: entry.id,
+            listId: listId,
+            feedback: feedback
+        )
+        
+        // 保存反馈到 WCDB（主要存储）
+        do {
+            try LLDatabaseManager.shared.recordLearningProgress(
+                wordId: entry.id,
+                wordListId: listId,
+                feedback: feedback.rawValue
+            )
+            LLLogger.info("✅ 已记录反馈: \(feedback) - \(entry.text)")
+        } catch {
+            LLLogger.error("❌ WCDB 记录学习进度失败：\(error)")
+        }
+        
+        // 发送通知
+        NotificationCenter.default.post(
+            name: .statusBarFeedbackSelected,
+            object: feedback
+        )
     }
 }
