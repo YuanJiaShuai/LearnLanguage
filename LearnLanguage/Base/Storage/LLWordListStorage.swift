@@ -310,9 +310,16 @@ final class LLWordListStorage {
         // 转换单词
         let entries: [LLWordEntry]
         if let dbWords = words {
+            let accent = LLSettingsStore.shared.settings.pronunciationAccent
             entries = dbWords.map { dbWord in
-                // 优先使用美式音标，如果没有则使用英式音标
-                let phonetic = dbWord.usPhonetic ?? dbWord.ukPhonetic
+                // 根据发音口音设置选择对应音标，没有则回退到另一种
+                let phonetic: String?
+                switch accent {
+                case .uk:
+                    phonetic = dbWord.ukPhonetic ?? dbWord.usPhonetic
+                case .us:
+                    phonetic = dbWord.usPhonetic ?? dbWord.ukPhonetic
+                }
                 return LLWordEntry(
                     id: "\(dbWord.id ?? 0)",
                     text: dbWord.word,

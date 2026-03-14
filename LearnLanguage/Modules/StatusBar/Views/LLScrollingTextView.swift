@@ -197,7 +197,9 @@ final class LLScrollingTextView: NSView {
     }
     
     private func shouldPlayDisplayLink() -> Bool {
-        let result = window != nil && bounds.width > 0 && (forcedScroll || textSize.width > bounds.width)
+        // forcedScroll 为 true 时，才允许滚动（当文本超长时）
+        // forcedScroll 为 false 时，永远不滚动
+        let result = window != nil && bounds.width > 0 && forcedScroll && textSize.width > bounds.width
         return result
     }
     

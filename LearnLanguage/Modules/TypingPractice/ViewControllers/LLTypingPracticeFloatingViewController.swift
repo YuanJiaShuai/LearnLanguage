@@ -49,9 +49,23 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     // MARK: - Setup
     
     private func setupUI() {
-        // 根据浮窗高度等比计算字体大小（基准：高度200对应fontSize 48）
+        // 获取浮窗尺寸
         let settings = LLSettingsStore.shared.settings
-        let fontSize = max(20, (settings.floatingPanelHeight / 200.0) * 48)
+        let panelWidth = settings.floatingPanelWidth
+        let panelHeight = settings.floatingPanelHeight
+        
+        // 基准尺寸（用于等比缩放）
+        let baseWidth: CGFloat = 500.0
+        let baseHeight: CGFloat = 350.0
+        
+        // 计算缩放比例（取宽高中较小的比例，保持协调）
+        let scaleX = panelWidth / baseWidth
+        let scaleY = panelHeight / baseHeight
+        let scale = min(scaleX, scaleY)
+        
+        // 根据缩放比例计算字体大小（基准：48）
+        let baseFontSize: CGFloat = 48.0
+        let fontSize = max(20, baseFontSize * scale)
         
         // 单词显示视图
         displayView = LLTypingDisplayView(word: "", fontSize: fontSize)
@@ -66,23 +80,41 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         meaningLabel.font = NSFont.systemFont(ofSize: max(12, fontSize * 0.33))
         meaningLabel.textColor = .secondaryLabelColor
         meaningLabel.lineBreakMode = .byWordWrapping
-        meaningLabel.maximumNumberOfLines = 2
+        meaningLabel.maximumNumberOfLines = 3
+        meaningLabel.cell?.wraps = true
+        meaningLabel.cell?.isScrollable = false
         view.addSubview(meaningLabel)
         
-        // 布局
-        let displayHeight = max(60, (settings.floatingPanelHeight / 200.0) * 80)
+        // 布局（所有间距和尺寸都等比缩放）
+        let baseDisplayHeight: CGFloat = 80.0
+        let displayHeight = max(60, baseDisplayHeight * scale)
+        
+        let baseVerticalOffset: CGFloat = -20.0
+        let verticalOffset = baseVerticalOffset * scale
+        
+        let baseSpacing: CGFloat = 20.0
+        let spacing = baseSpacing * scale
+        
+        let baseHorizontalPadding: CGFloat = 30.0
+        let horizontalPadding = baseHorizontalPadding * scale
+        
         displayView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-20)
+            make.centerY.equalToSuperview().offset(verticalOffset)
             make.left.right.equalToSuperview()
             make.height.equalTo(displayHeight)
         }
         
+        let meaningFontSize = max(12, fontSize * 0.33)
+        let meaningLineHeight = meaningFontSize * 1.4
+        let meaningMaxHeight = meaningLineHeight * 3 + 4
+        
         meaningLabel.snp.makeConstraints { make in
-            make.top.equalTo(displayView.snp.bottom).offset(20)
+            make.top.equalTo(displayView.snp.bottom).offset(spacing)
             make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
+            make.left.equalToSuperview().offset(horizontalPadding)
+            make.right.equalToSuperview().offset(-horizontalPadding)
+            make.height.lessThanOrEqualTo(meaningMaxHeight)
         }
     }
     
