@@ -536,8 +536,11 @@ final class LLSettingsTabViewController: NSViewController {
         
         LLSettingsStore.shared.settings = s
         
-        // 发送通知刷新状态栏
+        // 发送通知刷新状态栏（状态栏相关设置变化）
         NotificationCenter.default.post(name: .learnLanguageRefreshStatus, object: nil)
+        
+        // 发送通知更新浮窗（浮窗相关设置变化）
+        NotificationCenter.default.post(name: .floatingPanelSettingsChanged, object: nil)
     }
 
     @objc private func toggleLaunchAtLogin() {
