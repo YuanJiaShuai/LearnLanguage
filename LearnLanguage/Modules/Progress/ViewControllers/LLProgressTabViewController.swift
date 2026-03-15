@@ -337,13 +337,7 @@ final class LLProgressTabViewController: NSViewController {
     private var reviewCurrentPage = 0
     
     private func loadReviewRecords(listId: String?) {
-        guard let listId = listId else {
-            LLLogger.info("⚠️ 没有选中词库")
-            reviewContentView?.records = []
-            return
-        }
-        
-        LLLogger.info("📊 开始加载复习记录，词库ID: \(listId)，页码: \(reviewCurrentPage)")
+        LLLogger.info("📊 开始加载复习记录，页码: \(reviewCurrentPage)")
         
         do {
             let records: [LLDBLearningProgress]
@@ -351,17 +345,17 @@ final class LLProgressTabViewController: NSViewController {
             
             LLLogger.info("📋 时间筛选: \(timeFilter.rawValue)")
             
-            // 先获取所有符合条件的记录
+            // 先获取所有符合条件的记录（不限制词库）
             let allRecords: [LLDBLearningProgress]
             switch timeFilter {
             case .all:
-                allRecords = try LLDatabaseManager.shared.getAllReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getAllReviewRecords()
             case .today:
-                allRecords = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getTodayReviewRecords()
             case .week:
-                allRecords = try LLDatabaseManager.shared.getWeekReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getWeekReviewRecords()
             case .month:
-                allRecords = try LLDatabaseManager.shared.getMonthReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getMonthReviewRecords()
             }
             
             LLLogger.info("📊 查询到 \(allRecords.count) 条复习记录")
@@ -380,7 +374,7 @@ final class LLProgressTabViewController: NSViewController {
             
             // 打印前几条记录的详情
             for (index, record) in records.prefix(3).enumerated() {
-                LLLogger.info("  [\(index)] wordId: \(record.wordId ?? "nil"), wrongCount: \(record.wrongCount ?? 0), status: \(record.status ?? 0)")
+                LLLogger.info("  [\(index)] wordId: \(record.wordId ?? "nil"), learnCount: \(record.learnCount ?? 0), status: \(record.status ?? 0)")
             }
             
             reviewContentView?.records = records

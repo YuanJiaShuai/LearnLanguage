@@ -274,18 +274,16 @@ final class LLDatabaseManager {
     
     // MARK: - 错题记录管理（已迁移到 learning_progress）
     
-    /// 获取复习记录（wrongCount > 0 的学习进度）
-    /// 支持按时间范围筛选
+    /// 获取复习记录（learnCount > 0 的学习进度）
+    /// 支持按时间范围筛选，不限制词库
     func getReviewRecords(
-        wordListId: String,
         startDate: Date? = nil,
         endDate: Date? = nil
     ) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         
-        // 构建时间条件
-        var condition = LLDBLearningProgress.Properties.wordListId == wordListId
-            && LLDBLearningProgress.Properties.learnCount > 0
+        // 构建时间条件 - 只要求 learnCount > 0
+        var condition = LLDBLearningProgress.Properties.learnCount > 0
         
         if let start = startDate {
             let startTimestamp = calendar.startOfDay(for: start).timeIntervalSince1970
@@ -308,32 +306,32 @@ final class LLDatabaseManager {
         )
     }
     
-    /// 获取今日复习记录
-    func getTodayReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
+    /// 获取今日复习记录（所有词库）
+    func getTodayReviewRecords() throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        return try getReviewRecords(wordListId: wordListId, startDate: today, endDate: Date())
+        return try getReviewRecords(startDate: today, endDate: Date())
     }
     
-    /// 获取本周复习记录
-    func getWeekReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
+    /// 获取本周复习记录（所有词库）
+    func getWeekReviewRecords() throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let today = Date()
         let weekAgo = calendar.date(byAdding: .day, value: -7, to: today)!
-        return try getReviewRecords(wordListId: wordListId, startDate: weekAgo, endDate: today)
+        return try getReviewRecords(startDate: weekAgo, endDate: today)
     }
     
-    /// 获取本月复习记录
-    func getMonthReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
+    /// 获取本月复习记录（所有词库）
+    func getMonthReviewRecords() throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let today = Date()
         let monthAgo = calendar.date(byAdding: .month, value: -1, to: today)!
-        return try getReviewRecords(wordListId: wordListId, startDate: monthAgo, endDate: today)
+        return try getReviewRecords(startDate: monthAgo, endDate: today)
     }
     
-    /// 获取所有复习记录
-    func getAllReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
-        return try getReviewRecords(wordListId: wordListId)
+    /// 获取所有复习记录（所有词库）
+    func getAllReviewRecords() throws -> [LLDBLearningProgress] {
+        return try getReviewRecords()
     }
     
     // MARK: - 学习进度管理

@@ -381,15 +381,9 @@ final class LLSidebarViewController: NSViewController {
     }
     
     private func loadWrongWordsCount() {
-        guard let currentId = LLSettingsStore.shared.currentListId else {
-            wrongWordCount = 0
-            wrongWordsCardView.updateContent(title: "当天需复习", badge: "0")
-            return
-        }
-        
         do {
-            // 获取今日需要复习的词汇数量
-            let reviewRecords = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: currentId)
+            // 获取今日需要复习的词汇数量（所有词库）
+            let reviewRecords = try LLDatabaseManager.shared.getTodayReviewRecords()
             wrongWordCount = reviewRecords.count
         } catch {
             LLLogger.error("❌ 获取复习词汇数量失败：\(error)")
