@@ -261,11 +261,4 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         
         LLLogger.info("✅ 已记录反馈: \(feedback) - \(entry.text)")
     }
-        
-        // 发送通知
-        NotificationCenter.default.post(
-            name: .statusBarFeedbackSelected,
-            object: feedback
-        )
-    }
 }

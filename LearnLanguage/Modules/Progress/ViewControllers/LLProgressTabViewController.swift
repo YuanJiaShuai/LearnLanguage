@@ -438,8 +438,9 @@ final class LLProgressTabViewController: NSViewController {
     }
     
     @objc private func timeFilterChanged(_ sender: NSPopUpButton) {
-        guard let selected = TimeFilter.allCases[safe: sender.indexOfSelectedItem] else { return }
-        currentTimeFilter = selected
+        let index = sender.indexOfSelectedItem
+        guard index >= 0 && index < TimeFilter.allCases.count else { return }
+        currentTimeFilter = TimeFilter.allCases[index]
         loadWrongRecords(listId: LLSettingsStore.shared.currentListId)
     }
     
@@ -627,19 +628,17 @@ final class LLProgressTabViewController: NSViewController {
             guard let record = try LLDatabaseManager.shared.getLearningProgress(wordId: wordId, wordListId: listId) else {
                 return
             }
+            
             record.wrongCount = 0
             record.status = 2  // 已掌握
             record.updatedAt = Date().timeIntervalSince1970
             
-            try LLDatabaseManager.shared.database.update(
-                table: "learning_progress",
-                on: [
-                    LLDBLearningProgress.Properties.wrongCount,
-                    LLDBLearningProgress.Properties.status,
-                    LLDBLearningProgress.Properties.updatedAt
-                ],
-                with: record,
-                where: LLDBLearningProgress.Properties.id == (record.id ?? 0)
+            // 使用 LLDailyLearningManager 的方法来更新（它已经处理了 WCDB 的细节）
+            // 或者直接调用 recordLearningProgress 来更新
+            try LLDatabaseManager.shared.recordLearningProgress(
+                wordId: wordId,
+                wordListId: listId,
+                feedback: "know"
             )
             
             LLLogger.info("✅ 已标记为已掌握: \(wordId)")
