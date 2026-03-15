@@ -69,7 +69,7 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var logoLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "摸鱼记词")
+        let label = NSTextField(labelWithString: "划水记词")
         label.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.accentColor
         return label
