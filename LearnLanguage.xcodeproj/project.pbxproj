@@ -137,7 +137,7 @@
 		84E1E39B2F4D53A300D1B7B6 /* LLStatusBarTypingPractice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarTypingPractice.swift; sourceTree = "<group>"; };
 		84E1E39C2F4D53A300D1B7B6 /* LLTypingPracticeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingPracticeManager.swift; sourceTree = "<group>"; };
 		8F7924CFE36F820B30511F8A /* Pods-LearnLanguage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LearnLanguage.debug.xcconfig"; path = "Target Support Files/Pods-LearnLanguage/Pods-LearnLanguage.debug.xcconfig"; sourceTree = "<group>"; };
-		A80BC32D2F378E8900A40D9B /* LearnLanguage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnLanguage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A80BC32D2F378E8900A40D9B /* 划水记词.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "划水记词.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningProgress.swift; sourceTree = "<group>"; };
 		A85ECB032F4C2149009F8DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLShortcutCardView.swift; sourceTree = "<group>"; };
@@ -514,7 +514,7 @@
 		A80BC32E2F378E8900A40D9B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A80BC32D2F378E8900A40D9B /* LearnLanguage.app */,
+				A80BC32D2F378E8900A40D9B /* 划水记词.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -566,7 +566,7 @@
 			);
 			name = LearnLanguage;
 			productName = LearnLanguage;
-			productReference = A80BC32D2F378E8900A40D9B /* LearnLanguage.app */;
+			productReference = A80BC32D2F378E8900A40D9B /* 划水记词.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -895,7 +895,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ruijia.LearnLanguage;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "划水记词";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -932,7 +932,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ruijia.LearnLanguage;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "划水记词";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
