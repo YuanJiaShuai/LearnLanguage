@@ -139,14 +139,23 @@ final class LLStatusBarManager {
             return
         }
         
-        // 获取下一个单词（打字练习模式不影响状态栏显示）
-        guard let listId = LLSettingsStore.shared.currentListId,
-              let list = LLWordListStorage.shared.list(byId: listId),
-              let next = LLDatabaseManager.shared.nextWord(in: list) else {
-            LLLogger.warn("⚠️ 没有找到当前词库或下一个单词，显示默认文本")
+        // 初始化今日学习队列
+        guard let listId = LLSettingsStore.shared.currentListId else {
+            LLLogger.warn("⚠️ 没有找到当前词库，显示默认文本")
             contentView?.updateContent(word: "LearnLanguage", phonetic: "", meaning: "")
             currentEntry = nil
             currentListId = nil
+            return
+        }
+        
+        LLDailyLearningManager.shared.setup(listId: listId)
+        
+        // 从每日学习管理器获取下一个词（复习优先）
+        guard let next = LLDailyLearningManager.shared.nextWord() else {
+            LLLogger.warn("⚠️ 今日学习任务已完成或词库为空")
+            contentView?.updateContent(word: "今日完成 🎉", phonetic: "", meaning: "")
+            currentEntry = nil
+            currentListId = listId
             return
         }
         
@@ -176,23 +185,8 @@ final class LLStatusBarManager {
             return
         }
         
-        // 保存反馈到 JSON（兼容旧逻辑）
-        LLLearningStore.shared.recordFeedback(
-            wordId: entry.id,
-            listId: listId,
-            feedback: feedback
-        )
-        
-        // 保存反馈到 WCDB（主要存储）
-        do {
-            try LLDatabaseManager.shared.recordLearningProgress(
-                wordId: entry.id,
-                wordListId: listId,
-                feedback: feedback.rawValue
-            )
-        } catch {
-            LLLogger.error("❌ WCDB 记录学习进度失败：\(error)")
-        }
+        // 通过每日学习管理器记录反馈（更新数据库 + 更新内存队列）
+        LLDailyLearningManager.shared.recordFeedback(feedback, for: entry)
         
         // 发送通知
         NotificationCenter.default.post(

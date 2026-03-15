@@ -17,7 +17,6 @@ final class LLDatabaseManager {
     private let wordListsTable = "word_lists"
     private let categoriesTable = "categories"
     private let wordsTable = "words"
-    private let wrongRecordsTable = "wrong_records"
     private let learningProgressTable = "learning_progress"
     
     private init() {
@@ -46,22 +45,14 @@ final class LLDatabaseManager {
         // 注意：不需要 createTables()，因为数据库文件已经包含了所有表和数据
         // 只在数据库文件不存在时才需要创建表
         
-        // 检查并创建错题表（如果不存在）
-        createWrongRecordsTableIfNeeded()
+        // 检查并创建学习进度表（如果不存在）
+        createLearningProgressTableIfNeeded()
         
         LLLogger.info("✅ 数据库连接已打开")
     }
     
-    /// 检查并创建错题表（如果不存在）
-    private func createWrongRecordsTableIfNeeded() {
-        do {
-            // 尝试创建表（如果已存在则忽略）
-            try database.create(table: wrongRecordsTable, of: LLDBWrongRecord.self)
-            LLLogger.info("✅ 错题表检查完成")
-        } catch {
-            LLLogger.warn("⚠️ 错题表创建失败（可能已存在）：\(error)")
-        }
-        
+    /// 检查并创建学习进度表（如果不存在）
+    private func createLearningProgressTableIfNeeded() {
         do {
             // 创建学习进度表
             try database.create(table: learningProgressTable, of: LLDBLearningProgress.self)
@@ -84,10 +75,6 @@ final class LLDatabaseManager {
             // 创建单词表
             try database.create(table: wordsTable, of: LLDBWord.self)
             LLLogger.info("✅ 单词表创建成功")
-            
-            // 创建错题表
-            try database.create(table: wrongRecordsTable, of: LLDBWrongRecord.self)
-            LLLogger.info("✅ 错题表创建成功")
             
             // 初始化默认分类
             try initializeDefaultCategories()
@@ -285,175 +272,68 @@ final class LLDatabaseManager {
         )
     }
     
-    // MARK: - 错题记录管理
+    // MARK: - 错题记录管理（已迁移到 learning_progress）
     
-    /// 添加或更新错题记录（如果已存在则增加错误次数）
-    func addOrUpdateWrongRecord(wordId: String, listId: String, word: String, meaning: String) throws {
-        // 先查询是否已存在
-        let existing = try database.getObject(
-            on: LLDBWrongRecord.Properties.all,
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
-        ) as LLDBWrongRecord?
+    /// 获取复习记录（wrongCount > 0 的学习进度）
+    /// 支持按时间范围筛选
+    func getReviewRecords(
+        wordListId: String,
+        startDate: Date? = nil,
+        endDate: Date? = nil
+    ) throws -> [LLDBLearningProgress] {
+        let calendar = Calendar.current
         
-        if let record = existing {
-            // 已存在，更新错误次数和时间
-            record.errorCount += 1
-            record.lastErrorAt = Date().timeIntervalSince1970
-            record.updatedAt = Date().timeIntervalSince1970
-            
-            try database.update(
-                table: wrongRecordsTable,
-                on: [
-                    LLDBWrongRecord.Properties.errorCount,
-                    LLDBWrongRecord.Properties.lastErrorAt,
-                    LLDBWrongRecord.Properties.updatedAt
-                ],
-                with: record,
-                where: LLDBWrongRecord.Properties.id == record.id ?? 0
-            )
-        } else {
-            // 不存在，插入新记录
-            let newRecord = LLDBWrongRecord(
-                wordId: wordId,
-                listId: listId,
-                word: word,
-                meaning: meaning,
-                errorCount: 1
-            )
-            try database.insert(objects: newRecord, intoTable: wrongRecordsTable)
+        // 构建时间条件
+        var condition = LLDBLearningProgress.Properties.wordListId == wordListId
+            && LLDBLearningProgress.Properties.wrongCount > 0
+        
+        if let start = startDate {
+            let startTimestamp = calendar.startOfDay(for: start).timeIntervalSince1970
+            condition = condition && LLDBLearningProgress.Properties.updatedAt >= startTimestamp
         }
-    }
-    
-    /// 获取某个词库的所有未复习错题，按错误次数降序
-    func getWrongRecords(forListId listId: String, onlyUnreviewed: Bool = true) throws -> [LLDBWrongRecord] {
-        var condition = LLDBWrongRecord.Properties.listId == listId
-        if onlyUnreviewed {
-            condition = condition && LLDBWrongRecord.Properties.isReviewed == false
+        
+        if let end = endDate {
+            let endTimestamp = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: end)!.timeIntervalSince1970
+            condition = condition && LLDBLearningProgress.Properties.updatedAt <= endTimestamp
         }
         
         return try database.getObjects(
-            on: LLDBWrongRecord.Properties.all,
-            fromTable: wrongRecordsTable,
+            on: LLDBLearningProgress.Properties.all,
+            fromTable: learningProgressTable,
             where: condition,
-            orderBy: [LLDBWrongRecord.Properties.errorCount.asOrder(by: .descending)]
-        )
-    }
-    
-    /// 获取所有未复习错题
-    func getAllUnreviewedWrongRecords() throws -> [LLDBWrongRecord] {
-        return try database.getObjects(
-            on: LLDBWrongRecord.Properties.all,
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.isReviewed == false,
             orderBy: [
-                LLDBWrongRecord.Properties.errorCount.asOrder(by: .descending),
-                LLDBWrongRecord.Properties.lastErrorAt.asOrder(by: .descending)
+                LLDBLearningProgress.Properties.wrongCount.asOrder(by: .descending),
+                LLDBLearningProgress.Properties.updatedAt.asOrder(by: .descending)
             ]
         )
     }
     
-    /// 统计某个词库的未复习错题数量
-    func getWrongRecordCount(forListId listId: String? = nil, onlyUnreviewed: Bool = true) throws -> Int {
-        var condition: Condition?
-        
-        if let listId = listId, onlyUnreviewed {
-            condition = LLDBWrongRecord.Properties.listId == listId && LLDBWrongRecord.Properties.isReviewed == false
-        } else if let listId = listId {
-            condition = LLDBWrongRecord.Properties.listId == listId
-        } else if onlyUnreviewed {
-            condition = LLDBWrongRecord.Properties.isReviewed == false
-        }
-        
-        let count = try database.getValue(
-            on: LLDBWrongRecord.Properties.id.count(),
-            fromTable: wrongRecordsTable,
-            where: condition
-        ).int32Value
-        
-        return Int(count)
+    /// 获取今日复习记录
+    func getTodayReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return try getReviewRecords(wordListId: wordListId, startDate: today, endDate: Date())
     }
     
-    /// 查询某个单词是否在错题本中
-    func isWordInWrongBook(wordId: String, listId: String) throws -> Bool {
-        let record = try database.getObject(
-            on: LLDBWrongRecord.Properties.id,
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
-        ) as LLDBWrongRecord?
-        
-        return record != nil
+    /// 获取本周复习记录
+    func getWeekReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
+        let calendar = Calendar.current
+        let today = Date()
+        let weekAgo = calendar.date(byAdding: .day, value: -7, to: today)!
+        return try getReviewRecords(wordListId: wordListId, startDate: weekAgo, endDate: today)
     }
     
-    /// 获取某个单词的错误次数
-    func getWordErrorCount(wordId: String, listId: String) throws -> Int {
-        let record = try database.getObject(
-            on: LLDBWrongRecord.Properties.errorCount,
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
-        ) as LLDBWrongRecord?
-        
-        return record?.errorCount ?? 0
+    /// 获取本月复习记录
+    func getMonthReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
+        let calendar = Calendar.current
+        let today = Date()
+        let monthAgo = calendar.date(byAdding: .month, value: -1, to: today)!
+        return try getReviewRecords(wordListId: wordListId, startDate: monthAgo, endDate: today)
     }
     
-    /// 标记错题为已复习
-    func markWrongRecordAsReviewed(wordId: String, listId: String) throws {
-        guard let record = try database.getObject(
-            on: LLDBWrongRecord.Properties.all,
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
-        ) as LLDBWrongRecord? else {
-            return
-        }
-        
-        let now = Date().timeIntervalSince1970
-        record.isReviewed = true
-        record.reviewedAt = now
-        record.reviewCount += 1
-        record.updatedAt = now
-        
-        try database.update(
-            table: wrongRecordsTable,
-            on: [
-                LLDBWrongRecord.Properties.isReviewed,
-                LLDBWrongRecord.Properties.reviewedAt,
-                LLDBWrongRecord.Properties.reviewCount,
-                LLDBWrongRecord.Properties.updatedAt
-            ],
-            with: record,
-            where: LLDBWrongRecord.Properties.id == record.id ?? 0
-        )
-    }
-    
-    /// 删除错题记录
-    func deleteWrongRecord(wordId: String, listId: String) throws {
-        try database.delete(
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.wordId == wordId && LLDBWrongRecord.Properties.listId == listId
-        )
-    }
-    
-    /// 删除某个词库的所有错题记录
-    func deleteWrongRecords(forListId listId: String) throws {
-        try database.delete(
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.listId == listId
-        )
-    }
-    
-    /// 删除所有已复习的错题记录
-    func deleteReviewedWrongRecords() throws {
-        try database.delete(
-            fromTable: wrongRecordsTable,
-            where: LLDBWrongRecord.Properties.isReviewed == true
-        )
-    }
-    
-    /// 批量标记错题为已复习
-    func markWrongRecordsAsReviewed(wordIds: [String], listId: String) throws {
-        for wordId in wordIds {
-            try markWrongRecordAsReviewed(wordId: wordId, listId: listId)
-        }
+    /// 获取所有复习记录
+    func getAllReviewRecords(wordListId: String) throws -> [LLDBLearningProgress] {
+        return try getReviewRecords(wordListId: wordListId)
     }
     
     // MARK: - 学习进度管理
@@ -628,42 +508,175 @@ final class LLDatabaseManager {
         return Int(count)
     }
     
-    /// 获取下一个应展示的单词（未学优先，全学完则取最早学习的）
+    /// 获取下一个应展示的单词
+    /// 优先级：今日到期复习词 > 新词汇 > 兜底（最早学习的词）
     func nextWord(in wordList: WordList) -> LLWordEntry? {
         do {
-            // 获取该词库所有已有学习记录的 wordId 和 lastSeenAt
-            let progressList = try database.getObjects(
-                on: [
-                    LLDBLearningProgress.Properties.wordId,
-                    LLDBLearningProgress.Properties.lastSeenAt
-                ],
+            let calendar = Calendar.current
+            let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
+            let endOfDayTimestamp = endOfDay.timeIntervalSince1970
+            
+            // 第一步：取今日所有到期的复习词（nextReviewAt <= 今天结束）
+            let reviewProgressList = try database.getObjects(
+                on: LLDBLearningProgress.Properties.all,
                 fromTable: learningProgressTable,
-                where: LLDBLearningProgress.Properties.wordListId == wordList.id,
-                orderBy: [LLDBLearningProgress.Properties.lastSeenAt.asOrder(by: .ascending)]
+                where: LLDBLearningProgress.Properties.wordListId == wordList.id
+                    && LLDBLearningProgress.Properties.nextReviewAt <= endOfDayTimestamp,
+                orderBy: [LLDBLearningProgress.Properties.nextReviewAt.asOrder(by: .ascending)]
             ) as [LLDBLearningProgress]
             
-            let learnedIds = Set(progressList.compactMap { $0.wordId })
-            
-            // 优先返回未学过的（按原始顺序）
-            if let notLearned = wordList.entries.first(where: { !learnedIds.contains($0.id) }) {
-                return notLearned
-            }
-            
-            // 全部学过了，返回最早学习的那个（按 lastSeenAt 升序第一个）
-            if let earliest = progressList.first,
-               let earliestWordId = earliest.wordId,
-               let entry = wordList.entries.first(where: { $0.id == earliestWordId }) {
+            // 优先返回最早到期的复习词
+            if let firstReview = reviewProgressList.first,
+               let reviewWordId = firstReview.wordId,
+               let entry = wordList.entries.first(where: { $0.id == reviewWordId }) {
+                LLLogger.debug("📖 复习词汇：\(entry.text)，下次复习时间已到期")
                 return entry
             }
             
-            // 兜底：返回第一个
+            // 第二步：没有复习词，取未学过的新词（按原始顺序）
+            let allProgressList = try database.getObjects(
+                on: [LLDBLearningProgress.Properties.wordId],
+                fromTable: learningProgressTable,
+                where: LLDBLearningProgress.Properties.wordListId == wordList.id
+            ) as [LLDBLearningProgress]
+            
+            let learnedIds = Set(allProgressList.compactMap { $0.wordId })
+            
+            if let newWord = wordList.entries.first(where: { !learnedIds.contains($0.id) }) {
+                LLLogger.debug("🆕 新词汇：\(newWord.text)")
+                return newWord
+            }
+            
+            // 第三步：兜底——所有词都学过且今日无复习任务，返回下次最早到期的词
+            let nextScheduled = try database.getObjects(
+                on: LLDBLearningProgress.Properties.all,
+                fromTable: learningProgressTable,
+                where: LLDBLearningProgress.Properties.wordListId == wordList.id,
+                orderBy: [LLDBLearningProgress.Properties.nextReviewAt.asOrder(by: .ascending)],
+                limit: 1
+            ) as [LLDBLearningProgress]
+            
+            if let next = nextScheduled.first,
+               let nextWordId = next.wordId,
+               let entry = wordList.entries.first(where: { $0.id == nextWordId }) {
+                LLLogger.debug("⏳ 兜底：返回下次最早到期的词 \(entry.text)")
+                return entry
+            }
+            
+            // 最终兜底：返回第一个
             return wordList.entries.first
             
         } catch {
             LLLogger.error("❌ nextWord 查询失败：\(error)")
-            // 降级：返回第一个单词
             return wordList.entries.first
         }
+    }
+    
+    // MARK: - 每日学习任务
+    
+    /// 获取今日需要复习的词汇（nextReviewAt <= 今天结束时间戳，全部取出）
+    func getTodayReviewWords(wordListId: String) throws -> [LLDBLearningProgress] {
+        let calendar = Calendar.current
+        let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
+        let endOfDayTimestamp = endOfDay.timeIntervalSince1970
+        
+        return try database.getObjects(
+            on: LLDBLearningProgress.Properties.all,
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId
+                && LLDBLearningProgress.Properties.nextReviewAt <= endOfDayTimestamp,
+            orderBy: [LLDBLearningProgress.Properties.nextReviewAt.asOrder(by: .ascending)]
+        )
+    }
+    
+    /// 获取今日需要学习的新词汇（在 learning_progress 中没有记录的词，按原始顺序取 limit 个）
+    func getTodayNewWords(wordListId: String, wordList: WordList, limit: Int) throws -> [LLWordEntry] {
+        // 取出该词库所有已有学习记录的 wordId
+        let progressList = try database.getObjects(
+            on: [LLDBLearningProgress.Properties.wordId],
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId
+        ) as [LLDBLearningProgress]
+        
+        let learnedIds = Set(progressList.compactMap { $0.wordId })
+        
+        // 从词库中过滤出未学习的词，按原始顺序取 limit 个
+        let newWords = wordList.entries
+            .filter { !learnedIds.contains($0.id) }
+            .prefix(limit)
+        
+        return Array(newWords)
+    }
+    
+    /// 更新复习结果（根据 SM-2 算法更新 nextReviewAt、interval、easeFactor）
+    func updateReviewResult(wordId: String, wordListId: String, feedback: String) throws {
+        guard let record = try getLearningProgress(wordId: wordId, wordListId: wordListId) else { return }
+        
+        let now = Date().timeIntervalSince1970
+        var easeFactor = record.easeFactor ?? 2.5
+        var interval = record.interval ?? 1
+        
+        switch feedback {
+        case "know":
+            // 答对：延长间隔
+            easeFactor = min(3.0, easeFactor + 0.1)
+            interval = max(1, Int(Double(interval) * easeFactor))
+            record.correctCount = (record.correctCount ?? 0) + 1
+            record.status = 2  // 已掌握
+        case "unclear":
+            // 模糊：保持间隔，稍微降低系数
+            easeFactor = max(1.3, easeFactor - 0.1)
+            interval = max(1, interval - 1)
+            record.unclearCount = (record.unclearCount ?? 0) + 1
+            if record.status == 2 { record.status = 1 }
+        case "unknown":
+            // 忘记：根据连续失败次数决定重置程度
+            record.wrongCount = (record.wrongCount ?? 0) + 1
+            let consecutiveWrong = record.wrongCount ?? 1
+            if consecutiveWrong >= 2 {
+                // 连续失败 2 次以上：完全重置
+                easeFactor = 1.3
+                interval = 1
+            } else {
+                // 首次失败：部分回退
+                easeFactor = max(1.3, easeFactor - 0.2)
+                interval = max(1, interval - 1)
+            }
+            record.status = 1  // 学习中
+        default:
+            break
+        }
+        
+        record.easeFactor = easeFactor
+        record.interval = interval
+        record.nextReviewAt = now + Double(interval) * 86400
+        record.lastReviewAt = now
+        record.lastFeedback = feedback
+        record.reviewCount = (record.reviewCount ?? 0) + 1
+        record.lastSeenAt = now
+        record.updatedAt = now
+        
+        try database.update(
+            table: learningProgressTable,
+            on: [
+                LLDBLearningProgress.Properties.easeFactor,
+                LLDBLearningProgress.Properties.interval,
+                LLDBLearningProgress.Properties.nextReviewAt,
+                LLDBLearningProgress.Properties.lastReviewAt,
+                LLDBLearningProgress.Properties.lastFeedback,
+                LLDBLearningProgress.Properties.reviewCount,
+                LLDBLearningProgress.Properties.status,
+                LLDBLearningProgress.Properties.correctCount,
+                LLDBLearningProgress.Properties.unclearCount,
+                LLDBLearningProgress.Properties.wrongCount,
+                LLDBLearningProgress.Properties.lastSeenAt,
+                LLDBLearningProgress.Properties.updatedAt
+            ],
+            with: record,
+            where: LLDBLearningProgress.Properties.id == record.id ?? 0
+        )
+        
+        LLLogger.info("✅ 更新复习结果：\(wordId)，反馈：\(feedback)，下次复习间隔：\(interval)天")
     }
     
     /// 删除某个词库的所有学习记录

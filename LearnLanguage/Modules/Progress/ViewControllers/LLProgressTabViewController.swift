@@ -42,7 +42,7 @@ final class LLProgressTabViewController: NSViewController {
     }()
     
     private lazy var wrongTabButton: NSButton = {
-        let button = NSButton(title: "错题记录", target: self, action: #selector(switchToWrongTab))
+        let button = NSButton(title: "复习记录", target: self, action: #selector(switchToWrongTab))
         button.bezelStyle = .rounded
         button.isBordered = false
         button.font = NSFont.systemFont(ofSize: 14, weight: .medium)
@@ -99,7 +99,17 @@ final class LLProgressTabViewController: NSViewController {
     
     // 错题记录表格
     private var wrongTableView: NSTableView?
-    private var wrongRecords: [LLDBWrongRecord] = []
+    private var wrongRecords: [LLDBLearningProgress] = []
+    
+    // 时间筛选选项
+    private enum TimeFilter: String, CaseIterable {
+        case all = "全部"
+        case today = "今天"
+        case week = "本周"
+        case month = "本月"
+    }
+    private var currentTimeFilter: TimeFilter = .all
+    private var timeFilterPopup: NSPopUpButton?
     
     // 当前选中的标签
     private enum Tab {
@@ -281,6 +291,40 @@ final class LLProgressTabViewController: NSViewController {
     }
     
     private func setupWrongContent() {
+        // 创建顶部工具栏
+        let toolbar = NSView()
+        toolbar.wantsLayer = true
+        wrongContentView.addSubview(toolbar)
+        toolbar.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
+        // 时间筛选标签
+        let filterLabel = NSTextField(labelWithString: "时间范围：")
+        filterLabel.font = NSFont.systemFont(ofSize: 13)
+        filterLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
+        toolbar.addSubview(filterLabel)
+        filterLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        // 时间筛选下拉框
+        let popup = NSPopUpButton()
+        popup.bezelStyle = .rounded
+        popup.font = NSFont.systemFont(ofSize: 13)
+        TimeFilter.allCases.forEach { popup.addItem(withTitle: $0.rawValue) }
+        popup.target = self
+        popup.action = #selector(timeFilterChanged(_:))
+        toolbar.addSubview(popup)
+        popup.snp.makeConstraints { make in
+            make.leading.equalTo(filterLabel.snp.trailing).offset(8)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(100)
+        }
+        timeFilterPopup = popup
+        
         // 创建表格容器
         let tableContainer = NSView()
         tableContainer.wantsLayer = true
@@ -291,7 +335,8 @@ final class LLProgressTabViewController: NSViewController {
         
         wrongContentView.addSubview(tableContainer)
         tableContainer.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(toolbar.snp.bottom).offset(12)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         // 创建 TableView
@@ -390,6 +435,12 @@ final class LLProgressTabViewController: NSViewController {
             wrongTabButton.layer?.backgroundColor = activeColor.cgColor
             wrongTabButton.contentTintColor = .white
         }
+    }
+    
+    @objc private func timeFilterChanged(_ sender: NSPopUpButton) {
+        guard let selected = TimeFilter.allCases[safe: sender.indexOfSelectedItem] else { return }
+        currentTimeFilter = selected
+        loadWrongRecords(listId: LLSettingsStore.shared.currentListId)
     }
     
     @objc private func batchReview() {
@@ -539,29 +590,58 @@ final class LLProgressTabViewController: NSViewController {
     }
     
     private func loadWrongRecords(listId: String?) {
-        // 从数据库读取错题记录
+        guard let listId = listId else {
+            wrongRecords = []
+            wrongTableView?.reloadData()
+            return
+        }
+        
+        // 从数据库读取复习记录（根据时间筛选）
         do {
-            if let listId = listId {
-                wrongRecords = try LLDatabaseManager.shared.getWrongRecords(forListId: listId, onlyUnreviewed: true)
-            } else {
-                wrongRecords = try LLDatabaseManager.shared.getAllUnreviewedWrongRecords()
+            switch currentTimeFilter {
+            case .all:
+                wrongRecords = try LLDatabaseManager.shared.getAllReviewRecords(wordListId: listId)
+            case .today:
+                wrongRecords = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: listId)
+            case .week:
+                wrongRecords = try LLDatabaseManager.shared.getWeekReviewRecords(wordListId: listId)
+            case .month:
+                wrongRecords = try LLDatabaseManager.shared.getMonthReviewRecords(wordListId: listId)
             }
             
-            LLLogger.info("✅ 加载了 \(wrongRecords.count) 条错题记录")
+            LLLogger.info("✅ 加载了 \(wrongRecords.count) 条复习记录（\(currentTimeFilter.rawValue)）")
             
             // 刷新表格
             wrongTableView?.reloadData()
             
         } catch {
-            LLLogger.error("❌ 加载错题记录失败：\(error)")
+            LLLogger.error("❌ 加载复习记录失败：\(error)")
             wrongRecords = []
             wrongTableView?.reloadData()
         }
     }
     
     @objc private func markAsKnown(wordId: String, listId: String) {
+        // 标记为已掌握：将 wrongCount 重置为 0
         do {
-            try LLDatabaseManager.shared.markWrongRecordAsReviewed(wordId: wordId, listId: listId)
+            guard let record = try LLDatabaseManager.shared.getLearningProgress(wordId: wordId, wordListId: listId) else {
+                return
+            }
+            record.wrongCount = 0
+            record.status = 2  // 已掌握
+            record.updatedAt = Date().timeIntervalSince1970
+            
+            try LLDatabaseManager.shared.database.update(
+                table: "learning_progress",
+                on: [
+                    LLDBLearningProgress.Properties.wrongCount,
+                    LLDBLearningProgress.Properties.status,
+                    LLDBLearningProgress.Properties.updatedAt
+                ],
+                with: record,
+                where: LLDBLearningProgress.Properties.id == (record.id ?? 0)
+            )
+            
             LLLogger.info("✅ 已标记为已掌握: \(wordId)")
             loadData()
         } catch {
@@ -733,15 +813,15 @@ extension LLProgressTabViewController: NSTableViewDelegate {
             textField.removeFromSuperview()
             
         case "word":
-            textField.stringValue = record.word
+            textField.stringValue = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
             textField.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
             
         case "meaning":
-            textField.stringValue = record.meaning
+            textField.stringValue = getWordMeaning(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
             textField.lineBreakMode = .byTruncatingTail
             
         case "errorCount":
-            textField.stringValue = "\(record.errorCount) 次"
+            textField.stringValue = "\(record.wrongCount ?? 0) 次"
             textField.alignment = .center
             textField.textColor = NSColor(srgbRed: 1.0, green: 0.23, blue: 0.19, alpha: 1)
             
@@ -809,7 +889,7 @@ extension LLProgressTabViewController: NSTableViewDelegate {
         guard row < wrongRecords.count else { return }
         
         let record = wrongRecords[row]
-        markAsKnown(wordId: record.wordId, listId: record.listId)
+        markAsKnown(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
     }
     
     @objc private func didClickReview(_ sender: NSButton) {
@@ -817,18 +897,19 @@ extension LLProgressTabViewController: NSTableViewDelegate {
         guard row < wrongRecords.count else { return }
         
         let record = wrongRecords[row]
-        reviewWord(wordId: record.wordId)
+        reviewWord(wordId: record.wordId ?? "")
     }
     
     @objc private func didClickPlayUS(_ sender: NSButton) {
         let row = sender.tag
         guard row < wrongRecords.count else { return }
         let record = wrongRecords[row]
+        let word = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
         
-        LLLogger.debug("🔊 播放美式发音：\(record.word)")
+        LLLogger.debug("🔊 播放美式发音：\(word)")
         
         // 使用语音管理器播放美式发音
-        LLPronunciationManager.shared.speak(word: record.word, accent: .us) { success, error in
+        LLPronunciationManager.shared.speak(word: word, accent: .us) { success, error in
             if let error = error {
                 LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
             } else if success {
@@ -841,16 +922,25 @@ extension LLProgressTabViewController: NSTableViewDelegate {
         let row = sender.tag
         guard row < wrongRecords.count else { return }
         let record = wrongRecords[row]
+        let word = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
         
-        LLLogger.debug("🔊 播放英式发音：\(record.word)")
+        LLLogger.debug("🔊 播放英式发音：\(word)")
         
         // 使用语音管理器播放英式发音
-        LLPronunciationManager.shared.speak(word: record.word, accent: .uk) { success, error in
+        LLPronunciationManager.shared.speak(word: word, accent: .uk) { success, error in
             if let error = error {
                 LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
             } else if success {
                 LLLogger.info("✅ 播放完成")
             }
         }
+    }
+    
+    private func getWordMeaning(wordId: String, listId: String) -> String {
+        guard let list = LLWordListStorage.shared.list(byId: listId),
+              let entry = list.entries.first(where: { $0.id == wordId }) else {
+            return ""
+        }
+        return entry.meaning
     }
 }

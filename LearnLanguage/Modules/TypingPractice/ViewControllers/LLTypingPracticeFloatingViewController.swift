@@ -213,33 +213,9 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     /// 检查并添加到错题本
     private func checkAndAddToWrongBook() {
-        guard let entry = currentEntry,
-              let listId = currentListId else {
-            return
-        }
-        
-        let settings = LLSettingsStore.shared.settings
-        let threshold = settings.addToWrongBookAfterErrors
-        
-        // 如果设置为"不记录"，直接返回
-        if threshold == 999 {
-            return
-        }
-        
-        // 如果错误次数达到阈值，添加到错题本
-        if currentWordErrorCount >= threshold {
-            do {
-                try LLDatabaseManager.shared.addOrUpdateWrongRecord(
-                    wordId: entry.id,
-                    listId: listId,
-                    word: entry.text,
-                    meaning: entry.meaning
-                )
-                LLLogger.info("✅ 已添加到错题本：\(entry.text)（错误\(currentWordErrorCount)次）")
-            } catch {
-                LLLogger.error("❌ 添加到错题本失败：\(error)")
-            }
-        }
+        // 此逻辑已迁移到 LLDailyLearningManager
+        // 错题本现在基于 learning_progress 表的 wrongCount 字段
+        // 无需单独处理
     }
     
     private func handleWordCompleted() {
@@ -280,24 +256,11 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             return
         }
         
-        // 保存反馈到 JSON（兼容旧逻辑）
-        LLLearningStore.shared.recordFeedback(
-            wordId: entry.id,
-            listId: listId,
-            feedback: feedback
-        )
+        // 通过每日学习管理器记录反馈
+        LLDailyLearningManager.shared.recordFeedback(feedback, for: entry)
         
-        // 保存反馈到 WCDB（主要存储）
-        do {
-            try LLDatabaseManager.shared.recordLearningProgress(
-                wordId: entry.id,
-                wordListId: listId,
-                feedback: feedback.rawValue
-            )
-            LLLogger.info("✅ 已记录反馈: \(feedback) - \(entry.text)")
-        } catch {
-            LLLogger.error("❌ WCDB 记录学习进度失败：\(error)")
-        }
+        LLLogger.info("✅ 已记录反馈: \(feedback) - \(entry.text)")
+    }
         
         // 发送通知
         NotificationCenter.default.post(

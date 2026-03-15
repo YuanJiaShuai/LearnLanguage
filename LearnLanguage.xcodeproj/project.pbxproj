@@ -72,8 +72,8 @@
 		A88C88292F3CAF61005ACFA6 /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88262F3CAF61005ACFA6 /* NotificationName+Extensions.swift */; };
 		A88C882B2F3CB589005ACFA6 /* LLSettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C882A2F3CB589005ACFA6 /* LLSettingsCardView.swift */; };
 		A88C882D2F3CBD4D005ACFA6 /* LLMMKVKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */; };
-		A89EAB012F4F41CF002458D0 /* LLDBWrongRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89EAB002F4F41CF002458D0 /* LLDBWrongRecord.swift */; };
 		A8C7584C2F59D3F40071B6CD /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = A8C7584B2F59D3F40071B6CD /* LaunchAtLogin */; };
+		A8D1A74B2F6695E000C4BDF2 /* LLDailyLearningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */; };
 		C5993F841617E33BB9BC1598 /* Pods_LearnLanguage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EFF5BF30D8EB34FDFCBE2E /* Pods_LearnLanguage.framework */; };
 /* End PBXBuildFile section */
 
@@ -143,7 +143,7 @@
 		A88C88262F3CAF61005ACFA6 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
 		A88C882A2F3CB589005ACFA6 /* LLSettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSettingsCardView.swift; sourceTree = "<group>"; };
 		A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMMKVKeys.swift; sourceTree = "<group>"; };
-		A89EAB002F4F41CF002458D0 /* LLDBWrongRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWrongRecord.swift; sourceTree = "<group>"; };
+		A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDailyLearningManager.swift; sourceTree = "<group>"; };
 		D7EFF5BF30D8EB34FDFCBE2E /* Pods_LearnLanguage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LearnLanguage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -187,6 +187,7 @@
 			children = (
 				849226912F3C878F00447E0C /* LLAppearanceManager.swift */,
 				849226922F3C878F00447E0C /* LLPronunciationManager.swift */,
+				A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -208,7 +209,6 @@
 				849226992F3C878F00447E0C /* LLDatabaseInitializer.swift */,
 				8492269A2F3C878F00447E0C /* LLDatabaseManager.swift */,
 				A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */,
-				A89EAB002F4F41CF002458D0 /* LLDBWrongRecord.swift */,
 				8492269B2F3C878F00447E0C /* LLDBWord.swift */,
 				8492269C2F3C878F00447E0C /* LLDBWordList.swift */,
 				8492269D2F3C878F00447E0C /* LLDBWordListCategory.swift */,
@@ -670,6 +670,7 @@
 				A88C88292F3CAF61005ACFA6 /* NotificationName+Extensions.swift in Sources */,
 				849226DE2F3C878F00447E0C /* LLStatCardView.swift in Sources */,
 				849226DF2F3C878F00447E0C /* LLWordFeedback.swift in Sources */,
+				A8D1A74B2F6695E000C4BDF2 /* LLDailyLearningManager.swift in Sources */,
 				849226E12F3C878F00447E0C /* LLDataTabViewController.swift in Sources */,
 				84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */,
 				849226E22F3C878F00447E0C /* LLDBWord.swift in Sources */,
@@ -689,7 +690,6 @@
 				84E1E39E2F4D53A300D1B7B6 /* LLTypingStatsView.swift in Sources */,
 				84E1E39F2F4D53A300D1B7B6 /* LLTypingSoundManager.swift in Sources */,
 				84E1E3A02F4D53A300D1B7B6 /* LLStatusBarTypingPractice.swift in Sources */,
-				A89EAB012F4F41CF002458D0 /* LLDBWrongRecord.swift in Sources */,
 				84E1E3A12F4D53A300D1B7B6 /* LLTypingPracticeTabViewController.swift in Sources */,
 				84E1E3A22F4D53A300D1B7B6 /* LLTypingPracticeViewController.swift in Sources */,
 				84E1E3A32F4D53A300D1B7B6 /* LLTypingDisplayView.swift in Sources */,

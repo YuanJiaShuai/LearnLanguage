@@ -33,6 +33,13 @@ final class LLDBLearningProgress: TableCodable {
     var typingPracticeCount: Int? = nil     // 打字练习次数
     var lastTypingAt: TimeInterval? = nil   // 最后打字练习时间
     
+    // 复习调度相关（SM-2算法）
+    var nextReviewAt: TimeInterval? = nil   // 下次复习时间
+    var reviewCount: Int? = nil             // 已复习次数
+    var easeFactor: Double? = 2.5           // 难度系数（初始2.5）
+    var interval: Int? = 1                  // 当前复习间隔（天数）
+    var lastReviewAt: TimeInterval? = nil   // 上次复习时间
+    
     // 时间字段
     var createdAt: TimeInterval? = nil      // 创建时间
     var updatedAt: TimeInterval? = nil      // 更新时间
@@ -60,6 +67,11 @@ final class LLDBLearningProgress: TableCodable {
         case lastSeenAt = "last_seen_at"
         case typingPracticeCount = "typing_practice_count"
         case lastTypingAt = "last_typing_at"
+        case nextReviewAt = "next_review_at"
+        case reviewCount = "review_count"
+        case easeFactor = "ease_factor"
+        case interval
+        case lastReviewAt = "last_review_at"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         
@@ -76,7 +88,8 @@ final class LLDBLearningProgress: TableCodable {
                 "_word_list": IndexBinding(indexesBy: wordId, wordListId),
                 "_list": IndexBinding(indexesBy: wordListId),
                 "_status": IndexBinding(indexesBy: status),
-                "_last_seen": IndexBinding(indexesBy: lastSeenAt)
+                "_last_seen": IndexBinding(indexesBy: lastSeenAt),
+                "_next_review": IndexBinding(indexesBy: nextReviewAt)
             ]
         }
         
@@ -118,5 +131,11 @@ final class LLDBLearningProgress: TableCodable {
         self.lastSeenAt = now
         self.createdAt = now
         self.updatedAt = now
+        
+        // 初始化复习调度字段
+        self.reviewCount = 0
+        self.easeFactor = 2.5
+        self.interval = 1
+        self.nextReviewAt = now + 86400  // 默认明天复习
     }
 }
