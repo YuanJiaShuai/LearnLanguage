@@ -10,7 +10,9 @@ import UniformTypeIdentifiers
 
 final class LLProgressTabViewController: NSViewController {
 
-    // MARK: - UI Components
+    // MARK: - Type Aliases
+    
+    typealias TimeFilter = LLReviewContentView.TimeFilter
     
     // 页面标题
     private lazy var titleLabel: NSTextField = {
@@ -41,8 +43,8 @@ final class LLProgressTabViewController: NSViewController {
         return button
     }()
     
-    private lazy var wrongTabButton: NSButton = {
-        let button = NSButton(title: "复习记录", target: self, action: #selector(switchToWrongTab))
+    private lazy var reviewTabButton: NSButton = {
+        let button = NSButton(title: "复习记录", target: self, action: #selector(switchToreviewTab))
         button.bezelStyle = .rounded
         button.isBordered = false
         button.font = NSFont.systemFont(ofSize: 14, weight: .medium)
@@ -52,69 +54,28 @@ final class LLProgressTabViewController: NSViewController {
     }()
     
     // 学习统计页面容器
-    private lazy var statContentView: NSView = {
+    private lazy var statContainer: NSView = {
         let view = NSView()
         view.wantsLayer = true
         return view
     }()
     
     // 错题记录页面容器
-    private lazy var wrongContentView: NSView = {
+    private lazy var reviewContainer: NSView = {
         let view = NSView()
         view.wantsLayer = true
         view.isHidden = true
         return view
     }()
     
-    // 滚动容器（用于学习统计页面）
-    private lazy var statScrollView: NSScrollView = {
-        let scroll = NSScrollView()
-        scroll.hasVerticalScroller = true
-        scroll.hasHorizontalScroller = false
-        scroll.autohidesScrollers = true
-        scroll.borderType = .noBorder
-        scroll.drawsBackground = false
-        return scroll
-    }()
-    
-    // 滚动容器（用于错题记录页面）
-    private lazy var wrongScrollView: NSScrollView = {
-        let scroll = NSScrollView()
-        scroll.hasVerticalScroller = true
-        scroll.hasHorizontalScroller = false
-        scroll.autohidesScrollers = true
-        scroll.borderType = .noBorder
-        scroll.drawsBackground = false
-        return scroll
-    }()
-    
-    // 卡片视图组件
-    private var currentListCard: LLCurrentListCardView!
-    private var totalWordsCard: LLStatCardView!
-    private var progressCard: LLProgressCardView!
-    private var streakCard: LLStatCardView!
-    private var trendCard: LLTrendCardView!
-    private var todayRecordCard: LLTodayRecordCardView!
-    private var wrongRecordCard: LLWrongRecordCardView!
-    
-    // 错题记录表格
-    private var wrongTableView: NSTableView?
-    private var wrongRecords: [LLDBLearningProgress] = []
-    
-    // 时间筛选选项
-    private enum TimeFilter: String, CaseIterable {
-        case all = "全部"
-        case today = "今天"
-        case week = "本周"
-        case month = "本月"
-    }
-    private var currentTimeFilter: TimeFilter = .all
-    private var timeFilterPopup: NSPopUpButton?
+    // 内容视图
+    private var statContentView: LLStatContentView!
+    private var reviewContentView: LLReviewContentView!
     
     // 当前选中的标签
     private enum Tab {
         case stat
-        case wrong
+        case review
     }
     private var currentTab: Tab = .stat
     
@@ -175,287 +136,101 @@ final class LLProgressTabViewController: NSViewController {
             make.width.greaterThanOrEqualTo(80)
         }
         
-        tabContainer.addSubview(wrongTabButton)
-        wrongTabButton.snp.makeConstraints { make in
+        tabContainer.addSubview(reviewTabButton)
+        reviewTabButton.snp.makeConstraints { make in
             make.leading.equalTo(statTabButton.snp.trailing).offset(4)
             make.top.bottom.trailing.equalToSuperview()
             make.width.greaterThanOrEqualTo(80)
         }
         
         // 添加学习统计页面
-        view.addSubview(statContentView)
-        statContentView.snp.makeConstraints { make in
+        view.addSubview(statContainer)
+        statContainer.snp.makeConstraints { make in
             make.top.equalTo(tabContainer.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(28)
             make.bottom.equalToSuperview().offset(-28)
         }
-        setupStatContent()
+        
+        statContentView = LLStatContentView()
+        statContentView.onChangeWordListClicked = { [weak self] in
+            self?.showWordListSelector()
+        }
+        statContentView.onExportRecordsClicked = { [weak self] in
+            self?.exportRecords()
+        }
+        statContainer.addSubview(statContentView)
+        statContentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         // 添加错题记录页面
-        view.addSubview(wrongContentView)
-        wrongContentView.snp.makeConstraints { make in
+        view.addSubview(reviewContainer)
+        reviewContainer.snp.makeConstraints { make in
             make.top.equalTo(tabContainer.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(28)
             make.bottom.equalToSuperview().offset(-28)
         }
-        setupWrongContent()
+        
+        reviewContentView = LLReviewContentView()
+        reviewContentView.onTimeFilterChanged = { [weak self] _ in
+            self?.loadReviewRecords(listId: LLSettingsStore.shared.currentListId)
+        }
+        reviewContentView.onMarkAsKnown = { [weak self] wordId, listId in
+            self?.markAsKnown(wordId: wordId, listId: listId)
+        }
+        reviewContentView.onReviewWord = { [weak self] wordId in
+            self?.reviewWord(wordId: wordId)
+        }
+        reviewContentView.onPlayUS = { [weak self] word, listId in
+            self?.playPronunciation(word: word, accent: .us)
+        }
+        reviewContentView.onPlayUK = { [weak self] word, listId in
+            self?.playPronunciation(word: word, accent: .uk)
+        }
+        reviewContainer.addSubview(reviewContentView)
+        reviewContentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         // 默认选中学习统计
         updateTabButtonStyles()
     }
     
-    private func setupStatContent() {
-        // 添加滚动视图
-        statContentView.addSubview(statScrollView)
-        statScrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        // 创建内容容器
-        let contentView = NSView()
-        contentView.wantsLayer = true
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        statScrollView.documentView = contentView
-        
-        // 关键：设置 contentView 的宽度约束
-        contentView.snp.makeConstraints { make in
-            make.width.equalTo(statScrollView)
-        }
-        
-        // 当前学习词库卡片
-        currentListCard = LLCurrentListCardView()
-        currentListCard.onChangeButtonClicked = { [weak self] in
-            self?.showWordListSelector()
-        }
-        contentView.addSubview(currentListCard)
-        currentListCard.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(280)
-        }
-        
-        // 统计卡片网格容器
-        let statsGrid = NSView()
-        statsGrid.wantsLayer = true
-        contentView.addSubview(statsGrid)
-        statsGrid.snp.makeConstraints { make in
-            make.top.equalTo(currentListCard.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(120)
-        }
-        
-        // 使用新的 View 组件创建卡片
-        totalWordsCard = LLStatCardView(icon: "📚", description: "累计学习单词")
-        statsGrid.addSubview(totalWordsCard)
-        totalWordsCard.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-        }
-        
-        progressCard = LLProgressCardView()
-        statsGrid.addSubview(progressCard)
-        progressCard.snp.makeConstraints { make in
-            make.leading.equalTo(totalWordsCard.snp.trailing).offset(16)
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(totalWordsCard)
-        }
-        
-        streakCard = LLStatCardView(icon: "🔥", description: "连续学习天数")
-        statsGrid.addSubview(streakCard)
-        streakCard.snp.makeConstraints { make in
-            make.leading.equalTo(progressCard.snp.trailing).offset(16)
-            make.trailing.top.bottom.equalToSuperview()
-            make.width.equalTo(totalWordsCard)
-        }
-        
-        // 近7天学习趋势卡片
-        trendCard = LLTrendCardView()
-        contentView.addSubview(trendCard)
-        trendCard.snp.makeConstraints { make in
-            make.top.equalTo(statsGrid.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(200)
-        }
-        
-        // 今日学习记录卡片
-        todayRecordCard = LLTodayRecordCardView()
-        todayRecordCard.onExportButtonClicked = { [weak self] in
-            self?.exportRecords()
-        }
-        contentView.addSubview(todayRecordCard)
-        todayRecordCard.snp.makeConstraints { make in
-            make.top.equalTo(trendCard.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview()
-            make.height.greaterThanOrEqualTo(300)
-            make.bottom.equalToSuperview().offset(-20)
-        }
-    }
-    
-    private func setupWrongContent() {
-        // 创建顶部工具栏
-        let toolbar = NSView()
-        toolbar.wantsLayer = true
-        wrongContentView.addSubview(toolbar)
-        toolbar.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(40)
-        }
-        
-        // 时间筛选标签
-        let filterLabel = NSTextField(labelWithString: "时间范围：")
-        filterLabel.font = NSFont.systemFont(ofSize: 13)
-        filterLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-        toolbar.addSubview(filterLabel)
-        filterLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
-        
-        // 时间筛选下拉框
-        let popup = NSPopUpButton()
-        popup.bezelStyle = .rounded
-        popup.font = NSFont.systemFont(ofSize: 13)
-        TimeFilter.allCases.forEach { popup.addItem(withTitle: $0.rawValue) }
-        popup.target = self
-        popup.action = #selector(timeFilterChanged(_:))
-        toolbar.addSubview(popup)
-        popup.snp.makeConstraints { make in
-            make.leading.equalTo(filterLabel.snp.trailing).offset(8)
-            make.centerY.equalToSuperview()
-            make.width.equalTo(100)
-        }
-        timeFilterPopup = popup
-        
-        // 创建表格容器
-        let tableContainer = NSView()
-        tableContainer.wantsLayer = true
-        tableContainer.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
-        tableContainer.layer?.cornerRadius = 8
-        tableContainer.layer?.borderWidth = 1
-        tableContainer.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
-        
-        wrongContentView.addSubview(tableContainer)
-        tableContainer.snp.makeConstraints { make in
-            make.top.equalTo(toolbar.snp.bottom).offset(12)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        // 创建 TableView
-        let tableView = NSTableView()
-        tableView.style = .fullWidth
-        tableView.rowHeight = 60
-        tableView.backgroundColor = .clear
-        tableView.gridStyleMask = [.solidHorizontalGridLineMask]
-        tableView.gridColor = LLAppearanceManager.shared.colors.borderColor
-        tableView.usesAlternatingRowBackgroundColors = false
-        tableView.selectionHighlightStyle = .regular
-        
-        // 添加列
-        let audioColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("audio"))
-        audioColumn.title = "发音"
-        audioColumn.width = 70
-        audioColumn.minWidth = 60
-        tableView.addTableColumn(audioColumn)
-        
-        let wordColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("word"))
-        wordColumn.title = "单词"
-        wordColumn.width = 130
-        wordColumn.minWidth = 100
-        tableView.addTableColumn(wordColumn)
-        
-        let meaningColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("meaning"))
-        meaningColumn.title = "释义"
-        meaningColumn.width = 180
-        meaningColumn.minWidth = 150
-        tableView.addTableColumn(meaningColumn)
-        
-        let errorCountColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("errorCount"))
-        errorCountColumn.title = "错误次数"
-        errorCountColumn.width = 90
-        errorCountColumn.minWidth = 80
-        tableView.addTableColumn(errorCountColumn)
-        
-        let actionColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("action"))
-        actionColumn.title = "操作"
-        actionColumn.width = 140
-        actionColumn.minWidth = 120
-        tableView.addTableColumn(actionColumn)
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        // 创建滚动视图
-        let scrollView = NSScrollView()
-        scrollView.hasVerticalScroller = true
-        scrollView.hasHorizontalScroller = false
-        scrollView.autohidesScrollers = true
-        scrollView.borderType = .noBorder
-        scrollView.documentView = tableView
-        
-        tableContainer.addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(20)
-        }
-        
-        // 保存引用
-        wrongTableView = tableView
-    }
-    
-    // MARK: - Actions
-    
     @objc private func switchToStatTab() {
         currentTab = .stat
         updateTabButtonStyles()
-        statContentView.isHidden = false
-        wrongContentView.isHidden = true
+        statContainer.isHidden = false
+        reviewContainer.isHidden = true
     }
     
-    @objc private func switchToWrongTab() {
-        currentTab = .wrong
+    @objc private func switchToreviewTab() {
+        currentTab = .review
         updateTabButtonStyles()
-        statContentView.isHidden = true
-        wrongContentView.isHidden = false
+        statContainer.isHidden = true
+        reviewContainer.isHidden = false
     }
     
     private func updateTabButtonStyles() {
         let activeColor = LLAppearanceManager.shared.colors.accentColor
         let inactiveColor = NSColor(srgbRed: 0.96, green: 0.96, blue: 0.97, alpha: 1)
         
-        // 确保按钮有 layer
         statTabButton.wantsLayer = true
-        wrongTabButton.wantsLayer = true
+        reviewTabButton.wantsLayer = true
         
         if currentTab == .stat {
             statTabButton.layer?.backgroundColor = activeColor.cgColor
             statTabButton.contentTintColor = .white
-            wrongTabButton.layer?.backgroundColor = inactiveColor.cgColor
-            wrongTabButton.contentTintColor = LLAppearanceManager.shared.colors.primaryText
+            reviewTabButton.layer?.backgroundColor = inactiveColor.cgColor
+            reviewTabButton.contentTintColor = LLAppearanceManager.shared.colors.primaryText
         } else {
             statTabButton.layer?.backgroundColor = inactiveColor.cgColor
             statTabButton.contentTintColor = LLAppearanceManager.shared.colors.primaryText
-            wrongTabButton.layer?.backgroundColor = activeColor.cgColor
-            wrongTabButton.contentTintColor = .white
+            reviewTabButton.layer?.backgroundColor = activeColor.cgColor
+            reviewTabButton.contentTintColor = .white
         }
     }
     
-    @objc private func timeFilterChanged(_ sender: NSPopUpButton) {
-        let index = sender.indexOfSelectedItem
-        guard index >= 0 && index < TimeFilter.allCases.count else { return }
-        currentTimeFilter = TimeFilter.allCases[index]
-        loadWrongRecords(listId: LLSettingsStore.shared.currentListId)
-    }
-    
-    @objc private func batchReview() {
-        let alert = NSAlert()
-        alert.messageText = "批量复习"
-        alert.informativeText = "此功能将开启错题复习模式，是否继续？"
-        alert.addButton(withTitle: "开始复习")
-        alert.addButton(withTitle: "取消")
-        
-        if alert.runModal() == .alertFirstButtonReturn {
-            // TODO: 实现批量复习逻辑
-            LLLogger.info("开始批量复习错题")
-        }
-    }
+
     
     @objc private func exportRecords() {
         let savePanel = NSSavePanel()
@@ -478,7 +253,6 @@ final class LLProgressTabViewController: NSViewController {
         
         let listId = LLSettingsStore.shared.currentListId
         
-        // 从 WCDB 获取统计数据
         do {
             let todayCount = try LLDatabaseManager.shared.getTodayLearnedCount(wordListId: listId)
             let stats: (total: Int, learned: Int, mastered: Int, learning: Int)
@@ -488,153 +262,71 @@ final class LLProgressTabViewController: NSViewController {
                 stats = (0, 0, 0, 0)
             }
             let totalWords = stats.learned
-            
-            // 学习天数暂时保留 LLLearningStore 计算（WCDB 暂无此方法）
             let days = LLLearningStore.shared.totalLearningDays(listId: listId)
             
-            // 使用新的 View 组件更新数据
-            totalWordsCard?.updateNumber("\(totalWords)")
-            streakCard?.updateNumber("\(days)")
-            
-            // 今日进度（假设目标是50个）
-            let todayGoal = 50
-            progressCard?.updateProgress(current: todayCount, total: todayGoal)
+            statContentView?.updateStatistics(totalWords: totalWords, days: days, todayCount: todayCount, todayGoal: 50)
         } catch {
             LLLogger.error("❌ 加载统计数据失败：\(error)")
         }
         
-        // 加载今日学习记录
         loadTodayRecords(listId: listId)
-        
-        // 加载错题记录
-        loadWrongRecords(listId: listId)
+        loadReviewRecords(listId: listId)
     }
     
     private func loadTodayRecords(listId: String?) {
-        // 使用新的 View 组件获取滚动视图
-        guard let scrollView = todayRecordCard?.getScrollView() else { return }
-        guard let listView = todayRecordCard?.getListView() else { return }
-        
-        listView.subviews.forEach { $0.removeFromSuperview() }
-        
-        // 从 WCDB 获取今日学习记录
-        let todayRecords: [LLDBLearningProgress]
         do {
             let allProgress = try LLDatabaseManager.shared.getAllLearningProgress(wordListId: listId ?? "")
             let cal = Calendar.current
             let today = cal.startOfDay(for: Date())
-            todayRecords = allProgress.filter { record in
+            let todayRecords = allProgress.filter { record in
                 let date = Date(timeIntervalSince1970: record.lastSeenAt ?? 0)
                 return cal.isDate(date, inSameDayAs: today)
             }.sorted { ($0.lastSeenAt ?? 0) > ($1.lastSeenAt ?? 0) }
+            
+            statContentView?.updateTodayRecords(todayRecords)
         } catch {
             LLLogger.error("❌ 加载今日学习记录失败：\(error)")
-            return
-        }
-        
-        if todayRecords.isEmpty {
-            let emptyLabel = NSTextField(labelWithString: "今天还没有学习记录")
-            emptyLabel.font = NSFont.systemFont(ofSize: 14)
-            emptyLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-            emptyLabel.isEditable = false
-            emptyLabel.isBezeled = false
-            emptyLabel.drawsBackground = false
-            emptyLabel.alignment = .center
-            listView.addSubview(emptyLabel)
-            emptyLabel.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-                make.width.equalTo(scrollView)
-            }
-            listView.snp.makeConstraints { make in
-                make.width.equalTo(scrollView)
-                make.height.equalTo(100)
-            }
-            return
-        }
-        
-        let container = NSView()
-        container.wantsLayer = true
-        listView.addSubview(container)
-        container.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.width.equalTo(scrollView)
-        }
-        
-        var lastView: NSView?
-        for (index, record) in todayRecords.prefix(20).enumerated() {
-            let wordText = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-            let feedbackIcon = getFeedbackIconFromString(feedback: record.lastFeedback ?? "")
-            let itemView = LLRecordItemView(
-                wordText: wordText,
-                feedbackIcon: feedbackIcon,
-                time: Date(timeIntervalSince1970: record.lastSeenAt ?? 0),
-                showBorder: index < todayRecords.count - 1
-            )
-            container.addSubview(itemView)
-            itemView.snp.makeConstraints { make in
-                if let last = lastView {
-                    make.top.equalTo(last.snp.bottom)
-                } else {
-                    make.top.equalToSuperview().offset(8)
-                }
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(50)
-            }
-            lastView = itemView
-        }
-        
-        if let last = lastView {
-            last.snp.makeConstraints { make in
-                make.bottom.equalToSuperview().offset(-8)
-            }
         }
     }
     
-    private func loadWrongRecords(listId: String?) {
+    private func loadReviewRecords(listId: String?) {
         guard let listId = listId else {
-            wrongRecords = []
-            wrongTableView?.reloadData()
+            reviewContentView?.records = []
             return
         }
         
-        // 从数据库读取复习记录（根据时间筛选）
         do {
-            switch currentTimeFilter {
+            let records: [LLDBLearningProgress]
+            let timeFilter = reviewContentView?.currentTimeFilter ?? .all
+            switch timeFilter {
             case .all:
-                wrongRecords = try LLDatabaseManager.shared.getAllReviewRecords(wordListId: listId)
+                records = try LLDatabaseManager.shared.getAllReviewRecords(wordListId: listId)
             case .today:
-                wrongRecords = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: listId)
+                records = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: listId)
             case .week:
-                wrongRecords = try LLDatabaseManager.shared.getWeekReviewRecords(wordListId: listId)
+                records = try LLDatabaseManager.shared.getWeekReviewRecords(wordListId: listId)
             case .month:
-                wrongRecords = try LLDatabaseManager.shared.getMonthReviewRecords(wordListId: listId)
+                records = try LLDatabaseManager.shared.getMonthReviewRecords(wordListId: listId)
             }
             
-            LLLogger.info("✅ 加载了 \(wrongRecords.count) 条复习记录（\(currentTimeFilter.rawValue)）")
-            
-            // 刷新表格
-            wrongTableView?.reloadData()
-            
+            LLLogger.info("✅ 加载了 \(records.count) 条复习记录")
+            reviewContentView?.records = records
         } catch {
             LLLogger.error("❌ 加载复习记录失败：\(error)")
-            wrongRecords = []
-            wrongTableView?.reloadData()
+            reviewContentView?.records = []
         }
     }
     
     @objc private func markAsKnown(wordId: String, listId: String) {
-        // 标记为已掌握：将 wrongCount 重置为 0
         do {
             guard let record = try LLDatabaseManager.shared.getLearningProgress(wordId: wordId, wordListId: listId) else {
                 return
             }
             
-            record.wrongCount = 0
-            record.status = 2  // 已掌握
+            record.reviewCount = 0
+            record.status = 2
             record.updatedAt = Date().timeIntervalSince1970
             
-            // 使用 LLDailyLearningManager 的方法来更新（它已经处理了 WCDB 的细节）
-            // 或者直接调用 recordLearningProgress 来更新
             try LLDatabaseManager.shared.recordLearningProgress(
                 wordId: wordId,
                 wordListId: listId,
@@ -649,8 +341,20 @@ final class LLProgressTabViewController: NSViewController {
     }
     
     @objc private func reviewWord(wordId: String) {
-        // TODO: 实现立即复习的逻辑
         LLLogger.info("立即复习: \(wordId)")
+    }
+    
+    private func playPronunciation(word: String, accent: LLPronunciationAccent) {
+        let accentName = accent == .us ? "美式" : "英式"
+        LLLogger.debug("🔊 播放\(accentName)发音：\(word)")
+        
+        LLPronunciationManager.shared.speak(word: word, accent: accent) { success, error in
+            if let error = error {
+                LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
+            } else if success {
+                LLLogger.info("✅ 播放完成")
+            }
+        }
     }
     
     private func showWordListSelector() {
@@ -733,213 +437,5 @@ final class LLProgressTabViewController: NSViewController {
         case "unknown": return "❌"
         default:        return "❓"
         }
-    }
-}
-
-// MARK: - NSTableViewDataSource
-
-extension LLProgressTabViewController: NSTableViewDataSource {
-    
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        return wrongRecords.count
-    }
-}
-
-// MARK: - NSTableViewDelegate
-
-extension LLProgressTabViewController: NSTableViewDelegate {
-    
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard row < wrongRecords.count else { return nil }
-        
-        let record = wrongRecords[row]
-        let columnId = tableColumn?.identifier.rawValue ?? ""
-        
-        let cellView = NSTableCellView()
-        let textField = NSTextField(labelWithString: "")
-        textField.isEditable = false
-        textField.isBezeled = false
-        textField.drawsBackground = false
-        textField.font = NSFont.systemFont(ofSize: 13)
-        textField.textColor = LLAppearanceManager.shared.colors.primaryText
-        
-        cellView.addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(-8)
-            make.centerY.equalToSuperview()
-        }
-        
-        switch columnId {
-        case "audio":
-            // 创建按钮容器
-            let buttonContainer = NSView()
-            cellView.addSubview(buttonContainer)
-            buttonContainer.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
-            
-            // 美式发音按钮
-            let usButton = NSButton(title: "🇺🇸", target: self, action: #selector(didClickPlayUS(_:)))
-            usButton.bezelStyle = .rounded
-            usButton.controlSize = .small
-            usButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-            usButton.tag = row
-            
-            // 英式发音按钮
-            let ukButton = NSButton(title: "🇬🇧", target: self, action: #selector(didClickPlayUK(_:)))
-            ukButton.bezelStyle = .rounded
-            ukButton.controlSize = .small
-            ukButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-            ukButton.tag = row
-            
-            buttonContainer.addSubview(usButton)
-            buttonContainer.addSubview(ukButton)
-            
-            usButton.snp.makeConstraints { make in
-                make.top.leading.trailing.equalToSuperview()
-                make.width.equalTo(50)
-                make.height.equalTo(20)
-            }
-            
-            ukButton.snp.makeConstraints { make in
-                make.top.equalTo(usButton.snp.bottom).offset(4)
-                make.leading.trailing.bottom.equalToSuperview()
-                make.width.equalTo(50)
-                make.height.equalTo(20)
-            }
-            
-            textField.removeFromSuperview()
-            
-        case "word":
-            textField.stringValue = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-            textField.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
-            
-        case "meaning":
-            textField.stringValue = getWordMeaning(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-            textField.lineBreakMode = .byTruncatingTail
-            
-        case "errorCount":
-            textField.stringValue = "\(record.wrongCount ?? 0) 次"
-            textField.alignment = .center
-            textField.textColor = NSColor(srgbRed: 1.0, green: 0.23, blue: 0.19, alpha: 1)
-            
-        case "action":
-            // 创建按钮容器
-            let buttonContainer = NSView()
-            cellView.addSubview(buttonContainer)
-            buttonContainer.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
-            
-            // 标记为已掌握按钮
-            let markButton = NSButton(title: "✓ 已掌握", target: self, action: #selector(didClickMarkAsKnown(_:)))
-            markButton.bezelStyle = .rounded
-            markButton.controlSize = .small
-            markButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-            markButton.tag = row
-            markButton.wantsLayer = true
-            markButton.layer?.backgroundColor = NSColor.systemGreen.withAlphaComponent(0.1).cgColor
-            markButton.layer?.cornerRadius = 4
-            markButton.contentTintColor = .systemGreen
-            
-            // 立即复习按钮
-            let reviewButton = NSButton(title: "🔄 复习", target: self, action: #selector(didClickReview(_:)))
-            reviewButton.bezelStyle = .rounded
-            reviewButton.controlSize = .small
-            reviewButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-            reviewButton.tag = row
-            reviewButton.wantsLayer = true
-            reviewButton.layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.1).cgColor
-            reviewButton.layer?.cornerRadius = 4
-            reviewButton.contentTintColor = .systemBlue
-            
-            buttonContainer.addSubview(markButton)
-            buttonContainer.addSubview(reviewButton)
-            
-            markButton.snp.makeConstraints { make in
-                make.leading.top.bottom.equalToSuperview()
-                make.width.equalTo(65)
-                make.height.equalTo(24)
-            }
-            
-            reviewButton.snp.makeConstraints { make in
-                make.leading.equalTo(markButton.snp.trailing).offset(8)
-                make.trailing.top.bottom.equalToSuperview()
-                make.width.equalTo(55)
-                make.height.equalTo(24)
-            }
-            
-            textField.removeFromSuperview()
-            
-        default:
-            break
-        }
-        
-        return cellView
-    }
-    
-    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        return false
-    }
-    
-    @objc private func didClickMarkAsKnown(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < wrongRecords.count else { return }
-        
-        let record = wrongRecords[row]
-        markAsKnown(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-    }
-    
-    @objc private func didClickReview(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < wrongRecords.count else { return }
-        
-        let record = wrongRecords[row]
-        reviewWord(wordId: record.wordId ?? "")
-    }
-    
-    @objc private func didClickPlayUS(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < wrongRecords.count else { return }
-        let record = wrongRecords[row]
-        let word = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-        
-        LLLogger.debug("🔊 播放美式发音：\(word)")
-        
-        // 使用语音管理器播放美式发音
-        LLPronunciationManager.shared.speak(word: word, accent: .us) { success, error in
-            if let error = error {
-                LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
-            } else if success {
-                LLLogger.info("✅ 播放完成")
-            }
-        }
-    }
-    
-    @objc private func didClickPlayUK(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < wrongRecords.count else { return }
-        let record = wrongRecords[row]
-        let word = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-        
-        LLLogger.debug("🔊 播放英式发音：\(word)")
-        
-        // 使用语音管理器播放英式发音
-        LLPronunciationManager.shared.speak(word: word, accent: .uk) { success, error in
-            if let error = error {
-                LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
-            } else if success {
-                LLLogger.info("✅ 播放完成")
-            }
-        }
-    }
-    
-    private func getWordMeaning(wordId: String, listId: String) -> String {
-        guard let list = LLWordListStorage.shared.list(byId: listId),
-              let entry = list.entries.first(where: { $0.id == wordId }) else {
-            return ""
-        }
-        return entry.meaning
     }
 }

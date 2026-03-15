@@ -74,6 +74,8 @@
 		A88C882D2F3CBD4D005ACFA6 /* LLMMKVKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */; };
 		A8C7584C2F59D3F40071B6CD /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = A8C7584B2F59D3F40071B6CD /* LaunchAtLogin */; };
 		A8D1A74B2F6695E000C4BDF2 /* LLDailyLearningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */; };
+		A8D1A74E2F66AE4000C4BDF2 /* LLStatContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A74D2F66AE4000C4BDF2 /* LLStatContentView.swift */; };
+		A8D1A74F2F66AE4000C4BDF2 /* LLReviewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A74C2F66AE4000C4BDF2 /* LLReviewContentView.swift */; };
 		C5993F841617E33BB9BC1598 /* Pods_LearnLanguage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EFF5BF30D8EB34FDFCBE2E /* Pods_LearnLanguage.framework */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +146,8 @@
 		A88C882A2F3CB589005ACFA6 /* LLSettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSettingsCardView.swift; sourceTree = "<group>"; };
 		A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMMKVKeys.swift; sourceTree = "<group>"; };
 		A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDailyLearningManager.swift; sourceTree = "<group>"; };
+		A8D1A74C2F66AE4000C4BDF2 /* LLReviewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLReviewContentView.swift; sourceTree = "<group>"; };
+		A8D1A74D2F66AE4000C4BDF2 /* LLStatContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatContentView.swift; sourceTree = "<group>"; };
 		D7EFF5BF30D8EB34FDFCBE2E /* Pods_LearnLanguage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LearnLanguage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -316,6 +320,8 @@
 				849226B62F3C878F00447E0C /* LLProgressCardView.swift */,
 				849226B72F3C878F00447E0C /* LLRecordItemView.swift */,
 				849226B82F3C878F00447E0C /* LLStatCardView.swift */,
+				A8D1A74C2F66AE4000C4BDF2 /* LLReviewContentView.swift */,
+				A8D1A74D2F66AE4000C4BDF2 /* LLStatContentView.swift */,
 				849226B92F3C878F00447E0C /* LLTodayRecordCardView.swift */,
 				849226BA2F3C878F00447E0C /* LLTrendCardView.swift */,
 				849226BB2F3C878F00447E0C /* LLWrongRecordCardView.swift */,
@@ -713,6 +719,8 @@
 				849226FC2F3C878F00447E0C /* LLDatabaseInitializer.swift in Sources */,
 				849226FD2F3C878F00447E0C /* LLWordListTabViewController.swift in Sources */,
 				A88C882D2F3CBD4D005ACFA6 /* LLMMKVKeys.swift in Sources */,
+				A8D1A74E2F66AE4000C4BDF2 /* LLStatContentView.swift in Sources */,
+				A8D1A74F2F66AE4000C4BDF2 /* LLReviewContentView.swift in Sources */,
 				849226FE2F3C878F00447E0C /* LLLearningStore.swift in Sources */,
 				849226FF2F3C878F00447E0C /* LLDatabaseManager.swift in Sources */,
 				849227002F3C878F00447E0C /* LLAppSettings.swift in Sources */,
