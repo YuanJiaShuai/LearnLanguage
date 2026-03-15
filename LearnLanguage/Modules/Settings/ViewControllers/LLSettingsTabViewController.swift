@@ -39,10 +39,8 @@ final class LLSettingsTabViewController: NSViewController {
     
     // 学习目标卡片
     private var newWordsField: NSTextField!
-    private var reviewCountField: NSTextField!
     
     // 状态栏设置卡片
-    private var statusBarIntervalField: NSTextField!
     private var statusBarDisplayPopup: NSPopUpButton!
     private var statusBarPhoneticCheck: NSButton!
     private var statusBarMaxLengthField: NSTextField!
@@ -76,7 +74,6 @@ final class LLSettingsTabViewController: NSViewController {
     private var typingPracticeShowMeaningCheck: NSButton!
     private var typingInputStylePopup: NSPopUpButton!
     private var autoShowAnswerPopup: NSPopUpButton!
-    private var addToWrongBookPopup: NSPopUpButton!
     
     // 快捷键设置卡片
     private var shortcutPlaceholderLabel: NSTextField!
@@ -180,20 +177,14 @@ final class LLSettingsTabViewController: NSViewController {
         let card = LLSettingsCardView(title: "学习目标", icon: "🎯")
         
         newWordsField = createNumberField(value: "20")
-        reviewCountField = createNumberField(value: "50")
         
-        card.addFormRow(items: [
-            (label: "每日新学单词数", control: newWordsField),
-            (label: "每日复习单词数", control: reviewCountField)
-        ])
+        card.addFormItem(label: "每日新学单词数", control: newWordsField)
         
         return card
     }
     
     private func createStatusBarCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: "状态栏设置", icon: "🔔")
-        
-        statusBarIntervalField = createNumberField(value: "30")
         
         statusBarDisplayPopup = NSPopUpButton()
         statusBarDisplayPopup.target = self
@@ -252,7 +243,6 @@ final class LLSettingsTabViewController: NSViewController {
         statusBarPlaybackIntervalPopup.action = #selector(saveSettings)
         statusBarPlaybackIntervalPopup.addItems(withTitles: LLPlaybackInterval.allDisplayNames)
         
-        card.addFormItem(label: "单词自动切换时间（秒）", control: statusBarIntervalField)
         card.addFormItem(label: "显示内容", control: displayOptionsStack)
         card.addFormItem(label: "滚动设置", control: statusBarAutoScrollCheck)
         card.addFormItem(label: "状态栏显示宽度", control: widthSliderStack)
@@ -338,11 +328,6 @@ final class LLSettingsTabViewController: NSViewController {
         autoShowAnswerPopup.action = #selector(saveSettings)
         autoShowAnswerPopup.addItems(withTitles: LLAutoShowAnswerOption.allDisplayNames)
         
-        addToWrongBookPopup = NSPopUpButton()
-        addToWrongBookPopup.target = self
-        addToWrongBookPopup.action = #selector(saveSettings)
-        addToWrongBookPopup.addItems(withTitles: LLAddToWrongBookOption.allDisplayNames)
-        
         card.addFormItem(label: "浮窗透明度", control: panelAlphaSlider)
         card.addFormRow(items: [
             (label: "浮窗宽度", control: panelWidthField),
@@ -350,10 +335,7 @@ final class LLSettingsTabViewController: NSViewController {
         ])
         card.addFormItem(label: "打字练习", control: typingStack)
         card.addFormItem(label: "答题输入框样式", control: typingInputStylePopup)
-        card.addFormRow(items: [
-            (label: "自动显示答案", control: autoShowAnswerPopup),
-            (label: "记录到错题本", control: addToWrongBookPopup)
-        ])
+        card.addFormItem(label: "自动显示答案", control: autoShowAnswerPopup)
         
         return card
     }
@@ -408,10 +390,8 @@ final class LLSettingsTabViewController: NSViewController {
         
         // 学习目标
         newWordsField.stringValue = "\(s.newWordsPerDay)"
-        reviewCountField.stringValue = "\(s.reviewCountPerDay)"
         
         // 状态栏设置
-        statusBarIntervalField.stringValue = "30"
         statusBarDisplayPopup.selectItem(at: s.statusBarShowPhonetic ? 1 : 0)
         statusBarPhoneticCheck.state = s.statusBarShowPhonetic ? .on : .off
         statusBarMaxLengthField.stringValue = "\(s.statusBarMaxLength)"
@@ -462,11 +442,6 @@ final class LLSettingsTabViewController: NSViewController {
             autoShowAnswerPopup.selectItem(at: index)
         }
         
-        // 记录到错题本：使用枚举来映射
-        let wrongBookOption = LLAddToWrongBookOption.from(errorCount: s.addToWrongBookAfterErrors)
-        if let index = LLAddToWrongBookOption.allCases.firstIndex(of: wrongBookOption) {
-            addToWrongBookPopup.selectItem(at: index)
-        }
         launchAtLoginCheck.state = LaunchAtLogin.isEnabled ? .on : .off
     }
 
@@ -475,7 +450,6 @@ final class LLSettingsTabViewController: NSViewController {
         
         // 学习目标
         s.newWordsPerDay = Int(newWordsField.stringValue) ?? 20
-        s.reviewCountPerDay = Int(reviewCountField.stringValue) ?? 50
         
         // 状态栏设置
         s.statusBarShowPhonetic = statusBarPhoneticCheck.state == .on
@@ -526,12 +500,6 @@ final class LLSettingsTabViewController: NSViewController {
         let autoShowIndex = autoShowAnswerPopup.indexOfSelectedItem
         if autoShowIndex >= 0 && autoShowIndex < LLAutoShowAnswerOption.allCases.count {
             s.autoShowAnswerAfterErrors = LLAutoShowAnswerOption.allCases[autoShowIndex].rawValue
-        }
-        
-        // 记录到错题本
-        let wrongBookIndex = addToWrongBookPopup.indexOfSelectedItem
-        if wrongBookIndex >= 0 && wrongBookIndex < LLAddToWrongBookOption.allCases.count {
-            s.addToWrongBookAfterErrors = LLAddToWrongBookOption.allCases[wrongBookIndex].rawValue
         }
         
         LLSettingsStore.shared.settings = s
