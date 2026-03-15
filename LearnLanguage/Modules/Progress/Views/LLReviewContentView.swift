@@ -60,6 +60,7 @@ final class LLReviewContentView: NSView {
     var onReviewWord: ((String) -> Void)?
     var onPlayUS: ((String, String) -> Void)?
     var onPlayUK: ((String, String) -> Void)?
+    var onPlayPronunciation: ((String, String) -> Void)?  // 新增：发音回调
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -114,7 +115,9 @@ final class LLReviewContentView: NSView {
         tableView.gridStyleMask = [.solidHorizontalGridLineMask]
         tableView.gridColor = LLAppearanceManager.shared.colors.borderColor
         tableView.usesAlternatingRowBackgroundColors = false
-        tableView.selectionHighlightStyle = .regular
+        tableView.selectionHighlightStyle = .none  // 移除选中效果
+        tableView.allowsEmptySelection = true
+        tableView.allowsMultipleSelection = false
         
         setupTableColumns()
         tableView.delegate = self
@@ -129,11 +132,10 @@ final class LLReviewContentView: NSView {
     
     private func setupTableColumns() {
         let columns = [
-            ("audio", "发音", 70, 60),
+            ("play", "播放", 50, 50),
             ("word", "单词", 130, 100),
             ("meaning", "释义", 180, 150),
-            ("errorCount", "错误次数", 90, 80),
-            ("action", "操作", 140, 120)
+            ("nextReview", "下次复习", 100, 90)
         ]
         
         for (id, title, width, minWidth) in columns {
@@ -141,6 +143,14 @@ final class LLReviewContentView: NSView {
             column.title = title
             column.width = CGFloat(width)
             column.minWidth = CGFloat(minWidth)
+            
+            // 设置"下次复习"列右对齐
+            if id == "nextReview" {
+                if let headerCell = column.headerCell as? NSTableHeaderCell {
+                    headerCell.alignment = .right
+                }
+            }
+            
             tableView.addTableColumn(column)
         }
     }
@@ -167,158 +177,122 @@ extension LLReviewContentView: NSTableViewDelegate {
         let columnId = tableColumn?.identifier.rawValue ?? ""
         
         let cellView = NSTableCellView()
-        let textField = NSTextField(labelWithString: "")
-        textField.isEditable = false
-        textField.isBezeled = false
-        textField.drawsBackground = false
-        textField.font = NSFont.systemFont(ofSize: 13)
-        textField.textColor = LLAppearanceManager.shared.colors.primaryText
-        
-        cellView.addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(-8)
-            make.centerY.equalToSuperview()
-        }
+        cellView.wantsLayer = true
         
         switch columnId {
-        case "audio":
-            setupAudioCell(cellView, textField, row)
-        case "word":
-            textField.stringValue = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-            textField.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
-        case "meaning":
-            textField.stringValue = getWordMeaning(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-            textField.lineBreakMode = .byTruncatingTail
-        case "errorCount":
-            textField.stringValue = "\(record.reviewCount ?? 0) 次"
-            textField.alignment = .center
-            textField.textColor = NSColor(srgbRed: 1.0, green: 0.23, blue: 0.19, alpha: 1)
-        case "action":
-            setupActionCell(cellView, textField, row)
+        case "play":
+            let playButton = NSButton(title: "🔊", target: self, action: #selector(didClickPlayButton(_:)))
+            playButton.bezelStyle = .rounded
+            playButton.controlSize = .small
+            playButton.font = NSFont.systemFont(ofSize: 14, weight: .medium)
+            playButton.tag = row
+            cellView.addSubview(playButton)
+            playButton.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+                make.width.height.equalTo(30)
+            }
+            
         default:
-            break
+            let textField = NSTextField(labelWithString: "")
+            textField.isEditable = false
+            textField.isBezeled = false
+            textField.drawsBackground = false
+            textField.font = NSFont.systemFont(ofSize: 13)
+            textField.textColor = LLAppearanceManager.shared.colors.primaryText
+            
+            cellView.addSubview(textField)
+            textField.snp.makeConstraints { make in
+                make.leading.equalToSuperview().offset(8)
+                make.trailing.equalToSuperview().offset(-8)
+                make.centerY.equalToSuperview()
+            }
+            
+            switch columnId {
+            case "word":
+                // 创建容器来放置两行文本
+                let container = NSView()
+                cellView.addSubview(container)
+                container.snp.makeConstraints { make in
+                    make.leading.trailing.equalToSuperview().inset(8)
+                    make.centerY.equalToSuperview()
+                }
+                
+                // 单词
+                let wordLabel = NSTextField(labelWithString: getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? ""))
+                wordLabel.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
+                wordLabel.textColor = LLAppearanceManager.shared.colors.primaryText
+                container.addSubview(wordLabel)
+                wordLabel.snp.makeConstraints { make in
+                    make.top.leading.trailing.equalToSuperview()
+                    make.height.equalTo(18)
+                }
+                
+                // 音标
+                let phoneticLabel = NSTextField(labelWithString: getPhonetic(wordId: record.wordId ?? "", listId: record.wordListId ?? ""))
+                phoneticLabel.font = NSFont.systemFont(ofSize: 11)
+                phoneticLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
+                container.addSubview(phoneticLabel)
+                phoneticLabel.snp.makeConstraints { make in
+                    make.top.equalTo(wordLabel.snp.bottom).offset(2)
+                    make.leading.trailing.bottom.equalToSuperview()
+                    make.height.equalTo(14)
+                }
+                
+                textField.removeFromSuperview()
+                
+            case "meaning":
+                textField.stringValue = getWordMeaning(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
+                textField.lineBreakMode = .byTruncatingTail
+            case "nextReview":
+                let interval = record.interval ?? 1
+                textField.stringValue = "\(interval)天后"
+                textField.alignment = .right
+                textField.textColor = LLAppearanceManager.shared.colors.accentColor
+            default:
+                break
+            }
         }
         
         return cellView
     }
     
+    @objc private func didClickPlayButton(_ sender: NSButton) {
+        let row = sender.tag
+        guard row < records.count else { return }
+        
+        let record = records[row]
+        let word = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
+        
+        LLLogger.info("🔊 点击播放按钮，单词: \(word)")
+        
+        // 调用发音回调
+        onPlayPronunciation?(word, record.wordListId ?? "")
+    }
+    
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        return false
+        return true  // 允许选中行
     }
     
-    private func setupAudioCell(_ cellView: NSTableCellView, _ textField: NSTextField, _ row: Int) {
-        let buttonContainer = NSView()
-        cellView.addSubview(buttonContainer)
-        buttonContainer.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+    func tableView(_ tableView: NSTableView, didSelectRowAt rowIndexSet: IndexSet) {
+        guard let row = rowIndexSet.first, row < records.count else { 
+            LLLogger.info("⚠️ 行索引无效")
+            return 
         }
         
-        let usButton = NSButton(title: "🇺🇸", target: self, action: #selector(didClickPlayUS(_:)))
-        usButton.bezelStyle = .rounded
-        usButton.controlSize = .small
-        usButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        usButton.tag = row
+        LLLogger.info("✅ 选中了第 \(row) 行")
         
-        let ukButton = NSButton(title: "🇬🇧", target: self, action: #selector(didClickPlayUK(_:)))
-        ukButton.bezelStyle = .rounded
-        ukButton.controlSize = .small
-        ukButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        ukButton.tag = row
-        
-        buttonContainer.addSubview(usButton)
-        buttonContainer.addSubview(ukButton)
-        
-        usButton.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.width.equalTo(50)
-            make.height.equalTo(20)
-        }
-        
-        ukButton.snp.makeConstraints { make in
-            make.top.equalTo(usButton.snp.bottom).offset(4)
-            make.leading.trailing.bottom.equalToSuperview()
-            make.width.equalTo(50)
-            make.height.equalTo(20)
-        }
-        
-        textField.removeFromSuperview()
-    }
-    
-    private func setupActionCell(_ cellView: NSTableCellView, _ textField: NSTextField, _ row: Int) {
-        let buttonContainer = NSView()
-        cellView.addSubview(buttonContainer)
-        buttonContainer.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        
-        let markButton = NSButton(title: "✓ 已掌握", target: self, action: #selector(didClickMarkAsKnown(_:)))
-        markButton.bezelStyle = .rounded
-        markButton.controlSize = .small
-        markButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        markButton.tag = row
-        markButton.wantsLayer = true
-        markButton.layer?.backgroundColor = NSColor.systemGreen.withAlphaComponent(0.1).cgColor
-        markButton.layer?.cornerRadius = 4
-        markButton.contentTintColor = .systemGreen
-        
-        let reviewButton = NSButton(title: "🔄 复习", target: self, action: #selector(didClickReview(_:)))
-        reviewButton.bezelStyle = .rounded
-        reviewButton.controlSize = .small
-        reviewButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        reviewButton.tag = row
-        reviewButton.wantsLayer = true
-        reviewButton.layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.1).cgColor
-        reviewButton.layer?.cornerRadius = 4
-        reviewButton.contentTintColor = .systemBlue
-        
-        buttonContainer.addSubview(markButton)
-        buttonContainer.addSubview(reviewButton)
-        
-        markButton.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            make.width.equalTo(65)
-            make.height.equalTo(24)
-        }
-        
-        reviewButton.snp.makeConstraints { make in
-            make.leading.equalTo(markButton.snp.trailing).offset(8)
-            make.trailing.top.bottom.equalToSuperview()
-            make.width.equalTo(55)
-            make.height.equalTo(24)
-        }
-        
-        textField.removeFromSuperview()
-    }
-    
-    @objc private func didClickMarkAsKnown(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < records.count else { return }
-        let record = records[row]
-        onMarkAsKnown?(record.wordId ?? "", record.wordListId ?? "")
-    }
-    
-    @objc private func didClickReview(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < records.count else { return }
-        let record = records[row]
-        onReviewWord?(record.wordId ?? "")
-    }
-    
-    @objc private func didClickPlayUS(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < records.count else { return }
         let record = records[row]
         let word = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-        onPlayUS?(word, record.wordListId ?? "")
-    }
-    
-    @objc private func didClickPlayUK(_ sender: NSButton) {
-        let row = sender.tag
-        guard row < records.count else { return }
-        let record = records[row]
-        let word = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-        onPlayUK?(word, record.wordListId ?? "")
+        
+        LLLogger.info("📝 单词: \(word)")
+        
+        // 调用发音回调，传递单词和词库ID
+        onPlayPronunciation?(word, record.wordListId ?? "")
+        
+        // 延迟 0.3 秒后取消选中
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            tableView.deselectRow(row)
+        }
     }
     
     private func getWordText(wordId: String, listId: String) -> String {
@@ -327,6 +301,20 @@ extension LLReviewContentView: NSTableViewDelegate {
             return "未知单词"
         }
         return entry.text
+    }
+    
+    private func getPhonetic(wordId: String, listId: String) -> String {
+        guard let list = LLWordListStorage.shared.list(byId: listId),
+              let entry = list.entries.first(where: { $0.id == wordId }) else {
+            return ""
+        }
+        
+        // 使用现有的 phonetic 字段
+        guard let phonetic = entry.phonetic, !phonetic.isEmpty else {
+            return ""
+        }
+        
+        return phonetic
     }
     
     private func getWordMeaning(wordId: String, listId: String) -> String {

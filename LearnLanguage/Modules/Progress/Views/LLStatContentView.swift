@@ -59,16 +59,15 @@ final class LLStatContentView: NSView {
         // 创建内容容器
         let contentView = NSView()
         contentView.wantsLayer = true
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.layer?.backgroundColor = NSColor.red.cgColor
         scrollView.documentView = contentView
         
+        // macOS NSScrollView 的关键：contentView 宽度等于 scrollView 的可见宽度
         contentView.snp.makeConstraints { make in
-            make.width.equalTo(scrollView)
-            make.left.top.right.bottom.equalToSuperview()
+            make.width.equalTo(self)
+            make.top.leading.trailing.bottom.equalToSuperview()
         }
         
-        // 当前学习词库卡片
+        // ========== 当前学习词库卡片 ==========
         currentListCard = LLCurrentListCardView()
         currentListCard.onChangeButtonClicked = { [weak self] in
             self?.onChangeWordListClicked?()
@@ -76,27 +75,29 @@ final class LLStatContentView: NSView {
         contentView.addSubview(currentListCard)
         currentListCard.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(280)
         }
         
-        // 统计卡片网格容器
+        // ========== 统计卡片网格容器 ==========
         let statsGrid = NSView()
         statsGrid.wantsLayer = true
         contentView.addSubview(statsGrid)
         statsGrid.snp.makeConstraints { make in
             make.top.equalTo(currentListCard.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(120)
         }
         
-        // 使用新的 View 组件创建卡片
+        // 累计学习单词卡片
         totalWordsCard = LLStatCardView(icon: "📚", description: "累计学习单词")
         statsGrid.addSubview(totalWordsCard)
         totalWordsCard.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()
+            make.width.equalTo(statsGrid).multipliedBy(0.33)
         }
         
+        // 进度卡片
         progressCard = LLProgressCardView()
         statsGrid.addSubview(progressCard)
         progressCard.snp.makeConstraints { make in
@@ -105,34 +106,34 @@ final class LLStatContentView: NSView {
             make.width.equalTo(totalWordsCard)
         }
         
+        // 连续学习天数卡片
         streakCard = LLStatCardView(icon: "🔥", description: "连续学习天数")
         statsGrid.addSubview(streakCard)
         streakCard.snp.makeConstraints { make in
             make.leading.equalTo(progressCard.snp.trailing).offset(16)
             make.trailing.top.bottom.equalToSuperview()
-            make.width.equalTo(totalWordsCard)
         }
         
-        // 近7天学习趋势卡片
+        // ========== 近7天学习趋势卡片 ==========
         trendCard = LLTrendCardView()
         contentView.addSubview(trendCard)
         trendCard.snp.makeConstraints { make in
             make.top.equalTo(statsGrid.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(200)
         }
         
-        // 今日学习记录卡片
+        // ========== 今日学习记录卡片 ==========
         todayRecordCard = LLTodayRecordCardView()
         todayRecordCard.onExportButtonClicked = { [weak self] in
             self?.onExportRecordsClicked?()
         }
         contentView.addSubview(todayRecordCard)
         todayRecordCard.snp.makeConstraints { make in
-            make.top.equalTo(trendCard.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview()
-            make.height.greaterThanOrEqualTo(300)
-            make.bottom.equalToSuperview().offset(-20)
+//            make.top.equalTo(trendCard.snp.bottom).offset(20)
+//            make.leading.trailing.equalToSuperview().inset(16)
+//            make.height.equalTo(300)
+//            make.bottom.equalToSuperview().offset(-20)
         }
     }
     

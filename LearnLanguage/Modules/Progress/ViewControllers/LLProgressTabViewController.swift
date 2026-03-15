@@ -173,6 +173,7 @@ final class LLProgressTabViewController: NSViewController {
         
         reviewContentView = LLReviewContentView()
         reviewContentView.onTimeFilterChanged = { [weak self] _ in
+            self?.resetReviewPagination()
             self?.loadReviewRecords(listId: LLSettingsStore.shared.currentListId)
         }
         reviewContentView.onMarkAsKnown = { [weak self] wordId, listId in
@@ -186,6 +187,12 @@ final class LLProgressTabViewController: NSViewController {
         }
         reviewContentView.onPlayUK = { [weak self] word, listId in
             self?.playPronunciation(word: word, accent: .uk)
+        }
+        reviewContentView.onPlayPronunciation = { [weak self] word, listId in
+            // 根据设置选择发音方式
+            LLLogger.info("📢 点击了行，单词: \(word)")
+            let accent = LLSettingsStore.shared.settings.pronunciationAccent
+            self?.playPronunciation(word: word, accent: accent)
         }
         reviewContainer.addSubview(reviewContentView)
         reviewContentView.snp.makeConstraints { make in
@@ -246,7 +253,42 @@ final class LLProgressTabViewController: NSViewController {
         }
     }
     
-    // MARK: - Data Loading
+    // MARK: - Public Methods
+    
+    func switchToReviewTab() {
+        switchToreviewTab()
+    }
+    
+    func setTimeFilter(to filter: TimeFilter) {
+        reviewContentView?.currentTimeFilter = filter
+        
+        // 更新下拉框的选中项
+        if let reviewView = reviewContentView {
+            // 找到对应的下拉框并更新
+            for subview in reviewView.subviews {
+                if let popup = findPopupButton(in: subview) {
+                    let index = TimeFilter.allCases.firstIndex(of: filter) ?? 0
+                    popup.selectItem(at: index)
+                    break
+                }
+            }
+        }
+        
+        resetReviewPagination()
+        loadReviewRecords(listId: LLSettingsStore.shared.currentListId)
+    }
+    
+    private func findPopupButton(in view: NSView) -> NSPopUpButton? {
+        if let popup = view as? NSPopUpButton {
+            return popup
+        }
+        for subview in view.subviews {
+            if let popup = findPopupButton(in: subview) {
+                return popup
+            }
+        }
+        return nil
+    }
     
     @objc private func loadData() {
         guard isViewLoaded else { return }
@@ -289,32 +331,80 @@ final class LLProgressTabViewController: NSViewController {
         }
     }
     
+    // MARK: - 分页相关
+    
+    private var reviewPageSize = 20
+    private var reviewCurrentPage = 0
+    
     private func loadReviewRecords(listId: String?) {
         guard let listId = listId else {
+            LLLogger.info("⚠️ 没有选中词库")
             reviewContentView?.records = []
             return
         }
         
+        LLLogger.info("📊 开始加载复习记录，词库ID: \(listId)，页码: \(reviewCurrentPage)")
+        
         do {
             let records: [LLDBLearningProgress]
             let timeFilter = reviewContentView?.currentTimeFilter ?? .all
+            
+            LLLogger.info("📋 时间筛选: \(timeFilter.rawValue)")
+            
+            // 先获取所有符合条件的记录
+            let allRecords: [LLDBLearningProgress]
             switch timeFilter {
             case .all:
-                records = try LLDatabaseManager.shared.getAllReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getAllReviewRecords(wordListId: listId)
             case .today:
-                records = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: listId)
             case .week:
-                records = try LLDatabaseManager.shared.getWeekReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getWeekReviewRecords(wordListId: listId)
             case .month:
-                records = try LLDatabaseManager.shared.getMonthReviewRecords(wordListId: listId)
+                allRecords = try LLDatabaseManager.shared.getMonthReviewRecords(wordListId: listId)
             }
             
-            LLLogger.info("✅ 加载了 \(records.count) 条复习记录")
+            LLLogger.info("📊 查询到 \(allRecords.count) 条复习记录")
+            
+            // 分页处理
+            let startIndex = reviewCurrentPage * reviewPageSize
+            let endIndex = min(startIndex + reviewPageSize, allRecords.count)
+            
+            if startIndex < allRecords.count {
+                records = Array(allRecords[startIndex..<endIndex])
+                LLLogger.info("📄 第 \(reviewCurrentPage + 1) 页，显示 \(records.count) 条记录（总共 \(allRecords.count) 条）")
+            } else {
+                records = []
+                LLLogger.info("⚠️ 页码超出范围")
+            }
+            
+            // 打印前几条记录的详情
+            for (index, record) in records.prefix(3).enumerated() {
+                LLLogger.info("  [\(index)] wordId: \(record.wordId ?? "nil"), wrongCount: \(record.wrongCount ?? 0), status: \(record.status ?? 0)")
+            }
+            
             reviewContentView?.records = records
         } catch {
             LLLogger.error("❌ 加载复习记录失败：\(error)")
             reviewContentView?.records = []
         }
+    }
+    
+    // 重置分页
+    private func resetReviewPagination() {
+        reviewCurrentPage = 0
+    }
+    
+    // 下一页
+    private func loadNextReviewPage() {
+        reviewCurrentPage += 1
+        loadReviewRecords(listId: LLSettingsStore.shared.currentListId)
+    }
+    
+    // 上一页
+    private func loadPreviousReviewPage() {
+        reviewCurrentPage = max(0, reviewCurrentPage - 1)
+        loadReviewRecords(listId: LLSettingsStore.shared.currentListId)
     }
     
     @objc private func markAsKnown(wordId: String, listId: String) {

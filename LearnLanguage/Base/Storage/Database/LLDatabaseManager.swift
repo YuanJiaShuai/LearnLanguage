@@ -285,7 +285,7 @@ final class LLDatabaseManager {
         
         // 构建时间条件
         var condition = LLDBLearningProgress.Properties.wordListId == wordListId
-            && LLDBLearningProgress.Properties.wrongCount > 0
+            && LLDBLearningProgress.Properties.learnCount > 0
         
         if let start = startDate {
             let startTimestamp = calendar.startOfDay(for: start).timeIntervalSince1970
@@ -302,7 +302,7 @@ final class LLDatabaseManager {
             fromTable: learningProgressTable,
             where: condition,
             orderBy: [
-                LLDBLearningProgress.Properties.wrongCount.asOrder(by: .descending),
+                LLDBLearningProgress.Properties.learnCount.asOrder(by: .descending),
                 LLDBLearningProgress.Properties.updatedAt.asOrder(by: .descending)
             ]
         )

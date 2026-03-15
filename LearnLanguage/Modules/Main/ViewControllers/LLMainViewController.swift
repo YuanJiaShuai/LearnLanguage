@@ -62,5 +62,15 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
     
     func sidebarViewController(_ vc: LLSidebarViewController, didSelectWrongWords: ()) {
         contentVC.switchModule(to: .learningRecord)
+        
+        // 延迟一下，确保页面已经切换
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            // 切换到复习记录tab
+            if let progressVC = self.contentVC.currentProgressTabViewController {
+                progressVC.switchToReviewTab()
+                // 设置时间筛选为"今天"
+                progressVC.setTimeFilter(to: .today)
+            }
+        }
     }
 }

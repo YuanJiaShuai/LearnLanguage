@@ -79,4 +79,10 @@ final class LLMainContentViewController: NSViewController {
         
         currentViewController = nextVC
     }
+    
+    // MARK: - Public Methods
+    
+    var currentProgressTabViewController: LLProgressTabViewController? {
+        return currentViewController as? LLProgressTabViewController
+    }
 }
