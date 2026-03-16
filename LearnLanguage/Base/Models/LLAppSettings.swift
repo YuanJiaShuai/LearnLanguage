@@ -12,6 +12,26 @@ enum LLLearningLanguage: String, CaseIterable, Codable {
     case korean = "韩语"
 }
 
+/// 应用显示语言
+enum LLDisplayLanguage: String, CaseIterable, Codable {
+    case english = "English"
+    case simplifiedChinese = "简体中文"
+    
+    var displayName: String {
+        switch self {
+        case .english: return "English"
+        case .simplifiedChinese: return "简体中文"
+        }
+    }
+    
+    var languageCode: String {
+        switch self {
+        case .english: return "en"
+        case .simplifiedChinese: return "zh-Hans"
+        }
+    }
+}
+
 /// 发音提供者类型
 enum LLPronunciationProvider: String, Codable, CaseIterable {
     case local = "local"           // 本地 TTS
@@ -136,6 +156,33 @@ enum LLAddToWrongBookOption: Int, CaseIterable, Codable {
     }
 }
 
+/// 语速配置
+enum LLSpeechRate: Float, CaseIterable, Codable {
+    case slow = 0.25
+    case normal = 0.5
+    case standard = 1.0
+    case fast = 1.5
+    case veryFast = 2.0
+    
+    var displayName: String {
+        switch self {
+        case .slow:     return "0.25x（慢速）"
+        case .normal:   return "0.5x（较慢）"
+        case .standard: return "1.0x（正常）"
+        case .fast:     return "1.5x（较快）"
+        case .veryFast: return "2.0x（快速）"
+        }
+    }
+    
+    static var allDisplayNames: [String] {
+        allCases.map { $0.displayName }
+    }
+    
+    static func from(rate: Float) -> LLSpeechRate {
+        return allCases.min(by: { abs($0.rawValue - rate) < abs($1.rawValue - rate) }) ?? .standard
+    }
+}
+
 /// 播放间隔配置
 enum LLPlaybackInterval: Int, CaseIterable, Codable {
     case once = 0           // 只播放1次
@@ -173,6 +220,7 @@ enum LLPlaybackInterval: Int, CaseIterable, Codable {
 
 /// 应用设置（本地存储）
 struct LLAppSettings: Codable {
+    var displayLanguage: LLDisplayLanguage  // 应用显示语言
     var currentLanguage: LLLearningLanguage
     var currentListId: String?
     var statusBarShowPhonetic: Bool
@@ -207,6 +255,7 @@ struct LLAppSettings: Codable {
     var launchAtLogin: Bool
 
     static let `default` = LLAppSettings(
+        displayLanguage: .english,
         currentLanguage: .english,
         currentListId: nil,
         statusBarShowPhonetic: false,
@@ -225,7 +274,7 @@ struct LLAppSettings: Codable {
         pronunciationEnabled: true,
         pronunciationProvider: .local,
         pronunciationAccent: .us,
-        pronunciationRate: 0.4,
+        pronunciationRate: 1.0,
         newWordsPerDay: 20,
         reviewCountPerDay: 50,
         reminderEnabled: false,

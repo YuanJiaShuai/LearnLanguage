@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings
+  LearnLanguage
+
+  Created by Admin on 2026/3/16.
+  
+*/
+
+// MARK: - Common
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Delete" = "Delete";
+"Edit" = "Edit";
+"Add" = "Add";
+"Close" = "Close";
+"Confirm" = "Confirm";
+"Error" = "Error";
+"Warning" = "Warning";
+"Success" = "Success";
+
+// MARK: - Main Navigation
+"Word List" = "Word List";
+"Progress" = "Progress";
+"Settings" = "Settings";
+"Data" = "Data";
+"Typing Practice" = "Typing Practice";
+
+// MARK: - Settings
+"Learning Settings" = "Learning Settings";
+"Status Bar Settings" = "Status Bar Settings";
+"Review Settings" = "Review Settings";
+"Pronunciation Settings" = "Pronunciation Settings";
+"Floating Panel Settings" = "Floating Panel Settings";
+"Keyboard Shortcuts" = "Keyboard Shortcuts";
+"Other Settings" = "Other Settings";
+
+"Daily New Words" = "Daily New Words";
+"Display Language" = "Display Language";
+"Launch at Login" = "Launch at Login";
+
+// MARK: - Status Bar
+"Show Phonetic" = "Show Phonetic";
+"Show Content" = "Show Content";
+"Show Word" = "Show Word";
+"Show Meaning" = "Show Meaning";
+"Auto Scroll" = "Auto Scroll";
+"Playback Interval" = "Playback Interval";
+"Show Feedback Buttons" = "Show Feedback Buttons";
+
+// MARK: - Pronunciation
+"Enable Pronunciation" = "Enable Pronunciation";
+"Pronunciation Provider" = "Pronunciation Provider";
+"Pronunciation Accent" = "Pronunciation Accent";
+"Speech Rate" = "Speech Rate";
+"Local Pronunciation" = "Local Pronunciation";
+"Youdao Pronunciation" = "Youdao Pronunciation";
+"Google Pronunciation" = "Google Pronunciation";
+"Azure Pronunciation" = "Azure Pronunciation";
+
+// MARK: - Typing Practice
+"Typing Practice" = "Typing Practice";
+"Dictation Mode" = "Dictation Mode (Hide Word)";
+"Show Meaning" = "Show Meaning";
+"Input Style" = "Input Style";
+"Auto Show Answer" = "Auto Show Answer";
+"Per Letter" = "Per Letter (_ _ _ _ _)";
+"Whole Word" = "Whole Word (_____)";
+
+// MARK: - Word List
+"Word Library" = "Word Library";
+"Add Word List" = "Add Word List";
+"Import Words" = "Import Words";
+"Export Words" = "Export Words";
+"Total Words" = "Total Words";
+"Learned Words" = "Learned Words";
+"Review Words" = "Review Words";
+
+// MARK: - Progress
+"Today's Progress" = "Today's Progress";
+"Learning Statistics" = "Learning Statistics";
+"Review Records" = "Review Records";
+"Wrong Words" = "Wrong Words";
+"Correct" = "Correct";
+"Unclear" = "Unclear";
+"Wrong" = "Wrong";
+
+// MARK: - Messages
+"Settings Saved" = "Settings Saved";
+"Language Changed" = "Language Changed";
+"Please Restart" = "Please Restart the Application";
+"No Data" = "No Data";
+"Loading" = "Loading...";
+"Completed" = "Completed";

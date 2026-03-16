@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings
+  LearnLanguage
+
+  Created by Admin on 2026/3/16.
+  
+*/
+
+// MARK: - Common
+"OK" = "확인";
+"Cancel" = "취소";
+"Save" = "저장";
+"Delete" = "삭제";
+"Edit" = "편집";
+"Add" = "추가";
+"Close" = "닫기";
+"Confirm" = "확인";
+"Error" = "오류";
+"Warning" = "경고";
+"Success" = "성공";
+
+// MARK: - Main Navigation
+"Word List" = "단어 목록";
+"Progress" = "진행 상황";
+"Settings" = "설정";
+"Data" = "데이터";
+"Typing Practice" = "타이핑 연습";
+
+// MARK: - Settings
+"Learning Settings" = "학습 설정";
+"Status Bar Settings" = "상태 표시줄 설정";
+"Review Settings" = "복습 설정";
+"Pronunciation Settings" = "발음 설정";
+"Floating Panel Settings" = "플로팅 패널 설정";
+"Keyboard Shortcuts" = "키보드 단축키";
+"Other Settings" = "기타 설정";
+
+"Daily New Words" = "일일 새 단어 수";
+"Display Language" = "표시 언어";
+"Launch at Login" = "로그인 시 시작";
+
+// MARK: - Status Bar
+"Show Phonetic" = "음성 기호 표시";
+"Show Content" = "콘텐츠 표시";
+"Show Word" = "단어 표시";
+"Show Meaning" = "의미 표시";
+"Auto Scroll" = "자동 스크롤";
+"Playback Interval" = "재생 간격";
+"Show Feedback Buttons" = "피드백 버튼 표시";
+
+// MARK: - Pronunciation
+"Enable Pronunciation" = "발음 활성화";
+"Pronunciation Provider" = "발음 제공자";
+"Pronunciation Accent" = "발음 악센트";
+"Speech Rate" = "음성 속도";
+"Local Pronunciation" = "로컬 발음";
+"Youdao Pronunciation" = "유도 발음";
+"Google Pronunciation" = "Google 발음";
+"Azure Pronunciation" = "Azure 발음";
+
+// MARK: - Typing Practice
+"Typing Practice" = "타이핑 연습";
+"Dictation Mode" = "받아쓰기 모드 (단어 숨김)";
+"Show Meaning" = "의미 표시";
+"Input Style" = "입력 스타일";
+"Auto Show Answer" = "자동으로 답변 표시";
+"Per Letter" = "글자당 하나의 밑줄 (_ _ _ _ _)";
+"Whole Word" = "전체 단어 밑줄 (_____)";
+
+// MARK: - Word List
+"Word Library" = "단어 라이브러리";
+"Add Word List" = "단어 목록 추가";
+"Import Words" = "단어 가져오기";
+"Export Words" = "단어 내보내기";
+"Total Words" = "총 단어 수";
+"Learned Words" = "학습한 단어";
+"Review Words" = "복습 단어";
+
+// MARK: - Progress
+"Today's Progress" = "오늘의 진행 상황";
+"Learning Statistics" = "학습 통계";
+"Review Records" = "복습 기록";
+"Wrong Words" = "틀린 단어";
+"Correct" = "정답";
+"Unclear" = "불명확";
+"Wrong" = "오답";
+
+// MARK: - Messages
+"Settings Saved" = "설정이 저장되었습니다";
+"Language Changed" = "언어가 변경되었습니다";
+"Please Restart" = "애플리케이션을 다시 시작하세요";
+"No Data" = "데이터 없음";
+"Loading" = "로드 중...";
+"Completed" = "완료";

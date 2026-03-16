@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		840D1E6E2F67B6A6002C330E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E6C2F67B6A6002C330E /* Localizable.strings */; };
+		840D1E872F67DC76002C330E /* Gateron Red Inks.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E7B2F67DC76002C330E /* Gateron Red Inks.mp3 */; };
+		840D1E882F67DC76002C330E /* Alpacas.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E742F67DC76002C330E /* Alpacas.mp3 */; };
+		840D1E892F67DC76002C330E /* Turquoise Tealios.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E812F67DC76002C330E /* Turquoise Tealios.mp3 */; };
+		840D1E8A2F67DC76002C330E /* correct.wav in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E852F67DC76002C330E /* correct.wav */; };
+		840D1E8B2F67DC76002C330E /* Kailh Box Navies.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E7D2F67DC76002C330E /* Kailh Box Navies.mp3 */; };
+		840D1E8C2F67DC76002C330E /* NovelKeys Creams.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E7E2F67DC76002C330E /* NovelKeys Creams.mp3 */; };
+		840D1E8D2F67DC76002C330E /* Holy Pandas.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E7C2F67DC76002C330E /* Holy Pandas.mp3 */; };
+		840D1E8E2F67DC76002C330E /* SKCM Blue Alps.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E7F2F67DC76002C330E /* SKCM Blue Alps.mp3 */; };
+		840D1E8F2F67DC76002C330E /* Cherry MX Blues.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E772F67DC76002C330E /* Cherry MX Blues.mp3 */; };
+		840D1E902F67DC76002C330E /* Cherry MX Blacks.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E762F67DC76002C330E /* Cherry MX Blacks.mp3 */; };
+		840D1E912F67DC76002C330E /* Cherry MX Browns.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E782F67DC76002C330E /* Cherry MX Browns.mp3 */; };
+		840D1E922F67DC76002C330E /* Default.wav in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E792F67DC76002C330E /* Default.wav */; };
+		840D1E932F67DC76002C330E /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E832F67DC76002C330E /* beep.wav */; };
+		840D1E942F67DC76002C330E /* Gateron Black Inks.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E7A2F67DC76002C330E /* Gateron Black Inks.mp3 */; };
+		840D1E952F67DC76002C330E /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E842F67DC76002C330E /* click.wav */; };
+		840D1E962F67DC76002C330E /* Buckling Spring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E752F67DC76002C330E /* Buckling Spring.mp3 */; };
+		840D1E972F67DC76002C330E /* Topre.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 840D1E802F67DC76002C330E /* Topre.mp3 */; };
+		840D1E9A2F67F517002C330E /* LLLocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D1E992F67F517002C330E /* LLLocalizationManager.swift */; };
+		840D1E9B2F67F517002C330E /* LLAudioCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D1E982F67F517002C330E /* LLAudioCacheManager.swift */; };
 		8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8466295D2F56D6AB004466B1 /* LLLogger.swift */; };
 		846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 846629602F56D78F004466B1 /* CocoaLumberjack */; };
 		846629632F56D78F004466B1 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 846629622F56D78F004466B1 /* CocoaLumberjackSwift */; };
@@ -81,6 +101,32 @@
 
 /* Begin PBXFileReference section */
 		1935EDD325ABFFAAB0EB4EBE /* Pods-LearnLanguage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LearnLanguage.release.xcconfig"; path = "Target Support Files/Pods-LearnLanguage/Pods-LearnLanguage.release.xcconfig"; sourceTree = "<group>"; };
+		840D1E6B2F67B669002C330E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		840D1E6D2F67B6A6002C330E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		840D1E6F2F67B6AA002C330E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		840D1E702F67D6D6002C330E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		840D1E712F67D6D6002C330E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		840D1E722F67D717002C330E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
+		840D1E732F67D717002C330E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		840D1E742F67DC76002C330E /* Alpacas.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Alpacas.mp3; sourceTree = "<group>"; };
+		840D1E752F67DC76002C330E /* Buckling Spring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Buckling Spring.mp3"; sourceTree = "<group>"; };
+		840D1E762F67DC76002C330E /* Cherry MX Blacks.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cherry MX Blacks.mp3"; sourceTree = "<group>"; };
+		840D1E772F67DC76002C330E /* Cherry MX Blues.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cherry MX Blues.mp3"; sourceTree = "<group>"; };
+		840D1E782F67DC76002C330E /* Cherry MX Browns.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cherry MX Browns.mp3"; sourceTree = "<group>"; };
+		840D1E792F67DC76002C330E /* Default.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Default.wav; sourceTree = "<group>"; };
+		840D1E7A2F67DC76002C330E /* Gateron Black Inks.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Gateron Black Inks.mp3"; sourceTree = "<group>"; };
+		840D1E7B2F67DC76002C330E /* Gateron Red Inks.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Gateron Red Inks.mp3"; sourceTree = "<group>"; };
+		840D1E7C2F67DC76002C330E /* Holy Pandas.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Holy Pandas.mp3"; sourceTree = "<group>"; };
+		840D1E7D2F67DC76002C330E /* Kailh Box Navies.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Kailh Box Navies.mp3"; sourceTree = "<group>"; };
+		840D1E7E2F67DC76002C330E /* NovelKeys Creams.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "NovelKeys Creams.mp3"; sourceTree = "<group>"; };
+		840D1E7F2F67DC76002C330E /* SKCM Blue Alps.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "SKCM Blue Alps.mp3"; sourceTree = "<group>"; };
+		840D1E802F67DC76002C330E /* Topre.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Topre.mp3; sourceTree = "<group>"; };
+		840D1E812F67DC76002C330E /* Turquoise Tealios.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Turquoise Tealios.mp3"; sourceTree = "<group>"; };
+		840D1E832F67DC76002C330E /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
+		840D1E842F67DC76002C330E /* click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click.wav; sourceTree = "<group>"; };
+		840D1E852F67DC76002C330E /* correct.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = correct.wav; sourceTree = "<group>"; };
+		840D1E982F67F517002C330E /* LLAudioCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLAudioCacheManager.swift; sourceTree = "<group>"; };
+		840D1E992F67F517002C330E /* LLLocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLLocalizationManager.swift; sourceTree = "<group>"; };
 		8466295D2F56D6AB004466B1 /* LLLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLLogger.swift; sourceTree = "<group>"; };
 		8492268F2F3C878F00447E0C /* LLAppInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLAppInitializer.swift; sourceTree = "<group>"; };
 		849226912F3C878F00447E0C /* LLAppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLAppearanceManager.swift; sourceTree = "<group>"; };
@@ -177,6 +223,38 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		840D1E822F67DC76002C330E /* key-sound */ = {
+			isa = PBXGroup;
+			children = (
+				840D1E742F67DC76002C330E /* Alpacas.mp3 */,
+				840D1E752F67DC76002C330E /* Buckling Spring.mp3 */,
+				840D1E762F67DC76002C330E /* Cherry MX Blacks.mp3 */,
+				840D1E772F67DC76002C330E /* Cherry MX Blues.mp3 */,
+				840D1E782F67DC76002C330E /* Cherry MX Browns.mp3 */,
+				840D1E792F67DC76002C330E /* Default.wav */,
+				840D1E7A2F67DC76002C330E /* Gateron Black Inks.mp3 */,
+				840D1E7B2F67DC76002C330E /* Gateron Red Inks.mp3 */,
+				840D1E7C2F67DC76002C330E /* Holy Pandas.mp3 */,
+				840D1E7D2F67DC76002C330E /* Kailh Box Navies.mp3 */,
+				840D1E7E2F67DC76002C330E /* NovelKeys Creams.mp3 */,
+				840D1E7F2F67DC76002C330E /* SKCM Blue Alps.mp3 */,
+				840D1E802F67DC76002C330E /* Topre.mp3 */,
+				840D1E812F67DC76002C330E /* Turquoise Tealios.mp3 */,
+			);
+			path = "key-sound";
+			sourceTree = "<group>";
+		};
+		840D1E862F67DC76002C330E /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				840D1E822F67DC76002C330E /* key-sound */,
+				840D1E832F67DC76002C330E /* beep.wav */,
+				840D1E842F67DC76002C330E /* click.wav */,
+				840D1E852F67DC76002C330E /* correct.wav */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		849226902F3C878F00447E0C /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +267,8 @@
 		849226932F3C878F00447E0C /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				840D1E982F67F517002C330E /* LLAudioCacheManager.swift */,
+				840D1E992F67F517002C330E /* LLLocalizationManager.swift */,
 				849226912F3C878F00447E0C /* LLAppearanceManager.swift */,
 				849226922F3C878F00447E0C /* LLPronunciationManager.swift */,
 				A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */,
@@ -445,10 +525,12 @@
 		849226DC2F3C878F00447E0C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				840D1E862F67DC76002C330E /* Sounds */,
 				849226D82F3C878F00447E0C /* InitialDicts */,
 				849226D92F3C878F00447E0C /* Assets.xcassets */,
 				849226DB2F3C878F00447E0C /* Main.storyboard */,
 				A85ECB032F4C2149009F8DA5 /* Info.plist */,
+				840D1E6C2F67B6A6002C330E /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -590,6 +672,9 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
+				ja,
+				ko,
 			);
 			mainGroup = A80BC3242F378E8900A40D9B;
 			minimizedProjectReferenceProxies = 1;
@@ -613,7 +698,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				849227082F3C878F00447E0C /* Assets.xcassets in Resources */,
+				840D1E6E2F67B6A6002C330E /* Localizable.strings in Resources */,
 				849227092F3C878F00447E0C /* Main.storyboard in Resources */,
+				840D1E872F67DC76002C330E /* Gateron Red Inks.mp3 in Resources */,
+				840D1E882F67DC76002C330E /* Alpacas.mp3 in Resources */,
+				840D1E892F67DC76002C330E /* Turquoise Tealios.mp3 in Resources */,
+				840D1E8A2F67DC76002C330E /* correct.wav in Resources */,
+				840D1E8B2F67DC76002C330E /* Kailh Box Navies.mp3 in Resources */,
+				840D1E8C2F67DC76002C330E /* NovelKeys Creams.mp3 in Resources */,
+				840D1E8D2F67DC76002C330E /* Holy Pandas.mp3 in Resources */,
+				840D1E8E2F67DC76002C330E /* SKCM Blue Alps.mp3 in Resources */,
+				840D1E8F2F67DC76002C330E /* Cherry MX Blues.mp3 in Resources */,
+				840D1E902F67DC76002C330E /* Cherry MX Blacks.mp3 in Resources */,
+				840D1E912F67DC76002C330E /* Cherry MX Browns.mp3 in Resources */,
+				840D1E922F67DC76002C330E /* Default.wav in Resources */,
+				840D1E932F67DC76002C330E /* beep.wav in Resources */,
+				840D1E942F67DC76002C330E /* Gateron Black Inks.mp3 in Resources */,
+				840D1E952F67DC76002C330E /* click.wav in Resources */,
+				840D1E962F67DC76002C330E /* Buckling Spring.mp3 in Resources */,
+				840D1E972F67DC76002C330E /* Topre.mp3 in Resources */,
 				8492270A2F3C878F00447E0C /* LearnLanguage.db in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -724,6 +827,8 @@
 				849226FE2F3C878F00447E0C /* LLLearningStore.swift in Sources */,
 				849226FF2F3C878F00447E0C /* LLDatabaseManager.swift in Sources */,
 				849227002F3C878F00447E0C /* LLAppSettings.swift in Sources */,
+				840D1E9A2F67F517002C330E /* LLLocalizationManager.swift in Sources */,
+				840D1E9B2F67F517002C330E /* LLAudioCacheManager.swift in Sources */,
 				849227012F3C878F00447E0C /* LLDBWordListCategory.swift in Sources */,
 				849227022F3C878F00447E0C /* LLMainContentViewController.swift in Sources */,
 				84E1E32D2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift in Sources */,
@@ -738,10 +843,24 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		840D1E6C2F67B6A6002C330E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				840D1E6D2F67B6A6002C330E /* en */,
+				840D1E6F2F67B6AA002C330E /* zh-Hans */,
+				840D1E712F67D6D6002C330E /* ja */,
+				840D1E732F67D717002C330E /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		849226DB2F3C878F00447E0C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				849226DA2F3C878F00447E0C /* Base */,
+				840D1E6B2F67B669002C330E /* zh-Hans */,
+				840D1E702F67D6D6002C330E /* ja */,
+				840D1E722F67D717002C330E /* ko */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -754,6 +873,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -818,6 +938,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -881,6 +1002,16 @@
 				DEVELOPMENT_TEAM = Y8ZJ2F86RL;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LearnLanguage/Resources/Info.plist;
@@ -918,6 +1049,16 @@
 				DEVELOPMENT_TEAM = Y8ZJ2F86RL;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LearnLanguage/Resources/Info.plist;

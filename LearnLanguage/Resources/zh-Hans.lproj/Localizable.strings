@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings
+  LearnLanguage
+
+  Created by Admin on 2026/3/16.
+  
+*/
+
+// MARK: - Common
+"OK" = "确定";
+"Cancel" = "取消";
+"Save" = "保存";
+"Delete" = "删除";
+"Edit" = "编辑";
+"Add" = "添加";
+"Close" = "关闭";
+"Confirm" = "确认";
+"Error" = "错误";
+"Warning" = "警告";
+"Success" = "成功";
+
+// MARK: - Main Navigation
+"Word List" = "词库";
+"Progress" = "进度";
+"Settings" = "设置";
+"Data" = "数据";
+"Typing Practice" = "打字练习";
+
+// MARK: - Settings
+"Learning Settings" = "学习设置";
+"Status Bar Settings" = "状态栏设置";
+"Review Settings" = "复习设置";
+"Pronunciation Settings" = "发音设置";
+"Floating Panel Settings" = "浮窗设置";
+"Keyboard Shortcuts" = "快捷键设置";
+"Other Settings" = "其他设置";
+
+"Daily New Words" = "每日新学单词数";
+"Display Language" = "显示语言";
+"Launch at Login" = "开机自动启动";
+
+// MARK: - Status Bar
+"Show Phonetic" = "显示音标";
+"Show Content" = "显示内容";
+"Show Word" = "显示单词";
+"Show Meaning" = "显示释义";
+"Auto Scroll" = "自动滚动";
+"Playback Interval" = "播放间隔";
+"Show Feedback Buttons" = "显示反馈按钮";
+
+// MARK: - Pronunciation
+"Enable Pronunciation" = "启用发音";
+"Pronunciation Provider" = "发音提供者";
+"Pronunciation Accent" = "发音口音";
+"Speech Rate" = "语速调节";
+"Local Pronunciation" = "本地发音";
+"Youdao Pronunciation" = "有道发音";
+"Google Pronunciation" = "Google 发音";
+"Azure Pronunciation" = "Azure 发音";
+
+// MARK: - Typing Practice
+"Typing Practice" = "打字练习";
+"Dictation Mode" = "听写模式（隐藏单词）";
+"Show Meaning" = "显示释义";
+"Input Style" = "输入框样式";
+"Auto Show Answer" = "自动显示答案";
+"Per Letter" = "每个字母一个下划线（_ _ _ _ _）";
+"Whole Word" = "整个单词一个下划线（_____）";
+
+// MARK: - Word List
+"Word Library" = "词库";
+"Add Word List" = "添加词库";
+"Import Words" = "导入单词";
+"Export Words" = "导出单词";
+"Total Words" = "总单词数";
+"Learned Words" = "已学单词";
+"Review Words" = "复习单词";
+
+// MARK: - Progress
+"Today's Progress" = "今日进度";
+"Learning Statistics" = "学习统计";
+"Review Records" = "复习记录";
+"Wrong Words" = "错题本";
+"Correct" = "认识";
+"Unclear" = "模糊";
+"Wrong" = "不认识";
+
+// MARK: - Messages
+"Settings Saved" = "设置已保存";
+"Language Changed" = "语言已切换";
+"Please Restart" = "请重启应用";
+"No Data" = "暂无数据";
+"Loading" = "加载中...";
+"Completed" = "已完成";

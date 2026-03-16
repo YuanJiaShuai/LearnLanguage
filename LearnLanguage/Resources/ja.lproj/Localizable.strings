@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings
+  LearnLanguage
+
+  Created by Admin on 2026/3/16.
+  
+*/
+
+// MARK: - Common
+"OK" = "OK";
+"Cancel" = "キャンセル";
+"Save" = "保存";
+"Delete" = "削除";
+"Edit" = "編集";
+"Add" = "追加";
+"Close" = "閉じる";
+"Confirm" = "確認";
+"Error" = "エラー";
+"Warning" = "警告";
+"Success" = "成功";
+
+// MARK: - Main Navigation
+"Word List" = "単語リスト";
+"Progress" = "進捗";
+"Settings" = "設定";
+"Data" = "データ";
+"Typing Practice" = "タイピング練習";
+
+// MARK: - Settings
+"Learning Settings" = "学習設定";
+"Status Bar Settings" = "ステータスバー設定";
+"Review Settings" = "復習設定";
+"Pronunciation Settings" = "発音設定";
+"Floating Panel Settings" = "フローティングパネル設定";
+"Keyboard Shortcuts" = "キーボードショートカット";
+"Other Settings" = "その他の設定";
+
+"Daily New Words" = "1日の新しい単語数";
+"Display Language" = "表示言語";
+"Launch at Login" = "ログイン時に起動";
+
+// MARK: - Status Bar
+"Show Phonetic" = "音標を表示";
+"Show Content" = "コンテンツを表示";
+"Show Word" = "単語を表示";
+"Show Meaning" = "意味を表示";
+"Auto Scroll" = "自動スクロール";
+"Playback Interval" = "再生間隔";
+"Show Feedback Buttons" = "フィードバックボタンを表示";
+
+// MARK: - Pronunciation
+"Enable Pronunciation" = "発音を有効にする";
+"Pronunciation Provider" = "発音プロバイダー";
+"Pronunciation Accent" = "発音アクセント";
+"Speech Rate" = "話速調整";
+"Local Pronunciation" = "ローカル発音";
+"Youdao Pronunciation" = "有道発音";
+"Google Pronunciation" = "Google 発音";
+"Azure Pronunciation" = "Azure 発音";
+
+// MARK: - Typing Practice
+"Typing Practice" = "タイピング練習";
+"Dictation Mode" = "ディクテーションモード（単語を隠す）";
+"Show Meaning" = "意味を表示";
+"Input Style" = "入力スタイル";
+"Auto Show Answer" = "自動で答えを表示";
+"Per Letter" = "1文字ずつ下線（_ _ _ _ _）";
+"Whole Word" = "単語全体に下線（_____）";
+
+// MARK: - Word List
+"Word Library" = "単語ライブラリ";
+"Add Word List" = "単語リストを追加";
+"Import Words" = "単語をインポート";
+"Export Words" = "単語をエクスポート";
+"Total Words" = "総単語数";
+"Learned Words" = "学習済み単語";
+"Review Words" = "復習単語";
+
+// MARK: - Progress
+"Today's Progress" = "今日の進捗";
+"Learning Statistics" = "学習統計";
+"Review Records" = "復習記録";
+"Wrong Words" = "間違った単語";
+"Correct" = "正解";
+"Unclear" = "不明確";
+"Wrong" = "間違い";
+
+// MARK: - Messages
+"Settings Saved" = "設定が保存されました";
+"Language Changed" = "言語が変更されました";
+"Please Restart" = "アプリケーションを再起動してください";
+"No Data" = "データなし";
+"Loading" = "読み込み中...";
+"Completed" = "完了";

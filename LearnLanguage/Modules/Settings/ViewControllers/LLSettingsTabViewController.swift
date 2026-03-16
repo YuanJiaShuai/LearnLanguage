@@ -64,7 +64,7 @@ final class LLSettingsTabViewController: NSViewController {
     private var pronunciationCheck: NSButton!
     private var pronunciationProviderPopup: NSPopUpButton!
     private var pronunciationAccentPopup: NSPopUpButton!
-    private var pronunciationRateSlider: NSSlider!
+    private var pronunciationRatePopup: NSPopUpButton!
     
     // 浮窗设置卡片
     private var panelAlphaSlider: NSSlider!
@@ -80,6 +80,9 @@ final class LLSettingsTabViewController: NSViewController {
     
     // 其他设置卡片
     private var launchAtLoginCheck: NSButton!
+    
+    // 显示语言设置
+    private var displayLanguagePopup: NSPopUpButton!
 
     override func loadView() {
         view = NSView(frame: NSRect(x: 0, y: 0, width: 620, height: 600))
@@ -287,15 +290,17 @@ final class LLSettingsTabViewController: NSViewController {
             pronunciationAccentPopup.addItem(withTitle: "\(accent.flag) \(accent.displayName)")
         }
         
-        pronunciationRateSlider = NSSlider(value: 0.4, minValue: 0.1, maxValue: 1.0, target: self, action: #selector(saveSettings))
-        pronunciationRateSlider.isContinuous = true
+        pronunciationRatePopup = NSPopUpButton()
+        pronunciationRatePopup.target = self
+        pronunciationRatePopup.action = #selector(saveSettings)
+        pronunciationRatePopup.addItems(withTitles: LLSpeechRate.allDisplayNames)
         
         card.addFormItem(label: "发音开关", control: pronunciationCheck)
         card.addFormRow(items: [
             (label: "发音提供者", control: pronunciationProviderPopup),
             (label: "发音口音", control: pronunciationAccentPopup)
         ])
-        card.addFormItem(label: "语速调节", control: pronunciationRateSlider)
+        card.addFormItem(label: "语速调节", control: pronunciationRatePopup)
         
         return card
     }
@@ -366,7 +371,15 @@ final class LLSettingsTabViewController: NSViewController {
         
         launchAtLoginCheck = NSButton(checkboxWithTitle: "开机自动启动", target: self, action: #selector(toggleLaunchAtLogin))
         
+        displayLanguagePopup = NSPopUpButton()
+        displayLanguagePopup.target = self
+        displayLanguagePopup.action = #selector(saveSettings)
+        for language in LLDisplayLanguage.allCases {
+            displayLanguagePopup.addItem(withTitle: language.displayName)
+        }
+        
         card.addFormItem(label: "启动设置", control: launchAtLoginCheck)
+        card.addFormItem(label: "显示语言", control: displayLanguagePopup)
         
         return card
     }
@@ -387,6 +400,11 @@ final class LLSettingsTabViewController: NSViewController {
     
     private func loadSettings() {
         let s = LLSettingsStore.shared.settings
+        
+        // 显示语言
+        if let index = LLDisplayLanguage.allCases.firstIndex(of: s.displayLanguage) {
+            displayLanguagePopup.selectItem(at: index)
+        }
         
         // 学习目标
         newWordsField.stringValue = "\(s.newWordsPerDay)"
@@ -424,7 +442,10 @@ final class LLSettingsTabViewController: NSViewController {
         if let index = LLPronunciationAccent.allCases.firstIndex(of: s.pronunciationAccent) {
             pronunciationAccentPopup.selectItem(at: index)
         }
-        pronunciationRateSlider.floatValue = s.pronunciationRate
+        let speechRate = LLSpeechRate.from(rate: s.pronunciationRate)
+        if let index = LLSpeechRate.allCases.firstIndex(of: speechRate) {
+            pronunciationRatePopup.selectItem(at: index)
+        }
         
         // 其他设置
         panelAlphaSlider.doubleValue = s.floatingPanelAlpha
@@ -447,6 +468,12 @@ final class LLSettingsTabViewController: NSViewController {
 
     @objc private func saveSettings() {
         var s = LLSettingsStore.shared.settings
+        
+        // 显示语言
+        let languageIndex = displayLanguagePopup.indexOfSelectedItem
+        if languageIndex >= 0 && languageIndex < LLDisplayLanguage.allCases.count {
+            s.displayLanguage = LLDisplayLanguage.allCases[languageIndex]
+        }
         
         // 学习目标
         s.newWordsPerDay = Int(newWordsField.stringValue) ?? 20
@@ -480,7 +507,10 @@ final class LLSettingsTabViewController: NSViewController {
         if accentIndex >= 0 && accentIndex < LLPronunciationAccent.allCases.count {
             s.pronunciationAccent = LLPronunciationAccent.allCases[accentIndex]
         }
-        s.pronunciationRate = pronunciationRateSlider.floatValue
+        let rateIndex = pronunciationRatePopup.indexOfSelectedItem
+        if rateIndex >= 0 && rateIndex < LLSpeechRate.allCases.count {
+            s.pronunciationRate = LLSpeechRate.allCases[rateIndex].rawValue
+        }
         
         // 其他设置
         s.floatingPanelAlpha = panelAlphaSlider.doubleValue

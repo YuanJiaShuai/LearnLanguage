@@ -106,11 +106,19 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
     func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
         self.completion = completion
         
+        // 先查缓存
+        if let cachedData = LLAudioCacheManager.shared.cachedAudioData(word: word, provider: .youdao, accent: accent) {
+            playAudioData(cachedData, rate: rate)
+            return
+        }
+        
         // 有道词典音频 URL
         // 美式：http://dict.youdao.com/dictvoice?audio={word}&type=1
         // 英式：http://dict.youdao.com/dictvoice?audio={word}&type=2
         let type = accent == .us ? "1" : "2"
         let urlString = "http://dict.youdao.com/dictvoice?audio=\(word)&type=\(type)"
+        
+        LLLogger.info("🔊 有道发音 URL：\(urlString)")
         
         guard let encodedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: encodedString) else {
@@ -160,35 +168,36 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             
             LLLogger.debug("📦 收到音频数据：\(data.count) 字节")
             
-            do {
-                // 播放音频
-                self.audioPlayer = try AVAudioPlayer(data: data)
-                self.audioPlayer?.prepareToPlay()
-                
-                // 根据语速调整播放速率
-                self.audioPlayer?.enableRate = true
-                self.audioPlayer?.rate = rate
-                
-                let success = self.audioPlayer?.play() ?? false
-                
-                DispatchQueue.main.async {
-                    if success {
-                        LLLogger.info("✅ 播放成功")
-                    } else {
-                        LLLogger.error("❌ 播放失败：无法启动播放器")
-                    }
-                    self.completion?(success, success ? nil : NSError(domain: "LLPronunciation", code: -3, userInfo: [NSLocalizedDescriptionKey: "播放器启动失败"]))
-                    self.completion = nil
-                }
-                
-            } catch {
-                DispatchQueue.main.async {
-                    LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
-                    self.completion?(false, error)
-                    self.completion = nil
-                }
+            // 保存到缓存
+            LLAudioCacheManager.shared.saveAudioData(data, word: word, provider: .youdao, accent: accent)
+            
+            DispatchQueue.main.async {
+                self.playAudioData(data, rate: rate)
             }
         }.resume()
+    }
+    
+    /// 播放音频数据
+    private func playAudioData(_ data: Data, rate: Float) {
+        do {
+            audioPlayer = try AVAudioPlayer(data: data)
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.enableRate = true
+            audioPlayer?.rate = rate
+            
+            let success = audioPlayer?.play() ?? false
+            if success {
+                LLLogger.info("✅ 播放成功")
+            } else {
+                LLLogger.error("❌ 播放失败：无法启动播放器")
+            }
+            completion?(success, success ? nil : NSError(domain: "LLPronunciation", code: -3, userInfo: [NSLocalizedDescriptionKey: "播放器启动失败"]))
+            completion = nil
+        } catch {
+            LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
+            completion?(false, error)
+            completion = nil
+        }
     }
     
     func stop() {
