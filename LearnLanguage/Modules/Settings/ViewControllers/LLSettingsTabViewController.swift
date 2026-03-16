@@ -28,7 +28,7 @@ final class LLSettingsTabViewController: NSViewController {
     }()
     
     private lazy var titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "学习设置")
+        let label = NSTextField(labelWithString: NSLocalizedString("Learning Settings", comment: ""))
         label.font = NSFont.systemFont(ofSize: 20, weight: .semibold)
         label.textColor = NSColor(white: 0.11, alpha: 1.0)
         label.isEditable = false
@@ -80,8 +80,6 @@ final class LLSettingsTabViewController: NSViewController {
     
     // 其他设置卡片
     private var launchAtLoginCheck: NSButton!
-    
-    // 显示语言设置
     private var displayLanguagePopup: NSPopUpButton!
 
     override func loadView() {
@@ -177,35 +175,35 @@ final class LLSettingsTabViewController: NSViewController {
     // MARK: - Create Cards
     
     private func createGoalCard() -> LLSettingsCardView {
-        let card = LLSettingsCardView(title: "学习目标", icon: "🎯")
+        let card = LLSettingsCardView(title: NSLocalizedString("Learning Settings", comment: ""), icon: "🎯")
         
         newWordsField = createNumberField(value: "20")
         
-        card.addFormItem(label: "每日新学单词数", control: newWordsField)
+        card.addFormItem(label: NSLocalizedString("Daily New Words", comment: ""), control: newWordsField)
         
         return card
     }
     
     private func createStatusBarCard() -> LLSettingsCardView {
-        let card = LLSettingsCardView(title: "状态栏设置", icon: "🔔")
+        let card = LLSettingsCardView(title: NSLocalizedString("Status Bar Settings", comment: ""), icon: "🔔")
         
         statusBarDisplayPopup = NSPopUpButton()
         statusBarDisplayPopup.target = self
         statusBarDisplayPopup.action = #selector(saveSettings)
         statusBarDisplayPopup.addItems(withTitles: ["仅单词", "单词+音标", "单词+简易释义"])
         
-        statusBarPhoneticCheck = NSButton(checkboxWithTitle: "显示音标", target: self, action: #selector(saveSettings))
+        statusBarPhoneticCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Phonetic", comment: ""), target: self, action: #selector(saveSettings))
         
         statusBarMaxLengthField = createNumberField(value: "20")
         
         // 新增：状态栏是否显示内容
-        statusBarShowContentCheck = NSButton(checkboxWithTitle: "状态栏显示内容", target: self, action: #selector(saveSettings))
+        statusBarShowContentCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Content", comment: ""), target: self, action: #selector(saveSettings))
         
         // 新增：状态栏显示内容细分控制
-        statusBarShowWordCheck = NSButton(checkboxWithTitle: "显示单词", target: self, action: #selector(saveSettings))
-        statusBarShowPhoneticSymbolCheck = NSButton(checkboxWithTitle: "显示音标", target: self, action: #selector(saveSettings))
-        statusBarShowMeaningCheck = NSButton(checkboxWithTitle: "显示释义", target: self, action: #selector(saveSettings))
-        statusBarAutoScrollCheck = NSButton(checkboxWithTitle: "释义不够时自动滚动", target: self, action: #selector(saveSettings))
+        statusBarShowWordCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Word", comment: ""), target: self, action: #selector(saveSettings))
+        statusBarShowPhoneticSymbolCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Phonetic", comment: ""), target: self, action: #selector(saveSettings))
+        statusBarShowMeaningCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Meaning", comment: ""), target: self, action: #selector(saveSettings))
+        statusBarAutoScrollCheck = NSButton(checkboxWithTitle: NSLocalizedString("Auto Scroll", comment: ""), target: self, action: #selector(saveSettings))
         
         // 创建显示内容选项的水平布局
         let displayOptionsStack = NSStackView(views: [
@@ -238,7 +236,7 @@ final class LLSettingsTabViewController: NSViewController {
         }
         
         // 新增：是否显示反馈按钮
-        showFeedbackButtonsCheck = NSButton(checkboxWithTitle: "显示反馈按钮", target: self, action: #selector(saveSettings))
+        showFeedbackButtonsCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Feedback Buttons", comment: ""), target: self, action: #selector(saveSettings))
         
         // 新增：播放间隔设置
         statusBarPlaybackIntervalPopup = NSPopUpButton()
@@ -246,17 +244,17 @@ final class LLSettingsTabViewController: NSViewController {
         statusBarPlaybackIntervalPopup.action = #selector(saveSettings)
         statusBarPlaybackIntervalPopup.addItems(withTitles: LLPlaybackInterval.allDisplayNames)
         
-        card.addFormItem(label: "显示内容", control: displayOptionsStack)
-        card.addFormItem(label: "滚动设置", control: statusBarAutoScrollCheck)
+        card.addFormItem(label: NSLocalizedString("Show Content", comment: ""), control: displayOptionsStack)
+        card.addFormItem(label: NSLocalizedString("Auto Scroll", comment: ""), control: statusBarAutoScrollCheck)
         card.addFormItem(label: "状态栏显示宽度", control: widthSliderStack)
-        card.addFormItem(label: "按钮控制", control: showFeedbackButtonsCheck)
-        card.addFormItem(label: "播放设置", control: statusBarPlaybackIntervalPopup)
+        card.addFormItem(label: NSLocalizedString("Show Feedback Buttons", comment: ""), control: showFeedbackButtonsCheck)
+        card.addFormItem(label: NSLocalizedString("Playback Interval", comment: ""), control: statusBarPlaybackIntervalPopup)
         
         return card
     }
     
     private func createReviewCard() -> LLSettingsCardView {
-        let card = LLSettingsCardView(title: "复习设置", icon: "🔄")
+        let card = LLSettingsCardView(title: NSLocalizedString("Review Settings", comment: ""), icon: "🔄")
         
         reviewModePopup = NSPopUpButton()
         reviewModePopup.target = self
@@ -272,9 +270,9 @@ final class LLSettingsTabViewController: NSViewController {
     }
     
     private func createPronunciationCard() -> LLSettingsCardView {
-        let card = LLSettingsCardView(title: "发音设置", icon: "🔊")
+        let card = LLSettingsCardView(title: NSLocalizedString("Pronunciation Settings", comment: ""), icon: "🔊")
         
-        pronunciationCheck = NSButton(checkboxWithTitle: "启用发音", target: self, action: #selector(saveSettings))
+        pronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Enable Pronunciation", comment: ""), target: self, action: #selector(saveSettings))
         
         pronunciationProviderPopup = NSPopUpButton()
         pronunciationProviderPopup.target = self
@@ -295,18 +293,18 @@ final class LLSettingsTabViewController: NSViewController {
         pronunciationRatePopup.action = #selector(saveSettings)
         pronunciationRatePopup.addItems(withTitles: LLSpeechRate.allDisplayNames)
         
-        card.addFormItem(label: "发音开关", control: pronunciationCheck)
+        card.addFormItem(label: NSLocalizedString("Enable Pronunciation", comment: ""), control: pronunciationCheck)
         card.addFormRow(items: [
-            (label: "发音提供者", control: pronunciationProviderPopup),
-            (label: "发音口音", control: pronunciationAccentPopup)
+            (label: NSLocalizedString("Pronunciation Provider", comment: ""), control: pronunciationProviderPopup),
+            (label: NSLocalizedString("Pronunciation Accent", comment: ""), control: pronunciationAccentPopup)
         ])
-        card.addFormItem(label: "语速调节", control: pronunciationRatePopup)
+        card.addFormItem(label: NSLocalizedString("Speech Rate", comment: ""), control: pronunciationRatePopup)
         
         return card
     }
     
     private func createFloatingPanelCard() -> LLSettingsCardView {
-        let card = LLSettingsCardView(title: "浮窗设置", icon: "🪟")
+        let card = LLSettingsCardView(title: NSLocalizedString("Floating Panel Settings", comment: ""), icon: "🪟")
         
         panelAlphaSlider = NSSlider(value: 0.55, minValue: 0.2, maxValue: 1, target: self, action: #selector(saveSettings))
         panelAlphaSlider.isContinuous = true
@@ -314,8 +312,8 @@ final class LLSettingsTabViewController: NSViewController {
         panelWidthField = createNumberField(value: "400")
         panelHeightField = createNumberField(value: "200")
         
-        typingDictationModeCheck = NSButton(checkboxWithTitle: "听写模式（隐藏单词）", target: self, action: #selector(saveSettings))
-        typingPracticeShowMeaningCheck = NSButton(checkboxWithTitle: "显示释义", target: self, action: #selector(saveSettings))
+        typingDictationModeCheck = NSButton(checkboxWithTitle: NSLocalizedString("Dictation Mode", comment: ""), target: self, action: #selector(saveSettings))
+        typingPracticeShowMeaningCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Meaning", comment: ""), target: self, action: #selector(saveSettings))
         
         let typingStack = NSStackView(views: [typingDictationModeCheck, typingPracticeShowMeaningCheck])
         typingStack.orientation = .horizontal
@@ -338,15 +336,15 @@ final class LLSettingsTabViewController: NSViewController {
             (label: "浮窗宽度", control: panelWidthField),
             (label: "浮窗高度", control: panelHeightField)
         ])
-        card.addFormItem(label: "打字练习", control: typingStack)
-        card.addFormItem(label: "答题输入框样式", control: typingInputStylePopup)
-        card.addFormItem(label: "自动显示答案", control: autoShowAnswerPopup)
+        card.addFormItem(label: NSLocalizedString("Typing Practice", comment: ""), control: typingStack)
+        card.addFormItem(label: NSLocalizedString("Input Style", comment: ""), control: typingInputStylePopup)
+        card.addFormItem(label: NSLocalizedString("Auto Show Answer", comment: ""), control: autoShowAnswerPopup)
         
         return card
     }
     
     private func createShortcutCard() -> LLSettingsCardView {
-        let card = LLSettingsCardView(title: "快捷键设置", icon: "⌨️")
+        let card = LLSettingsCardView(title: NSLocalizedString("Keyboard Shortcuts", comment: ""), icon: "⌨️")
         
         shortcutPlaceholderLabel = NSTextField(labelWithString: "快捷键功能开发中，敬请期待...")
         shortcutPlaceholderLabel.font = NSFont.systemFont(ofSize: 13)
@@ -367,9 +365,9 @@ final class LLSettingsTabViewController: NSViewController {
     }
     
     private func createOtherCard() -> LLSettingsCardView {
-        let card = LLSettingsCardView(title: "其他设置", icon: "⚙️")
+        let card = LLSettingsCardView(title: NSLocalizedString("Other Settings", comment: ""), icon: "⚙️")
         
-        launchAtLoginCheck = NSButton(checkboxWithTitle: "开机自动启动", target: self, action: #selector(toggleLaunchAtLogin))
+        launchAtLoginCheck = NSButton(checkboxWithTitle: NSLocalizedString("Launch at Login", comment: ""), target: self, action: #selector(toggleLaunchAtLogin))
         
         displayLanguagePopup = NSPopUpButton()
         displayLanguagePopup.target = self
@@ -378,8 +376,8 @@ final class LLSettingsTabViewController: NSViewController {
             displayLanguagePopup.addItem(withTitle: language.displayName)
         }
         
-        card.addFormItem(label: "启动设置", control: launchAtLoginCheck)
-        card.addFormItem(label: "显示语言", control: displayLanguagePopup)
+        card.addFormItem(label: NSLocalizedString("Launch at Login", comment: ""), control: launchAtLoginCheck)
+        card.addFormItem(label: NSLocalizedString("Display Language", comment: ""), control: displayLanguagePopup)
         
         return card
     }
