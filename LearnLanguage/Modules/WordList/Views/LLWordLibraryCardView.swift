@@ -137,9 +137,17 @@ final class LLWordLibraryCardView: NSView {
         nameLabel.stringValue = data.name
         countLabel.stringValue = "\(learnedCount)/\(data.entryCount) 词已学习"
         
+        // 计算进度百分比
         let progress = CGFloat(learnedCount) / CGFloat(max(1, data.entryCount))
-        let width = progressBar.bounds.width * progress
-        progressFillWidthConstraint?.update(offset: width)
+        
+        // 使用约束来设置进度条宽度，而不是依赖 bounds
+        // 进度条的最大宽度是 progressBar 的宽度减去左右 padding (16*2)
+        // 但我们直接设置为百分比乘以 progressBar 的宽度
+        DispatchQueue.main.async {
+            let maxWidth = self.progressBar.bounds.width
+            let width = maxWidth * progress
+            self.progressFillWidthConstraint?.update(offset: width)
+        }
     }
     
     private func updateSelection() {
