@@ -572,17 +572,18 @@ final class LLDatabaseManager {
     
     // MARK: - 每日学习任务
     
-    /// 获取今日需要复习的词汇（nextReviewAt <= 今天结束时间戳，全部取出）
+    /// 获取今日需要复习的词汇（nextReviewAt <= 今天结束时间戳，且 createdAt 不是今天，即历史学过的词）
     func getTodayReviewWords(wordListId: String) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
-        let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
-        let endOfDayTimestamp = endOfDay.timeIntervalSince1970
+        let startOfDay = calendar.startOfDay(for: Date()).timeIntervalSince1970
+        let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!.timeIntervalSince1970
         
         return try database.getObjects(
             on: LLDBLearningProgress.Properties.all,
             fromTable: learningProgressTable,
             where: LLDBLearningProgress.Properties.wordListId == wordListId
-                && LLDBLearningProgress.Properties.nextReviewAt <= endOfDayTimestamp,
+                && LLDBLearningProgress.Properties.nextReviewAt <= endOfDay
+                && LLDBLearningProgress.Properties.createdAt < startOfDay,  // 排除今天新学的词
             orderBy: [LLDBLearningProgress.Properties.nextReviewAt.asOrder(by: .ascending)]
         )
     }

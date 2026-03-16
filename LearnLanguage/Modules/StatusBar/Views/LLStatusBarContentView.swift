@@ -228,8 +228,33 @@ final class LLStatusBarContentView: NSControl {
 extension LLStatusBarContentView: NSMenuDelegate {
     
     override func mouseDown(with event: NSEvent) {
+        let loc = convert(event.locationInWindow, from: nil)
+        
+        // 如果点击在 feedbackView 区域内且 feedbackView 可见，把事件传给它
+        if !feedbackView.isHidden && feedbackView.alphaValue > 0.5 {
+            let feedbackFrame = feedbackView.frame
+            if feedbackFrame.contains(loc) {
+                // 转换坐标后传给 feedbackView
+                let localEvent = NSEvent.mouseEvent(
+                    with: event.type,
+                    location: feedbackView.convert(loc, from: self),
+                    modifierFlags: event.modifierFlags,
+                    timestamp: event.timestamp,
+                    windowNumber: event.windowNumber,
+                    context: nil,
+                    eventNumber: event.eventNumber,
+                    clickCount: event.clickCount,
+                    pressure: event.pressure
+                )
+                if let localEvent = localEvent {
+                    feedbackView.mouseDown(with: localEvent)
+                }
+                return
+            }
+        }
+        
+        // 其他区域：弹出右键菜单
         if let menu = self.menu {
-            // 使用 menu 属性代替废弃的 popUpMenu 方法
             NSMenu.popUpContextMenu(menu, with: event, for: self)
         }
     }

@@ -258,14 +258,12 @@ final class LLStatusBarManager {
         let menu = menuProvider?()
         contentView = LLStatusBarContentView(statusItem: statusItem!, menu: menu)
         
-        // 设置视图的 target 和 action
-        contentView?.target = self
-        contentView?.action = #selector(statusItemClicked(_:))
-        
         // 将自定义视图添加到 button 中
         if let button = statusItem?.button {
             button.title = ""
             button.image = nil
+            button.action = nil  // 清除 button 的 action，让事件传递给 contentView
+            button.target = nil
             button.subviews.forEach { $0.removeFromSuperview() }
             button.addSubview(contentView!)
             

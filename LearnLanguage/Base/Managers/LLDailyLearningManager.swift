@@ -66,26 +66,19 @@ final class LLDailyLearningManager {
     }
     
     /// 获取下一个需要学习的词汇
-    /// 优先级：复习队列 > 新词队列
+    /// 优先级：历史复习词（createTime 不是今天）> 今日新词
     func nextWord() -> LLWordEntry? {
-        // 复习队列有词，优先返回
+        // 先返回历史复习词
         if let first = reviewQueue.first {
             return first
         }
         
-        // 复习队列空了，返回新词
+        // 历史复习词全部完成，再返回今日新词
         if let first = newWordQueue.first {
             return first
         }
         
-        // 今日任务全部完成，重新检查是否有新的复习任务（比如今天学的新词）
-        guard let listId = currentListId,
-              let wordList = currentWordList else {
-            return nil
-        }
-        
-        loadReviewQueue(wordList: wordList, listId: listId)
-        return reviewQueue.first
+        return nil
     }
     
     /// 记录状态栏反馈并更新队列
@@ -109,27 +102,23 @@ final class LLDailyLearningManager {
             updateProgress(entry: entry, listId: listId, feedback: feedback, keepToday: false)
             
         case .unclear:
-            // 模糊：reviewCount -1，留在今日队列尾部继续循环
             updateProgress(entry: entry, listId: listId, feedback: feedback, keepToday: true)
             if isFromReviewQueue {
-                reviewQueue.append(entry)
-            } else {
-                // 新词标记模糊，加入复习队列尾部
+                // 历史复习词标记模糊：留在复习队列尾部继续循环
                 reviewQueue.append(entry)
             }
+            // 今日新词标记模糊：不加入复习队列，继续学下一个新词
             
         case .unknown:
-            // 不认识：reviewCount 重置为0，留在今日队列尾部继续循环
             updateProgress(entry: entry, listId: listId, feedback: feedback, keepToday: true)
             if isFromReviewQueue {
-                reviewQueue.append(entry)
-            } else {
-                // 新词标记不认识，加入复习队列尾部
+                // 历史复习词标记不认识：留在复习队列尾部继续循环
                 reviewQueue.append(entry)
             }
+            // 今日新词标记不认识：不加入复习队列，继续学下一个新词
         }
         
-        LLLogger.info("📝 反馈记录：\(entry.text) -> \(feedback.rawValue)，复习队列剩余：\(reviewQueue.count)，新词队列剩余：\(newWordQueue.count)")
+        LLLogger.info("📝 反馈记录：\(entry.text) -> \(feedback.rawValue)，来源：\(isFromReviewQueue ? "复习词" : "新词")，复习队列剩余：\(reviewQueue.count)，新词队列剩余：\(newWordQueue.count)")
     }
     
     /// 记录打字练习结果（根据错误次数映射为反馈）
