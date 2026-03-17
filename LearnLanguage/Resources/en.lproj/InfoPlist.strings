@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  LearnLanguage
+
+  Localized from Base.lproj
+*/
+
+"CFBundleDisplayName" = "LearnLanguage";
+"CFBundleName" = "LearnLanguage";
