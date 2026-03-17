@@ -20,10 +20,10 @@
 "Success" = "성공";
 
 // MARK: - Main Navigation
-"Word List" = "단어 목록";
-"Progress" = "진행 상황";
+"Word List" = "단어 라이브러리";
+"Progress" = "학습 진행";
 "Settings" = "설정";
-"Data" = "데이터";
+"Data" = "데이터 관리";
 "Typing Practice" = "타이핑 연습";
 
 // MARK: - Sidebar

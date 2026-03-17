@@ -20,10 +20,10 @@
 "Success" = "成功";
 
 // MARK: - Main Navigation
-"Word List" = "単語リスト";
-"Progress" = "進捗";
+"Word List" = "単語ライブラリ";
+"Progress" = "学習進捗";
 "Settings" = "設定";
-"Data" = "データ";
+"Data" = "データ管理";
 "Typing Practice" = "タイピング練習";
 
 // MARK: - Sidebar

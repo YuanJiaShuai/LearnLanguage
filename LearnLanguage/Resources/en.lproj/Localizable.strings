@@ -20,10 +20,10 @@
 "Success" = "Success";
 
 // MARK: - Main Navigation
-"Word List" = "Word List";
-"Progress" = "Progress";
-"Settings" = "Settings";
-"Data" = "Data";
+"Word List" = "Word Library";
+"Progress" = "Learning Progress";
+"Settings" = "Preferences";
+"Data" = "Data Management";
 "Typing Practice" = "Typing Practice";
 
 // MARK: - Sidebar

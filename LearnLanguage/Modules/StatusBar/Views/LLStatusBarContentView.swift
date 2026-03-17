@@ -213,6 +213,9 @@ final class LLStatusBarContentView: NSControl {
         wordPhoneticView.setWordBlurred(!settings.statusBarShowWord)
         wordPhoneticView.setPhoneticBlurred(!settings.statusBarShowPhoneticSymbol)
         
+        // 根据设置控制释义的显示/隐藏
+        scrollingMeaningView.isHidden = !settings.statusBarShowMeaning
+        
         // 根据设置控制是否启用滚动
         scrollingMeaningView.forcedScroll = settings.statusBarAutoScroll
         

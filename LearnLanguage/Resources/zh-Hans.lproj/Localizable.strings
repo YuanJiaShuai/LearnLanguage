@@ -20,10 +20,10 @@
 "Success" = "成功";
 
 // MARK: - Main Navigation
-"Word List" = "词库";
-"Progress" = "进度";
-"Settings" = "设置";
-"Data" = "数据";
+"Word List" = "词库管理";
+"Progress" = "学习进度";
+"Settings" = "偏好设置";
+"Data" = "数据管理";
 "Typing Practice" = "打字练习";
 
 // MARK: - Sidebar
