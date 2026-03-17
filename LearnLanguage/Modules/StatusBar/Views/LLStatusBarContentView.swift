@@ -157,7 +157,9 @@ final class LLStatusBarContentView: NSControl {
         }, completionHandler: {
             // 动画完成后隐藏反馈按钮，显示滚动视图
             self.feedbackView.isHidden = true
-            self.scrollingMeaningView.isHidden = false
+            // 获取设置
+            let settings = LLSettingsStore.shared.settings
+            self.scrollingMeaningView.isHidden = false && (!settings.statusBarShowMeaning)
         })
     }
     
