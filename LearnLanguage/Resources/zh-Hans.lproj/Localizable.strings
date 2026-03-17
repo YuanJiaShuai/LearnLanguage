@@ -26,6 +26,25 @@
 "Data" = "数据";
 "Typing Practice" = "打字练习";
 
+// MARK: - Sidebar
+"App Name" = "划水记词";
+"Current Word List" = "当前学习的词库";
+"Today's Review" = "当天需复习";
+"No Word List" = "暂无词库";
+
+// MARK: - Card Views
+"No Review Words" = "未复习错题";
+"Current Learning List" = "当前学习词库";
+"No Word List Selected" = "还未选择学习词库\n请前往「词库管理」选择一个词库开始学习";
+"Change List" = "切换词库";
+"Select List" = "选择词库";
+"Learned %d/%d words (%.1f%%)" = "已学习 %d / %d 词 (%.1f%%)";
+"Today's Learning" = "今日学习";
+"Total Words" = "总词数";
+"Mastered" = "已掌握";
+"words" = "词";
+"words learned" = "词已学习";
+
 // MARK: - Settings
 "Learning Settings" = "学习设置";
 "Status Bar Settings" = "状态栏设置";
@@ -92,3 +111,30 @@
 "No Data" = "暂无数据";
 "Loading" = "加载中...";
 "Completed" = "已完成";
+
+// MARK: - Feedback
+"Show" = "显示";
+"Know" = "认识";
+"Unclear" = "模糊";
+"Unknown" = "不认识";
+
+// MARK: - Time Filter
+"All" = "全部";
+"Today" = "今天";
+"Week" = "本周";
+"Month" = "本月";
+
+// MARK: - Review View
+"Time Range" = "时间范围：";
+"Play" = "播放";
+"Word" = "单词";
+"Meaning" = "释义";
+"Next Review" = "下次复习";
+"Unknown Word" = "未知单词";
+"Days Later" = "%d天后";
+
+// MARK: - Errors
+"Server Error" = "服务器返回错误：%d";
+"Player Start Failed" = "播放器启动失败";
+"Invalid URL" = "无效的 URL";
+"No Audio Data" = "无音频数据";

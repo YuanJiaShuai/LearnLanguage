@@ -22,7 +22,7 @@ final class LLCurrentListCardView: NSView {
     }()
     
     private lazy var titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "当前学习词库")
+        let label = NSTextField(labelWithString: NSLocalizedString("Current Learning List", comment: "Current learning list title"))
         label.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false
@@ -32,7 +32,7 @@ final class LLCurrentListCardView: NSView {
     }()
     
     private lazy var emptyStateLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "还未选择学习词库\n请前往「词库管理」选择一个词库开始学习")
+        let label = NSTextField(labelWithString: NSLocalizedString("No Word List Selected", comment: "No word list selected message"))
         label.font = NSFont.systemFont(ofSize: 14)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false
@@ -112,7 +112,7 @@ final class LLCurrentListCardView: NSView {
     }()
     
     private lazy var changeButton: NSButton = {
-        let button = NSButton(title: "切换词库", target: self, action: #selector(didClickChangeButton))
+        let button = NSButton(title: NSLocalizedString("Change List", comment: "Change word list button"), target: self, action: #selector(didClickChangeButton))
         button.bezelStyle = .rounded
         button.controlSize = .regular
         button.wantsLayer = true
@@ -265,13 +265,13 @@ final class LLCurrentListCardView: NSView {
     private func showEmptyState() {
         emptyStateLabel.isHidden = false
         contentStackView.isHidden = true
-        changeButton.title = "选择词库"
+        changeButton.title = NSLocalizedString("Select List", comment: "Select word list button")
     }
     
     private func showContent() {
         emptyStateLabel.isHidden = true
         contentStackView.isHidden = false
-        changeButton.title = "切换词库"
+        changeButton.title = NSLocalizedString("Change List", comment: "Change word list button")
     }
     
     private func updateProgress(learned: Int, total: Int, percentage: Double) {
@@ -279,7 +279,7 @@ final class LLCurrentListCardView: NSView {
         let fillWidth = progressWidth * (percentage / 100.0)
         
         progressWidthConstraint?.update(offset: fillWidth)
-        progressLabel.stringValue = "已学习 \(learned) / \(total) 词 (\(String(format: "%.1f", percentage))%)"
+        progressLabel.stringValue = String(format: NSLocalizedString("Learned %d/%d words (%.1f%%)", comment: "Progress label"), learned, total, percentage)
         
         // 添加动画
         NSAnimationContext.runAnimationGroup { context in
@@ -295,11 +295,11 @@ final class LLCurrentListCardView: NSView {
         
         // 今日学习
         let todayCount = LLSettingsStore.shared.getCurrentListTodayCount()
-        let todayStatView = createStatView(icon: "📅", title: "今日学习", value: "\(todayCount) 词")
+        let todayStatView = createStatView(icon: "📅", title: NSLocalizedString("Today's Learning", comment: "Today's learning stat"), value: "\(todayCount) " + NSLocalizedString("words", comment: "words unit"))
         statsStackView.addArrangedSubview(todayStatView)
         
         // 总词数
-        let totalStatView = createStatView(icon: "📖", title: "总词数", value: "\(list.entryCount) 词")
+        let totalStatView = createStatView(icon: "📖", title: NSLocalizedString("Total Words", comment: "Total words stat"), value: "\(list.entryCount) " + NSLocalizedString("words", comment: "words unit"))
         statsStackView.addArrangedSubview(totalStatView)
         
         // 掌握情况
@@ -311,7 +311,7 @@ final class LLCurrentListCardView: NSView {
             LLLogger.error("❌ 获取掌握统计失败：\(error)")
             know = 0
         }
-        let masteredStatView = createStatView(icon: "✅", title: "已掌握", value: "\(know) 词")
+        let masteredStatView = createStatView(icon: "✅", title: NSLocalizedString("Mastered", comment: "Mastered words stat"), value: "\(know) " + NSLocalizedString("words", comment: "words unit"))
         statsStackView.addArrangedSubview(masteredStatView)
     }
     

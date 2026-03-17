@@ -26,6 +26,25 @@
 "Data" = "データ";
 "Typing Practice" = "タイピング練習";
 
+// MARK: - Sidebar
+"App Name" = "LearnLanguage";
+"Current Word List" = "現在の単語リスト";
+"Today's Review" = "今日のレビュー";
+"No Word List" = "単語リストなし";
+
+// MARK: - Card Views
+"No Review Words" = "レビュー単語なし";
+"Current Learning List" = "現在の学習リスト";
+"No Word List Selected" = "単語リストが選択されていません\n「単語リスト」に移動して、学習を開始する単語リストを選択してください";
+"Change List" = "リストを変更";
+"Select List" = "リストを選択";
+"Learned %d/%d words (%.1f%%)" = "%d/%d 単語を学習しました (%.1f%%)";
+"Today's Learning" = "今日の学習";
+"Total Words" = "総単語数";
+"Mastered" = "習得済み";
+"words" = "単語";
+"words learned" = "単語を学習しました";
+
 // MARK: - Settings
 "Learning Settings" = "学習設定";
 "Status Bar Settings" = "ステータスバー設定";
@@ -92,3 +111,30 @@
 "No Data" = "データなし";
 "Loading" = "読み込み中...";
 "Completed" = "完了";
+
+// MARK: - Feedback
+"Show" = "表示";
+"Know" = "知っている";
+"Unclear" = "不明確";
+"Unknown" = "知らない";
+
+// MARK: - Time Filter
+"All" = "すべて";
+"Today" = "今日";
+"Week" = "今週";
+"Month" = "今月";
+
+// MARK: - Review View
+"Time Range" = "時間範囲：";
+"Play" = "再生";
+"Word" = "単語";
+"Meaning" = "意味";
+"Next Review" = "次のレビュー";
+"Unknown Word" = "不明な単語";
+"Days Later" = "%d日後";
+
+// MARK: - Errors
+"Server Error" = "サーバーがエラーを返しました：%d";
+"Player Start Failed" = "プレーヤーの起動に失敗しました";
+"Invalid URL" = "無効な URL";
+"No Audio Data" = "オーディオデータなし";

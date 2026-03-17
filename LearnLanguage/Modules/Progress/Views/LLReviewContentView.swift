@@ -37,15 +37,28 @@ final class LLReviewContentView: NSView {
     private var tableView: NSTableView!
     
     enum TimeFilter: String, CaseIterable {
-        case all = "全部"
-        case today = "今天"
-        case week = "本周"
-        case month = "本月"
+        case all = "all"
+        case today = "today"
+        case week = "week"
+        case month = "month"
+        
+        var displayName: String {
+            switch self {
+            case .all:
+                return NSLocalizedString("All", comment: "All time filter")
+            case .today:
+                return NSLocalizedString("Today", comment: "Today time filter")
+            case .week:
+                return NSLocalizedString("Week", comment: "This week time filter")
+            case .month:
+                return NSLocalizedString("Month", comment: "This month time filter")
+            }
+        }
     }
     
     var currentTimeFilter: TimeFilter = .all {
         didSet {
-            onTimeFilterChanged?(currentTimeFilter.rawValue)
+            onTimeFilterChanged?(currentTimeFilter.displayName)
         }
     }
     
@@ -81,7 +94,7 @@ final class LLReviewContentView: NSView {
             make.height.equalTo(40)
         }
         
-        let filterLabel = NSTextField(labelWithString: "时间范围：")
+        let filterLabel = NSTextField(labelWithString: NSLocalizedString("Time Range", comment: "Time range filter label"))
         filterLabel.font = NSFont.systemFont(ofSize: 13)
         filterLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
         toolbar.addSubview(filterLabel)
@@ -92,7 +105,7 @@ final class LLReviewContentView: NSView {
         let popup = NSPopUpButton()
         popup.bezelStyle = .rounded
         popup.font = NSFont.systemFont(ofSize: 13)
-        TimeFilter.allCases.forEach { popup.addItem(withTitle: $0.rawValue) }
+        TimeFilter.allCases.forEach { popup.addItem(withTitle: $0.displayName) }
         popup.target = self
         popup.action = #selector(timeFilterChanged(_:))
         toolbar.addSubview(popup)
@@ -132,10 +145,10 @@ final class LLReviewContentView: NSView {
     
     private func setupTableColumns() {
         let columns = [
-            ("play", "播放", 50, 50),
-            ("word", "单词", 130, 100),
-            ("meaning", "释义", 180, 150),
-            ("nextReview", "下次复习", 100, 90)
+            ("play", NSLocalizedString("Play", comment: "Play button column"), 50, 50),
+            ("word", NSLocalizedString("Word", comment: "Word column"), 130, 100),
+            ("meaning", NSLocalizedString("Meaning", comment: "Meaning column"), 180, 150),
+            ("nextReview", NSLocalizedString("Next Review", comment: "Next review column"), 100, 90)
         ]
         
         for (id, title, width, minWidth) in columns {
@@ -245,7 +258,7 @@ extension LLReviewContentView: NSTableViewDelegate {
                 textField.lineBreakMode = .byTruncatingTail
             case "nextReview":
                 let interval = record.interval ?? 1
-                textField.stringValue = "\(interval)天后"
+                textField.stringValue = String(format: NSLocalizedString("Days Later", comment: "Days until next review"), interval)
                 textField.alignment = .right
                 textField.textColor = LLAppearanceManager.shared.colors.accentColor
             default:
@@ -298,7 +311,7 @@ extension LLReviewContentView: NSTableViewDelegate {
     private func getWordText(wordId: String, listId: String) -> String {
         guard let list = LLWordListStorage.shared.list(byId: listId),
               let entry = list.entries.first(where: { $0.id == wordId }) else {
-            return "未知单词"
+            return NSLocalizedString("Unknown Word", comment: "Unknown word placeholder")
         }
         return entry.text
     }

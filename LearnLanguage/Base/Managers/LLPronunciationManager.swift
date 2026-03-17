@@ -122,7 +122,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
         
         guard let encodedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: encodedString) else {
-            completion?(false, NSError(domain: "LLPronunciation", code: -1, userInfo: [NSLocalizedDescriptionKey: "无效的 URL"]))
+            completion?(false, NSError(domain: "LLPronunciation", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid URL", comment: "Invalid URL error")]))
             return
         }
         
@@ -147,7 +147,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
                 LLLogger.debug("📡 HTTP 状态码：\(httpResponse.statusCode)")
                 if httpResponse.statusCode != 200 {
                     DispatchQueue.main.async {
-                        let error = NSError(domain: "LLPronunciation", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "服务器返回错误：\(httpResponse.statusCode)"])
+                        let error = NSError(domain: "LLPronunciation", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: String(format: NSLocalizedString("Server Error", comment: "Server error message"), httpResponse.statusCode)])
                         LLLogger.error("❌ 播放失败：HTTP \(httpResponse.statusCode)")
                         self.completion?(false, error)
                         self.completion = nil
@@ -158,7 +158,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             
             guard let data = data, !data.isEmpty else {
                 DispatchQueue.main.async {
-                    let error = NSError(domain: "LLPronunciation", code: -2, userInfo: [NSLocalizedDescriptionKey: "无音频数据"])
+                    let error = NSError(domain: "LLPronunciation", code: -2, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("No Audio Data", comment: "No audio data error")])
                     LLLogger.error("❌ 播放失败：无音频数据")
                     self.completion?(false, error)
                     self.completion = nil
@@ -191,7 +191,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             } else {
                 LLLogger.error("❌ 播放失败：无法启动播放器")
             }
-            completion?(success, success ? nil : NSError(domain: "LLPronunciation", code: -3, userInfo: [NSLocalizedDescriptionKey: "播放器启动失败"]))
+            completion?(success, success ? nil : NSError(domain: "LLPronunciation", code: -3, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Player Start Failed", comment: "Player startup failed error")]))
             completion = nil
         } catch {
             LLLogger.error("❌ 播放失败：\(error.localizedDescription)")

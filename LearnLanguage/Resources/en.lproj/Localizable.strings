@@ -26,6 +26,25 @@
 "Data" = "Data";
 "Typing Practice" = "Typing Practice";
 
+// MARK: - Sidebar
+"App Name" = "LearnLanguage";
+"Current Word List" = "Current Word List";
+"Today's Review" = "Today's Review";
+"No Word List" = "No Word List";
+
+// MARK: - Card Views
+"No Review Words" = "No Review Words";
+"Current Learning List" = "Current Learning List";
+"No Word List Selected" = "No word list selected\nGo to \"Word List\" to select a word list to start learning";
+"Change List" = "Change List";
+"Select List" = "Select List";
+"Learned %d/%d words (%.1f%%)" = "Learned %d/%d words (%.1f%%)";
+"Today's Learning" = "Today's Learning";
+"Total Words" = "Total Words";
+"Mastered" = "Mastered";
+"words" = "words";
+"words learned" = "words learned";
+
 // MARK: - Settings
 "Learning Settings" = "Learning Settings";
 "Status Bar Settings" = "Status Bar Settings";
@@ -92,3 +111,30 @@
 "No Data" = "No Data";
 "Loading" = "Loading...";
 "Completed" = "Completed";
+
+// MARK: - Feedback
+"Show" = "Show";
+"Know" = "Know";
+"Unclear" = "Unclear";
+"Unknown" = "Unknown";
+
+// MARK: - Time Filter
+"All" = "All";
+"Today" = "Today";
+"Week" = "This Week";
+"Month" = "This Month";
+
+// MARK: - Review View
+"Time Range" = "Time Range:";
+"Play" = "Play";
+"Word" = "Word";
+"Meaning" = "Meaning";
+"Next Review" = "Next Review";
+"Unknown Word" = "Unknown Word";
+"Days Later" = "%d days later";
+
+// MARK: - Errors
+"Server Error" = "Server returned error: %d";
+"Player Start Failed" = "Player startup failed";
+"Invalid URL" = "Invalid URL";
+"No Audio Data" = "No audio data";

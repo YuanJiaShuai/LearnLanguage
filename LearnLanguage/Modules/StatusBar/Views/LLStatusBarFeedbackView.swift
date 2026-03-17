@@ -59,10 +59,10 @@ final class LLStatusBarFeedbackView: NSView {
         if images.count < 4 {
             LLLogger.warn("⚠️ 自定义图片加载不完整，使用系统图标作为后备")
             images = [
-                NSImage(systemSymbolName: "eye.fill", accessibilityDescription: "显示"),
-                NSImage(systemSymbolName: "hand.thumbsup.fill", accessibilityDescription: "认识"),
-                NSImage(systemSymbolName: "questionmark.circle.fill", accessibilityDescription: "模糊"),
-                NSImage(systemSymbolName: "hand.thumbsdown.fill", accessibilityDescription: "不认识")
+                NSImage(systemSymbolName: "eye.fill", accessibilityDescription: NSLocalizedString("Show", comment: "Show button")),
+                NSImage(systemSymbolName: "hand.thumbsup.fill", accessibilityDescription: NSLocalizedString("Know", comment: "Know button")),
+                NSImage(systemSymbolName: "questionmark.circle.fill", accessibilityDescription: NSLocalizedString("Unclear", comment: "Unclear button")),
+                NSImage(systemSymbolName: "hand.thumbsdown.fill", accessibilityDescription: NSLocalizedString("Unknown", comment: "Unknown button"))
             ].compactMap { $0 }
             images.forEach { $0.isTemplate = true }
         } else {

@@ -22,10 +22,10 @@ enum SidebarModule {
     
     var title: String {
         switch self {
-        case .wordList: return "词库管理"
-        case .learningRecord: return "学习记录"
-        case .settings: return "学习设置"
-        case .dataManagement: return "数据管理"
+        case .wordList: return NSLocalizedString("Word List", comment: "Word list module")
+        case .learningRecord: return NSLocalizedString("Progress", comment: "Learning progress module")
+        case .settings: return NSLocalizedString("Settings", comment: "Settings module")
+        case .dataManagement: return NSLocalizedString("Data", comment: "Data management module")
         }
     }
     
@@ -69,7 +69,7 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var logoLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "划水记词")
+        let label = NSTextField(labelWithString: NSLocalizedString("App Name", comment: "Application name"))
         label.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.accentColor
         return label
@@ -95,7 +95,7 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var currentWordLibTitleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "当前学习的词库")
+        let label = NSTextField(labelWithString: NSLocalizedString("Current Word List", comment: "Current word list section title"))
         label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         return label
@@ -117,7 +117,7 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var wrongWordsTitleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "当天需复习")
+        let label = NSTextField(labelWithString: NSLocalizedString("Today's Review", comment: "Today's review section title"))
         label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         return label
@@ -362,7 +362,7 @@ final class LLSidebarViewController: NSViewController {
               let list = LLWordListStorage.shared.list(byId: currentId) else {
             // 没有词库时显示空状态
             currentWordList = nil
-            currentWordLibCardView.updateContent(title: "暂无词库", badge: "0/0")
+            currentWordLibCardView.updateContent(title: NSLocalizedString("No Word List", comment: "No word list placeholder"), badge: "0/0")
             return
         }
         
@@ -389,6 +389,6 @@ final class LLSidebarViewController: NSViewController {
             LLLogger.error("❌ 获取复习词汇数量失败：\(error)")
             wrongWordCount = 0
         }
-        wrongWordsCardView.updateContent(title: "当天需复习", badge: "\(wrongWordCount)")
+        wrongWordsCardView.updateContent(title: NSLocalizedString("Today's Review", comment: "Today's review section title"), badge: "\(wrongWordCount)")
     }
 }

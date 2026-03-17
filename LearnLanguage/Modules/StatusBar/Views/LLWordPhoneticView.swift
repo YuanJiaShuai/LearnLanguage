@@ -89,7 +89,7 @@ final class LLWordPhoneticView: NSView {
         setupClickGesture()
         
         // 设置默认文本以便调试
-        word = "Loading..."
+        word = NSLocalizedString("Loading", comment: "Loading indicator")
         phonetic = ""
     }
     
@@ -151,7 +151,7 @@ final class LLWordPhoneticView: NSView {
     }
     
     @objc private func onClicked() {
-        guard !word.isEmpty, word != "Loading..." else { return }
+        guard !word.isEmpty, word != NSLocalizedString("Loading", comment: "Loading indicator") else { return }
         LLLogger.info("🔊 点击播放发音：\(word)")
         LLPronunciationManager.shared.speak(word: word)
     }

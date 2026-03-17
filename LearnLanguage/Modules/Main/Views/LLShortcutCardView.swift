@@ -25,8 +25,8 @@ final class LLShortcutCardView: NSView {
         
         var placeholderTitle: String {
             switch self {
-            case .wordList: return "暂无词库"
-            case .wrongWords: return "未复习错题"
+            case .wordList: return NSLocalizedString("No Word List", comment: "No word list placeholder")
+            case .wrongWords: return NSLocalizedString("No Review Words", comment: "No review words placeholder")
             }
         }
         

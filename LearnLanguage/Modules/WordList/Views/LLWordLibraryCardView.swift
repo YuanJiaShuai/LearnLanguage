@@ -86,7 +86,7 @@ final class LLWordLibraryCardView: NSView {
         learningBadge.wantsLayer = true
         learningBadge.layer?.cornerRadius = 9
         learningBadge.layer?.backgroundColor = NSColor.systemBlue.cgColor
-        learningBadge.stringValue = "学习中"
+        learningBadge.stringValue = NSLocalizedString("Learning", comment: "Currently learning badge")
         learningBadge.isHidden = true
         learningBadge.snp.makeConstraints { make in
             make.width.equalTo(56)
@@ -135,7 +135,7 @@ final class LLWordLibraryCardView: NSView {
         guard let data = data else { return }
         
         nameLabel.stringValue = data.name
-        countLabel.stringValue = "\(learnedCount)/\(data.entryCount) 词已学习"
+        countLabel.stringValue = "\(learnedCount)/\(data.entryCount) " + NSLocalizedString("words learned", comment: "Words learned count")
         
         // 计算进度百分比
         let progress = CGFloat(learnedCount) / CGFloat(max(1, data.entryCount))
