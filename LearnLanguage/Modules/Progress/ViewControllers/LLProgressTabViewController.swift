@@ -306,7 +306,7 @@ final class LLProgressTabViewController: NSViewController {
             let totalWords = stats.learned
             let days = LLLearningStore.shared.totalLearningDays(listId: listId)
             
-            statContentView?.updateStatistics(totalWords: totalWords, days: days, todayCount: todayCount, todayGoal: 50)
+            statContentView?.updateStatistics(totalWords: totalWords, days: days, todayCount: todayCount, todayGoal: LLSettingsStore.shared.settings.newWordsPerDay)
         } catch {
             LLLogger.error("❌ 加载统计数据失败：\(error)")
         }
