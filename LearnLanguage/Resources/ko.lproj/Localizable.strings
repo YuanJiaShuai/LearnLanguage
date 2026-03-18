@@ -133,6 +133,77 @@
 "Unknown Word" = "알 수 없는 단어";
 "Days Later" = "%d일 후";
 
+// MARK: - Word List Module
+"Word List Module Title" = "단어 라이브러리";
+"New Word List" = "새 단어 목록";
+"Word List Count" = "단어 라이브러리 (총 %d 개)";
+"Search Word List" = "단어 목록 검색...";
+"All Status" = "모든 상태";
+"Not Started" = "시작 안 함";
+"Learning" = "학습 중";
+"Completed" = "완료";
+"All Types" = "모든 유형";
+"Uncategorized" = "미분류";
+"Custom Word List" = "사용자 정의 목록";
+"New List Name Placeholder" = "예: 나의 단어장";
+"Create New Word List" = "새 단어 목록";
+"Enter List Name" = "새 단어 목록의 이름을 입력하세요:";
+"Create" = "생성";
+"Back" = "뒤로";
+"Search Word" = "단어 검색...";
+"Start Learning" = "학습 시작";
+"Continue Learning" = "학습 계속";
+"Word Count Stats" = "총 %d 단어, %d 학습 완료";
+"Load Failed" = "로드 실패";
+
+// MARK: - Progress Module
+"Progress Module Title" = "학습 기록";
+"Stat Tab" = "학습 통계";
+"Review Tab" = "복습 기록";
+"Total Words Learned" = "누적 학습 단어";
+"Streak Days" = "연속 학습 일수";
+"No Records Today" = "오늘 학습 기록이 없습니다";
+
+// MARK: - Wrong Record
+"Wrong Records Title" = "미복습 오답 단어 (";
+"Wrong Records Suffix" = "개)";
+"Batch Review" = "🔄 일괄 복습";
+
+// MARK: - Settings Extra
+"Shortcut Placeholder" = "키보드 단축키 기능 준비 중...";
+"Panel Alpha" = "패널 투명도";
+"Panel Width" = "패널 너비";
+"Panel Height" = "패널 높이";
+"Status Bar Width" = "상태 표시줄 너비";
+"Review Interval Rule" = "복습 간격 규칙";
+"Wrong Word Retry" = "오답 단어 재학습 횟수";
+
+// MARK: - Data Module
+"Data Module Title" = "데이터 관리";
+"Local Backup" = "로컬 백업";
+"Backup Desc" = "데이터베이스, 학습 기록 및 설정을 암호화된 .llbak 형식으로 내보냅니다. 이 앱만 읽을 수 있습니다.";
+"Export Backup" = "백업 내보내기";
+"Data Restore" = "데이터 복원";
+"Restore Desc" = "이 앱에서 내보낸 .llbak 파일만 지원합니다. 복원하면 현재 모든 데이터가 덮어씌워집니다.";
+"Select Restore File" = "백업 파일 선택하여 복원";
+"DB Maintenance" = "데이터베이스 유지 관리";
+"DB Maintenance Desc" = "데이터베이스 문제를 확인하고 수정하여 데이터 무결성을 보장합니다.";
+"Check Integrity" = "무결성 검사";
+"Repair DB" = "데이터베이스 복구";
+"Export Stats" = "통계 내보내기";
+"Backup History" = "최근 백업 기록";
+"No Backup History" = "백업 기록 없음";
+"Confirm Restore" = "복원 확인";
+"Confirm Restore Desc" = "복원하면 현재 모든 데이터(단어 목록, 학습 기록, 설정)가 덮어씌워집니다. 계속하시겠습니까?";
+"Restore" = "복원";
+"Backup Success" = "백업 성공";
+"Backup Failed" = "백업 실패";
+"Restore Success" = "복원 성공";
+"Restore Success Desc" = "모든 데이터가 복원되었습니다. 학습 단어 목록을 다시 선택하세요.";
+"Restore Failed" = "복원 실패";
+"Check Done" = "검사 완료";
+"Check Done Desc" = "데이터베이스 무결성 검사가 완료되었습니다. 자세한 내용은 콘솔을 확인하세요.";
+
 // MARK: - Errors
 "Server Error" = "서버가 오류를 반환했습니다: %d";
 "Player Start Failed" = "플레이어 시작 실패";

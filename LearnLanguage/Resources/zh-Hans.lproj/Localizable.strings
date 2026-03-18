@@ -133,6 +133,77 @@
 "Unknown Word" = "未知单词";
 "Days Later" = "%d天后";
 
+// MARK: - Word List Module
+"Word List Module Title" = "词库管理";
+"New Word List" = "新建词库";
+"Word List Count" = "词库管理（共 %d 个）";
+"Search Word List" = "搜索词库名称...";
+"All Status" = "所有状态";
+"Not Started" = "未开始";
+"Learning" = "学习中";
+"Completed" = "已完成";
+"All Types" = "所有类型";
+"Uncategorized" = "未分类";
+"Custom Word List" = "自定义词库";
+"New List Name Placeholder" = "例如：我的单词本";
+"Create New Word List" = "新建词库";
+"Enter List Name" = "请输入词库名称：";
+"Create" = "创建";
+"Back" = "返回";
+"Search Word" = "搜索单词...";
+"Start Learning" = "开始学习";
+"Continue Learning" = "继续学习";
+"Word Count Stats" = "共 %d 个单词，已学习 %d 个";
+"Load Failed" = "加载失败";
+
+// MARK: - Progress Module
+"Progress Module Title" = "学习记录";
+"Stat Tab" = "学习统计";
+"Review Tab" = "复习记录";
+"Total Words Learned" = "累计学习单词";
+"Streak Days" = "连续学习天数";
+"No Records Today" = "今天还没有学习记录";
+
+// MARK: - Wrong Record
+"Wrong Records Title" = "未复习错题（";
+"Wrong Records Suffix" = "道）";
+"Batch Review" = "🔄 批量复习";
+
+// MARK: - Settings Extra
+"Shortcut Placeholder" = "快捷键功能开发中，敬请期待...";
+"Panel Alpha" = "浮窗透明度";
+"Panel Width" = "浮窗宽度";
+"Panel Height" = "浮窗高度";
+"Status Bar Width" = "状态栏显示宽度";
+"Review Interval Rule" = "复习间隔规则";
+"Wrong Word Retry" = "答错单词重学次数";
+
+// MARK: - Data Module
+"Data Module Title" = "数据管理";
+"Local Backup" = "本地备份";
+"Backup Desc" = "备份包含数据库、学习记录和设置，导出为加密的 .llbak 格式，只有本软件可以读取";
+"Export Backup" = "立即备份";
+"Data Restore" = "数据恢复";
+"Restore Desc" = "仅支持恢复本软件导出的 .llbak 备份文件，恢复将覆盖当前所有数据";
+"Select Restore File" = "选择备份文件恢复";
+"DB Maintenance" = "数据库维护";
+"DB Maintenance Desc" = "检查和修复数据库问题，确保数据完整性";
+"Check Integrity" = "检查完整性";
+"Repair DB" = "修复数据库";
+"Export Stats" = "导出统计";
+"Backup History" = "最近备份记录";
+"No Backup History" = "暂无备份记录";
+"Confirm Restore" = "确认恢复";
+"Confirm Restore Desc" = "恢复将覆盖当前所有数据（词库、学习记录、设置），是否继续？";
+"Restore" = "恢复";
+"Backup Success" = "备份成功";
+"Backup Failed" = "备份失败";
+"Restore Success" = "恢复成功";
+"Restore Success Desc" = "所有数据已成功恢复，请重新选择学习词库。";
+"Restore Failed" = "恢复失败";
+"Check Done" = "检查完成";
+"Check Done Desc" = "数据库完整性检查已完成，详细信息请查看控制台输出";
+
 // MARK: - Errors
 "Server Error" = "服务器返回错误：%d";
 "Player Start Failed" = "播放器启动失败";

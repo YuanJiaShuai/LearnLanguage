@@ -246,7 +246,7 @@ final class LLSettingsTabViewController: NSViewController {
         
         card.addFormItem(label: NSLocalizedString("Show Content", comment: ""), control: displayOptionsStack)
         card.addFormItem(label: NSLocalizedString("Auto Scroll", comment: ""), control: statusBarAutoScrollCheck)
-        card.addFormItem(label: "状态栏显示宽度", control: widthSliderStack)
+        card.addFormItem(label: NSLocalizedString("Status Bar Width", comment: ""), control: widthSliderStack)
         card.addFormItem(label: NSLocalizedString("Show Feedback Buttons", comment: ""), control: showFeedbackButtonsCheck)
         card.addFormItem(label: NSLocalizedString("Playback Interval", comment: ""), control: statusBarPlaybackIntervalPopup)
         
@@ -263,8 +263,8 @@ final class LLSettingsTabViewController: NSViewController {
         
         wrongWordRetryField = createNumberField(value: "3")
         
-        card.addFormItem(label: "复习间隔规则", control: reviewModePopup)
-        card.addFormItem(label: "答错单词重学次数", control: wrongWordRetryField)
+        card.addFormItem(label: NSLocalizedString("Review Interval Rule", comment: ""), control: reviewModePopup)
+        card.addFormItem(label: NSLocalizedString("Wrong Word Retry", comment: ""), control: wrongWordRetryField)
         
         return card
     }
@@ -331,10 +331,10 @@ final class LLSettingsTabViewController: NSViewController {
         autoShowAnswerPopup.action = #selector(saveSettings)
         autoShowAnswerPopup.addItems(withTitles: LLAutoShowAnswerOption.allDisplayNames)
         
-        card.addFormItem(label: "浮窗透明度", control: panelAlphaSlider)
+        card.addFormItem(label: NSLocalizedString("Panel Alpha", comment: ""), control: panelAlphaSlider)
         card.addFormRow(items: [
-            (label: "浮窗宽度", control: panelWidthField),
-            (label: "浮窗高度", control: panelHeightField)
+            (label: NSLocalizedString("Panel Width", comment: ""), control: panelWidthField),
+            (label: NSLocalizedString("Panel Height", comment: ""), control: panelHeightField)
         ])
         card.addFormItem(label: NSLocalizedString("Typing Practice", comment: ""), control: typingStack)
         card.addFormItem(label: NSLocalizedString("Input Style", comment: ""), control: typingInputStylePopup)
@@ -346,7 +346,7 @@ final class LLSettingsTabViewController: NSViewController {
     private func createShortcutCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: NSLocalizedString("Keyboard Shortcuts", comment: ""), icon: "⌨️")
         
-        shortcutPlaceholderLabel = NSTextField(labelWithString: "快捷键功能开发中，敬请期待...")
+        shortcutPlaceholderLabel = NSTextField(labelWithString: NSLocalizedString("Shortcut Placeholder", comment: ""))
         shortcutPlaceholderLabel.font = NSFont.systemFont(ofSize: 13)
         shortcutPlaceholderLabel.textColor = NSColor(white: 0.5, alpha: 1.0)
         shortcutPlaceholderLabel.alignment = .center

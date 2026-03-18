@@ -13,7 +13,7 @@ final class LLWordListDetailViewController: NSViewController {
     
     // 返回按钮
     private lazy var backButton: NSButton = {
-        let button = NSButton(title: "返回", target: self, action: #selector(didClickBack))
+        let button = NSButton(title: NSLocalizedString("Back", comment: ""), target: self, action: #selector(didClickBack))
         button.bezelStyle = .rounded
         button.controlSize = .regular
         button.image = NSImage(systemSymbolName: "chevron.left", accessibilityDescription: nil)
@@ -47,7 +47,7 @@ final class LLWordListDetailViewController: NSViewController {
     // 搜索框
     private lazy var searchField: NSSearchField = {
         let field = NSSearchField()
-        field.placeholderString = "搜索单词..."
+        field.placeholderString = NSLocalizedString("Search Word", comment: "")
         field.target = self
         field.action = #selector(onSearchChanged)
         return field
@@ -55,7 +55,7 @@ final class LLWordListDetailViewController: NSViewController {
     
     // 开始学习/继续学习按钮
     private lazy var startLearningButton: NSButton = {
-        let button = NSButton(title: "开始学习", target: self, action: #selector(didClickStartLearning))
+        let button = NSButton(title: NSLocalizedString("Start Learning", comment: ""), target: self, action: #selector(didClickStartLearning))
         button.bezelStyle = .rounded
         button.controlSize = .large
         button.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
@@ -235,17 +235,17 @@ final class LLWordListDetailViewController: NSViewController {
             
             // 显示错误提示
             let alert = NSAlert()
-            alert.messageText = "加载失败"
-            alert.informativeText = "无法加载词库单词：\(error.localizedDescription)"
+            alert.messageText = NSLocalizedString("Load Failed", comment: "")
+            alert.informativeText = String(format: NSLocalizedString("Server Error", comment: ""), 0) != "Server Error" ? error.localizedDescription : error.localizedDescription
             alert.alertStyle = .warning
-            alert.addButton(withTitle: "确定")
+            alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
             alert.runModal()
         }
     }
     
     private func updateStatsLabel() {
         let learnedCount = allWords.filter { $0.isLearned }.count
-        statsLabel.stringValue = "共 \(allWords.count) 个单词，已学习 \(learnedCount) 个"
+        statsLabel.stringValue = String(format: NSLocalizedString("Word Count Stats", comment: ""), allWords.count, learnedCount)
     }
     
     private func updateLearningButtonTitle() {
@@ -259,9 +259,9 @@ final class LLWordListDetailViewController: NSViewController {
         }
         
         if hasLearningRecords {
-            startLearningButton.title = "继续学习"
+            startLearningButton.title = NSLocalizedString("Continue Learning", comment: "")
         } else {
-            startLearningButton.title = "开始学习"
+            startLearningButton.title = NSLocalizedString("Start Learning", comment: "")
         }
     }
     

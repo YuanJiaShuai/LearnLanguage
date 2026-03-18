@@ -16,7 +16,7 @@ final class LLProgressTabViewController: NSViewController {
     
     // 页面标题
     private lazy var titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "学习记录")
+        let label = NSTextField(labelWithString: NSLocalizedString("Progress Module Title", comment: ""))
         label.font = NSFont.systemFont(ofSize: 20, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.moduleTitleText
         label.isEditable = false
@@ -34,7 +34,7 @@ final class LLProgressTabViewController: NSViewController {
     
     // 子标签按钮
     private lazy var statTabButton: NSButton = {
-        let button = NSButton(title: "学习统计", target: self, action: #selector(switchToStatTab))
+        let button = NSButton(title: NSLocalizedString("Stat Tab", comment: ""), target: self, action: #selector(switchToStatTab))
         button.bezelStyle = .rounded
         button.isBordered = false
         button.font = NSFont.systemFont(ofSize: 14, weight: .medium)
@@ -44,7 +44,7 @@ final class LLProgressTabViewController: NSViewController {
     }()
     
     private lazy var reviewTabButton: NSButton = {
-        let button = NSButton(title: "复习记录", target: self, action: #selector(switchToreviewTab))
+        let button = NSButton(title: NSLocalizedString("Review Tab", comment: ""), target: self, action: #selector(switchToreviewTab))
         button.bezelStyle = .rounded
         button.isBordered = false
         button.font = NSFont.systemFont(ofSize: 14, weight: .medium)

@@ -21,7 +21,7 @@ final class LLWrongRecordCardView: NSView {
     }()
     
     private let titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: " 未复习错题（")
+        let label = NSTextField(labelWithString: NSLocalizedString("Wrong Records Title", comment: ""))
         label.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false
@@ -41,7 +41,7 @@ final class LLWrongRecordCardView: NSView {
     }()
     
     private let titleLabel2: NSTextField = {
-        let label = NSTextField(labelWithString: "道）")
+        let label = NSTextField(labelWithString: NSLocalizedString("Wrong Records Suffix", comment: ""))
         label.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false
@@ -51,7 +51,7 @@ final class LLWrongRecordCardView: NSView {
     }()
     
     private lazy var batchReviewButton: NSButton = {
-        let button = NSButton(title: "🔄 批量复习", target: self, action: #selector(batchReviewButtonClicked))
+        let button = NSButton(title: NSLocalizedString("Batch Review", comment: ""), target: self, action: #selector(batchReviewButtonClicked))
         button.bezelStyle = .rounded
         button.isBordered = false
         button.wantsLayer = true

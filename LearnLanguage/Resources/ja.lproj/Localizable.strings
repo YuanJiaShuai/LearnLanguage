@@ -133,6 +133,77 @@
 "Unknown Word" = "不明な単語";
 "Days Later" = "%d日後";
 
+// MARK: - Word List Module
+"Word List Module Title" = "単語ライブラリ";
+"New Word List" = "新しいリスト";
+"Word List Count" = "単語ライブラリ（%d 個）";
+"Search Word List" = "単語リストを検索...";
+"All Status" = "すべての状態";
+"Not Started" = "未開始";
+"Learning" = "学習中";
+"Completed" = "完了";
+"All Types" = "すべての種類";
+"Uncategorized" = "未分類";
+"Custom Word List" = "カスタムリスト";
+"New List Name Placeholder" = "例：マイ単語帳";
+"Create New Word List" = "新しい単語リスト";
+"Enter List Name" = "新しい単語リストの名前を入力：";
+"Create" = "作成";
+"Back" = "戻る";
+"Search Word" = "単語を検索...";
+"Start Learning" = "学習開始";
+"Continue Learning" = "学習を続ける";
+"Word Count Stats" = "%d 単語、%d 学習済み";
+"Load Failed" = "読み込み失敗";
+
+// MARK: - Progress Module
+"Progress Module Title" = "学習記録";
+"Stat Tab" = "学習統計";
+"Review Tab" = "復習記録";
+"Total Words Learned" = "累計学習単語";
+"Streak Days" = "連続学習日数";
+"No Records Today" = "今日の学習記録はありません";
+
+// MARK: - Wrong Record
+"Wrong Records Title" = "未復習の間違い単語（";
+"Wrong Records Suffix" = "件）";
+"Batch Review" = "🔄 一括復習";
+
+// MARK: - Settings Extra
+"Shortcut Placeholder" = "キーボードショートカットは近日公開予定...";
+"Panel Alpha" = "パネルの透明度";
+"Panel Width" = "パネルの幅";
+"Panel Height" = "パネルの高さ";
+"Status Bar Width" = "ステータスバーの幅";
+"Review Interval Rule" = "復習間隔ルール";
+"Wrong Word Retry" = "間違い単語の再学習回数";
+
+// MARK: - Data Module
+"Data Module Title" = "データ管理";
+"Local Backup" = "ローカルバックアップ";
+"Backup Desc" = "データベース、学習記録、設定を暗号化された .llbak 形式でエクスポートします。このアプリのみ読み取り可能です。";
+"Export Backup" = "バックアップを作成";
+"Data Restore" = "データ復元";
+"Restore Desc" = "このアプリでエクスポートした .llbak ファイルのみ対応。復元すると現在のデータが上書きされます。";
+"Select Restore File" = "バックアップファイルを選択して復元";
+"DB Maintenance" = "データベースメンテナンス";
+"DB Maintenance Desc" = "データベースの問題を確認・修復し、データの整合性を確保します。";
+"Check Integrity" = "整合性チェック";
+"Repair DB" = "データベース修復";
+"Export Stats" = "統計エクスポート";
+"Backup History" = "最近のバックアップ履歴";
+"No Backup History" = "バックアップ記録なし";
+"Confirm Restore" = "復元の確認";
+"Confirm Restore Desc" = "復元すると現在のすべてのデータ（単語リスト・学習記録・設定）が上書きされます。続行しますか？";
+"Restore" = "復元";
+"Backup Success" = "バックアップ成功";
+"Backup Failed" = "バックアップ失敗";
+"Restore Success" = "復元成功";
+"Restore Success Desc" = "すべてのデータが復元されました。学習リストを再選択してください。";
+"Restore Failed" = "復元失敗";
+"Check Done" = "チェック完了";
+"Check Done Desc" = "データベースの整合性チェックが完了しました。詳細はコンソールを確認してください。";
+
 // MARK: - Errors
 "Server Error" = "サーバーがエラーを返しました：%d";
 "Player Start Failed" = "プレーヤーの起動に失敗しました";

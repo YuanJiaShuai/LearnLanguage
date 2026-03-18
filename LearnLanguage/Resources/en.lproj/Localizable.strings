@@ -133,6 +133,77 @@
 "Unknown Word" = "Unknown Word";
 "Days Later" = "%d days later";
 
+// MARK: - Word List Module
+"Word List Module Title" = "Word Library";
+"New Word List" = "New Word List";
+"Word List Count" = "Word Library (%d total)";
+"Search Word List" = "Search word lists...";
+"All Status" = "All Status";
+"Not Started" = "Not Started";
+"Learning" = "Learning";
+"Completed" = "Completed";
+"All Types" = "All Types";
+"Uncategorized" = "Uncategorized";
+"Custom Word List" = "Custom List";
+"New List Name Placeholder" = "e.g. My Vocabulary";
+"Create New Word List" = "New Word List";
+"Enter List Name" = "Enter a name for the new word list:";
+"Create" = "Create";
+"Back" = "Back";
+"Search Word" = "Search words...";
+"Start Learning" = "Start Learning";
+"Continue Learning" = "Continue Learning";
+"Word Count Stats" = "%d words, %d learned";
+"Load Failed" = "Load Failed";
+
+// MARK: - Progress Module
+"Progress Module Title" = "Learning Records";
+"Stat Tab" = "Statistics";
+"Review Tab" = "Review Records";
+"Total Words Learned" = "Words Learned";
+"Streak Days" = "Streak Days";
+"No Records Today" = "No learning records today";
+
+// MARK: - Wrong Record
+"Wrong Records Title" = "Unreviewed Wrong Words (";
+"Wrong Records Suffix" = ")";
+"Batch Review" = "🔄 Batch Review";
+
+// MARK: - Settings Extra
+"Shortcut Placeholder" = "Keyboard shortcuts coming soon...";
+"Panel Alpha" = "Panel Opacity";
+"Panel Width" = "Panel Width";
+"Panel Height" = "Panel Height";
+"Status Bar Width" = "Status Bar Width";
+"Review Interval Rule" = "Review Interval Rule";
+"Wrong Word Retry" = "Wrong Word Retry Count";
+
+// MARK: - Data Module
+"Data Module Title" = "Data Management";
+"Local Backup" = "Local Backup";
+"Backup Desc" = "Backs up your database, learning records and settings into an encrypted .llbak file that only this app can read.";
+"Export Backup" = "Export Backup";
+"Data Restore" = "Data Restore";
+"Restore Desc" = "Only .llbak files exported by this app are supported. Restoring will overwrite all current data.";
+"Select Restore File" = "Select Backup File to Restore";
+"DB Maintenance" = "Database Maintenance";
+"DB Maintenance Desc" = "Check and repair database issues to ensure data integrity.";
+"Check Integrity" = "Check Integrity";
+"Repair DB" = "Repair Database";
+"Export Stats" = "Export Statistics";
+"Backup History" = "Recent Backup History";
+"No Backup History" = "No backup records";
+"Confirm Restore" = "Confirm Restore";
+"Confirm Restore Desc" = "Restoring will overwrite all current data (word lists, learning records, settings). Continue?";
+"Restore" = "Restore";
+"Backup Success" = "Backup Successful";
+"Backup Failed" = "Backup Failed";
+"Restore Success" = "Restore Successful";
+"Restore Success Desc" = "All data has been restored. Please reselect your learning word list.";
+"Restore Failed" = "Restore Failed";
+"Check Done" = "Check Complete";
+"Check Done Desc" = "Database integrity check completed. See console for details.";
+
 // MARK: - Errors
 "Server Error" = "Server returned error: %d";
 "Player Start Failed" = "Player startup failed";

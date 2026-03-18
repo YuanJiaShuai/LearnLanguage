@@ -51,6 +51,19 @@ final class LLDatabaseManager {
         LLLogger.info("✅ 数据库连接已打开")
     }
     
+    /// 关闭数据库连接（恢复备份前调用）
+    func closeDatabase() {
+        database = nil
+        LLLogger.info("✅ 数据库连接已关闭")
+    }
+    
+    /// 重新打开数据库连接（恢复备份后调用）
+    func reopenDatabase() {
+        closeDatabase()
+        openDatabase()
+        LLLogger.info("✅ 数据库连接已重新打开")
+    }
+    
     /// 检查并创建学习进度表（如果不存在）
     private func createLearningProgressTableIfNeeded() {
         do {

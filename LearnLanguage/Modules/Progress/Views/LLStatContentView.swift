@@ -90,7 +90,7 @@ final class LLStatContentView: NSView {
         }
         
         // 累计学习单词卡片
-        totalWordsCard = LLStatCardView(icon: "📚", description: "累计学习单词")
+        totalWordsCard = LLStatCardView(icon: "📚", description: NSLocalizedString("Total Words Learned", comment: ""))
         statsGrid.addSubview(totalWordsCard)
         totalWordsCard.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()
@@ -107,7 +107,7 @@ final class LLStatContentView: NSView {
         }
         
         // 连续学习天数卡片
-        streakCard = LLStatCardView(icon: "🔥", description: "连续学习天数")
+        streakCard = LLStatCardView(icon: "🔥", description: NSLocalizedString("Streak Days", comment: ""))
         statsGrid.addSubview(streakCard)
         streakCard.snp.makeConstraints { make in
             make.leading.equalTo(progressCard.snp.trailing).offset(16)
@@ -152,7 +152,7 @@ final class LLStatContentView: NSView {
         listView.subviews.forEach { $0.removeFromSuperview() }
         
         if records.isEmpty {
-            let emptyLabel = NSTextField(labelWithString: "今天还没有学习记录")
+            let emptyLabel = NSTextField(labelWithString: NSLocalizedString("No Records Today", comment: ""))
             emptyLabel.font = NSFont.systemFont(ofSize: 14)
             emptyLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
             emptyLabel.isEditable = false
@@ -214,7 +214,7 @@ final class LLStatContentView: NSView {
     private func getWordText(wordId: String, listId: String) -> String {
         guard let list = LLWordListStorage.shared.list(byId: listId),
               let entry = list.entries.first(where: { $0.id == wordId }) else {
-            return "未知单词"
+            return NSLocalizedString("Unknown Word", comment: "")
         }
         return entry.text
     }

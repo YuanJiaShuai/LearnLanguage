@@ -14,7 +14,7 @@ final class LLWordListTabViewController: NSViewController {
     
     // 顶部标题
     private lazy var titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "词库管理")
+        let label = NSTextField(labelWithString: NSLocalizedString("Word List Module Title", comment: ""))
         label.font = NSFont.systemFont(ofSize: 20, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.moduleTitleText
         label.isEditable = false
@@ -25,7 +25,7 @@ final class LLWordListTabViewController: NSViewController {
     
     // 新建词库按钮
     private lazy var newWordLibButton: NSButton = {
-        let button = NSButton(title: "新建词库", target: self, action: #selector(didClickNewWordLib))
+        let button = NSButton(title: NSLocalizedString("New Word List", comment: ""), target: self, action: #selector(didClickNewWordLib))
         button.bezelStyle = .rounded
         button.controlSize = .large
         button.image = NSImage(systemSymbolName: "plus", accessibilityDescription: nil)
@@ -55,7 +55,7 @@ final class LLWordListTabViewController: NSViewController {
     
     // 卡片标题
     private lazy var cardTitleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "词库管理（共 0 个）")
+        let label = NSTextField(labelWithString: String(format: NSLocalizedString("Word List Count", comment: ""), 0))
         label.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false
@@ -67,7 +67,7 @@ final class LLWordListTabViewController: NSViewController {
     // 搜索框
     private lazy var searchField: NSSearchField = {
         let field = NSSearchField()
-        field.placeholderString = "搜索词库名称..."
+        field.placeholderString = NSLocalizedString("Search Word List", comment: "")
         field.target = self
         field.action = #selector(onSearchChanged)
         return field
@@ -84,7 +84,12 @@ final class LLWordListTabViewController: NSViewController {
     // 状态筛选
     private lazy var statusFilterPopUp: NSPopUpButton = {
         let popUp = NSPopUpButton()
-        popUp.addItems(withTitles: ["所有状态", "未开始", "学习中", "已完成"])
+        popUp.addItems(withTitles: [
+            NSLocalizedString("All Status", comment: ""),
+            NSLocalizedString("Not Started", comment: ""),
+            NSLocalizedString("Learning", comment: ""),
+            NSLocalizedString("Completed", comment: "")
+        ])
         popUp.target = self
         popUp.action = #selector(onFilterChanged)
         return popUp
@@ -247,7 +252,7 @@ final class LLWordListTabViewController: NSViewController {
     
     private func loadCategoriesForFilter() {
         typeFilterPopUp.removeAllItems()
-        typeFilterPopUp.addItem(withTitle: "所有类型")
+        typeFilterPopUp.addItem(withTitle: NSLocalizedString("All Types", comment: ""))
         
         do {
             let categories = try LLDatabaseManager.shared.getAllCategories()
@@ -270,7 +275,7 @@ final class LLWordListTabViewController: NSViewController {
             allLists = dbWordLists.compactMap { dbList -> WordList? in
                 guard let id = dbList.id else { return nil }
                 
-                var categoryName = "未分类"
+                var categoryName = NSLocalizedString("Uncategorized", comment: "")
                 if let categoryId = dbList.categoryId {
                     if let category = try? LLDatabaseManager.shared.getCategoryById(categoryId) {
                         categoryName = category.name
@@ -326,7 +331,7 @@ final class LLWordListTabViewController: NSViewController {
         LLLogger.debug("🔍 筛选后得到 \(filteredLists.count) 个词库")
         
         // 更新标题
-        cardTitleLabel.stringValue = "词库管理（共 \(filteredLists.count) 个）"
+        cardTitleLabel.stringValue = String(format: NSLocalizedString("Word List Count", comment: ""), filteredLists.count)
         
         // 刷新 CollectionView
         collectionView.reloadData()
@@ -353,13 +358,13 @@ final class LLWordListTabViewController: NSViewController {
     
     @objc private func didClickNewWordLib() {
         let alert = NSAlert()
-        alert.messageText = "新建词库"
-        alert.informativeText = "请输入词库名称："
-        alert.addButton(withTitle: "创建")
-        alert.addButton(withTitle: "取消")
+        alert.messageText = NSLocalizedString("Create New Word List", comment: "")
+        alert.informativeText = NSLocalizedString("Enter List Name", comment: "")
+        alert.addButton(withTitle: NSLocalizedString("Create", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         
         let input = NSTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
-        input.placeholderString = "例如：我的单词本"
+        input.placeholderString = NSLocalizedString("New List Name Placeholder", comment: "")
         alert.accessoryView = input
         alert.window.initialFirstResponder = input
         
@@ -369,7 +374,7 @@ final class LLWordListTabViewController: NSViewController {
             
             let newList = WordList(
                 name: name,
-                category: "自定义词库",
+                category: NSLocalizedString("Custom Word List", comment: ""),
                 language: LLSettingsStore.shared.currentLanguage,
                 entries: []
             )
