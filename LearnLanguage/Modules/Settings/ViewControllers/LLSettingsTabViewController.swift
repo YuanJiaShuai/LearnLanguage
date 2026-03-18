@@ -75,8 +75,7 @@ final class LLSettingsTabViewController: NSViewController {
     private var typingInputStylePopup: NSPopUpButton!
     private var autoShowAnswerPopup: NSPopUpButton!
     
-    // 快捷键设置卡片
-    private var shortcutPlaceholderLabel: NSTextField!
+    // 快捷键设置卡片（动态创建，无需存储引用）
     
     // 其他设置卡片
     private var launchAtLoginCheck: NSButton!
@@ -346,20 +345,30 @@ final class LLSettingsTabViewController: NSViewController {
     private func createShortcutCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: NSLocalizedString("Keyboard Shortcuts", comment: ""), icon: "⌨️")
         
-        shortcutPlaceholderLabel = NSTextField(labelWithString: NSLocalizedString("Shortcut Placeholder", comment: ""))
-        shortcutPlaceholderLabel.font = NSFont.systemFont(ofSize: 13)
-        shortcutPlaceholderLabel.textColor = NSColor(white: 0.5, alpha: 1.0)
-        shortcutPlaceholderLabel.alignment = .center
+        let config = LLSettingsStore.shared.settings.shortcutConfig
         
-        card.addFormItem(label: "", control: shortcutPlaceholderLabel)
+        let actions: [(label: String, keyPath: WritableKeyPath<LLShortcutConfig, LLKeyCombo>, id: String)] = [
+            (NSLocalizedString("Shortcut Show Main Window", comment: ""),  \.showMainWindow,    "showMainWindow"),
+            (NSLocalizedString("Shortcut Next Word", comment: ""),         \.nextWord,          "nextWord"),
+            (NSLocalizedString("Shortcut Mark Know", comment: ""),         \.markKnow,          "markKnow"),
+            (NSLocalizedString("Shortcut Mark Unclear", comment: ""),      \.markUnclear,       "markUnclear"),
+            (NSLocalizedString("Shortcut Mark Unknown", comment: ""),      \.markUnknown,       "markUnknown"),
+            (NSLocalizedString("Shortcut Play Pronunciation", comment: ""),\.playPronunciation, "playPronunciation"),
+            (NSLocalizedString("Shortcut Toggle Typing", comment: ""),     \.toggleTypingMode,  "toggleTypingMode"),
+        ]
         
-        // TODO: 未来可以在这里添加快捷键设置项，例如：
-        // - 显示/隐藏主窗口
-        // - 切换到下一个单词
-        // - 标记为已掌握
-        // - 开始/暂停学习
-        // - 打开浮窗
-        // 等等...
+        for action in actions {
+            let recorder = LLShortcutRecorderView(frame: NSRect(x: 0, y: 0, width: 160, height: 28))
+            recorder.keyCombo = config[keyPath: action.keyPath]
+            let keyPath = action.keyPath
+            recorder.onChanged = { [weak self] newCombo in
+                var s = LLSettingsStore.shared.settings
+                s.shortcutConfig[keyPath: keyPath] = newCombo
+                LLSettingsStore.shared.settings = s
+                LLKeyboardShortcutManager.shared.registerAll()
+            }
+            card.addFormItem(label: action.label, control: recorder)
+        }
         
         return card
     }
@@ -451,7 +460,6 @@ final class LLSettingsTabViewController: NSViewController {
         panelHeightField.stringValue = "\(Int(s.floatingPanelHeight))"
         typingDictationModeCheck.state = s.typingDictationMode ? .on : .off
         typingPracticeShowMeaningCheck.state = s.typingPracticeShowMeaning ? .on : .off
-        typingPracticeShowMeaningCheck.state = s.typingPracticeShowMeaning ? .on : .off
         if let index = LLTypingInputStyle.allCases.firstIndex(of: s.typingInputStyle) {
             typingInputStylePopup.selectItem(at: index)
         }
@@ -515,7 +523,6 @@ final class LLSettingsTabViewController: NSViewController {
         s.floatingPanelWidth = CGFloat(Int(panelWidthField.stringValue) ?? 400)
         s.floatingPanelHeight = CGFloat(Int(panelHeightField.stringValue) ?? 200)
         s.typingDictationMode = typingDictationModeCheck.state == .on
-        s.typingPracticeShowMeaning = typingPracticeShowMeaningCheck.state == .on
         s.typingPracticeShowMeaning = typingPracticeShowMeaningCheck.state == .on
         
         // 打字练习输入框样式

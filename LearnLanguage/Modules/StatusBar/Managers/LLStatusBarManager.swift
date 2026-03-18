@@ -205,6 +205,17 @@ final class LLStatusBarManager {
         return currentEntry
     }
     
+    /// 切换到下一个单词
+    func moveToNextWord() {
+        refreshStatusBar()
+    }
+    
+    /// 播放当前单词发音
+    func playCurrentWordPronunciation() {
+        guard let entry = currentEntry else { return }
+        LLPronunciationManager.shared.speak(word: entry.text)
+    }
+    
     /// 切换打字练习模式
     func toggleTypingPracticeMode() {
         isTypingPracticeMode.toggle()

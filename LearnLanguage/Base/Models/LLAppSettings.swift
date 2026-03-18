@@ -218,6 +218,38 @@ enum LLPlaybackInterval: Int, CaseIterable, Codable {
     }
 }
 
+/// 快捷键组合
+struct LLKeyCombo: Codable, Equatable {
+    var keyCode: UInt32      // 虚拟键码
+    var modifiers: UInt32    // Carbon modifier flags
+    var displayString: String // 显示字符串，如 "⌘⇧L"
+    
+    static let empty = LLKeyCombo(keyCode: 0, modifiers: 0, displayString: "")
+    
+    var isEmpty: Bool { displayString.isEmpty }
+}
+
+/// 所有可配置的快捷键动作
+struct LLShortcutConfig: Codable {
+    var showMainWindow: LLKeyCombo
+    var nextWord: LLKeyCombo
+    var markKnow: LLKeyCombo
+    var markUnclear: LLKeyCombo
+    var markUnknown: LLKeyCombo
+    var playPronunciation: LLKeyCombo
+    var toggleTypingMode: LLKeyCombo
+    
+    static let `default` = LLShortcutConfig(
+        showMainWindow:   LLKeyCombo(keyCode: 37, modifiers: 0x0100 | 0x0200, displayString: "⌘⇧L"),
+        nextWord:         LLKeyCombo(keyCode: 45, modifiers: 0x0100 | 0x0200, displayString: "⌘⇧N"),
+        markKnow:         LLKeyCombo(keyCode: 40, modifiers: 0x0100 | 0x0200, displayString: "⌘⇧K"),
+        markUnclear:      LLKeyCombo(keyCode: 32, modifiers: 0x0100 | 0x0200, displayString: "⌘⇧U"),
+        markUnknown:      LLKeyCombo(keyCode: 38, modifiers: 0x0100 | 0x0200, displayString: "⌘⇧J"),
+        playPronunciation:LLKeyCombo(keyCode: 35, modifiers: 0x0100 | 0x0200, displayString: "⌘⇧P"),
+        toggleTypingMode: LLKeyCombo(keyCode: 17, modifiers: 0x0100 | 0x0200, displayString: "⌘⇧T")
+    )
+}
+
 /// 应用设置（本地存储）
 struct LLAppSettings: Codable {
     var displayLanguage: LLDisplayLanguage  // 应用显示语言
@@ -251,8 +283,8 @@ struct LLAppSettings: Codable {
     var typingDictationMode: Bool  // 听写模式（隐藏单词）
     var typingInputStyle: LLTypingInputStyle  // 打字练习输入框样式
     var autoShowAnswerAfterErrors: Int  // 自动显示答案（错误N次后）
-    var addToWrongBookAfterErrors: Int  // 记录到错题本（错误N次后）
     var launchAtLogin: Bool
+    var shortcutConfig: LLShortcutConfig
 
     static let `default` = LLAppSettings(
         displayLanguage: .english,
@@ -283,7 +315,7 @@ struct LLAppSettings: Codable {
         typingDictationMode: false,
         typingInputStyle: .perLetter,
         autoShowAnswerAfterErrors: 3,
-        addToWrongBookAfterErrors: 2,
-        launchAtLogin: false
+        launchAtLogin: false,
+        shortcutConfig: .default
     )
 }

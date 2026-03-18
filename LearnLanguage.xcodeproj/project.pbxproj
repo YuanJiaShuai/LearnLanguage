@@ -74,6 +74,8 @@
 		8492270A2F3C878F00447E0C /* LearnLanguage.db in Resources */ = {isa = PBXBuildFile; fileRef = 849226D72F3C878F00447E0C /* LearnLanguage.db */; };
 		8492270C2F3C888800447E0C /* LLWordCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492270B2F3C888800447E0C /* LLWordCellView.swift */; };
 		84A446CA2F6A818300F0E5E7 /* LLBackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */; };
+		84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */; };
+		84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */; };
 		84E1E32D2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E32C2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift */; };
 		84E1E32F2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */; };
 		84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */; };
@@ -171,6 +173,8 @@
 		849226DA2F3C878F00447E0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8492270B2F3C888800447E0C /* LLWordCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordCellView.swift; sourceTree = "<group>"; };
 		84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLBackupManager.swift; sourceTree = "<group>"; };
+		84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLKeychainManager.swift; sourceTree = "<group>"; };
+		84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLShortcutRecorderView.swift; sourceTree = "<group>"; };
 		84E1E32C2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordLibraryCardItem.swift; sourceTree = "<group>"; };
 		84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarContentView.swift; sourceTree = "<group>"; };
 		84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLScrollingTextView.swift; sourceTree = "<group>"; };
@@ -320,6 +324,8 @@
 			isa = PBXGroup;
 			children = (
 				849226A42F3C878F00447E0C /* LLKeyboardShortcutManager.swift */,
+				84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */,
+				84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -786,6 +792,8 @@
 				849226E12F3C878F00447E0C /* LLDataTabViewController.swift in Sources */,
 				84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */,
 				849226E22F3C878F00447E0C /* LLDBWord.swift in Sources */,
+				84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */,
+				84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */,
 				8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */,
 				849226E32F3C878F00447E0C /* LLSettingsStore.swift in Sources */,
 				849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */,

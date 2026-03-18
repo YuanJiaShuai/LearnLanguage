@@ -171,6 +171,15 @@
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "快捷键功能开发中，敬请期待...";
+"Shortcut Show Main Window" = "显示主窗口";
+"Shortcut Next Word" = "切换下一个单词";
+"Shortcut Mark Know" = "标记为认识";
+"Shortcut Mark Unclear" = "标记为模糊";
+"Shortcut Mark Unknown" = "标记为不认识";
+"Shortcut Play Pronunciation" = "播放发音";
+"Shortcut Toggle Typing" = "切换打字练习模式";
+"Shortcut Recording" = "请按下快捷键...";
+"Shortcut None" = "未设置";
 "Panel Alpha" = "浮窗透明度";
 "Panel Width" = "浮窗宽度";
 "Panel Height" = "浮窗高度";

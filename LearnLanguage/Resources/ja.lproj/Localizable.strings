@@ -171,6 +171,15 @@
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "キーボードショートカットは近日公開予定...";
+"Shortcut Show Main Window" = "メインウィンドウを表示";
+"Shortcut Next Word" = "次の単語へ";
+"Shortcut Mark Know" = "覚えた";
+"Shortcut Mark Unclear" = "うろ覚え";
+"Shortcut Mark Unknown" = "知らない";
+"Shortcut Play Pronunciation" = "発音を再生";
+"Shortcut Toggle Typing" = "タイピングモード切替";
+"Shortcut Recording" = "ショートカットキーを押してください...";
+"Shortcut None" = "未設定";
 "Panel Alpha" = "パネルの透明度";
 "Panel Width" = "パネルの幅";
 "Panel Height" = "パネルの高さ";

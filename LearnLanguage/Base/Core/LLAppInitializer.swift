@@ -80,7 +80,7 @@ final class LLAppInitializer {
     /// 初始化键盘快捷键
     private func initializeKeyboardShortcuts() {
         LLLogger.info("\n⌨️ 初始化键盘快捷键...")
-        _ = LLKeyboardShortcutManager.shared
+        LLKeyboardShortcutManager.shared.registerAll()
         LLLogger.info("✅ 键盘快捷键初始化完成")
     }
     

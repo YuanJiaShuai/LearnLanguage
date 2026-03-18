@@ -171,6 +171,15 @@
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "키보드 단축키 기능 준비 중...";
+"Shortcut Show Main Window" = "메인 창 표시";
+"Shortcut Next Word" = "다음 단어";
+"Shortcut Mark Know" = "알고 있음";
+"Shortcut Mark Unclear" = "헷갈림";
+"Shortcut Mark Unknown" = "모름";
+"Shortcut Play Pronunciation" = "발음 재생";
+"Shortcut Toggle Typing" = "타이핑 모드 전환";
+"Shortcut Recording" = "단축키를 누르세요...";
+"Shortcut None" = "미설정";
 "Panel Alpha" = "패널 투명도";
 "Panel Width" = "패널 너비";
 "Panel Height" = "패널 높이";

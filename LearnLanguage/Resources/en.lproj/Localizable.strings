@@ -171,6 +171,15 @@
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "Keyboard shortcuts coming soon...";
+"Shortcut Show Main Window" = "Show Main Window";
+"Shortcut Next Word" = "Next Word";
+"Shortcut Mark Know" = "Mark as Known";
+"Shortcut Mark Unclear" = "Mark as Unclear";
+"Shortcut Mark Unknown" = "Mark as Unknown";
+"Shortcut Play Pronunciation" = "Play Pronunciation";
+"Shortcut Toggle Typing" = "Toggle Typing Mode";
+"Shortcut Recording" = "Press shortcut keys...";
+"Shortcut None" = "Not Set";
 "Panel Alpha" = "Panel Opacity";
 "Panel Width" = "Panel Width";
 "Panel Height" = "Panel Height";
