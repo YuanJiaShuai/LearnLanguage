@@ -130,10 +130,28 @@ final class LLAppInitializer {
         }
     }
     
-    // MARK: - 维护和调试方法
+    /// 执行重置（清除所有数据并重新初始化数据库）
+    func performReset() {
+        LLLogger.warn("\n⚠️ 开始重置所有数据...")
+        
+        // 关闭数据库
+        LLDatabaseManager.shared.closeDatabase()
+        
+        // 清除数据库
+        LLDatabaseInitializer.shared.forceReinitialize()
+        
+        // 清除学习记录
+        clearLearningRecords()
+        
+        // 清除 MMKV 设置
+        clearSettings()
+        
+        // 重新初始化数据库
+        LLDatabaseInitializer.shared.initializeDatabase()
+        LLDatabaseManager.shared.openDatabase()
+        
+        LLLogger.info("✅ 重置完成")
     
-    /// 强制重新初始化所有数据（用于测试或重置）
-    func forceReinitializeAll() {
         LLLogger.warn("\n⚠️ 强制重新初始化所有数据...")
         
         let alert = NSAlert()
@@ -206,32 +224,42 @@ final class LLAppInitializer {
     
     // MARK: - 数据库维护方法
     
-    /// 检查数据库完整性
-    func checkDatabaseIntegrity() {
+    /// 检查数据库完整性，返回检查结果字符串
+    @discardableResult
+    func checkDatabaseIntegrity() -> String {
         LLLogger.info("\n🔍 检查数据库完整性...")
         
         do {
             let db = LLDatabaseManager.shared
+            var lines: [String] = []
             
             // 检查分类数量
             let categories = try db.getAllCategories()
-            LLLogger.info("   📂 分类数量：\(categories.count)")
+            lines.append("分类数量：\(categories.count)")
             
             // 检查词库数量
             let wordLists = try db.getAllWordLists()
-            LLLogger.info("   📚 词库数量：\(wordLists.count)")
+            lines.append("词库数量：\(wordLists.count)")
+            lines.append("")
             
-            // 检查每个分类下的词库数量
+            // 检查每个分类下的词库及单词数
             for category in categories {
                 guard let categoryId = category.id else { continue }
                 let lists = try db.getWordListByCategoryId(categoryId)
-                LLLogger.info("   - \(category.name)：\(lists.count) 个词库")
+                var categoryWords = 0
+                for list in lists {
+                    if let id = list.id {
+                        categoryWords += try db.getWordCount(forWordListId: id)
+                    }
+                }
+                lines.append("【\(category.name)】\(lists.count) 个词库，共 \(categoryWords) 个单词")
             }
+            
+            lines.append("")
             
             // 检查有单词的词库数量
             var wordListsWithWords = 0
             var totalWords = 0
-            
             for wordList in wordLists {
                 guard let id = wordList.id else { continue }
                 let count = try db.getWordCount(forWordListId: id)
@@ -241,17 +269,21 @@ final class LLAppInitializer {
                 }
             }
             
-            LLLogger.info("   📖 有单词的词库：\(wordListsWithWords) / \(wordLists.count)")
-            LLLogger.info("   📝 总单词数：\(totalWords)")
+            lines.append("有单词的词库：\(wordListsWithWords) / \(wordLists.count)")
+            lines.append("总单词数：\(totalWords)")
             
             if wordListsWithWords == 0 {
-                LLLogger.warn("   ⚠️ 警告：没有词库包含单词数据！")
+                lines.append("")
+                lines.append("⚠️ 警告：没有词库包含单词数据！")
             }
             
+            let result = lines.joined(separator: "\n")
             LLLogger.info("✅ 数据库完整性检查完成\n")
+            return result
             
         } catch {
             LLLogger.error("❌ 数据库完整性检查失败：\(error)\n")
+            return "检查失败：\(error.localizedDescription)"
         }
     }
     

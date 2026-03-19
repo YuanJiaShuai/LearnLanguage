@@ -200,6 +200,8 @@
 "Check Integrity" = "整合性チェック";
 "Repair DB" = "データベース修復";
 "Export Stats" = "統計エクスポート";
+"Reset Data" = "データをリセット";
+"Reset All Data" = "全データのリセットを確認";
 "Backup History" = "最近のバックアップ履歴";
 "No Backup History" = "バックアップ記録なし";
 "Confirm Restore" = "復元の確認";

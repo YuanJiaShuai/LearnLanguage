@@ -200,6 +200,8 @@
 "Check Integrity" = "무결성 검사";
 "Repair DB" = "데이터베이스 복구";
 "Export Stats" = "통계 내보내기";
+"Reset Data" = "데이터 초기화";
+"Reset All Data" = "모든 데이터 초기화 확인";
 "Backup History" = "최근 백업 기록";
 "No Backup History" = "백업 기록 없음";
 "Confirm Restore" = "복원 확인";

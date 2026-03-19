@@ -105,15 +105,6 @@ final class LLDataTabViewController: NSViewController {
         maintenanceCard.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalTo(lastCard!.snp.bottom).offset(20)
-        }
-        lastCard = maintenanceCard
-        
-        // 最近备份记录卡片
-        let historyCard = createHistoryCard()
-        contentView.addSubview(historyCard)
-        historyCard.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(lastCard!.snp.bottom).offset(20)
             make.bottom.equalToSuperview()
         }
     }
@@ -262,48 +253,15 @@ final class LLDataTabViewController: NSViewController {
         buttonStack.addArrangedSubview(repairButton)
         
         // 导出统计按钮
-        let statsButton = createSecondaryButton(title: NSLocalizedString("Export Stats", comment: ""), icon: "chart.bar.fill")
+        let statsButton = createSecondaryButton(title: NSLocalizedString("Reset Data", comment: ""), icon: "trash.fill")
         statsButton.target = self
-        statsButton.action = #selector(exportDatabaseStats)
+        statsButton.action = #selector(resetAllData)
         buttonStack.addArrangedSubview(statsButton)
         
         card.addSubview(buttonStack)
         buttonStack.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.top.equalTo(descLabel.snp.bottom).offset(16)
-            make.bottom.equalToSuperview().offset(-20)
-        }
-        
-        return card
-    }
-    
-    /// 创建最近备份记录卡片
-    private func createHistoryCard() -> NSView {
-        let card = createCardContainer()
-        
-        // 图标
-        let iconView = createIconView(systemName: "clock.arrow.circlepath", color: NSColor.systemGreen)
-        card.addSubview(iconView)
-        iconView.snp.makeConstraints { make in
-            make.left.top.equalToSuperview().offset(20)
-            make.width.height.equalTo(24)
-        }
-        
-        // 标题
-        let titleLabel = createCardTitle(NSLocalizedString("Backup History", comment: ""))
-        card.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.left.equalTo(iconView.snp.right).offset(12)
-            make.centerY.equalTo(iconView)
-        }
-        
-        // 描述
-        let descLabel = createCardDescription(NSLocalizedString("No Backup History", comment: ""))
-        card.addSubview(descLabel)
-        descLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(iconView.snp.bottom).offset(12)
             make.bottom.equalToSuperview().offset(-20)
         }
         
@@ -399,18 +357,20 @@ final class LLDataTabViewController: NSViewController {
         panel.message = "选择备份文件保存位置"
         panel.begin { [weak self] response in
             guard response == .OK, let url = panel.url else { return }
-            LLBackupManager.shared.exportBackup(to: url) { errorMsg in
-                let alert = NSAlert()
-                if let msg = errorMsg {
-                    alert.messageText = NSLocalizedString("Backup Failed", comment: "")
-                    alert.informativeText = msg
-                    alert.alertStyle = .critical
-                } else {
-                    alert.messageText = NSLocalizedString("Backup Success", comment: "")
-                    alert.informativeText = "\(url.path)"
-                    alert.alertStyle = .informational
+            DispatchQueue.main.async {
+                LLBackupManager.shared.exportBackup(to: url) { errorMsg in
+                    let alert = NSAlert()
+                    if let msg = errorMsg {
+                        alert.messageText = NSLocalizedString("Backup Failed", comment: "")
+                        alert.informativeText = msg
+                        alert.alertStyle = .critical
+                    } else {
+                        alert.messageText = NSLocalizedString("Backup Success", comment: "")
+                        alert.informativeText = "\(url.path)"
+                        alert.alertStyle = .informational
+                    }
+                    alert.runModal()
                 }
-                alert.runModal()
             }
         }
     }
@@ -425,40 +385,42 @@ final class LLDataTabViewController: NSViewController {
         panel.message = "选择本软件导出的 .\(LLBackupManager.fileExtension) 备份文件"
         panel.begin { [weak self] response in
             guard response == .OK, let url = panel.url else { return }
-            let confirm = NSAlert()
-            confirm.messageText = NSLocalizedString("Confirm Restore", comment: "")
-            confirm.informativeText = NSLocalizedString("Confirm Restore Desc", comment: "")
-            confirm.alertStyle = .warning
-            confirm.addButton(withTitle: NSLocalizedString("Restore", comment: ""))
-            confirm.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
-            guard confirm.runModal() == .alertFirstButtonReturn else { return }
+            DispatchQueue.main.async {
+                let confirm = NSAlert()
+                confirm.messageText = NSLocalizedString("Confirm Restore", comment: "")
+                confirm.informativeText = NSLocalizedString("Confirm Restore Desc", comment: "")
+                confirm.alertStyle = .warning
+                confirm.addButton(withTitle: NSLocalizedString("Restore", comment: ""))
+                confirm.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+                guard confirm.runModal() == .alertFirstButtonReturn else { return }
 
-            LLBackupManager.shared.restoreBackup(from: url) { errorMsg in
-                let alert = NSAlert()
-                if let msg = errorMsg {
-                    alert.messageText = NSLocalizedString("Restore Failed", comment: "")
-                    alert.informativeText = msg
-                    alert.alertStyle = .critical
-                } else {
-                    alert.messageText = NSLocalizedString("Restore Success", comment: "")
-                    alert.informativeText = NSLocalizedString("Restore Success Desc", comment: "")
-                    alert.alertStyle = .informational
+                LLBackupManager.shared.restoreBackup(from: url) { errorMsg in
+                    let alert = NSAlert()
+                    if let msg = errorMsg {
+                        alert.messageText = NSLocalizedString("Restore Failed", comment: "")
+                        alert.informativeText = msg
+                        alert.alertStyle = .critical
+                    } else {
+                        alert.messageText = NSLocalizedString("Restore Success", comment: "")
+                        alert.informativeText = NSLocalizedString("Restore Success Desc", comment: "")
+                        alert.alertStyle = .informational
+                        alert.runModal()
+                        NotificationCenter.default.post(name: .learnLanguageRefreshStatus, object: nil)
+                        NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
+                        return
+                    }
                     alert.runModal()
-                    NotificationCenter.default.post(name: .learnLanguageRefreshStatus, object: nil)
-                    NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
-                    return
                 }
-                alert.runModal()
             }
         }
     }
     
     @objc private func checkDatabaseIntegrity() {
-        LLAppInitializer.shared.checkDatabaseIntegrity()
+        let result = LLAppInitializer.shared.checkDatabaseIntegrity()
         
         let alert = NSAlert()
         alert.messageText = NSLocalizedString("Check Done", comment: "")
-        alert.informativeText = NSLocalizedString("Check Done Desc", comment: "")
+        alert.informativeText = result
         alert.alertStyle = .informational
         alert.runModal()
     }
@@ -467,21 +429,26 @@ final class LLDataTabViewController: NSViewController {
         LLAppInitializer.shared.repairDatabase()
     }
     
-    @objc private func exportDatabaseStats() {
-        let stats = LLAppInitializer.shared.exportDatabaseStats()
+    @objc private func resetAllData() {
+        let alert = NSAlert()
+        alert.messageText = NSLocalizedString("Reset All Data", comment: "")
+        alert.informativeText = "此操作将删除所有本地学习记录、设置和数据库内容，并重新初始化数据库。\n\n⚠️ 该操作不可撤销，所有学习进度将永久丢失！"
+        alert.alertStyle = .critical
+        alert.addButton(withTitle: "确认重置")
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         
-        let panel = NSSavePanel()
-        panel.allowedContentTypes = [.plainText]
-        panel.nameFieldStringValue = "LearnLanguage_stats_\(dateString()).txt"
-        panel.begin { response in
-            guard response == .OK, let url = panel.url else { return }
-            try? stats.write(to: url, atomically: true, encoding: .utf8)
-            let alert = NSAlert()
-            alert.messageText = "导出成功"
-            alert.informativeText = "统计信息已保存到：\n\(url.path)"
-            alert.alertStyle = .informational
-            alert.runModal()
-        }
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        
+        LLAppInitializer.shared.performReset()
+        
+        NotificationCenter.default.post(name: .learnLanguageRefreshStatus, object: nil)
+        NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
+        
+        let doneAlert = NSAlert()
+        doneAlert.messageText = "重置完成"
+        doneAlert.informativeText = "所有数据已清除，数据库已重新初始化。"
+        doneAlert.alertStyle = .informational
+        doneAlert.runModal()
     }
 
     private func dateString() -> String {

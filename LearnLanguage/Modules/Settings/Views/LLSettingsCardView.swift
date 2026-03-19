@@ -101,6 +101,15 @@ final class LLSettingsCardView: NSView {
         contentStackView.addArrangedSubview(itemView)
     }
     
+    /// 左右水平布局：左边标题，右边控件
+    func addFormItemInline(label: String, control: NSView) {
+        let itemView = createFormItemInline(label: label, control: control)
+        contentStackView.addArrangedSubview(itemView)
+        itemView.snp.makeConstraints { make in
+            make.width.equalTo(contentStackView)
+        }
+    }
+    
     func addFormRow(items: [(label: String, control: NSView)]) {
         let rowStack = NSStackView()
         rowStack.orientation = .horizontal
@@ -142,6 +151,35 @@ final class LLSettingsCardView: NSView {
         }
         
         return container
+    }
+    
+    private func createFormItemInline(label: String, control: NSView) -> NSView {
+        let stack = NSStackView()
+        stack.orientation = .horizontal
+        stack.spacing = 12
+        stack.alignment = .centerY
+        stack.distribution = .fill
+        
+        let labelField = NSTextField(labelWithString: label)
+        labelField.font = NSFont.systemFont(ofSize: 13)
+        labelField.textColor = NSColor(white: 0.4, alpha: 1.0)
+        labelField.isEditable = false
+        labelField.isBezeled = false
+        labelField.drawsBackground = false
+        labelField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        labelField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+        control.setContentHuggingPriority(.required, for: .horizontal)
+        control.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        stack.addArrangedSubview(labelField)
+        stack.addArrangedSubview(control)
+        
+        stack.snp.makeConstraints { make in
+            make.height.greaterThanOrEqualTo(28)
+        }
+        
+        return stack
     }
 }
 

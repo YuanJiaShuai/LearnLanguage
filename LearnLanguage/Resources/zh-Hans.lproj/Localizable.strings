@@ -200,6 +200,8 @@
 "Check Integrity" = "检查完整性";
 "Repair DB" = "修复数据库";
 "Export Stats" = "导出统计";
+"Reset Data" = "重置数据";
+"Reset All Data" = "确认重置所有数据";
 "Backup History" = "最近备份记录";
 "No Backup History" = "暂无备份记录";
 "Confirm Restore" = "确认恢复";

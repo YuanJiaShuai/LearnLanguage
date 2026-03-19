@@ -367,7 +367,7 @@ final class LLSettingsTabViewController: NSViewController {
                 LLSettingsStore.shared.settings = s
                 LLKeyboardShortcutManager.shared.registerAll()
             }
-            card.addFormItem(label: action.label, control: recorder)
+            card.addFormItemInline(label: action.label, control: recorder)
         }
         
         return card
