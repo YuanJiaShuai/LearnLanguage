@@ -348,6 +348,14 @@ final class LLDatabaseManager {
         return try getReviewRecords(startDate: monthAgo, endDate: today)
     }
     
+    /// 总学习天数（learning_history 表中有记录的不重复日期数）
+    func totalLearningDays(wordListId: String? = nil) throws -> Int {
+        let all = try getAllLearningHistory(wordListId: wordListId)
+        let cal = Calendar.current
+        let uniqueDays = Set(all.compactMap { $0.learnedAt }.map { cal.startOfDay(for: Date(timeIntervalSince1970: $0)) })
+        return uniqueDays.count
+    }
+    
     /// 获取所有复习记录（所有词库）
     func getAllReviewRecords() throws -> [LLDBLearningProgress] {
         return try getReviewRecords()

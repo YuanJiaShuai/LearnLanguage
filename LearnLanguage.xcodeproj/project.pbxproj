@@ -59,7 +59,6 @@
 		849226FB2F3C878F00447E0C /* LLPronunciationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226922F3C878F00447E0C /* LLPronunciationManager.swift */; };
 		849226FC2F3C878F00447E0C /* LLDatabaseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226992F3C878F00447E0C /* LLDatabaseInitializer.swift */; };
 		849226FD2F3C878F00447E0C /* LLWordListTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226D12F3C878F00447E0C /* LLWordListTabViewController.swift */; };
-		849226FE2F3C878F00447E0C /* LLLearningStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492269F2F3C878F00447E0C /* LLLearningStore.swift */; };
 		849226FF2F3C878F00447E0C /* LLDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492269A2F3C878F00447E0C /* LLDatabaseManager.swift */; };
 		849227002F3C878F00447E0C /* LLAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226942F3C878F00447E0C /* LLAppSettings.swift */; };
 		849227012F3C878F00447E0C /* LLDBWordListCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492269D2F3C878F00447E0C /* LLDBWordListCategory.swift */; };
@@ -143,7 +142,6 @@
 		8492269B2F3C878F00447E0C /* LLDBWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWord.swift; sourceTree = "<group>"; };
 		8492269C2F3C878F00447E0C /* LLDBWordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWordList.swift; sourceTree = "<group>"; };
 		8492269D2F3C878F00447E0C /* LLDBWordListCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWordListCategory.swift; sourceTree = "<group>"; };
-		8492269F2F3C878F00447E0C /* LLLearningStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLLearningStore.swift; sourceTree = "<group>"; };
 		849226A02F3C878F00447E0C /* LLMMKVManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMMKVManager.swift; sourceTree = "<group>"; };
 		849226A12F3C878F00447E0C /* LLSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSettingsStore.swift; sourceTree = "<group>"; };
 		849226A22F3C878F00447E0C /* LLWordListStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordListStorage.swift; sourceTree = "<group>"; };
@@ -312,7 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				8492269E2F3C878F00447E0C /* Database */,
-				8492269F2F3C878F00447E0C /* LLLearningStore.swift */,
 				849226A02F3C878F00447E0C /* LLMMKVManager.swift */,
 				A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */,
 				849226A12F3C878F00447E0C /* LLSettingsStore.swift */,
@@ -836,7 +833,6 @@
 				A88C882D2F3CBD4D005ACFA6 /* LLMMKVKeys.swift in Sources */,
 				A8D1A74E2F66AE4000C4BDF2 /* LLStatContentView.swift in Sources */,
 				A8D1A74F2F66AE4000C4BDF2 /* LLReviewContentView.swift in Sources */,
-				849226FE2F3C878F00447E0C /* LLLearningStore.swift in Sources */,
 				849226FF2F3C878F00447E0C /* LLDatabaseManager.swift in Sources */,
 				849227002F3C878F00447E0C /* LLAppSettings.swift in Sources */,
 				840D1E9A2F67F517002C330E /* LLLocalizationManager.swift in Sources */,
