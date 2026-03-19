@@ -186,6 +186,16 @@
 "Status Bar Width" = "상태 표시줄 너비";
 "Review Interval Rule" = "복습 간격 규칙";
 "Wrong Word Retry" = "오답 단어 재학습 횟수";
+"Status Bar Word Only" = "단어만";
+"Status Bar Word Phonetic" = "단어＋발음기호";
+"Status Bar Word Meaning" = "단어＋의미";
+"Review Mode Simple" = "간단 모드 (당일/다음날/3일)";
+"Review Mode Ebbinghaus" = "에빙하우스 곡선 (권장)";
+"Number Field Placeholder" = "숫자 입력";
+"Language Changed Title" = "언어가 변경되었습니다";
+"Language Changed Desc" = "언어 설정은 앱을 재시작한 후 적용됩니다.";
+"Restart Later" = "나중에 재시작";
+"Quit Now" = "지금 종료";
 
 // MARK: - Data Module
 "Data Module Title" = "데이터 관리";
@@ -202,6 +212,12 @@
 "Export Stats" = "통계 내보내기";
 "Reset Data" = "데이터 초기화";
 "Reset All Data" = "모든 데이터 초기화 확인";
+"Reset All Data Desc" = "이 작업은 모든 로컬 학습 기록, 설정 및 데이터베이스를 삭제하고 재초기화합니다.\n\n⚠️ 이 작업은 취소할 수 없습니다. 모든 학습 진행 상황이 영구적으로 삭제됩니다!";
+"Reset Confirm Button" = "초기화";
+"Reset Done" = "초기화 완료";
+"Reset Done Desc" = "모든 데이터가 삭제되고 데이터베이스가 재초기화되었습니다.";
+"Save Panel Backup Message" = "백업 파일 저장 위치 선택";
+"Open Panel Restore Message" = "이 앱에서 내보낸 백업 파일 선택";
 "Backup History" = "최근 백업 기록";
 "No Backup History" = "백업 기록 없음";
 "Confirm Restore" = "복원 확인";
@@ -220,3 +236,35 @@
 "Player Start Failed" = "플레이어 시작 실패";
 "Invalid URL" = "잘못된 URL";
 "No Audio Data" = "오디오 데이터 없음";
+
+// MARK: - Enum Display Names
+"Pronunciation Local" = "로컬 발음";
+"Pronunciation Youdao" = "유다오 발음";
+"Pronunciation Google" = "Google 발음";
+"Pronunciation Azure" = "Azure 발음";
+"Accent US" = "미국 영어";
+"Accent UK" = "영국 영어";
+"Typing Per Letter" = "글자별 (_ _ _ _ _)";
+"Typing Whole Word" = "단어 전체 (_____)";
+"Auto Show After 1 Error" = "1번 오답 후";
+"Auto Show After 2 Errors" = "2번 오답 후";
+"Auto Show After 3 Errors" = "3번 오답 후";
+"Auto Show After 4 Errors" = "4번 오답 후";
+"Auto Show After 5 Errors" = "5번 오답 후";
+"Auto Show Never" = "자동 표시 안 함";
+"Wrong Book After 1 Error" = "1번 오답 후";
+"Wrong Book After 2 Errors" = "2번 오답 후";
+"Wrong Book After 3 Errors" = "3번 오답 후";
+"Wrong Book After 4 Errors" = "4번 오답 후";
+"Wrong Book After 5 Errors" = "5번 오답 후";
+"Wrong Book Never" = "기록 안 함";
+"Speech Rate Slow" = "0.25x (느림)";
+"Speech Rate Normal" = "0.5x (조금 느림)";
+"Speech Rate Standard" = "1.0x (보통)";
+"Speech Rate Fast" = "1.5x (조금 빠름)";
+"Speech Rate Very Fast" = "2.0x (빠름)";
+"Playback Once" = "1회만 재생";
+"Playback Every 5s" = "5초마다 재생";
+"Playback Every 10s" = "10초마다 재생";
+"Playback Every 20s" = "20초마다 재생";
+"Playback Every 60s" = "60초마다 재생";

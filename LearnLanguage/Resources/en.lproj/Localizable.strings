@@ -186,6 +186,16 @@
 "Status Bar Width" = "Status Bar Width";
 "Review Interval Rule" = "Review Interval Rule";
 "Wrong Word Retry" = "Wrong Word Retry Count";
+"Status Bar Word Only" = "Word Only";
+"Status Bar Word Phonetic" = "Word + Phonetic";
+"Status Bar Word Meaning" = "Word + Meaning";
+"Review Mode Simple" = "Simple Mode (Today/Next Day/3 Days)";
+"Review Mode Ebbinghaus" = "Ebbinghaus Curve (Recommended)";
+"Number Field Placeholder" = "Enter a number";
+"Language Changed Title" = "Language Changed";
+"Language Changed Desc" = "The language setting will take effect after restarting the app.";
+"Restart Later" = "Restart Later";
+"Quit Now" = "Quit Now";
 
 // MARK: - Data Module
 "Data Module Title" = "Data Management";
@@ -202,6 +212,12 @@
 "Export Stats" = "Export Statistics";
 "Reset Data" = "Reset Data";
 "Reset All Data" = "Reset All Data";
+"Reset All Data Desc" = "This will delete all local learning records, settings, and database content, then reinitialize the database.\n\n⚠️ This action cannot be undone. All learning progress will be permanently lost!";
+"Reset Confirm Button" = "Reset";
+"Reset Done" = "Reset Complete";
+"Reset Done Desc" = "All data has been cleared and the database has been reinitialized.";
+"Save Panel Backup Message" = "Choose a location to save the backup file";
+"Open Panel Restore Message" = "Select a backup file exported by this app";
 "Backup History" = "Recent Backup History";
 "No Backup History" = "No backup records";
 "Confirm Restore" = "Confirm Restore";
@@ -220,3 +236,35 @@
 "Player Start Failed" = "Player startup failed";
 "Invalid URL" = "Invalid URL";
 "No Audio Data" = "No audio data";
+
+// MARK: - Enum Display Names
+"Pronunciation Local" = "Local Pronunciation";
+"Pronunciation Youdao" = "Youdao Pronunciation";
+"Pronunciation Google" = "Google Pronunciation";
+"Pronunciation Azure" = "Azure Pronunciation";
+"Accent US" = "American English";
+"Accent UK" = "British English";
+"Typing Per Letter" = "Per Letter (_ _ _ _ _)";
+"Typing Whole Word" = "Whole Word (_____)";
+"Auto Show After 1 Error" = "After 1 Error";
+"Auto Show After 2 Errors" = "After 2 Errors";
+"Auto Show After 3 Errors" = "After 3 Errors";
+"Auto Show After 4 Errors" = "After 4 Errors";
+"Auto Show After 5 Errors" = "After 5 Errors";
+"Auto Show Never" = "Never";
+"Wrong Book After 1 Error" = "After 1 Error";
+"Wrong Book After 2 Errors" = "After 2 Errors";
+"Wrong Book After 3 Errors" = "After 3 Errors";
+"Wrong Book After 4 Errors" = "After 4 Errors";
+"Wrong Book After 5 Errors" = "After 5 Errors";
+"Wrong Book Never" = "Never";
+"Speech Rate Slow" = "0.25x (Slow)";
+"Speech Rate Normal" = "0.5x (Slower)";
+"Speech Rate Standard" = "1.0x (Normal)";
+"Speech Rate Fast" = "1.5x (Faster)";
+"Speech Rate Very Fast" = "2.0x (Fast)";
+"Playback Once" = "Play Once";
+"Playback Every 5s" = "Every 5 Seconds";
+"Playback Every 10s" = "Every 10 Seconds";
+"Playback Every 20s" = "Every 20 Seconds";
+"Playback Every 60s" = "Every 60 Seconds";

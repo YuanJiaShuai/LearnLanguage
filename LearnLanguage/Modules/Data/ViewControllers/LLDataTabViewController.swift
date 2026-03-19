@@ -175,7 +175,7 @@ final class LLDataTabViewController: NSViewController {
         }
         
         // 标题
-        let titleLabel = createCardTitle("数据恢复")
+        let titleLabel = createCardTitle(NSLocalizedString("Data Restore", comment: ""))
         card.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalTo(iconView.snp.right).offset(12)
@@ -183,7 +183,7 @@ final class LLDataTabViewController: NSViewController {
         }
         
         // 描述
-        let descLabel = createCardDescription("仅支持恢复本软件导出的 .llbak 备份文件，恢复将覆盖当前所有数据")
+        let descLabel = createCardDescription(NSLocalizedString("Restore Desc", comment: ""))
         card.addSubview(descLabel)
         descLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
@@ -354,7 +354,7 @@ final class LLDataTabViewController: NSViewController {
             panel.allowedContentTypes = [type]
         }
         panel.nameFieldStringValue = "LearnLanguage_\(dateString()).\(LLBackupManager.fileExtension)"
-        panel.message = "选择备份文件保存位置"
+        panel.message = NSLocalizedString("Save Panel Backup Message", comment: "")
         panel.begin { [weak self] response in
             guard response == .OK, let url = panel.url else { return }
             DispatchQueue.main.async {
@@ -382,7 +382,7 @@ final class LLDataTabViewController: NSViewController {
         if let type = UTType(filenameExtension: LLBackupManager.fileExtension) {
             panel.allowedContentTypes = [type]
         }
-        panel.message = "选择本软件导出的 .\(LLBackupManager.fileExtension) 备份文件"
+        panel.message = NSLocalizedString("Open Panel Restore Message", comment: "")
         panel.begin { [weak self] response in
             guard response == .OK, let url = panel.url else { return }
             DispatchQueue.main.async {
@@ -432,9 +432,9 @@ final class LLDataTabViewController: NSViewController {
     @objc private func resetAllData() {
         let alert = NSAlert()
         alert.messageText = NSLocalizedString("Reset All Data", comment: "")
-        alert.informativeText = "此操作将删除所有本地学习记录、设置和数据库内容，并重新初始化数据库。\n\n⚠️ 该操作不可撤销，所有学习进度将永久丢失！"
+        alert.informativeText = NSLocalizedString("Reset All Data Desc", comment: "")
         alert.alertStyle = .critical
-        alert.addButton(withTitle: "确认重置")
+        alert.addButton(withTitle: NSLocalizedString("Reset Confirm Button", comment: ""))
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         
         guard alert.runModal() == .alertFirstButtonReturn else { return }
@@ -445,8 +445,8 @@ final class LLDataTabViewController: NSViewController {
         NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
         
         let doneAlert = NSAlert()
-        doneAlert.messageText = "重置完成"
-        doneAlert.informativeText = "所有数据已清除，数据库已重新初始化。"
+        doneAlert.messageText = NSLocalizedString("Reset Done", comment: "")
+        doneAlert.informativeText = NSLocalizedString("Reset Done Desc", comment: "")
         doneAlert.alertStyle = .informational
         doneAlert.runModal()
     }

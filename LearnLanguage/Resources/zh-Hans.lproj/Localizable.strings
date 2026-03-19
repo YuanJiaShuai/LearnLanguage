@@ -186,6 +186,16 @@
 "Status Bar Width" = "状态栏显示宽度";
 "Review Interval Rule" = "复习间隔规则";
 "Wrong Word Retry" = "答错单词重学次数";
+"Status Bar Word Only" = "仅单词";
+"Status Bar Word Phonetic" = "单词+音标";
+"Status Bar Word Meaning" = "单词+简易释义";
+"Review Mode Simple" = "极简模式（当天/隔天/3天）";
+"Review Mode Ebbinghaus" = "艾宾浩斯曲线（推荐）";
+"Number Field Placeholder" = "请输入数字";
+"Language Changed Title" = "语言已切换";
+"Language Changed Desc" = "语言设置将在重启应用后生效。";
+"Restart Later" = "稍后重启";
+"Quit Now" = "立即退出";
 
 // MARK: - Data Module
 "Data Module Title" = "数据管理";
@@ -202,6 +212,12 @@
 "Export Stats" = "导出统计";
 "Reset Data" = "重置数据";
 "Reset All Data" = "确认重置所有数据";
+"Reset All Data Desc" = "此操作将删除所有本地学习记录、设置和数据库内容，并重新初始化数据库。\n\n⚠️ 该操作不可撤销，所有学习进度将永久丢失！";
+"Reset Confirm Button" = "确认重置";
+"Reset Done" = "重置完成";
+"Reset Done Desc" = "所有数据已清除，数据库已重新初始化。";
+"Save Panel Backup Message" = "选择备份文件保存位置";
+"Open Panel Restore Message" = "选择本软件导出的备份文件";
 "Backup History" = "最近备份记录";
 "No Backup History" = "暂无备份记录";
 "Confirm Restore" = "确认恢复";
@@ -220,3 +236,35 @@
 "Player Start Failed" = "播放器启动失败";
 "Invalid URL" = "无效的 URL";
 "No Audio Data" = "无音频数据";
+
+// MARK: - Enum Display Names
+"Pronunciation Local" = "本地发音";
+"Pronunciation Youdao" = "有道发音";
+"Pronunciation Google" = "Google 发音";
+"Pronunciation Azure" = "Azure 发音";
+"Accent US" = "美式发音";
+"Accent UK" = "英式发音";
+"Typing Per Letter" = "每个字母一个下划线（_ _ _ _ _）";
+"Typing Whole Word" = "整个单词一个下划线（_____）";
+"Auto Show After 1 Error" = "错误1次后";
+"Auto Show After 2 Errors" = "错误2次后";
+"Auto Show After 3 Errors" = "错误3次后";
+"Auto Show After 4 Errors" = "错误4次后";
+"Auto Show After 5 Errors" = "错误5次后";
+"Auto Show Never" = "不自动显示";
+"Wrong Book After 1 Error" = "错误1次后";
+"Wrong Book After 2 Errors" = "错误2次后";
+"Wrong Book After 3 Errors" = "错误3次后";
+"Wrong Book After 4 Errors" = "错误4次后";
+"Wrong Book After 5 Errors" = "错误5次后";
+"Wrong Book Never" = "不记录";
+"Speech Rate Slow" = "0.25x（慢速）";
+"Speech Rate Normal" = "0.5x（较慢）";
+"Speech Rate Standard" = "1.0x（正常）";
+"Speech Rate Fast" = "1.5x（较快）";
+"Speech Rate Very Fast" = "2.0x（快速）";
+"Playback Once" = "只播放1次";
+"Playback Every 5s" = "5秒播放一次";
+"Playback Every 10s" = "10秒播放一次";
+"Playback Every 20s" = "20秒播放一次";
+"Playback Every 60s" = "60秒播放一次";

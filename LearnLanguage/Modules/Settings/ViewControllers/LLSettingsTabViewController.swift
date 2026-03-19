@@ -189,7 +189,11 @@ final class LLSettingsTabViewController: NSViewController {
         statusBarDisplayPopup = NSPopUpButton()
         statusBarDisplayPopup.target = self
         statusBarDisplayPopup.action = #selector(saveSettings)
-        statusBarDisplayPopup.addItems(withTitles: ["仅单词", "单词+音标", "单词+简易释义"])
+        statusBarDisplayPopup.addItems(withTitles: [
+            NSLocalizedString("Status Bar Word Only", comment: ""),
+            NSLocalizedString("Status Bar Word Phonetic", comment: ""),
+            NSLocalizedString("Status Bar Word Meaning", comment: "")
+        ])
         
         statusBarPhoneticCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Phonetic", comment: ""), target: self, action: #selector(saveSettings))
         
@@ -258,7 +262,10 @@ final class LLSettingsTabViewController: NSViewController {
         reviewModePopup = NSPopUpButton()
         reviewModePopup.target = self
         reviewModePopup.action = #selector(saveSettings)
-        reviewModePopup.addItems(withTitles: ["极简模式（当天/隔天/3天）", "艾宾浩斯曲线（推荐）"])
+        reviewModePopup.addItems(withTitles: [
+            NSLocalizedString("Review Mode Simple", comment: ""),
+            NSLocalizedString("Review Mode Ebbinghaus", comment: "")
+        ])
         
         wrongWordRetryField = createNumberField(value: "3")
         
@@ -396,7 +403,7 @@ final class LLSettingsTabViewController: NSViewController {
     private func createNumberField(value: String) -> NSTextField {
         let field = NSTextField(string: value)
         field.font = NSFont.systemFont(ofSize: 14)
-        field.placeholderString = "请输入数字"
+        field.placeholderString = NSLocalizedString("Number Field Placeholder", comment: "")
         field.target = self
         field.action = #selector(saveSettings)
         return field
@@ -478,7 +485,23 @@ final class LLSettingsTabViewController: NSViewController {
         // 显示语言
         let languageIndex = displayLanguagePopup.indexOfSelectedItem
         if languageIndex >= 0 && languageIndex < LLDisplayLanguage.allCases.count {
-            s.displayLanguage = LLDisplayLanguage.allCases[languageIndex]
+            let newLanguage = LLDisplayLanguage.allCases[languageIndex]
+            if newLanguage != s.displayLanguage {
+                s.displayLanguage = newLanguage
+                LLLocalizationManager.shared.setLanguage(newLanguage)
+                // 弹提示重启
+                DispatchQueue.main.async {
+                    let alert = NSAlert()
+                    alert.messageText = NSLocalizedString("Language Changed Title", comment: "")
+                    alert.informativeText = NSLocalizedString("Language Changed Desc", comment: "")
+                    alert.alertStyle = .informational
+                    alert.addButton(withTitle: NSLocalizedString("Restart Later", comment: ""))
+                    alert.addButton(withTitle: NSLocalizedString("Quit Now", comment: ""))
+                    if alert.runModal() == .alertSecondButtonReturn {
+                        NSApplication.shared.terminate(nil)
+                    }
+                }
+            }
         }
         
         // 学习目标

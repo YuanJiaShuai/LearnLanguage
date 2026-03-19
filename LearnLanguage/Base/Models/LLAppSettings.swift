@@ -41,10 +41,10 @@ enum LLPronunciationProvider: String, Codable, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .local: return "本地发音"
-        case .youdao: return "有道发音"
-        case .google: return "Google 发音"
-        case .azure: return "Azure 发音"
+        case .local: return NSLocalizedString("Pronunciation Local", comment: "")
+        case .youdao: return NSLocalizedString("Pronunciation Youdao", comment: "")
+        case .google: return NSLocalizedString("Pronunciation Google", comment: "")
+        case .azure: return NSLocalizedString("Pronunciation Azure", comment: "")
         }
     }
 }
@@ -56,8 +56,8 @@ enum LLPronunciationAccent: String, Codable, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .us: return "美式发音"
-        case .uk: return "英式发音"
+        case .us: return NSLocalizedString("Accent US", comment: "")
+        case .uk: return NSLocalizedString("Accent UK", comment: "")
         }
     }
     
@@ -76,8 +76,8 @@ enum LLTypingInputStyle: String, Codable, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .perLetter: return "每个字母一个下划线（_ _ _ _ _）"
-        case .wholeWord: return "整个单词一个下划线（_____）"
+        case .perLetter: return NSLocalizedString("Typing Per Letter", comment: "")
+        case .wholeWord: return NSLocalizedString("Typing Whole Word", comment: "")
         }
     }
 }
@@ -93,12 +93,12 @@ enum LLAutoShowAnswerOption: Int, CaseIterable, Codable {
     
     var displayName: String {
         switch self {
-        case .after1Error: return "错误1次后"
-        case .after2Errors: return "错误2次后"
-        case .after3Errors: return "错误3次后"
-        case .after4Errors: return "错误4次后"
-        case .after5Errors: return "错误5次后"
-        case .never: return "不自动显示"
+        case .after1Error: return NSLocalizedString("Auto Show After 1 Error", comment: "")
+        case .after2Errors: return NSLocalizedString("Auto Show After 2 Errors", comment: "")
+        case .after3Errors: return NSLocalizedString("Auto Show After 3 Errors", comment: "")
+        case .after4Errors: return NSLocalizedString("Auto Show After 4 Errors", comment: "")
+        case .after5Errors: return NSLocalizedString("Auto Show After 5 Errors", comment: "")
+        case .never: return NSLocalizedString("Auto Show Never", comment: "")
         }
     }
     
@@ -130,12 +130,12 @@ enum LLAddToWrongBookOption: Int, CaseIterable, Codable {
     
     var displayName: String {
         switch self {
-        case .after1Error: return "错误1次后"
-        case .after2Errors: return "错误2次后"
-        case .after3Errors: return "错误3次后"
-        case .after4Errors: return "错误4次后"
-        case .after5Errors: return "错误5次后"
-        case .never: return "不记录"
+        case .after1Error: return NSLocalizedString("Wrong Book After 1 Error", comment: "")
+        case .after2Errors: return NSLocalizedString("Wrong Book After 2 Errors", comment: "")
+        case .after3Errors: return NSLocalizedString("Wrong Book After 3 Errors", comment: "")
+        case .after4Errors: return NSLocalizedString("Wrong Book After 4 Errors", comment: "")
+        case .after5Errors: return NSLocalizedString("Wrong Book After 5 Errors", comment: "")
+        case .never: return NSLocalizedString("Wrong Book Never", comment: "")
         }
     }
     
@@ -166,11 +166,11 @@ enum LLSpeechRate: Float, CaseIterable, Codable {
     
     var displayName: String {
         switch self {
-        case .slow:     return "0.25x（慢速）"
-        case .normal:   return "0.5x（较慢）"
-        case .standard: return "1.0x（正常）"
-        case .fast:     return "1.5x（较快）"
-        case .veryFast: return "2.0x（快速）"
+        case .slow:     return NSLocalizedString("Speech Rate Slow", comment: "")
+        case .normal:   return NSLocalizedString("Speech Rate Normal", comment: "")
+        case .standard: return NSLocalizedString("Speech Rate Standard", comment: "")
+        case .fast:     return NSLocalizedString("Speech Rate Fast", comment: "")
+        case .veryFast: return NSLocalizedString("Speech Rate Very Fast", comment: "")
         }
     }
     
@@ -193,11 +193,11 @@ enum LLPlaybackInterval: Int, CaseIterable, Codable {
     
     var displayName: String {
         switch self {
-        case .once: return "只播放1次"
-        case .every5s: return "5秒播放一次"
-        case .every10s: return "10秒播放一次"
-        case .every20s: return "20秒播放一次"
-        case .every60s: return "60秒播放一次"
+        case .once:      return NSLocalizedString("Playback Once", comment: "")
+        case .every5s:   return NSLocalizedString("Playback Every 5s", comment: "")
+        case .every10s:  return NSLocalizedString("Playback Every 10s", comment: "")
+        case .every20s:  return NSLocalizedString("Playback Every 20s", comment: "")
+        case .every60s:  return NSLocalizedString("Playback Every 60s", comment: "")
         }
     }
     

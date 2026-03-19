@@ -186,6 +186,16 @@
 "Status Bar Width" = "ステータスバーの幅";
 "Review Interval Rule" = "復習間隔ルール";
 "Wrong Word Retry" = "間違い単語の再学習回数";
+"Status Bar Word Only" = "単語のみ";
+"Status Bar Word Phonetic" = "単語＋音標";
+"Status Bar Word Meaning" = "単語＋意味";
+"Review Mode Simple" = "シンプルモード（当日/翌日/3日）";
+"Review Mode Ebbinghaus" = "エビングハウス曲線（推奨）";
+"Number Field Placeholder" = "数字を入力";
+"Language Changed Title" = "言語を変更しました";
+"Language Changed Desc" = "言語設定はアプリ再起動後に反映されます。";
+"Restart Later" = "後で再起動";
+"Quit Now" = "今すぐ終了";
 
 // MARK: - Data Module
 "Data Module Title" = "データ管理";
@@ -202,6 +212,12 @@
 "Export Stats" = "統計エクスポート";
 "Reset Data" = "データをリセット";
 "Reset All Data" = "全データのリセットを確認";
+"Reset All Data Desc" = "この操作はすべてのローカル学習記録、設定、データベースを削除し、再初期化します。\n\n⚠️ この操作は元に戻せません。すべての学習進捗が永久に失われます！";
+"Reset Confirm Button" = "リセット";
+"Reset Done" = "リセット完了";
+"Reset Done Desc" = "すべてのデータが削除され、データベースが再初期化されました。";
+"Save Panel Backup Message" = "バックアップファイルの保存先を選択";
+"Open Panel Restore Message" = "このアプリでエクスポートしたバックアップファイルを選択";
 "Backup History" = "最近のバックアップ履歴";
 "No Backup History" = "バックアップ記録なし";
 "Confirm Restore" = "復元の確認";
@@ -220,3 +236,35 @@
 "Player Start Failed" = "プレーヤーの起動に失敗しました";
 "Invalid URL" = "無効な URL";
 "No Audio Data" = "オーディオデータなし";
+
+// MARK: - Enum Display Names
+"Pronunciation Local" = "ローカル発音";
+"Pronunciation Youdao" = "有道発音";
+"Pronunciation Google" = "Google 発音";
+"Pronunciation Azure" = "Azure 発音";
+"Accent US" = "アメリカ英語";
+"Accent UK" = "イギリス英語";
+"Typing Per Letter" = "1文字ずつ（_ _ _ _ _）";
+"Typing Whole Word" = "単語全体（_____）";
+"Auto Show After 1 Error" = "1回ミス後";
+"Auto Show After 2 Errors" = "2回ミス後";
+"Auto Show After 3 Errors" = "3回ミス後";
+"Auto Show After 4 Errors" = "4回ミス後";
+"Auto Show After 5 Errors" = "5回ミス後";
+"Auto Show Never" = "自動表示しない";
+"Wrong Book After 1 Error" = "1回ミス後";
+"Wrong Book After 2 Errors" = "2回ミス後";
+"Wrong Book After 3 Errors" = "3回ミス後";
+"Wrong Book After 4 Errors" = "4回ミス後";
+"Wrong Book After 5 Errors" = "5回ミス後";
+"Wrong Book Never" = "記録しない";
+"Speech Rate Slow" = "0.25x（遅い）";
+"Speech Rate Normal" = "0.5x（やや遅い）";
+"Speech Rate Standard" = "1.0x（標準）";
+"Speech Rate Fast" = "1.5x（やや速い）";
+"Speech Rate Very Fast" = "2.0x（速い）";
+"Playback Once" = "1回のみ再生";
+"Playback Every 5s" = "5秒ごとに再生";
+"Playback Every 10s" = "10秒ごとに再生";
+"Playback Every 20s" = "20秒ごとに再生";
+"Playback Every 60s" = "60秒ごとに再生";

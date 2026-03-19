@@ -57,9 +57,9 @@ final class LLLocalizationManager {
     
     /// 应用语言设置
     private func applyLanguage(_ language: LLDisplayLanguage) {
-        // 这里可以设置系统语言相关的配置
-        // 目前主要是通过 Localizable.strings 文件实现
-        // 后续可以在这里添加更多语言相关的初始化逻辑
+        // 写入 AppleLanguages，下次启动时系统自动使用对应语言
+        UserDefaults.standard.set([language.languageCode], forKey: "AppleLanguages")
+        UserDefaults.standard.synchronize()
     }
     
     // MARK: - Localization Helpers
