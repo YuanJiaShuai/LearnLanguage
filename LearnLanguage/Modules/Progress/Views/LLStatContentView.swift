@@ -2,139 +2,120 @@
 //  LLStatContentView.swift
 //  LearnLanguage
 //
-//  学习统计内容视图
+//  学习统计内容视图（词库卡 + 3统计卡 + 趋势图）
+//  全部 frame 布局
 
 import AppKit
-import SnapKit
 
 final class LLStatContentView: NSView {
     
+    // MARK: - Layout Constants
+    private let kPadding: CGFloat = 16
+    private let kSpacing: CGFloat = 12
+    private let kCurrentListHeight: CGFloat = 290
+    private let kStatsRowHeight: CGFloat = 110
+    private let kTrendHeight: CGFloat = 180
+    
     // MARK: - UI Components
     
-    private lazy var scrollView: NSScrollView = {
-        let scroll = NSScrollView()
-        scroll.hasVerticalScroller = true
-        scroll.hasHorizontalScroller = false
-        scroll.autohidesScrollers = true
-        scroll.borderType = .noBorder
-        scroll.drawsBackground = false
-        scroll.backgroundColor = NSColor.clear
-        return scroll
+    private let scrollView: NSScrollView = {
+        let sv = NSScrollView()
+        sv.hasVerticalScroller = true
+        sv.hasHorizontalScroller = false
+        sv.autohidesScrollers = true
+        sv.borderType = .noBorder
+        sv.drawsBackground = false
+        return sv
     }()
+    
+    private let documentView = _StatFlippedView()
     
     private var currentListCard: LLCurrentListCardView!
     private var totalWordsCard: LLStatCardView!
     private var progressCard: LLProgressCardView!
     private var streakCard: LLStatCardView!
     private var trendCard: LLTrendCardView!
-    private var todayRecordCard: LLTodayRecordCardView!
+    private var statsRowView: NSView!
     
     // MARK: - Callbacks
     
     var onChangeWordListClicked: (() -> Void)?
-    var onExportRecordsClicked: (() -> Void)?
     
     // MARK: - Lifecycle
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        setupUI()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupUI()
+        setupViews()
     }
     
-    // MARK: - Setup UI
+    // MARK: - Setup
     
-    private func setupUI() {
-        wantsLayer = true
-        
-        addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        // 创建内容容器
-        let contentView = NSView()
-        contentView.wantsLayer = true
-        scrollView.documentView = contentView
-        
-        // macOS NSScrollView 的关键：contentView 宽度等于 scrollView 的可见宽度
-        contentView.snp.makeConstraints { make in
-            make.width.equalTo(self)
-            make.top.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        // ========== 当前学习词库卡片 ==========
+    private func setupViews() {
         currentListCard = LLCurrentListCardView()
         currentListCard.onChangeButtonClicked = { [weak self] in
             self?.onChangeWordListClicked?()
         }
-        contentView.addSubview(currentListCard)
-        currentListCard.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(280)
-        }
         
-        // ========== 统计卡片网格容器 ==========
-        let statsGrid = NSView()
-        statsGrid.wantsLayer = true
-        contentView.addSubview(statsGrid)
-        statsGrid.snp.makeConstraints { make in
-            make.top.equalTo(currentListCard.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(120)
-        }
-        
-        // 累计学习单词卡片
         totalWordsCard = LLStatCardView(icon: "📚", description: NSLocalizedString("Total Words Learned", comment: ""))
-        statsGrid.addSubview(totalWordsCard)
-        totalWordsCard.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            make.width.equalTo(statsGrid).multipliedBy(0.33)
-        }
-        
-        // 进度卡片
         progressCard = LLProgressCardView()
-        statsGrid.addSubview(progressCard)
-        progressCard.snp.makeConstraints { make in
-            make.leading.equalTo(totalWordsCard.snp.trailing).offset(16)
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(totalWordsCard)
-        }
-        
-        // 连续学习天数卡片
         streakCard = LLStatCardView(icon: "🔥", description: NSLocalizedString("Streak Days", comment: ""))
-        statsGrid.addSubview(streakCard)
-        streakCard.snp.makeConstraints { make in
-            make.leading.equalTo(progressCard.snp.trailing).offset(16)
-            make.trailing.top.bottom.equalToSuperview()
-        }
         
-        // ========== 近7天学习趋势卡片 ==========
+        statsRowView = NSView()
+        statsRowView.addSubview(totalWordsCard)
+        statsRowView.addSubview(progressCard)
+        statsRowView.addSubview(streakCard)
+        
         trendCard = LLTrendCardView()
-        contentView.addSubview(trendCard)
-        trendCard.snp.makeConstraints { make in
-            make.top.equalTo(statsGrid.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(200)
-        }
         
-        // ========== 今日学习记录卡片 ==========
-        todayRecordCard = LLTodayRecordCardView()
-        todayRecordCard.onExportButtonClicked = { [weak self] in
-            self?.onExportRecordsClicked?()
-        }
-        contentView.addSubview(todayRecordCard)
-        todayRecordCard.snp.makeConstraints { make in
-//            make.top.equalTo(trendCard.snp.bottom).offset(20)
-//            make.leading.trailing.equalToSuperview().inset(16)
-//            make.height.equalTo(300)
-//            make.bottom.equalToSuperview().offset(-20)
-        }
+        documentView.addSubview(currentListCard)
+        documentView.addSubview(statsRowView)
+        documentView.addSubview(trendCard)
+        
+        scrollView.documentView = documentView
+        addSubview(scrollView)
+    }
+    
+    // MARK: - Layout
+    
+    override func layout() {
+        super.layout()
+        let w = bounds.width
+        guard w > 0 else { return }
+        
+        scrollView.frame = bounds
+        
+        let innerW = w - kPadding * 2
+        var y: CGFloat = kPadding
+        
+        // 1. 当前词库卡片
+        currentListCard.frame = NSRect(x: kPadding, y: y, width: innerW, height: kCurrentListHeight)
+        y += kCurrentListHeight + kSpacing
+        
+        // 2. 统计行三等分
+        statsRowView.frame = NSRect(x: kPadding, y: y, width: innerW, height: kStatsRowHeight)
+        let statW = (innerW - kSpacing * 2) / 3
+        totalWordsCard.frame = NSRect(x: 0, y: 0, width: statW, height: kStatsRowHeight)
+        progressCard.frame   = NSRect(x: statW + kSpacing, y: 0, width: statW, height: kStatsRowHeight)
+        streakCard.frame     = NSRect(x: (statW + kSpacing) * 2, y: 0, width: statW, height: kStatsRowHeight)
+        y += kStatsRowHeight + kSpacing
+        
+        // 3. 趋势图
+        trendCard.frame = NSRect(x: kPadding, y: y, width: innerW, height: kTrendHeight)
+        y += kTrendHeight + kPadding
+        
+        documentView.frame = NSRect(x: 0, y: 0, width: w, height: y)
+        
+        currentListCard.needsLayout = true
+        statsRowView.needsLayout = true
+        totalWordsCard.needsLayout = true
+        progressCard.needsLayout = true
+        streakCard.needsLayout = true
+        trendCard.needsLayout = true
     }
     
     // MARK: - Public Methods
@@ -144,87 +125,8 @@ final class LLStatContentView: NSView {
         streakCard?.updateNumber("\(days)")
         progressCard?.updateProgress(current: todayCount, total: todayGoal)
     }
-    
-    func updateTodayRecords(_ records: [LLDBLearningProgress]) {
-        guard let scrollView = todayRecordCard?.getScrollView() else { return }
-        guard let listView = todayRecordCard?.getListView() else { return }
-        
-        listView.subviews.forEach { $0.removeFromSuperview() }
-        
-        if records.isEmpty {
-            let emptyLabel = NSTextField(labelWithString: NSLocalizedString("No Records Today", comment: ""))
-            emptyLabel.font = NSFont.systemFont(ofSize: 14)
-            emptyLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-            emptyLabel.isEditable = false
-            emptyLabel.isBezeled = false
-            emptyLabel.drawsBackground = false
-            emptyLabel.alignment = .center
-            listView.addSubview(emptyLabel)
-            emptyLabel.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-                make.width.equalTo(scrollView)
-            }
-            listView.snp.makeConstraints { make in
-                make.width.equalTo(scrollView)
-                make.height.equalTo(100)
-            }
-            return
-        }
-        
-        let container = NSView()
-        container.wantsLayer = true
-        listView.addSubview(container)
-        container.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.width.equalTo(scrollView)
-        }
-        
-        var lastView: NSView?
-        for (index, record) in records.prefix(20).enumerated() {
-            let wordText = getWordText(wordId: record.wordId ?? "", listId: record.wordListId ?? "")
-            let feedbackIcon = getFeedbackIconFromString(feedback: record.lastFeedback ?? "")
-            let itemView = LLRecordItemView(
-                wordText: wordText,
-                feedbackIcon: feedbackIcon,
-                time: Date(timeIntervalSince1970: record.lastSeenAt ?? 0),
-                showBorder: index < records.count - 1
-            )
-            container.addSubview(itemView)
-            itemView.snp.makeConstraints { make in
-                if let last = lastView {
-                    make.top.equalTo(last.snp.bottom)
-                } else {
-                    make.top.equalToSuperview().offset(8)
-                }
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(50)
-            }
-            lastView = itemView
-        }
-        
-        if let last = lastView {
-            last.snp.makeConstraints { make in
-                make.bottom.equalToSuperview().offset(-8)
-            }
-        }
-    }
-    
-    // MARK: - Helper Methods
-    
-    private func getWordText(wordId: String, listId: String) -> String {
-        guard let list = LLWordListStorage.shared.list(byId: listId),
-              let entry = list.entries.first(where: { $0.id == wordId }) else {
-            return NSLocalizedString("Unknown Word", comment: "")
-        }
-        return entry.text
-    }
-    
-    private func getFeedbackIconFromString(feedback: String) -> String {
-        switch feedback {
-        case "know":    return "✔️"
-        case "unclear": return "❓"
-        case "unknown": return "❌"
-        default:        return "❓"
-        }
-    }
+}
+
+private final class _StatFlippedView: NSView {
+    override var isFlipped: Bool { true }
 }

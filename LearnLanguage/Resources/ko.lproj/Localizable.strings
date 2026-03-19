@@ -159,6 +159,13 @@
 // MARK: - Progress Module
 "Progress Module Title" = "학습 기록";
 "Stat Tab" = "학습 통계";
+"Today Record Tab" = "오늘 기록";
+"Filter Today" = "오늘";
+"Filter Week" = "최근 7일";
+"Filter Month" = "최근 30일";
+"Filter All" = "전체";
+"Record Count %d" = "총 %d 건";
+"Times %d" = "%d 회";
 "Review Tab" = "복습 기록";
 "Total Words Learned" = "누적 학습 단어";
 "Streak Days" = "연속 학습 일수";

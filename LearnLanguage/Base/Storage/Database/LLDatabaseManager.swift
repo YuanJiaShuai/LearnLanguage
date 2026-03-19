@@ -18,6 +18,7 @@ final class LLDatabaseManager {
     private let categoriesTable = "categories"
     private let wordsTable = "words"
     private let learningProgressTable = "learning_progress"
+    private let learningHistoryTable = "learning_history"
     
     private init() {
         let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
@@ -64,14 +65,19 @@ final class LLDatabaseManager {
         LLLogger.info("✅ 数据库连接已重新打开")
     }
     
-    /// 检查并创建学习进度表（如果不存在）
+    /// 检查并创建学习进度表和学习明细表（如果不存在）
     private func createLearningProgressTableIfNeeded() {
         do {
-            // 创建学习进度表
             try database.create(table: learningProgressTable, of: LLDBLearningProgress.self)
             LLLogger.info("✅ 学习进度表检查完成")
         } catch {
             LLLogger.warn("⚠️ 学习进度表创建失败（可能已存在）：\(error)")
+        }
+        do {
+            try database.create(table: learningHistoryTable, of: LLDBLearningHistory.self)
+            LLLogger.info("✅ 学习明细表检查完成")
+        } catch {
+            LLLogger.warn("⚠️ 学习明细表创建失败（可能已存在）：\(error)")
         }
     }
     
@@ -347,6 +353,80 @@ final class LLDatabaseManager {
         return try getReviewRecords()
     }
     
+    // MARK: - Learning History 查询
+    
+    /// 今日学习明细（按 learnedAt 在今天）
+    func getTodayLearningHistory(wordListId: String? = nil) throws -> [LLDBLearningHistory] {
+        let cal = Calendar.current
+        let startOfDay = cal.startOfDay(for: Date()).timeIntervalSince1970
+        let endOfDay = startOfDay + 86400
+        return try getLearningHistory(from: startOfDay, to: endOfDay, wordListId: wordListId)
+    }
+    
+    /// 本周学习明细
+    func getWeekLearningHistory(wordListId: String? = nil) throws -> [LLDBLearningHistory] {
+        let cal = Calendar.current
+        let weekAgo = cal.date(byAdding: .day, value: -7, to: Date())!.timeIntervalSince1970
+        let now = Date().timeIntervalSince1970
+        return try getLearningHistory(from: weekAgo, to: now, wordListId: wordListId)
+    }
+    
+    /// 本月学习明细
+    func getMonthLearningHistory(wordListId: String? = nil) throws -> [LLDBLearningHistory] {
+        let cal = Calendar.current
+        let monthAgo = cal.date(byAdding: .month, value: -1, to: Date())!.timeIntervalSince1970
+        let now = Date().timeIntervalSince1970
+        return try getLearningHistory(from: monthAgo, to: now, wordListId: wordListId)
+    }
+    
+    /// 全部学习明细
+    func getAllLearningHistory(wordListId: String? = nil) throws -> [LLDBLearningHistory] {
+        return try getLearningHistory(from: nil, to: nil, wordListId: wordListId)
+    }
+    
+    /// 基础查询方法
+    private func getLearningHistory(from startTime: TimeInterval?, to endTime: TimeInterval?, wordListId: String?) throws -> [LLDBLearningHistory] {
+        let order = [LLDBLearningHistory.Properties.learnedAt.asOrder(by: .descending)]
+        
+        let hasTime = startTime != nil && endTime != nil
+        let hasListId = wordListId != nil
+        
+        if !hasTime && !hasListId {
+            return try database.getObjects(
+                on: LLDBLearningHistory.Properties.all,
+                fromTable: learningHistoryTable,
+                orderBy: order
+            ) as [LLDBLearningHistory]
+        } else if hasTime && !hasListId {
+            let cond = LLDBLearningHistory.Properties.learnedAt >= startTime! &&
+                       LLDBLearningHistory.Properties.learnedAt < endTime!
+            return try database.getObjects(
+                on: LLDBLearningHistory.Properties.all,
+                fromTable: learningHistoryTable,
+                where: cond,
+                orderBy: order
+            ) as [LLDBLearningHistory]
+        } else if !hasTime && hasListId {
+            let cond = LLDBLearningHistory.Properties.wordListId == wordListId!
+            return try database.getObjects(
+                on: LLDBLearningHistory.Properties.all,
+                fromTable: learningHistoryTable,
+                where: cond,
+                orderBy: order
+            ) as [LLDBLearningHistory]
+        } else {
+            let cond = LLDBLearningHistory.Properties.learnedAt >= startTime! &&
+                       LLDBLearningHistory.Properties.learnedAt < endTime! &&
+                       LLDBLearningHistory.Properties.wordListId == wordListId!
+            return try database.getObjects(
+                on: LLDBLearningHistory.Properties.all,
+                fromTable: learningHistoryTable,
+                where: cond,
+                orderBy: order
+            ) as [LLDBLearningHistory]
+        }
+    }
+    
     // MARK: - 学习进度管理
     
     /// 记录学习进度（第一次学习或更新）
@@ -418,6 +498,10 @@ final class LLDatabaseManager {
             
             LLLogger.info("✅ 新增学习记录：\(wordId)，反馈：\(feedback)")
         }
+        
+        // 每次学习都插入一条明细记录
+        let history = LLDBLearningHistory(wordId: wordId, wordListId: wordListId, feedback: feedback, sessionType: "learn")
+        try database.insert(objects: history, intoTable: learningHistoryTable)
     }
     
     /// 更新词库的已学习单词数（增量更新）

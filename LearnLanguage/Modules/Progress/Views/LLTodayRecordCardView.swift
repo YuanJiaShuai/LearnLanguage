@@ -5,7 +5,6 @@
 //  今日学习记录卡片视图
 
 import AppKit
-import SnapKit
 
 final class LLTodayRecordCardView: NSView {
     
@@ -54,11 +53,7 @@ final class LLTodayRecordCardView: NSView {
         return scroll
     }()
     
-    private let listView: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        return view
-    }()
+    private let listView = _FlippedView()
     
     // MARK: - Callbacks
     
@@ -68,7 +63,7 @@ final class LLTodayRecordCardView: NSView {
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        setupUI()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -77,49 +72,42 @@ final class LLTodayRecordCardView: NSView {
     
     // MARK: - Setup
     
-    private func setupUI() {
+    private func setupViews() {
         wantsLayer = true
         layer?.backgroundColor = NSColor(srgbRed: 0.98, green: 0.98, blue: 0.97, alpha: 1).cgColor
         layer?.cornerRadius = 8
         layer?.borderWidth = 1
         layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
         
-        // 标题和按钮容器
-        let headerContainer = NSView()
-        headerContainer.wantsLayer = true
-        addSubview(headerContainer)
-        headerContainer.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(28)
-        }
-        
-        headerContainer.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.leading.centerY.equalToSuperview()
-        }
-        
-        headerContainer.addSubview(exportButton)
-        exportButton.snp.makeConstraints { make in
-            make.trailing.centerY.equalToSuperview()
-            make.height.equalTo(28)
-            make.width.greaterThanOrEqualTo(100)
-        }
-        
-        // 列表容器
+        addSubview(titleLabel)
+        addSubview(exportButton)
         addSubview(listContainer)
-        listContainer.snp.makeConstraints { make in
-            make.top.equalTo(headerContainer.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().offset(-20)
-        }
-        
         listContainer.addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
         scrollView.documentView = listView
+    }
+    
+    // MARK: - Layout
+    
+    override func layout() {
+        super.layout()
+        let w = bounds.width
+        let h = bounds.height
+        guard w > 0, h > 0 else { return }
+        
+        // header 区域
+        let headerH: CGFloat = 28
+        let headerY: CGFloat = 20
+        let btnW: CGFloat = 110
+        
+        titleLabel.frame = NSRect(x: 20, y: headerY, width: w - 40 - btnW - 8, height: headerH)
+        exportButton.frame = NSRect(x: w - 20 - btnW, y: headerY, width: btnW, height: headerH)
+        
+        // list 区域
+        let listY = headerY + headerH + 16
+        let listH = h - listY - 20
+        listContainer.frame = NSRect(x: 20, y: listY, width: w - 40, height: listH)
+        scrollView.frame = listContainer.bounds
+        listView.frame = NSRect(x: 0, y: 0, width: listContainer.bounds.width, height: max(listContainer.bounds.height, 1))
     }
     
     // MARK: - Actions
@@ -139,3 +127,6 @@ final class LLTodayRecordCardView: NSView {
     }
 }
 
+private final class _FlippedView: NSView {
+    override var isFlipped: Bool { true }
+}

@@ -2,119 +2,87 @@
 //  LLCurrentListCardView.swift
 //  LearnLanguage
 //
-//  当前学习词库卡片
+//  当前学习词库卡片 - 全部 frame 布局
 
 import AppKit
-import SnapKit
 
 final class LLCurrentListCardView: NSView {
     
-    // MARK: - UI Components
+    // MARK: - UI
     
-    private lazy var containerView: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
-        view.layer?.cornerRadius = 12
-        view.layer?.borderWidth = 1
-        view.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
-        return view
-    }()
-    
-    private lazy var titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: NSLocalizedString("Current Learning List", comment: "Current learning list title"))
+    private let titleLabel: NSTextField = {
+        let label = NSTextField(labelWithString: NSLocalizedString("Current Learning List", comment: ""))
         label.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
-        label.isEditable = false
-        label.isBezeled = false
-        label.drawsBackground = false
+        label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
     }()
     
-    private lazy var emptyStateLabel: NSTextField = {
-        let label = NSTextField(labelWithString: NSLocalizedString("No Word List Selected", comment: "No word list selected message"))
+    private let emptyStateLabel: NSTextField = {
+        let label = NSTextField(labelWithString: NSLocalizedString("No Word List Selected", comment: ""))
         label.font = NSFont.systemFont(ofSize: 14)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
-        label.isEditable = false
-        label.isBezeled = false
-        label.drawsBackground = false
+        label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         label.alignment = .center
-        label.maximumNumberOfLines = 2
         return label
     }()
     
-    private lazy var contentStackView: NSStackView = {
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.spacing = 12
-        stack.alignment = .leading
-        return stack
-    }()
-    
-    private lazy var listNameLabel: NSTextField = {
+    private let listNameLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
         label.font = NSFont.systemFont(ofSize: 18, weight: .bold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
-        label.isEditable = false
-        label.isBezeled = false
-        label.drawsBackground = false
+        label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
     }()
     
-    private lazy var categoryLabel: NSTextField = {
+    private let categoryLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
         label.font = NSFont.systemFont(ofSize: 13)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
-        label.isEditable = false
-        label.isBezeled = false
-        label.drawsBackground = false
+        label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
     }()
     
-    private lazy var progressContainerView: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        return view
+    private let progressBarBg: NSView = {
+        let v = NSView()
+        v.wantsLayer = true
+        v.layer?.backgroundColor = NSColor(white: 0.9, alpha: 1).cgColor
+        v.layer?.cornerRadius = 4
+        return v
     }()
     
-    private lazy var progressBarBackground: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor(white: 0.9, alpha: 1).cgColor
-        view.layer?.cornerRadius = 4
-        return view
+    private let progressBarFill: NSView = {
+        let v = NSView()
+        v.wantsLayer = true
+        v.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
+        v.layer?.cornerRadius = 4
+        return v
     }()
     
-    private lazy var progressBarFill: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
-        view.layer?.cornerRadius = 4
-        return view
-    }()
-    
-    private lazy var progressLabel: NSTextField = {
+    private let progressLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
         label.font = NSFont.systemFont(ofSize: 12)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
-        label.isEditable = false
-        label.isBezeled = false
-        label.drawsBackground = false
+        label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
     }()
     
-    private lazy var statsStackView: NSStackView = {
-        let stack = NSStackView()
-        stack.orientation = .horizontal
-        stack.spacing = 24
-        stack.distribution = .fillEqually
-        return stack
-    }()
+    // 3个小统计
+    private let stat1Icon = NSTextField(labelWithString: "📅")
+    private let stat1Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Today's Learning", comment: "")); l.font = .systemFont(ofSize: 11); l.textColor = LLAppearanceManager.shared.colors.secondaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat1Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .systemFont(ofSize: 14, weight: .semibold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    
+    private let stat2Icon = NSTextField(labelWithString: "📖")
+    private let stat2Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Total Words", comment: "")); l.font = .systemFont(ofSize: 11); l.textColor = LLAppearanceManager.shared.colors.secondaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat2Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .systemFont(ofSize: 14, weight: .semibold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    
+    private let stat3Icon = NSTextField(labelWithString: "✅")
+    private let stat3Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Mastered", comment: "")); l.font = .systemFont(ofSize: 11); l.textColor = LLAppearanceManager.shared.colors.secondaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat3Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .systemFont(ofSize: 14, weight: .semibold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
     
     private lazy var changeButton: NSButton = {
-        let button = NSButton(title: NSLocalizedString("Change List", comment: "Change word list button"), target: self, action: #selector(didClickChangeButton))
+        let button = NSButton(title: NSLocalizedString("Change List", comment: ""), target: self, action: #selector(didClickChangeButton))
         button.bezelStyle = .rounded
-        button.controlSize = .regular
         button.wantsLayer = true
         button.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
         button.layer?.cornerRadius = 6
@@ -122,16 +90,15 @@ final class LLCurrentListCardView: NSView {
         return button
     }()
     
-    // MARK: - Properties
-    
     var onChangeButtonClicked: (() -> Void)?
-    private var progressWidthConstraint: Constraint?
+    private var progressRatio: CGFloat = 0
+    private var hasContent = false
     
-    // MARK: - Initialization
+    // MARK: - Init
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        setupUI()
+        setupViews()
         loadData()
         observeNotifications()
     }
@@ -140,235 +107,138 @@ final class LLCurrentListCardView: NSView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+    deinit { NotificationCenter.default.removeObserver(self) }
     
-    // MARK: - Setup
-    
-    private func setupUI() {
+    private func setupViews() {
         wantsLayer = true
+        layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
+        layer?.cornerRadius = 12
+        layer?.borderWidth = 1
+        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
         
-        addSubview(containerView)
-        containerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        for v in [stat1Icon, stat1Title, stat1Value,
+                  stat2Icon, stat2Title, stat2Value,
+                  stat3Icon, stat3Title, stat3Value] as [NSTextField] {
+            v.isEditable = false; v.isBezeled = false; v.drawsBackground = false
+            v.font = v.font // keep
         }
+        [stat1Icon, stat2Icon, stat3Icon].forEach { $0.font = .systemFont(ofSize: 20); $0.alignment = .center }
         
-        containerView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.leading.equalToSuperview().offset(20)
-        }
-        
-        containerView.addSubview(emptyStateLabel)
-        emptyStateLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(40)
-        }
-        
-        containerView.addSubview(contentStackView)
-        contentStackView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        // 添加词库名称
-        contentStackView.addArrangedSubview(listNameLabel)
-        
-        // 添加分类标签
-        contentStackView.addArrangedSubview(categoryLabel)
-        
-        // 添加进度条容器
-        contentStackView.addArrangedSubview(progressContainerView)
-        progressContainerView.snp.makeConstraints { make in
-            make.width.equalTo(contentStackView)
-            make.height.equalTo(40)
-        }
-        
-        progressContainerView.addSubview(progressBarBackground)
-        progressBarBackground.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(8)
-        }
-        
-        progressBarBackground.addSubview(progressBarFill)
-        progressBarFill.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            progressWidthConstraint = make.width.equalTo(0).constraint
-        }
-        
-        progressContainerView.addSubview(progressLabel)
-        progressLabel.snp.makeConstraints { make in
-            make.top.equalTo(progressBarBackground.snp.bottom).offset(8)
-            make.leading.equalToSuperview()
-        }
-        
-        // 添加统计信息
-        contentStackView.addArrangedSubview(statsStackView)
-        statsStackView.snp.makeConstraints { make in
-            make.width.equalTo(contentStackView)
-        }
-        
-        // 添加切换按钮
-        containerView.addSubview(changeButton)
-        changeButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(32)
-            make.width.greaterThanOrEqualTo(100)
-        }
-        
-        contentStackView.snp.makeConstraints { make in
-            make.bottom.lessThanOrEqualTo(changeButton.snp.top).offset(-16)
-        }
+        addSubview(titleLabel)
+        addSubview(emptyStateLabel)
+        addSubview(listNameLabel)
+        addSubview(categoryLabel)
+        addSubview(progressBarBg)
+        progressBarBg.addSubview(progressBarFill)
+        addSubview(progressLabel)
+        addSubview(stat1Icon); addSubview(stat1Title); addSubview(stat1Value)
+        addSubview(stat2Icon); addSubview(stat2Title); addSubview(stat2Value)
+        addSubview(stat3Icon); addSubview(stat3Title); addSubview(stat3Value)
+        addSubview(changeButton)
     }
     
-    private func observeNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(loadData),
-            name: .learnLanguageCurrentListChanged,
-            object: nil
-        )
+    // MARK: - Layout
+    
+    override func layout() {
+        super.layout()
+        let w = bounds.width
+        let h = bounds.height
+        guard w > 0, h > 0 else { return }
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(loadData),
-            name: .learnLanguageRefreshStatus,
-            object: nil
-        )
-    }
-    
-    // MARK: - Data Loading
-    
-    @objc private func loadData() {
-        guard let list = LLSettingsStore.shared.currentWordList else {
-            showEmptyState()
+        // 标题
+        titleLabel.frame = NSRect(x: 20, y: 20, width: w - 40, height: 22)
+        
+        // 切换按钮
+        let btnW: CGFloat = 110
+        let btnH: CGFloat = 30
+        changeButton.frame = NSRect(x: w - 20 - btnW, y: h - 20 - btnH, width: btnW, height: btnH)
+        
+        if !hasContent {
+            emptyStateLabel.isHidden = false
+            listNameLabel.isHidden = true
+            categoryLabel.isHidden = true
+            progressBarBg.isHidden = true
+            progressLabel.isHidden = true
+            [stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
+             stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = true }
+            emptyStateLabel.frame = NSRect(x: 40, y: (h - 40) / 2, width: w - 80, height: 40)
             return
         }
         
-        showContent()
+        emptyStateLabel.isHidden = true
+        listNameLabel.isHidden = false
+        categoryLabel.isHidden = false
+        progressBarBg.isHidden = false
+        progressLabel.isHidden = false
+        [stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
+         stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = false }
         
-        // 更新词库信息
+        var y: CGFloat = 20 + 22 + 16
+        listNameLabel.frame = NSRect(x: 20, y: y, width: w - 40, height: 24)
+        y += 24 + 6
+        categoryLabel.frame = NSRect(x: 20, y: y, width: w - 40, height: 18)
+        y += 18 + 12
+        
+        // 进度条
+        let barW = w - 40
+        progressBarBg.frame = NSRect(x: 20, y: y, width: barW, height: 8)
+        progressBarFill.frame = NSRect(x: 0, y: 0, width: barW * progressRatio, height: 8)
+        y += 8 + 6
+        progressLabel.frame = NSRect(x: 20, y: y, width: barW, height: 16)
+        y += 16 + 16
+        
+        // 3列统计
+        let statW = (w - 40) / 3
+        let statH: CGFloat = 60
+        for (i, views) in [(stat1Icon, stat1Title, stat1Value),
+                           (stat2Icon, stat2Title, stat2Value),
+                           (stat3Icon, stat3Title, stat3Value)].enumerated() {
+            let x = 20 + CGFloat(i) * statW
+            views.0.frame = NSRect(x: x, y: y, width: statW, height: 22)
+            views.1.frame = NSRect(x: x, y: y + 22 + 2, width: statW, height: 16)
+            views.2.frame = NSRect(x: x, y: y + 22 + 2 + 16 + 2, width: statW, height: 18)
+        }
+    }
+    
+    // MARK: - Data
+    
+    private func observeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: .learnLanguageCurrentListChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: .learnLanguageRefreshStatus, object: nil)
+    }
+    
+    @objc private func loadData() {
+        guard let list = LLSettingsStore.shared.currentWordList else {
+            hasContent = false
+            changeButton.title = NSLocalizedString("Select List", comment: "")
+            needsLayout = true
+            return
+        }
+        hasContent = true
+        changeButton.title = NSLocalizedString("Change List", comment: "")
         listNameLabel.stringValue = list.name
         categoryLabel.stringValue = "📚 \(list.category)"
         
-        // 更新进度
         let progress = LLSettingsStore.shared.getCurrentListProgress()
-        updateProgress(learned: progress.learned, total: progress.total, percentage: progress.percentage)
+        progressRatio = CGFloat(progress.percentage / 100.0)
+        progressLabel.stringValue = String(format: NSLocalizedString("Learned %d/%d words (%.1f%%)", comment: ""), progress.learned, progress.total, progress.percentage)
         
-        // 更新统计信息
-        updateStats(list: list)
-    }
-    
-    private func showEmptyState() {
-        emptyStateLabel.isHidden = false
-        contentStackView.isHidden = true
-        changeButton.title = NSLocalizedString("Select List", comment: "Select word list button")
-    }
-    
-    private func showContent() {
-        emptyStateLabel.isHidden = true
-        contentStackView.isHidden = false
-        changeButton.title = NSLocalizedString("Change List", comment: "Change word list button")
-    }
-    
-    private func updateProgress(learned: Int, total: Int, percentage: Double) {
-        let progressWidth = containerView.bounds.width - 40
-        let fillWidth = progressWidth * (percentage / 100.0)
-        
-        progressWidthConstraint?.update(offset: fillWidth)
-        progressLabel.stringValue = String(format: NSLocalizedString("Learned %d/%d words (%.1f%%)", comment: "Progress label"), learned, total, percentage)
-        
-        // 添加动画
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.3
-            context.allowsImplicitAnimation = true
-            progressBarFill.layoutSubtreeIfNeeded()
-        }
-    }
-    
-    private func updateStats(list: WordList) {
-        // 清空旧的统计视图
-        statsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        // 今日学习
         let todayCount = LLSettingsStore.shared.getCurrentListTodayCount()
-        let todayStatView = createStatView(icon: "📅", title: NSLocalizedString("Today's Learning", comment: "Today's learning stat"), value: "\(todayCount) " + NSLocalizedString("words", comment: "words unit"))
-        statsStackView.addArrangedSubview(todayStatView)
+        stat1Value.stringValue = "\(todayCount) " + NSLocalizedString("words", comment: "")
+        stat2Value.stringValue = "\(list.entryCount) " + NSLocalizedString("words", comment: "")
         
-        // 总词数
-        let totalStatView = createStatView(icon: "📖", title: NSLocalizedString("Total Words", comment: "Total words stat"), value: "\(list.entryCount) " + NSLocalizedString("words", comment: "words unit"))
-        statsStackView.addArrangedSubview(totalStatView)
-        
-        // 掌握情况
-        let know: Int
+        let mastered: Int
         do {
             let stats = try LLDatabaseManager.shared.getWordListProgressStats(wordListId: list.id)
-            know = stats.mastered
+            mastered = stats.mastered
         } catch {
-            LLLogger.error("❌ 获取掌握统计失败：\(error)")
-            know = 0
+            mastered = 0
         }
-        let masteredStatView = createStatView(icon: "✅", title: NSLocalizedString("Mastered", comment: "Mastered words stat"), value: "\(know) " + NSLocalizedString("words", comment: "words unit"))
-        statsStackView.addArrangedSubview(masteredStatView)
+        stat3Value.stringValue = "\(mastered) " + NSLocalizedString("words", comment: "")
+        needsLayout = true
     }
-    
-    private func createStatView(icon: String, title: String, value: String) -> NSView {
-        let container = NSView()
-        container.wantsLayer = true
-        
-        let iconLabel = NSTextField(labelWithString: icon)
-        iconLabel.font = NSFont.systemFont(ofSize: 20)
-        iconLabel.isEditable = false
-        iconLabel.isBezeled = false
-        iconLabel.drawsBackground = false
-        iconLabel.alignment = .center
-        
-        let titleLabel = NSTextField(labelWithString: title)
-        titleLabel.font = NSFont.systemFont(ofSize: 11)
-        titleLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-        titleLabel.isEditable = false
-        titleLabel.isBezeled = false
-        titleLabel.drawsBackground = false
-        titleLabel.alignment = .center
-        
-        let valueLabel = NSTextField(labelWithString: value)
-        valueLabel.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
-        valueLabel.textColor = LLAppearanceManager.shared.colors.primaryText
-        valueLabel.isEditable = false
-        valueLabel.isBezeled = false
-        valueLabel.drawsBackground = false
-        valueLabel.alignment = .center
-        
-        container.addSubview(iconLabel)
-        container.addSubview(titleLabel)
-        container.addSubview(valueLabel)
-        
-        iconLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
-        }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(iconLabel.snp.bottom).offset(4)
-            make.centerX.equalToSuperview()
-        }
-        
-        valueLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(2)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-        
-        return container
-    }
-    
-    // MARK: - Actions
     
     @objc private func didClickChangeButton() {
         onChangeButtonClicked?()
     }
 }
-

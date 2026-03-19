@@ -21,9 +21,6 @@ final class LLMMKVManager {
         mmkv = MMKV.default()
         
         LLLogger.info("✅ MMKV 初始化成功")
-        
-        // 首次启动时从 UserDefaults 迁移数据
-        migrateFromUserDefaultsIfNeeded()
     }
     
     // MARK: - 通用方法
@@ -82,64 +79,6 @@ final class LLMMKVManager {
     
     func allKeys() -> [String] {
         return mmkv?.allKeys() as? [String] ?? []
-    }
-    
-    // MARK: - 数据迁移
-    
-    /// 从 UserDefaults 迁移数据（仅首次启动时执行一次）
-    private func migrateFromUserDefaultsIfNeeded() {
-        let migrationKey = "_mmkv_migration_completed"
-        
-        // 检查是否已经迁移过
-        if bool(forKey: migrationKey) {
-            return
-        }
-        
-        LLLogger.info("🔄 开始从 UserDefaults 迁移数据到 MMKV...")
-        
-        let ud = UserDefaults.standard
-        var migratedCount = 0
-        
-        // 迁移已有数据
-        let keysToMigrate = [
-            "HasImportedWordLists",
-            "current_list_id",
-            "is_typing_practice_mode",
-            "status_bar_show_phonetic",
-            "status_bar_max_length",
-            "floating_panel_alpha",
-            "daily_goal"
-        ]
-        
-        for key in keysToMigrate {
-            if let value = ud.object(forKey: key) {
-                switch value {
-                case let v as Bool:
-                    set(v, forKey: key)
-                case let v as Int:
-                    set(v, forKey: key)
-                case let v as Double:
-                    set(v, forKey: key)
-                case let v as String:
-                    set(v, forKey: key)
-                case let v as Data:
-                    set(v, forKey: key)
-                default:
-                    continue
-                }
-                
-                // 从 UserDefaults 中删除
-                ud.removeObject(forKey: key)
-                migratedCount += 1
-            }
-        }
-        
-        ud.synchronize()
-        
-        // 标记迁移完成
-        set(true, forKey: migrationKey)
-        
-        LLLogger.info("✅ 数据迁移完成，共迁移 \(migratedCount) 个配置项")
     }
 }
 

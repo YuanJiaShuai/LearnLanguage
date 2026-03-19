@@ -39,7 +39,6 @@
 		849226E22F3C878F00447E0C /* LLDBWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492269B2F3C878F00447E0C /* LLDBWord.swift */; };
 		849226E32F3C878F00447E0C /* LLSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226A12F3C878F00447E0C /* LLSettingsStore.swift */; };
 		849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226B62F3C878F00447E0C /* LLProgressCardView.swift */; };
-		849226E52F3C878F00447E0C /* LLWrongRecordItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226BC2F3C878F00447E0C /* LLWrongRecordItemView.swift */; };
 		849226E62F3C878F00447E0C /* LLSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226AF2F3C878F00447E0C /* LLSidebarViewController.swift */; };
 		849226E72F3C878F00447E0C /* LLSettingsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226BF2F3C878F00447E0C /* LLSettingsTabViewController.swift */; };
 		849226E82F3C878F00447E0C /* LLWordListStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226A22F3C878F00447E0C /* LLWordListStorage.swift */; };
@@ -47,7 +46,6 @@
 		849226EA2F3C878F00447E0C /* LLLearningRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226952F3C878F00447E0C /* LLLearningRecord.swift */; };
 		849226EB2F3C878F00447E0C /* LLProgressTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226B32F3C878F00447E0C /* LLProgressTabViewController.swift */; };
 		849226EC2F3C878F00447E0C /* LLRecordItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226B72F3C878F00447E0C /* LLRecordItemView.swift */; };
-		849226ED2F3C878F00447E0C /* LLWrongRecordCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226BB2F3C878F00447E0C /* LLWrongRecordCardView.swift */; };
 		849226EF2F3C878F00447E0C /* LLWordListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226D02F3C878F00447E0C /* LLWordListDetailViewController.swift */; };
 		849226F02F3C878F00447E0C /* LLCurrentListCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226B52F3C878F00447E0C /* LLCurrentListCardView.swift */; };
 		849226F12F3C878F00447E0C /* LLDBWordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492269C2F3C878F00447E0C /* LLDBWordList.swift */; };
@@ -76,6 +74,8 @@
 		84A446CA2F6A818300F0E5E7 /* LLBackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */; };
 		84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */; };
 		84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */; };
+		84C0D9DB2F6BDFA800F96737 /* LLTodayRecordContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0D9DA2F6BDFA800F96737 /* LLTodayRecordContentView.swift */; };
+		84C0D9DD2F6BE97F00F96737 /* LLDBLearningHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */; };
 		84E1E32D2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E32C2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift */; };
 		84E1E32F2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */; };
 		84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */; };
@@ -160,8 +160,6 @@
 		849226B82F3C878F00447E0C /* LLStatCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatCardView.swift; sourceTree = "<group>"; };
 		849226B92F3C878F00447E0C /* LLTodayRecordCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTodayRecordCardView.swift; sourceTree = "<group>"; };
 		849226BA2F3C878F00447E0C /* LLTrendCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTrendCardView.swift; sourceTree = "<group>"; };
-		849226BB2F3C878F00447E0C /* LLWrongRecordCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWrongRecordCardView.swift; sourceTree = "<group>"; };
-		849226BC2F3C878F00447E0C /* LLWrongRecordItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWrongRecordItemView.swift; sourceTree = "<group>"; };
 		849226BF2F3C878F00447E0C /* LLSettingsTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSettingsTabViewController.swift; sourceTree = "<group>"; };
 		849226C32F3C878F00447E0C /* LLStatusBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarManager.swift; sourceTree = "<group>"; };
 		849226C52F3C878F00447E0C /* LLStatusBarFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarFeedbackView.swift; sourceTree = "<group>"; };
@@ -175,6 +173,8 @@
 		84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLBackupManager.swift; sourceTree = "<group>"; };
 		84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLKeychainManager.swift; sourceTree = "<group>"; };
 		84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLShortcutRecorderView.swift; sourceTree = "<group>"; };
+		84C0D9DA2F6BDFA800F96737 /* LLTodayRecordContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTodayRecordContentView.swift; sourceTree = "<group>"; };
+		84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningHistory.swift; sourceTree = "<group>"; };
 		84E1E32C2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordLibraryCardItem.swift; sourceTree = "<group>"; };
 		84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarContentView.swift; sourceTree = "<group>"; };
 		84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLScrollingTextView.swift; sourceTree = "<group>"; };
@@ -303,6 +303,7 @@
 				8492269B2F3C878F00447E0C /* LLDBWord.swift */,
 				8492269C2F3C878F00447E0C /* LLDBWordList.swift */,
 				8492269D2F3C878F00447E0C /* LLDBWordListCategory.swift */,
+				84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -410,11 +411,10 @@
 				849226B72F3C878F00447E0C /* LLRecordItemView.swift */,
 				849226B82F3C878F00447E0C /* LLStatCardView.swift */,
 				A8D1A74C2F66AE4000C4BDF2 /* LLReviewContentView.swift */,
+				84C0D9DA2F6BDFA800F96737 /* LLTodayRecordContentView.swift */,
 				A8D1A74D2F66AE4000C4BDF2 /* LLStatContentView.swift */,
 				849226B92F3C878F00447E0C /* LLTodayRecordCardView.swift */,
 				849226BA2F3C878F00447E0C /* LLTrendCardView.swift */,
-				849226BB2F3C878F00447E0C /* LLWrongRecordCardView.swift */,
-				849226BC2F3C878F00447E0C /* LLWrongRecordItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -795,9 +795,9 @@
 				84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */,
 				84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */,
 				8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */,
+				84C0D9DD2F6BE97F00F96737 /* LLDBLearningHistory.swift in Sources */,
 				849226E32F3C878F00447E0C /* LLSettingsStore.swift in Sources */,
 				849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */,
-				849226E52F3C878F00447E0C /* LLWrongRecordItemView.swift in Sources */,
 				849226E62F3C878F00447E0C /* LLSidebarViewController.swift in Sources */,
 				849226E72F3C878F00447E0C /* LLSettingsTabViewController.swift in Sources */,
 				849226E82F3C878F00447E0C /* LLWordListStorage.swift in Sources */,
@@ -806,9 +806,9 @@
 				849226EB2F3C878F00447E0C /* LLProgressTabViewController.swift in Sources */,
 				849226EC2F3C878F00447E0C /* LLRecordItemView.swift in Sources */,
 				84E1E32F2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift in Sources */,
-				849226ED2F3C878F00447E0C /* LLWrongRecordCardView.swift in Sources */,
 				84E1E39E2F4D53A300D1B7B6 /* LLTypingStatsView.swift in Sources */,
 				84E1E39F2F4D53A300D1B7B6 /* LLTypingSoundManager.swift in Sources */,
+				84C0D9DB2F6BDFA800F96737 /* LLTodayRecordContentView.swift in Sources */,
 				84E1E3A02F4D53A300D1B7B6 /* LLStatusBarTypingPractice.swift in Sources */,
 				84A446CA2F6A818300F0E5E7 /* LLBackupManager.swift in Sources */,
 				84E1E3A12F4D53A300D1B7B6 /* LLTypingPracticeTabViewController.swift in Sources */,

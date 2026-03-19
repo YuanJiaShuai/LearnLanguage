@@ -5,11 +5,8 @@
 //  学习趋势图表卡片视图
 
 import AppKit
-import SnapKit
 
 final class LLTrendCardView: NSView {
-    
-    // MARK: - UI Components
     
     private let titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("Learning Statistics", comment: ""))
@@ -40,43 +37,43 @@ final class LLTrendCardView: NSView {
         return label
     }()
     
-    // MARK: - Initialization
-    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        setupUI()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
-    
-    private func setupUI() {
+    private func setupViews() {
         wantsLayer = true
         layer?.backgroundColor = NSColor(srgbRed: 0.98, green: 0.98, blue: 0.97, alpha: 1).cgColor
         layer?.cornerRadius = 8
         layer?.borderWidth = 1
         layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
-        
         addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.leading.equalToSuperview().offset(20)
-        }
-        
         addSubview(chartPlaceholder)
-        chartPlaceholder.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().offset(-20)
-        }
-        
         chartPlaceholder.addSubview(placeholderText)
-        placeholderText.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
+    }
+    
+    override func layout() {
+        super.layout()
+        let w = bounds.width
+        let h = bounds.height
+        guard w > 0, h > 0 else { return }
+        
+        titleLabel.frame = NSRect(x: 20, y: 20, width: w - 40, height: 22)
+        let chartY: CGFloat = 20 + 22 + 12
+        let chartH = h - chartY - 16
+        chartPlaceholder.frame = NSRect(x: 16, y: chartY, width: w - 32, height: chartH)
+        
+        let ptW = placeholderText.intrinsicContentSize.width
+        let ptH: CGFloat = 20
+        placeholderText.frame = NSRect(
+            x: (chartPlaceholder.bounds.width - ptW) / 2,
+            y: (chartPlaceholder.bounds.height - ptH) / 2,
+            width: ptW, height: ptH
+        )
     }
 }
-

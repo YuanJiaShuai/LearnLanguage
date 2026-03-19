@@ -5,11 +5,8 @@
 //  进度卡片视图
 
 import AppKit
-import SnapKit
 
 final class LLProgressCardView: NSView {
-    
-    // MARK: - UI Components
     
     private let iconLabel: NSTextField = {
         let label = NSTextField(labelWithString: "✅")
@@ -59,67 +56,55 @@ final class LLProgressCardView: NSView {
         return view
     }()
     
-    // MARK: - Initialization
+    private var progressRatio: CGFloat = 0
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        setupUI()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
-    
-    private func setupUI() {
+    private func setupViews() {
         wantsLayer = true
         layer?.backgroundColor = NSColor(srgbRed: 0.98, green: 0.98, blue: 0.97, alpha: 1).cgColor
         layer?.cornerRadius = 8
         layer?.borderWidth = 1
         layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
-        
         addSubview(iconLabel)
-        iconLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(16)
-        }
-        
         addSubview(numberLabel)
-        numberLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(iconLabel.snp.bottom).offset(6)
-        }
-        
         addSubview(descLabel)
-        descLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(numberLabel.snp.bottom).offset(4)
-        }
-        
         addSubview(progressBar)
-        progressBar.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().offset(-16)
-            make.height.equalTo(6)
-        }
-        
         progressBar.addSubview(progressFill)
-        progressFill.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0)
-        }
     }
     
-    // MARK: - Public Methods
+    override func layout() {
+        super.layout()
+        let w = bounds.width
+        let h = bounds.height
+        guard w > 0, h > 0 else { return }
+        
+        let iconH: CGFloat = 26
+        let numH: CGFloat = 32
+        let descH: CGFloat = 18
+        let barH: CGFloat = 6
+        let totalH = iconH + 6 + numH + 4 + descH + 8 + barH
+        let startY = (h - totalH) / 2
+        
+        iconLabel.frame   = NSRect(x: 0, y: startY, width: w, height: iconH)
+        numberLabel.frame = NSRect(x: 0, y: startY + iconH + 6, width: w, height: numH)
+        descLabel.frame   = NSRect(x: 4, y: startY + iconH + 6 + numH + 4, width: w - 8, height: descH)
+        
+        let barY = startY + iconH + 6 + numH + 4 + descH + 8
+        progressBar.frame = NSRect(x: 16, y: barY, width: w - 32, height: barH)
+        progressFill.frame = NSRect(x: 0, y: 0, width: (w - 32) * progressRatio, height: barH)
+    }
     
     func updateProgress(current: Int, total: Int) {
         numberLabel.stringValue = "\(current)/\(total)"
-        let progress = total > 0 ? min(1.0, CGFloat(current) / CGFloat(total)) : 0
-        progressFill.snp.remakeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(progress)
-        }
+        progressRatio = total > 0 ? min(1.0, CGFloat(current) / CGFloat(total)) : 0
+        needsLayout = true
     }
 }
-

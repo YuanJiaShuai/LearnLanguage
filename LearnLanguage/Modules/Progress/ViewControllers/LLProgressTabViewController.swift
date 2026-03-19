@@ -33,50 +33,22 @@ final class LLProgressTabViewController: NSViewController {
     }()
     
     // 子标签按钮
-    private lazy var statTabButton: NSButton = {
-        let button = NSButton(title: NSLocalizedString("Stat Tab", comment: ""), target: self, action: #selector(switchToStatTab))
-        button.bezelStyle = .rounded
-        button.isBordered = false
-        button.font = NSFont.systemFont(ofSize: 14, weight: .medium)
-        button.wantsLayer = true
-        button.layer?.cornerRadius = 6
-        return button
-    }()
-    
-    private lazy var reviewTabButton: NSButton = {
-        let button = NSButton(title: NSLocalizedString("Review Tab", comment: ""), target: self, action: #selector(switchToreviewTab))
-        button.bezelStyle = .rounded
-        button.isBordered = false
-        button.font = NSFont.systemFont(ofSize: 14, weight: .medium)
-        button.wantsLayer = true
-        button.layer?.cornerRadius = 6
-        return button
-    }()
-    
-    // 学习统计页面容器
-    private lazy var statContainer: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        return view
-    }()
-    
-    // 复习记录页面容器
-    private lazy var reviewContainer: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        view.isHidden = true
-        return view
-    }()
-    
+    private lazy var statTabButton: NSButton = makeTabButton(title: NSLocalizedString("Stat Tab", comment: ""), action: #selector(switchToStatTab))
+    private lazy var todayRecordTabButton: NSButton = makeTabButton(title: NSLocalizedString("Today Record Tab", comment: ""), action: #selector(switchToTodayRecordTab))
+    private lazy var reviewTabButton: NSButton = makeTabButton(title: NSLocalizedString("Review Tab", comment: ""), action: #selector(switchToReviewTabAction))
+
+    // 页面容器
+    private lazy var statContainer: NSView = { let v = NSView(); v.wantsLayer = true; return v }()
+    private lazy var todayRecordContainer: NSView = { let v = NSView(); v.wantsLayer = true; v.isHidden = true; return v }()
+    private lazy var reviewContainer: NSView = { let v = NSView(); v.wantsLayer = true; v.isHidden = true; return v }()
+
     // 内容视图
     private var statContentView: LLStatContentView!
+    private var todayRecordContentView: LLTodayRecordContentView!
     private var reviewContentView: LLReviewContentView!
-    
+
     // 当前选中的标签
-    private enum Tab {
-        case stat
-        case review
-    }
+    private enum Tab { case stat, todayRecord, review }
     private var currentTab: Tab = .stat
     
     // MARK: - Lifecycle
@@ -136,9 +108,16 @@ final class LLProgressTabViewController: NSViewController {
             make.width.greaterThanOrEqualTo(80)
         }
         
+        tabContainer.addSubview(todayRecordTabButton)
+        todayRecordTabButton.snp.makeConstraints { make in
+            make.leading.equalTo(statTabButton.snp.trailing).offset(4)
+            make.top.bottom.equalToSuperview()
+            make.width.greaterThanOrEqualTo(80)
+        }
+        
         tabContainer.addSubview(reviewTabButton)
         reviewTabButton.snp.makeConstraints { make in
-            make.leading.equalTo(statTabButton.snp.trailing).offset(4)
+            make.leading.equalTo(todayRecordTabButton.snp.trailing).offset(4)
             make.top.bottom.trailing.equalToSuperview()
             make.width.greaterThanOrEqualTo(80)
         }
@@ -155,11 +134,28 @@ final class LLProgressTabViewController: NSViewController {
         statContentView.onChangeWordListClicked = { [weak self] in
             self?.showWordListSelector()
         }
-        statContentView.onExportRecordsClicked = { [weak self] in
-            self?.exportRecords()
-        }
         statContainer.addSubview(statContentView)
         statContentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        // 添加今日记录页面
+        view.addSubview(todayRecordContainer)
+        todayRecordContainer.snp.makeConstraints { make in
+            make.top.equalTo(tabContainer.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(28)
+            make.bottom.equalToSuperview().offset(-28)
+        }
+        
+        todayRecordContentView = LLTodayRecordContentView()
+        todayRecordContentView.onExportClicked = { [weak self] in
+            self?.exportRecords()
+        }
+        todayRecordContentView.onFilterChanged = { [weak self] _ in
+            self?.loadTodayRecords(listId: LLSettingsStore.shared.currentListId)
+        }
+        todayRecordContainer.addSubview(todayRecordContentView)
+        todayRecordContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -207,33 +203,39 @@ final class LLProgressTabViewController: NSViewController {
         currentTab = .stat
         updateTabButtonStyles()
         statContainer.isHidden = false
+        todayRecordContainer.isHidden = true
         reviewContainer.isHidden = true
     }
     
-    @objc private func switchToreviewTab() {
+    @objc private func switchToTodayRecordTab() {
+        currentTab = .todayRecord
+        updateTabButtonStyles()
+        statContainer.isHidden = true
+        todayRecordContainer.isHidden = false
+        reviewContainer.isHidden = true
+        loadTodayRecords(listId: LLSettingsStore.shared.currentListId)
+    }
+    
+    @objc private func switchToReviewTabAction() {
         currentTab = .review
         updateTabButtonStyles()
         statContainer.isHidden = true
+        todayRecordContainer.isHidden = true
         reviewContainer.isHidden = false
     }
     
     private func updateTabButtonStyles() {
-        let activeColor = LLAppearanceManager.shared.colors.accentColor
-        let inactiveColor = NSColor(srgbRed: 0.96, green: 0.96, blue: 0.97, alpha: 1)
-        
-        statTabButton.wantsLayer = true
-        reviewTabButton.wantsLayer = true
-        
-        if currentTab == .stat {
-            statTabButton.layer?.backgroundColor = activeColor.cgColor
-            statTabButton.contentTintColor = .white
-            reviewTabButton.layer?.backgroundColor = inactiveColor.cgColor
-            reviewTabButton.contentTintColor = LLAppearanceManager.shared.colors.primaryText
-        } else {
-            statTabButton.layer?.backgroundColor = inactiveColor.cgColor
-            statTabButton.contentTintColor = LLAppearanceManager.shared.colors.primaryText
-            reviewTabButton.layer?.backgroundColor = activeColor.cgColor
-            reviewTabButton.contentTintColor = .white
+        let active = LLAppearanceManager.shared.colors.accentColor
+        let inactive = NSColor(srgbRed: 0.96, green: 0.96, blue: 0.97, alpha: 1)
+        let pairs: [(NSButton, Tab)] = [
+            (statTabButton, .stat),
+            (todayRecordTabButton, .todayRecord),
+            (reviewTabButton, .review)
+        ]
+        for (btn, tab) in pairs {
+            btn.wantsLayer = true
+            btn.layer?.backgroundColor = (tab == currentTab ? active : inactive).cgColor
+            btn.contentTintColor = tab == currentTab ? .white : LLAppearanceManager.shared.colors.primaryText
         }
     }
     
@@ -256,7 +258,7 @@ final class LLProgressTabViewController: NSViewController {
     // MARK: - Public Methods
     
     func switchToReviewTab() {
-        switchToreviewTab()
+        switchToReviewTabAction()
     }
     
     func setTimeFilter(to filter: TimeFilter) {
@@ -317,17 +319,44 @@ final class LLProgressTabViewController: NSViewController {
     
     private func loadTodayRecords(listId: String?) {
         do {
-            let allProgress = try LLDatabaseManager.shared.getAllLearningProgress(wordListId: listId ?? "")
-            let cal = Calendar.current
-            let today = cal.startOfDay(for: Date())
-            let todayRecords = allProgress.filter { record in
-                let date = Date(timeIntervalSince1970: record.lastSeenAt ?? 0)
-                return cal.isDate(date, inSameDayAs: today)
-            }.sorted { ($0.lastSeenAt ?? 0) > ($1.lastSeenAt ?? 0) }
+            let filter = todayRecordContentView?.currentFilter ?? .today
+            let history: [LLDBLearningHistory]
+            switch filter {
+            case .today: history = try LLDatabaseManager.shared.getTodayLearningHistory(wordListId: listId)
+            case .week:  history = try LLDatabaseManager.shared.getWeekLearningHistory(wordListId: listId)
+            case .month: history = try LLDatabaseManager.shared.getMonthLearningHistory(wordListId: listId)
+            case .all:   history = try LLDatabaseManager.shared.getAllLearningHistory(wordListId: listId)
+            }
             
-            statContentView?.updateTodayRecords(todayRecords)
+            // 按 wordId+wordListId 聚合，统计每个单词的学习次数
+            var grouped: [String: [LLDBLearningHistory]] = [:]
+            for h in history {
+                let key = (h.wordId ?? "") + "_" + (h.wordListId ?? "")
+                grouped[key, default: []].append(h)
+            }
+            
+            let items: [LLTodayRecordItem] = grouped.values.compactMap { records in
+                guard let first = records.first,
+                      let wordId = first.wordId,
+                      let wListId = first.wordListId else { return nil }
+                let wordText = getWordText(wordId: wordId, listId: wListId)
+                let sorted = records.sorted { ($0.learnedAt ?? 0) > ($1.learnedAt ?? 0) }
+                let lastFeedback = sorted.first?.feedback ?? ""
+                let lastLearnedAt = sorted.first?.learnedAt ?? 0
+                return LLTodayRecordItem(
+                    wordId: wordId,
+                    wordListId: wListId,
+                    wordText: wordText,
+                    lastFeedback: lastFeedback,
+                    learnCount: records.count,
+                    lastLearnedAt: lastLearnedAt
+                )
+            }.sorted { $0.lastLearnedAt > $1.lastLearnedAt }
+            
+            todayRecordContentView?.updateItems(items)
         } catch {
-            LLLogger.error("❌ 加载今日学习记录失败：\(error)")
+            LLLogger.error("❌ 加载今日记录失败：\(error)")
+            todayRecordContentView?.updateItems([])
         }
     }
     
@@ -521,5 +550,15 @@ final class LLProgressTabViewController: NSViewController {
         case "unknown": return "❌"
         default:        return "❓"
         }
+    }
+    
+    private func makeTabButton(title: String, action: Selector) -> NSButton {
+        let btn = NSButton(title: title, target: self, action: action)
+        btn.bezelStyle = .rounded
+        btn.isBordered = false
+        btn.font = NSFont.systemFont(ofSize: 14, weight: .medium)
+        btn.wantsLayer = true
+        btn.layer?.cornerRadius = 6
+        return btn
     }
 }

@@ -159,6 +159,13 @@
 // MARK: - Progress Module
 "Progress Module Title" = "学習記録";
 "Stat Tab" = "学習統計";
+"Today Record Tab" = "今日の記録";
+"Filter Today" = "今日";
+"Filter Week" = "過去7日";
+"Filter Month" = "過去30日";
+"Filter All" = "すべて";
+"Record Count %d" = "合計 %d 件";
+"Times %d" = "%d 回";
 "Review Tab" = "復習記録";
 "Total Words Learned" = "累計学習単語";
 "Streak Days" = "連続学習日数";

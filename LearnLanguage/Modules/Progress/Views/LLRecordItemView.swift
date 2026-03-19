@@ -5,11 +5,8 @@
 //  学习记录项视图
 
 import AppKit
-import SnapKit
 
 final class LLRecordItemView: NSView {
-    
-    // MARK: - UI Components
     
     private let wordLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
@@ -38,58 +35,43 @@ final class LLRecordItemView: NSView {
         return view
     }()
     
-    // MARK: - Initialization
+    private let showBorder: Bool
     
     init(wordText: String, feedbackIcon: String, time: Date, showBorder: Bool) {
+        self.showBorder = showBorder
         super.init(frame: .zero)
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"
-        let timeString = timeFormatter.string(from: time)
-        
         wordLabel.stringValue = "\(wordText) \(feedbackIcon)"
-        timeLabel.stringValue = "学习时间：\(timeString)"
+        timeLabel.stringValue = NSLocalizedString("Learning Time", comment: "") + timeFormatter.string(from: time)
         
-        setupUI(showBorder: showBorder)
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
-    
-    private func setupUI(showBorder: Bool) {
+    private func setupViews() {
         wantsLayer = true
-        
-        // 左侧容器
-        let leftStack = NSView()
-        leftStack.wantsLayer = true
-        addSubview(leftStack)
-        leftStack.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(12)
-            make.centerY.equalToSuperview()
-        }
-        
-        leftStack.addSubview(wordLabel)
-        wordLabel.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview()
-        }
-        
-        leftStack.addSubview(timeLabel)
-        timeLabel.snp.makeConstraints { make in
-            make.leading.bottom.trailing.equalToSuperview()
-            make.top.equalTo(wordLabel.snp.bottom).offset(2)
-        }
-        
-        // 分隔线
+        addSubview(wordLabel)
+        addSubview(timeLabel)
         if showBorder {
             addSubview(separator)
-            separator.snp.makeConstraints { make in
-                make.leading.trailing.bottom.equalToSuperview()
-                make.height.equalTo(1)
-            }
+        }
+    }
+    
+    override func layout() {
+        super.layout()
+        let w = bounds.width
+        let h = bounds.height
+        guard w > 0, h > 0 else { return }
+        
+        wordLabel.frame = NSRect(x: 12, y: h / 2, width: w - 24, height: 18)
+        timeLabel.frame = NSRect(x: 12, y: h / 2 - 18, width: w - 24, height: 16)
+        if showBorder {
+            separator.frame = NSRect(x: 12, y: 0, width: w - 12, height: 1)
         }
     }
 }
-
