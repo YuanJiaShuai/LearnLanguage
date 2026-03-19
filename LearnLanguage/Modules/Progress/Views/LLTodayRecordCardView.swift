@@ -12,7 +12,7 @@ final class LLTodayRecordCardView: NSView {
     // MARK: - UI Components
     
     private let titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "📝 今日学习记录")
+        let label = NSTextField(labelWithString: NSLocalizedString("Today's Learning", comment: ""))
         label.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false
@@ -22,7 +22,7 @@ final class LLTodayRecordCardView: NSView {
     }()
     
     private lazy var exportButton: NSButton = {
-        let button = NSButton(title: "📄 导出记录", target: self, action: #selector(exportButtonClicked))
+        let button = NSButton(title: NSLocalizedString("Export Stats", comment: ""), target: self, action: #selector(exportButtonClicked))
         button.bezelStyle = .rounded
         button.isBordered = false
         button.font = NSFont.systemFont(ofSize: 13, weight: .medium)

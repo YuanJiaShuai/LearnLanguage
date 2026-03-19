@@ -27,7 +27,7 @@
 "Typing Practice" = "Typing Practice";
 
 // MARK: - Sidebar
-"App Name" = "LearnLanguage";
+"App Name" = "VocabIdle";
 "Current Word List" = "Current Word List";
 "Today's Review" = "Today's Review";
 "No Word List" = "No Word List";
@@ -163,6 +163,9 @@
 "Total Words Learned" = "Words Learned";
 "Streak Days" = "Streak Days";
 "No Records Today" = "No learning records today";
+"Trend Chart Placeholder" = "📊 Learning Trend Chart (Coming Soon)";
+"Export Records Message" = "Export Learning Records";
+"Select List Desc" = "Please select a word list as your current learning list";
 
 // MARK: - Wrong Record
 "Wrong Records Title" = "Unreviewed Wrong Words (";

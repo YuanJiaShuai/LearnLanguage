@@ -27,7 +27,7 @@
 "Typing Practice" = "타이핑 연습";
 
 // MARK: - Sidebar
-"App Name" = "LearnLanguage";
+"App Name" = "흘려 외우기";
 "Current Word List" = "현재 단어 목록";
 "Today's Review" = "오늘의 복습";
 "No Word List" = "단어 목록 없음";
@@ -163,6 +163,9 @@
 "Total Words Learned" = "누적 학습 단어";
 "Streak Days" = "연속 학습 일수";
 "No Records Today" = "오늘 학습 기록이 없습니다";
+"Trend Chart Placeholder" = "📊 학습 트렌드 차트 (개발 중)";
+"Export Records Message" = "학습 기록 내보내기";
+"Select List Desc" = "현재 학습 목록으로 사용할 단어 목록을 선택하세요";
 
 // MARK: - Wrong Record
 "Wrong Records Title" = "미복습 오답 단어 (";

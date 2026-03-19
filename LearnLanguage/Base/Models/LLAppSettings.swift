@@ -16,11 +16,15 @@ enum LLLearningLanguage: String, CaseIterable, Codable {
 enum LLDisplayLanguage: String, CaseIterable, Codable {
     case english = "English"
     case simplifiedChinese = "简体中文"
+    case japanese = "日本語"
+    case korean = "한국어"
     
     var displayName: String {
         switch self {
         case .english: return "English"
         case .simplifiedChinese: return "简体中文"
+        case .japanese: return "日本語"
+        case .korean: return "한국어"
         }
     }
     
@@ -28,6 +32,8 @@ enum LLDisplayLanguage: String, CaseIterable, Codable {
         switch self {
         case .english: return "en"
         case .simplifiedChinese: return "zh-Hans"
+        case .japanese: return "ja"
+        case .korean: return "ko"
         }
     }
 }

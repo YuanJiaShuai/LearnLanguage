@@ -29,26 +29,27 @@ final class LLSidebarNavigationItemView: NSView {
         return view
     }()
     
-    private lazy var button: NSButton = {
-        let btn = NSButton()
-        btn.setButtonType(.momentaryPushIn)
-        btn.bezelStyle = .rounded
-        btn.isBordered = false
-        btn.font = NSFont.systemFont(ofSize: 14, weight: .medium)
-        btn.title = "  \(module.title)"
-        btn.target = self
-        btn.action = #selector(handleTap)
-        (btn.cell as? NSButtonCell)?.alignment = .left
-        
+    private lazy var iconView: NSImageView = {
+        let imageView = NSImageView()
         if let icon = module.icon {
             icon.isTemplate = true
             icon.size = NSSize(width: 16, height: 16)
-            btn.image = icon
-            btn.imagePosition = .imageLeft
-            btn.imageScaling = .scaleProportionallyDown
+            imageView.image = icon
         }
-        
-        return btn
+        imageView.imageScaling = .scaleProportionallyDown
+        return imageView
+    }()
+    
+    private lazy var titleLabel: NSTextField = {
+        let label = NSTextField(labelWithString: module.title)
+        label.font = NSFont.systemFont(ofSize: 14, weight: .medium)
+        label.textColor = LLAppearanceManager.shared.colors.primaryText
+        label.isEditable = false
+        label.isBezeled = false
+        label.drawsBackground = false
+        label.lineBreakMode = .byWordWrapping
+        label.maximumNumberOfLines = 0
+        return label
     }()
     
     // MARK: - Initialization
@@ -69,22 +70,30 @@ final class LLSidebarNavigationItemView: NSView {
         wantsLayer = true
         
         addSubview(leftBar)
-        addSubview(button)
+        addSubview(iconView)
+        addSubview(titleLabel)
         
         leftBar.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()
             make.width.equalTo(3)
         }
         
-        button.snp.makeConstraints { make in
+        iconView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
-            make.top.bottom.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(16)
         }
         
-        snp.makeConstraints { make in
-            make.height.equalTo(40)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(iconView.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(-12)
+            make.top.equalToSuperview().offset(8)
+            make.bottom.equalToSuperview().offset(-8)
         }
+        
+        // 添加点击手势
+        let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(clickGesture)
     }
     
     @objc private func handleTap() {
@@ -95,7 +104,8 @@ final class LLSidebarNavigationItemView: NSView {
         let colors = LLAppearanceManager.shared.colors
         layer?.backgroundColor = isSelected ? colors.accentLightBackground.cgColor : NSColor.clear.cgColor
         leftBar.isHidden = !isSelected
-        button.contentTintColor = isSelected ? colors.accentColor : colors.primaryText
+        let tintColor = isSelected ? colors.accentColor : colors.primaryText
+        iconView.contentTintColor = tintColor
+        titleLabel.textColor = tintColor
     }
 }
-

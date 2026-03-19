@@ -27,7 +27,7 @@
 "Typing Practice" = "タイピング練習";
 
 // MARK: - Sidebar
-"App Name" = "LearnLanguage";
+"App Name" = "単語ながら学習";
 "Current Word List" = "現在の単語リスト";
 "Today's Review" = "今日のレビュー";
 "No Word List" = "単語リストなし";
@@ -163,6 +163,9 @@
 "Total Words Learned" = "累計学習単語";
 "Streak Days" = "連続学習日数";
 "No Records Today" = "今日の学習記録はありません";
+"Trend Chart Placeholder" = "📊 学習トレンドグラフ（開発中）";
+"Export Records Message" = "学習記録をエクスポート";
+"Select List Desc" = "現在の学習リストとして使用する単語リストを選択してください";
 
 // MARK: - Wrong Record
 "Wrong Records Title" = "未復習の間違い単語（";

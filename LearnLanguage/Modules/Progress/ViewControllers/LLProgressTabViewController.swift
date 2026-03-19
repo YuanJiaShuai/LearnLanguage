@@ -60,7 +60,7 @@ final class LLProgressTabViewController: NSViewController {
         return view
     }()
     
-    // 错题记录页面容器
+    // 复习记录页面容器
     private lazy var reviewContainer: NSView = {
         let view = NSView()
         view.wantsLayer = true
@@ -163,7 +163,7 @@ final class LLProgressTabViewController: NSViewController {
             make.edges.equalToSuperview()
         }
         
-        // 添加错题记录页面
+        // 添加复习记录页面
         view.addSubview(reviewContainer)
         reviewContainer.snp.makeConstraints { make in
             make.top.equalTo(tabContainer.snp.bottom).offset(20)
@@ -243,7 +243,7 @@ final class LLProgressTabViewController: NSViewController {
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.json]
         savePanel.nameFieldStringValue = "学习记录_\(Date().timeIntervalSince1970).json"
-        savePanel.message = "导出学习记录"
+        savePanel.message = NSLocalizedString("Export Records Message", comment: "")
         
         savePanel.begin { response in
             if response == .OK, let url = savePanel.url {
@@ -443,15 +443,15 @@ final class LLProgressTabViewController: NSViewController {
     
     private func showWordListSelector() {
         let alert = NSAlert()
-        alert.messageText = "选择学习词库"
-        alert.informativeText = "请选择一个词库作为当前学习词库"
+        alert.messageText = NSLocalizedString("Select List", comment: "")
+        alert.informativeText = NSLocalizedString("Select List Desc", comment: "")
         
         // 获取所有词库
         let allLists = LLWordListStorage.shared.allLists()
         
         if allLists.isEmpty {
-            alert.informativeText = "暂无可用词库，请先导入词库"
-            alert.addButton(withTitle: "确定")
+            alert.informativeText = NSLocalizedString("No Word List", comment: "")
+            alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
             alert.runModal()
             return
         }
@@ -473,8 +473,8 @@ final class LLProgressTabViewController: NSViewController {
         }
         
         alert.accessoryView = popUpButton
-        alert.addButton(withTitle: "确定")
-        alert.addButton(withTitle: "取消")
+        alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
@@ -490,7 +490,7 @@ final class LLProgressTabViewController: NSViewController {
     private func getWordText(wordId: String, listId: String) -> String {
         guard let list = LLWordListStorage.shared.list(byId: listId),
               let entry = list.entries.first(where: { $0.id == wordId }) else {
-            return "未知单词"
+            return NSLocalizedString("Unknown Word", comment: "")
         }
         return entry.text
     }

@@ -12,7 +12,7 @@ final class LLTrendCardView: NSView {
     // MARK: - UI Components
     
     private let titleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "📊 近7天学习趋势")
+        let label = NSTextField(labelWithString: NSLocalizedString("Learning Statistics", comment: ""))
         label.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false
@@ -30,7 +30,7 @@ final class LLTrendCardView: NSView {
     }()
     
     private let placeholderText: NSTextField = {
-        let label = NSTextField(labelWithString: "📊 学习曲线图表（开发中）")
+        let label = NSTextField(labelWithString: NSLocalizedString("Trend Chart Placeholder", comment: ""))
         label.font = NSFont.systemFont(ofSize: 14)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false

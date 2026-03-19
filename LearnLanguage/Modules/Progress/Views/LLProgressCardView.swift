@@ -33,7 +33,7 @@ final class LLProgressCardView: NSView {
     }()
     
     private let descLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "今日完成复习")
+        let label = NSTextField(labelWithString: NSLocalizedString("Today's Progress", comment: ""))
         label.font = NSFont.systemFont(ofSize: 12)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false

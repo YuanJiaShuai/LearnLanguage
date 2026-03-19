@@ -163,6 +163,9 @@
 "Total Words Learned" = "累计学习单词";
 "Streak Days" = "连续学习天数";
 "No Records Today" = "今天还没有学习记录";
+"Trend Chart Placeholder" = "📊 学习曲线图表（开发中）";
+"Export Records Message" = "导出学习记录";
+"Select List Desc" = "请选择一个词库作为当前学习词库";
 
 // MARK: - Wrong Record
 "Wrong Records Title" = "未复习错题（";
