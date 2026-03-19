@@ -261,6 +261,10 @@ final class LLDailyLearningManager {
                     where: LLDBLearningProgress.Properties.id == (record.id ?? 0)
                 )
                 
+                // 插入学习明细记录
+                let history = LLDBLearningHistory(wordId: entry.id, wordListId: listId, feedback: feedback.rawValue, sessionType: "learn")
+                try LLDatabaseManager.shared.database.insert(objects: [history], intoTable: "learning_history")
+                
             } else {
                 // 无记录：首次学习，插入新记录
                 let newRecord = LLDBLearningProgress(
@@ -281,6 +285,10 @@ final class LLDailyLearningManager {
                 
                 // 首次学习，更新词库已学数量
                 try LLDatabaseManager.shared.recalculateWordListLearnedCount(wordListId: listId)
+                
+                // 插入学习明细记录
+                let history = LLDBLearningHistory(wordId: entry.id, wordListId: listId, feedback: feedback.rawValue, sessionType: "learn")
+                try LLDatabaseManager.shared.database.insert(objects: [history], intoTable: "learning_history")
             }
             
         } catch {
