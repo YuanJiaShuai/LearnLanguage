@@ -17,6 +17,7 @@ class LLTypingDisplayView: NSView {
     private let containerView = NSView()
     private var letterViews: [LetterView] = []
     private var engine: LLTypingEngine
+    public var currentWordErrorCount: Int = 0
     
     /// 字体大小（影响字母大小、下划线宽度/高度等比缩放）
     var fontSize: CGFloat = 48 {
@@ -130,6 +131,14 @@ class LLTypingDisplayView: NSView {
         updateDisplay()
     }
     
+    func answerAfterErrorCount(errorCount: Int) {
+        let settings = LLSettingsStore.shared.settings
+        currentWordErrorCount = errorCount
+        if currentWordErrorCount >= settings.autoShowAnswerAfterErrors {
+            updateDisplay()
+        }
+    }
+    
     var isFinished: Bool { engine.isFinished }
     var errorCount: Int { engine.errorCount }
     var accuracy: Int { engine.accuracy }
@@ -140,19 +149,19 @@ class LLTypingDisplayView: NSView {
     
     private func updateDisplay() {
         let settings = LLSettingsStore.shared.settings
-        let isDictationMode = settings.typingDictationMode
+        let isDictationMode = !settings.typingDictationMode || currentWordErrorCount >= settings.autoShowAnswerAfterErrors
         
         for (index, letterView) in letterViews.enumerated() {
             if index < engine.cursorIndex {
                 letterView.setState(.typed, showText: true)
             } else if index == engine.cursorIndex {
                 if engine.lastInputWasError {
-                    letterView.setState(.error, showText: !isDictationMode)
+                    letterView.setState(.error, showText: isDictationMode)
                 } else {
-                    letterView.setState(.current, showText: !isDictationMode)
+                    letterView.setState(.current, showText: isDictationMode)
                 }
             } else {
-                letterView.setState(.pending, showText: !isDictationMode)
+                letterView.setState(.pending, showText: isDictationMode)
             }
         }
     }

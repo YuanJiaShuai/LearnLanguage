@@ -82,8 +82,6 @@
 		84E1E39E2F4D53A300D1B7B6 /* LLTypingStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3992F4D53A300D1B7B6 /* LLTypingStatsView.swift */; };
 		84E1E39F2F4D53A300D1B7B6 /* LLTypingSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3982F4D53A300D1B7B6 /* LLTypingSoundManager.swift */; };
 		84E1E3A02F4D53A300D1B7B6 /* LLStatusBarTypingPractice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E39B2F4D53A300D1B7B6 /* LLStatusBarTypingPractice.swift */; };
-		84E1E3A12F4D53A300D1B7B6 /* LLTypingPracticeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3942F4D53A300D1B7B6 /* LLTypingPracticeTabViewController.swift */; };
-		84E1E3A22F4D53A300D1B7B6 /* LLTypingPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3952F4D53A300D1B7B6 /* LLTypingPracticeViewController.swift */; };
 		84E1E3A32F4D53A300D1B7B6 /* LLTypingDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3972F4D53A300D1B7B6 /* LLTypingDisplayView.swift */; };
 		84E1E3A42F4D53A300D1B7B6 /* LLTypingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3912F4D53A300D1B7B6 /* LLTypingEngine.swift */; };
 		84E1E3A52F4D53A300D1B7B6 /* LLTypingPracticeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E39C2F4D53A300D1B7B6 /* LLTypingPracticeManager.swift */; };
@@ -179,8 +177,6 @@
 		84E1E3322F3D85F900D1B7B6 /* LLWordPhoneticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordPhoneticView.swift; sourceTree = "<group>"; };
 		84E1E3912F4D53A300D1B7B6 /* LLTypingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingEngine.swift; sourceTree = "<group>"; };
 		84E1E3932F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingPracticeFloatingViewController.swift; sourceTree = "<group>"; };
-		84E1E3942F4D53A300D1B7B6 /* LLTypingPracticeTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingPracticeTabViewController.swift; sourceTree = "<group>"; };
-		84E1E3952F4D53A300D1B7B6 /* LLTypingPracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingPracticeViewController.swift; sourceTree = "<group>"; };
 		84E1E3972F4D53A300D1B7B6 /* LLTypingDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingDisplayView.swift; sourceTree = "<group>"; };
 		84E1E3982F4D53A300D1B7B6 /* LLTypingSoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingSoundManager.swift; sourceTree = "<group>"; };
 		84E1E3992F4D53A300D1B7B6 /* LLTypingStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingStatsView.swift; sourceTree = "<group>"; };
@@ -553,8 +549,6 @@
 			isa = PBXGroup;
 			children = (
 				84E1E3932F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift */,
-				84E1E3942F4D53A300D1B7B6 /* LLTypingPracticeTabViewController.swift */,
-				84E1E3952F4D53A300D1B7B6 /* LLTypingPracticeViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -808,8 +802,6 @@
 				84C0D9DB2F6BDFA800F96737 /* LLTodayRecordContentView.swift in Sources */,
 				84E1E3A02F4D53A300D1B7B6 /* LLStatusBarTypingPractice.swift in Sources */,
 				84A446CA2F6A818300F0E5E7 /* LLBackupManager.swift in Sources */,
-				84E1E3A12F4D53A300D1B7B6 /* LLTypingPracticeTabViewController.swift in Sources */,
-				84E1E3A22F4D53A300D1B7B6 /* LLTypingPracticeViewController.swift in Sources */,
 				84E1E3A32F4D53A300D1B7B6 /* LLTypingDisplayView.swift in Sources */,
 				84E1E3A42F4D53A300D1B7B6 /* LLTypingEngine.swift in Sources */,
 				84E1E3A52F4D53A300D1B7B6 /* LLTypingPracticeManager.swift in Sources */,

@@ -210,9 +210,13 @@ final class LLDailyLearningManager {
                     interval = max(1, Int(Double(interval) * easeFactor))
                     record.correctCount = (record.correctCount ?? 0) + 1
                     record.reviewCount = (record.reviewCount ?? 0) + 1
+                    record.learnCount! += 1
+                    if record.reviewCount ?? 0 >= 4 {
+                        easeFactor = max(1.3, easeFactor + 0.1)
+                        interval = max(1, Int(Double(interval) * easeFactor))
+                        record.nextReviewAt = now + Double(interval) * 86400
+                    }
                     record.status = 2
-                    record.nextReviewAt = now + Double(interval) * 86400
-                    
                 case .unclear:
                     // 小幅下降，今天继续
                     easeFactor = max(1.3, easeFactor - 0.1)

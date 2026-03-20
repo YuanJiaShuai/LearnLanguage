@@ -67,11 +67,17 @@ class LLStatusBarTypingPractice {
         }
         
         isVisible = true
+        
+        // 更新状态栏按钮状态为"关闭打字模式"
+        LLStatusBarManager.shared.isTypingPracticeMode = true
     }
     
     func hide() {
         window?.orderOut(nil)
         isVisible = false
+        
+        // 更新状态栏按钮状态为"进入打字模式"
+        LLStatusBarManager.shared.isTypingPracticeMode = false
     }
     
     func toggleVisibility() {
@@ -130,7 +136,7 @@ class LLStatusBarTypingPractice {
             }
             
             // 设置回调
-            vc.onWordCompleted = { [weak self] feedback in
+            vc.onWordCompleted = { feedback in
                 // 注意：反馈已经在 ViewController 中记录过了，这里不要重复记录
                 // 只需要记录打字练习统计
                 if let entry = LLStatusBarManager.shared.getCurrentWord(),

@@ -9,7 +9,14 @@ import SnapKit
 import UniformTypeIdentifiers
 
 final class LLProgressTabViewController: NSViewController {
-
+    /**
+     1.状态栏反馈操作：
+        情况1：如果是复习词汇，点击认识，就把review_count +1, 如果点击模糊就把review_count -1,如果点击不认识就把review_count = 0 只有当review_count >= 4的时候就把这个词汇重复习词汇里切出去，表示当前这个词汇已经复习过了，你记得要修改easeFactor 和 nextReviewAt
+        情况2：如果是新词汇，点击认识，就把review_count + 1，如果点击模糊就把review_count -1,如果点击不认识就把review_count = 0 只有当review_count >= 4的时候就把这个词汇重复习词汇里切出去，表示当前这个词汇已经学习过了，你记得要修改easeFactor 和 nextReviewAt和learn_count+1操作，
+     2.打字反馈操作：
+        情况1:如果是复习词汇，一次就输入正确了，就把review_count +1, 如果错误一次才输入正确就把review_count -1，如果错误2次就把review_count = 0 只有当review_count >= 4的时候就把这个词汇重复习词汇里切出去，表示当前这个词汇已经复习过了，你记得要修改easeFactor 和 nextReviewAt
+        情况2:如果这个词汇是新词汇，一次就输入正确了，就把review_count +1, 如果错误一次才输入正确就把review_count -1，如果错误2次就把review_count = 0 只有当review_count >= 4的时候就把这个词汇重复习词汇里切出去，表示当前这个词汇已经学习过了，你记得要修改easeFactor 和 nextReviewAt和learn_count+1操作，
+     */
     // MARK: - Type Aliases
     
     typealias TimeFilter = LLReviewContentView.TimeFilter

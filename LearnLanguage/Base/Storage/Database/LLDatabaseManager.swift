@@ -686,10 +686,25 @@ final class LLDatabaseManager {
         return try database.getObjects(
             on: LLDBLearningProgress.Properties.all,
             fromTable: learningProgressTable,
-            where: LLDBLearningProgress.Properties.wordListId == wordListId
-                && LLDBLearningProgress.Properties.nextReviewAt <= endOfDay
+            where: LLDBLearningProgress.Properties.nextReviewAt <= endOfDay
                 && LLDBLearningProgress.Properties.createdAt < startOfDay,  // 排除今天新学的词
             orderBy: [LLDBLearningProgress.Properties.nextReviewAt.asOrder(by: .ascending)]
+        )
+    }
+    
+    /// 获取今日新学习的词汇(createdAt <= 今天结束时间戳 && >= 今天开始时间戳，且reviewCount < 4的词汇)
+    func getTodayNewReviews() throws -> [LLDBLearningProgress] {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date()).timeIntervalSince1970
+        let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!.timeIntervalSince1970
+        
+        return try database.getObjects(
+            on: LLDBLearningProgress.Properties.all,
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.createdAt >= startOfDay
+                && LLDBLearningProgress.Properties.createdAt <= endOfDay
+                && LLDBLearningProgress.Properties.reviewCount < 4,
+            orderBy: [LLDBLearningProgress.Properties.createdAt.asOrder(by: .descending)]
         )
     }
     
@@ -723,19 +738,26 @@ final class LLDatabaseManager {
         switch feedback {
         case "know":
             // 答对：延长间隔
-            easeFactor = min(3.0, easeFactor + 0.1)
-            interval = max(1, Int(Double(interval) * easeFactor))
             record.correctCount = (record.correctCount ?? 0) + 1
             record.status = 2  // 已掌握
+            record.reviewCount! += 1
+            record.learnCount! += 1
+            if record.reviewCount ?? 0 >= 4 {
+                easeFactor = max(1.3, easeFactor + 0.1)
+                interval = max(1, Int(Double(interval) * easeFactor))
+            }
         case "unclear":
             // 模糊：保持间隔，稍微降低系数
             easeFactor = max(1.3, easeFactor - 0.1)
             interval = max(1, interval - 1)
             record.unclearCount = (record.unclearCount ?? 0) + 1
             if record.status == 2 { record.status = 1 }
+            record.reviewCount! -= 1
+            record.learnCount! += 1
         case "unknown":
             // 忘记：根据连续失败次数决定重置程度
             record.wrongCount = (record.wrongCount ?? 0) + 1
+            record.reviewCount = 0
             let consecutiveWrong = record.wrongCount ?? 1
             if consecutiveWrong >= 2 {
                 // 连续失败 2 次以上：完全重置

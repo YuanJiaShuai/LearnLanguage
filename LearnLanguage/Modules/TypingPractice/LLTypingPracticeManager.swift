@@ -61,7 +61,7 @@ class LLTypingPracticeManager {
     
     /// 兼容旧接口：直接传入 feedback
     func recordResult(feedback: LLWordFeedback) {
-        guard let entry = currentEntry, let listId = currentListId else { return }
+        guard let entry = currentEntry else { return }
         
         LLDailyLearningManager.shared.recordFeedback(feedback, for: entry)
         

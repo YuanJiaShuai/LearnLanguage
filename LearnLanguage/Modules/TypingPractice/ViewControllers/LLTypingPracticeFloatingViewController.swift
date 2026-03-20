@@ -21,7 +21,11 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     private var currentEntry: LLWordEntry?
     private var currentListId: String?
     private var completedCount = 0
-    private var currentWordErrorCount = 0  // 当前单词的累计错误次数
+    private var currentWordErrorCount = 0 {
+        didSet {
+            displayView.answerAfterErrorCount(errorCount: currentWordErrorCount)
+        }
+    }  // 当前单词的累计错误次数
     private var hasRecordedFeedback = false  // 标记当前单词是否已记录反馈
     
     // MARK: - Callbacks
@@ -186,7 +190,6 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         if isCorrect {
             // 正确输入
             LLTypingSoundManager.shared.playKeySound()
-            
             // 检查是否完成
             if displayView.isFinished {
                 handleWordCompleted()
@@ -197,36 +200,24 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             
             // 累计错误次数
             currentWordErrorCount += 1
-            
-            // 只要输错一次，立即记录为"不认识"（只记录一次）
-            if !hasRecordedFeedback {
-                recordFeedbackToDatabase(.unknown)
-                hasRecordedFeedback = true
-            }
-            
-            // 检查是否需要添加到错题本
-            checkAndAddToWrongBook()
         }
     }
     
     // MARK: - Private Methods
     
-    /// 检查并添加到错题本
-    private func checkAndAddToWrongBook() {
-        // 此逻辑已迁移到 LLDailyLearningManager
-        // 错题本现在基于 learning_progress 表的 wrongCount 字段
-        // 无需单独处理
-    }
-    
     private func handleWordCompleted() {
-        guard let entry = currentEntry else { return }
-        
         // 播放完成音效
         LLTypingSoundManager.shared.playCompleteSound()
         
         // 如果一次性输入正确（没有错误），记录为"认识"
         if currentWordErrorCount == 0 && !hasRecordedFeedback {
             recordFeedbackToDatabase(.know)
+            hasRecordedFeedback = true
+        } else if currentWordErrorCount == 1 && !hasRecordedFeedback {
+            recordFeedbackToDatabase(.unclear)
+            hasRecordedFeedback = true
+        } else if currentWordErrorCount >= 2 && !hasRecordedFeedback {
+            recordFeedbackToDatabase(.unknown)
             hasRecordedFeedback = true
         }
         
@@ -251,7 +242,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     /// 记录反馈到数据库（只记录一次）
     private func recordFeedbackToDatabase(_ feedback: LLWordFeedback) {
-        guard let entry = currentEntry, let listId = currentListId else {
+        guard let entry = currentEntry else {
             LLLogger.warn("⚠️ 没有当前单词，无法记录反馈")
             return
         }
