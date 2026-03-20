@@ -275,12 +275,12 @@ private class LetterView: NSView {
             underlineView.layer?.backgroundColor = NSColor.gray.withAlphaComponent(0.3).cgColor
         case .current:
             label.textColor = NSColor.gray.withAlphaComponent(0.3)
-            underlineView.layer?.backgroundColor = NSColor.systemBlue.cgColor
+            underlineView.layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
         case .typed:
-            label.textColor = NSColor.systemGreen
-            underlineView.layer?.backgroundColor = NSColor.systemGreen.cgColor
+            label.textColor = NSColor.systemGreen.withAlphaComponent(0.7)
+            underlineView.layer?.backgroundColor = NSColor.systemGreen.withAlphaComponent(0.3).cgColor
         case .error:
-            label.textColor = NSColor.white
+            label.textColor = NSColor.white.withAlphaComponent(0.3)
             label.layer?.backgroundColor = NSColor.systemRed.withAlphaComponent(0.5).cgColor
             underlineView.layer?.backgroundColor = NSColor.systemRed.withAlphaComponent(0.5).cgColor
         }

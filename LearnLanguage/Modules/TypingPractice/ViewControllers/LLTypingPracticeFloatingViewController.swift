@@ -62,7 +62,6 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         
         // 单词显示视图
         displayView = LLTypingDisplayView(word: "", fontSize: fontSize, fontName: settings.floatingPanelFontName)
-        view.addSubview(displayView)
         
         // 释义标签
         meaningLabel.isBezeled = false
@@ -77,29 +76,31 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         meaningLabel.cell?.wraps = true
         meaningLabel.cell?.isScrollable = false
         meaningLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        view.addSubview(meaningLabel)
         
-        // 布局（固定间距和尺寸）
+        // StackView 作为父视图，垂直排列，整体居中
+        let stackView = NSStackView(views: [displayView, meaningLabel])
+        stackView.orientation = .vertical
+        stackView.alignment = .centerX
+        stackView.spacing = 16
+        stackView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        view.addSubview(stackView)
+        
+        let horizontalPadding: CGFloat = 12
         let displayHeight: CGFloat = 80.0
-        let verticalOffset: CGFloat = -20.0
-        let spacing: CGFloat = 20.0
-        let horizontalPadding: CGFloat = 30.0
         
         displayView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(verticalOffset)
-            make.left.right.equalToSuperview()
             make.height.equalTo(displayHeight)
+            make.width.equalTo(stackView)
         }
         
-        let meaningMaxHeight: CGFloat = 60.0
-        
         meaningLabel.snp.makeConstraints { make in
-            make.top.equalTo(displayView.snp.bottom).offset(spacing)
-            make.centerX.equalToSuperview()
+            make.width.equalTo(stackView)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
             make.left.equalToSuperview().offset(horizontalPadding)
             make.right.equalToSuperview().offset(-horizontalPadding)
-            make.height.lessThanOrEqualTo(meaningMaxHeight)
         }
     }
     
