@@ -8,6 +8,33 @@ import SnapKit
 import LaunchAtLogin
 
 final class LLSettingsTabViewController: NSViewController {
+    
+    // MARK: - Constants
+    
+    private let availableFonts = [
+        "Bangers-Regular",
+        "BitcountGridSingleInk",
+        "Capriola-Regular",
+        "CaveatBrush-Regular",
+        "ChakraPetch-Regular",
+        "Chango-Regular",
+        "Englebert-Regular",
+        "GothamRnd-Md",
+        "HachiMaruPop-Regular",
+        "IndieFlower-Regular",
+        "Jura-VariableFont_wght",
+        "LondrinaShadow-Regular",
+        "MomoTrustDisplay-Regular",
+        "MontserratAlternates-Regular",
+        "Oswald-VariableFont_wght",
+        "PermanentMarker-Regular",
+        "Rajdhani-Regular",
+        "Schoolbell-Regular",
+        "Srisakdi-Regular",
+        "Unkempt-Regular"
+    ]
+    
+    private let fontSizes: [CGFloat] = [24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72]
 
     // MARK: - UI Components
     
@@ -70,6 +97,9 @@ final class LLSettingsTabViewController: NSViewController {
     private var panelAlphaSlider: NSSlider!
     private var panelWidthField: NSTextField!
     private var panelHeightField: NSTextField!
+    private var panelFontPopup: NSPopUpButton!
+    private var panelFontSizePopup: NSPopUpButton!
+    private var fontPreviewLabel: NSTextField!
     private var typingDictationModeCheck: NSButton!
     private var typingPracticeShowMeaningCheck: NSButton!
     private var typingInputStylePopup: NSPopUpButton!
@@ -318,6 +348,38 @@ final class LLSettingsTabViewController: NSViewController {
         panelWidthField = createNumberField(value: "400")
         panelHeightField = createNumberField(value: "200")
         
+        // 字体选择
+        panelFontPopup = NSPopUpButton()
+        panelFontPopup.target = self
+        panelFontPopup.action = #selector(onFontSettingChanged)
+        for fontName in LLAvailableFonts {
+            panelFontPopup.addItem(withTitle: fontName)
+            if let font = NSFont(name: fontName, size: 13) {
+                panelFontPopup.lastItem?.attributedTitle = NSAttributedString(
+                    string: fontName,
+                    attributes: [.font: font]
+                )
+            }
+        }
+        
+        // 字号选择
+        panelFontSizePopup = NSPopUpButton()
+        panelFontSizePopup.target = self
+        panelFontSizePopup.action = #selector(onFontSettingChanged)
+        for size in LLAvailableFontSizes {
+            panelFontSizePopup.addItem(withTitle: "\(Int(size)) pt")
+        }
+        
+        // 字体预览
+        fontPreviewLabel = NSTextField(labelWithString: "ABCDEFG abcdefg")
+        fontPreviewLabel.alignment = .center
+        fontPreviewLabel.textColor = .labelColor
+        fontPreviewLabel.drawsBackground = true
+        fontPreviewLabel.backgroundColor = NSColor(white: 0.0, alpha: 0.05)
+        fontPreviewLabel.wantsLayer = true
+        fontPreviewLabel.layer?.cornerRadius = 6
+        fontPreviewLabel.isBezeled = false
+        
         typingDictationModeCheck = NSButton(checkboxWithTitle: NSLocalizedString("Dictation Mode", comment: ""), target: self, action: #selector(saveSettings))
         typingPracticeShowMeaningCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Meaning", comment: ""), target: self, action: #selector(saveSettings))
         
@@ -342,6 +404,11 @@ final class LLSettingsTabViewController: NSViewController {
             (label: NSLocalizedString("Panel Width", comment: ""), control: panelWidthField),
             (label: NSLocalizedString("Panel Height", comment: ""), control: panelHeightField)
         ])
+        card.addFormRow(items: [
+            (label: NSLocalizedString("Font", comment: ""), control: panelFontPopup),
+            (label: NSLocalizedString("Font Size", comment: ""), control: panelFontSizePopup)
+        ])
+        card.addFormItem(label: NSLocalizedString("Font Preview", comment: ""), control: fontPreviewLabel)
         card.addFormItem(label: NSLocalizedString("Typing Practice", comment: ""), control: typingStack)
         card.addFormItem(label: NSLocalizedString("Input Style", comment: ""), control: typingInputStylePopup)
         card.addFormItem(label: NSLocalizedString("Auto Show Answer", comment: ""), control: autoShowAnswerPopup)
@@ -465,6 +532,12 @@ final class LLSettingsTabViewController: NSViewController {
         panelAlphaSlider.doubleValue = s.floatingPanelAlpha
         panelWidthField.stringValue = "\(Int(s.floatingPanelWidth))"
         panelHeightField.stringValue = "\(Int(s.floatingPanelHeight))"
+        if let index = LLAvailableFonts.firstIndex(of: s.floatingPanelFontName) {
+            panelFontPopup.selectItem(at: index)
+        }
+        if let index = LLAvailableFontSizes.firstIndex(of: s.floatingPanelFontSize) {
+            panelFontSizePopup.selectItem(at: index)
+        }
         typingDictationModeCheck.state = s.typingDictationMode ? .on : .off
         typingPracticeShowMeaningCheck.state = s.typingPracticeShowMeaning ? .on : .off
         if let index = LLTypingInputStyle.allCases.firstIndex(of: s.typingInputStyle) {
@@ -477,6 +550,28 @@ final class LLSettingsTabViewController: NSViewController {
         }
         
         launchAtLoginCheck.state = LaunchAtLogin.isEnabled ? .on : .off
+        
+        // 初始化字体预览
+        updateFontPreview()
+    }
+
+    private func updateFontPreview() {
+        let fontIndex = panelFontPopup.indexOfSelectedItem
+        let fontSizeIndex = panelFontSizePopup.indexOfSelectedItem
+        let fontName = (fontIndex >= 0 && fontIndex < LLAvailableFonts.count) ? LLAvailableFonts[fontIndex] : ""
+        let fontSize = (fontSizeIndex >= 0 && fontSizeIndex < LLAvailableFontSizes.count) ? LLAvailableFontSizes[fontSizeIndex] : 48
+        let previewSize = min(fontSize, 36)
+        if let font = NSFont(name: fontName, size: previewSize) {
+            fontPreviewLabel.font = font
+        } else {
+            fontPreviewLabel.font = NSFont.systemFont(ofSize: previewSize)
+        }
+        fontPreviewLabel.stringValue = "ABCDEFG abcdefg"
+    }
+
+    @objc private func onFontSettingChanged() {
+        updateFontPreview()
+        saveSettings()
     }
 
     @objc private func saveSettings() {
@@ -545,6 +640,14 @@ final class LLSettingsTabViewController: NSViewController {
         s.floatingPanelAlpha = panelAlphaSlider.doubleValue
         s.floatingPanelWidth = CGFloat(Int(panelWidthField.stringValue) ?? 400)
         s.floatingPanelHeight = CGFloat(Int(panelHeightField.stringValue) ?? 200)
+        let fontIndex = panelFontPopup.indexOfSelectedItem
+        if fontIndex >= 0 && fontIndex < LLAvailableFonts.count {
+            s.floatingPanelFontName = LLAvailableFonts[fontIndex]
+        }
+        let fontSizeIndex = panelFontSizePopup.indexOfSelectedItem
+        if fontSizeIndex >= 0 && fontSizeIndex < LLAvailableFontSizes.count {
+            s.floatingPanelFontSize = LLAvailableFontSizes[fontSizeIndex]
+        }
         s.typingDictationMode = typingDictationModeCheck.state == .on
         s.typingPracticeShowMeaning = typingPracticeShowMeaningCheck.state == .on
         

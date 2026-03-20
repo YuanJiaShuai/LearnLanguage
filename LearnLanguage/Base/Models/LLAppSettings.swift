@@ -5,6 +5,35 @@
 
 import Foundation
 
+// MARK: - Global Constants
+
+/// 可用的字体列表
+let LLAvailableFonts = [
+    "Bangers-Regular",
+    "BitcountGridSingleInk",
+    "Capriola-Regular",
+    "CaveatBrush-Regular",
+    "ChakraPetch-Regular",
+    "Chango-Regular",
+    "Englebert-Regular",
+    "GothamRnd-Md",
+    "HachiMaruPop-Regular",
+    "IndieFlower-Regular",
+    "Jura-VariableFont_wght",
+    "LondrinaShadow-Regular",
+    "MomoTrustDisplay-Regular",
+    "MontserratAlternates-Regular",
+    "Oswald-VariableFont_wght",
+    "PermanentMarker-Regular",
+    "Rajdhani-Regular",
+    "Schoolbell-Regular",
+    "Srisakdi-Regular",
+    "Unkempt-Regular"
+]
+
+/// 可用的字号列表
+let LLAvailableFontSizes: [CGFloat] = [24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72]
+
 /// 支持学习的语言（先占定 3 类，后续可扩展）
 enum LLLearningLanguage: String, CaseIterable, Codable {
     case english = "英语"
@@ -277,6 +306,8 @@ struct LLAppSettings: Codable {
     var floatingPanelAlpha: Double
     var floatingPanelWidth: CGFloat   // 浮窗宽度
     var floatingPanelHeight: CGFloat  // 浮窗高度
+    var floatingPanelFontName: String  // 浮窗字体名称
+    var floatingPanelFontSize: CGFloat  // 浮窗字体大小
     var pronunciationEnabled: Bool
     var pronunciationProvider: LLPronunciationProvider
     var pronunciationAccent: LLPronunciationAccent
@@ -309,6 +340,8 @@ struct LLAppSettings: Codable {
         floatingPanelAlpha: 0.55,
         floatingPanelWidth: 400,
         floatingPanelHeight: 200,
+        floatingPanelFontName: "Bangers-Regular",
+        floatingPanelFontSize: 24,
         pronunciationEnabled: true,
         pronunciationProvider: .local,
         pronunciationAccent: .us,

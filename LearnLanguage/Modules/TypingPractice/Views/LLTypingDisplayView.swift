@@ -29,11 +29,22 @@ class LLTypingDisplayView: NSView {
         }
     }
     
+    /// 字体名称
+    var fontName: String = "" {
+        didSet {
+            if oldValue != fontName {
+                createLetterViews()
+                updateDisplay()
+            }
+        }
+    }
+    
     // MARK: - Initialization
     
-    init(word: String, fontSize: CGFloat = 48) {
+    init(word: String, fontSize: CGFloat = 48, fontName: String = "") {
         self.engine = LLTypingEngine(targetWord: word)
         self.fontSize = fontSize
+        self.fontName = fontName
         super.init(frame: .zero)
         setupUI()
         createLetterViews()
@@ -73,6 +84,7 @@ class LLTypingDisplayView: NSView {
             let letterView = LetterView(
                 char: char,
                 fontSize: fontSize,
+                fontName: fontName,
                 letterWidth: letterWidth,
                 spacing: letterSpacing
             )
@@ -184,12 +196,14 @@ private class LetterView: NSView {
     private let underlineView = NSView()
     private let char: Character
     private let fontSize: CGFloat
+    private let fontName: String
     private let letterWidth: CGFloat
     private let spacing: CGFloat
     
-    init(char: Character, fontSize: CGFloat, letterWidth: CGFloat, spacing: CGFloat) {
+    init(char: Character, fontSize: CGFloat, fontName: String, letterWidth: CGFloat, spacing: CGFloat) {
         self.char = char
         self.fontSize = fontSize
+        self.fontName = fontName
         self.letterWidth = letterWidth
         self.spacing = spacing
         super.init(frame: .zero)
@@ -212,7 +226,12 @@ private class LetterView: NSView {
         label.isEditable = false
         label.isSelectable = false
         label.alignment = .center
-        label.font = NSFont.monospacedSystemFont(ofSize: fontSize, weight: .regular)
+        // 优先使用自定义字体，回退到等宽系统字体
+        if !fontName.isEmpty, let customFont = NSFont(name: fontName, size: fontSize) {
+            label.font = customFont
+        } else {
+            label.font = NSFont.monospacedSystemFont(ofSize: fontSize, weight: .regular)
+        }
         label.stringValue = String(char)
         
         underlineView.wantsLayer = true
@@ -262,8 +281,8 @@ private class LetterView: NSView {
             underlineView.layer?.backgroundColor = NSColor.systemGreen.cgColor
         case .error:
             label.textColor = NSColor.white
-            label.layer?.backgroundColor = NSColor.systemRed.cgColor
-            underlineView.layer?.backgroundColor = NSColor.systemRed.cgColor
+            label.layer?.backgroundColor = NSColor.systemRed.withAlphaComponent(0.5).cgColor
+            underlineView.layer?.backgroundColor = NSColor.systemRed.withAlphaComponent(0.5).cgColor
         }
     }
 }

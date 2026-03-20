@@ -15,8 +15,6 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     private var displayView: LLTypingDisplayView!
     private let meaningLabel = NSTextField()
-    // private let statsLabel = NSTextField()  // 移除统计
-    // private let hintLabel = NSTextField()   // 移除提示
     
     private var currentEntry: LLWordEntry?
     private var currentListId: String?
@@ -35,7 +33,10 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     // MARK: - Lifecycle
     
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 500, height: 350))
+        let settings = LLSettingsStore.shared.settings
+        let width = settings.floatingPanelWidth
+        let height = settings.floatingPanelHeight
+        view = NSView(frame: NSRect(x: 0, y: 0, width: width, height: height))
         view.wantsLayer = true
     }
     
@@ -55,24 +56,12 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     private func setupUI() {
         // 获取浮窗尺寸
         let settings = LLSettingsStore.shared.settings
-        let panelWidth = settings.floatingPanelWidth
-        let panelHeight = settings.floatingPanelHeight
         
-        // 基准尺寸（用于等比缩放）
-        let baseWidth: CGFloat = 500.0
-        let baseHeight: CGFloat = 350.0
-        
-        // 计算缩放比例（取宽高中较小的比例，保持协调）
-        let scaleX = panelWidth / baseWidth
-        let scaleY = panelHeight / baseHeight
-        let scale = min(scaleX, scaleY)
-        
-        // 根据缩放比例计算字体大小（基准：48）
-        let baseFontSize: CGFloat = 48.0
-        let fontSize = max(20, baseFontSize * scale)
+        // 从设置读取字体和字号
+        let fontSize: CGFloat = settings.floatingPanelFontSize
         
         // 单词显示视图
-        displayView = LLTypingDisplayView(word: "", fontSize: fontSize)
+        displayView = LLTypingDisplayView(word: "", fontSize: fontSize, fontName: settings.floatingPanelFontName)
         view.addSubview(displayView)
         
         // 释义标签
@@ -81,26 +70,20 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         meaningLabel.isEditable = false
         meaningLabel.isSelectable = false
         meaningLabel.alignment = .center
-        meaningLabel.font = NSFont.systemFont(ofSize: max(12, fontSize * 0.33))
+        meaningLabel.font = NSFont.systemFont(ofSize: 16)
         meaningLabel.textColor = .secondaryLabelColor
         meaningLabel.lineBreakMode = .byWordWrapping
         meaningLabel.maximumNumberOfLines = 3
         meaningLabel.cell?.wraps = true
         meaningLabel.cell?.isScrollable = false
+        meaningLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         view.addSubview(meaningLabel)
         
-        // 布局（所有间距和尺寸都等比缩放）
-        let baseDisplayHeight: CGFloat = 80.0
-        let displayHeight = max(60, baseDisplayHeight * scale)
-        
-        let baseVerticalOffset: CGFloat = -20.0
-        let verticalOffset = baseVerticalOffset * scale
-        
-        let baseSpacing: CGFloat = 20.0
-        let spacing = baseSpacing * scale
-        
-        let baseHorizontalPadding: CGFloat = 30.0
-        let horizontalPadding = baseHorizontalPadding * scale
+        // 布局（固定间距和尺寸）
+        let displayHeight: CGFloat = 80.0
+        let verticalOffset: CGFloat = -20.0
+        let spacing: CGFloat = 20.0
+        let horizontalPadding: CGFloat = 30.0
         
         displayView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -109,9 +92,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             make.height.equalTo(displayHeight)
         }
         
-        let meaningFontSize = max(12, fontSize * 0.33)
-        let meaningLineHeight = meaningFontSize * 1.4
-        let meaningMaxHeight = meaningLineHeight * 3 + 4
+        let meaningMaxHeight: CGFloat = 60.0
         
         meaningLabel.snp.makeConstraints { make in
             make.top.equalTo(displayView.snp.bottom).offset(spacing)

@@ -21,6 +21,9 @@ final class LLDailyLearningManager {
     /// 今日新词队列（内存，按词库原始顺序）
     private var newWordQueue: [LLWordEntry] = []
     
+    /// 今日新学队列（内存，按词库原始顺序）
+    private var newLearnWordQueue: [LLWordEntry] = []
+    
     /// 当前词库 ID
     private var currentListId: String?
     
@@ -53,6 +56,7 @@ final class LLDailyLearningManager {
               let wordList = LLWordListStorage.shared.list(byId: listId) else {
             reviewQueue = []
             newWordQueue = []
+            newLearnWordQueue = []
             isInitialized = false
             return
         }
@@ -60,9 +64,10 @@ final class LLDailyLearningManager {
         currentWordList = wordList
         loadReviewQueue(wordList: wordList, listId: listId)
         loadNewWordQueue(wordList: wordList, listId: listId)
+        loadNewLearnWordQueue(wordList: wordList, listId: listId)
         isInitialized = true
         
-        LLLogger.info("📚 今日学习队列初始化完成：复习 \(reviewQueue.count) 个，新词 \(newWordQueue.count) 个")
+        LLLogger.info("📚 今日学习队列初始化完成：复习 \(reviewQueue.count) 个，新词 \(newWordQueue.count) 个，当日已学 \(newLearnWordQueue.count) 个")
     }
     
     /// 获取下一个需要学习的词汇
@@ -75,6 +80,10 @@ final class LLDailyLearningManager {
         
         // 历史复习词全部完成，再返回今日新词
         if let first = newWordQueue.first {
+            return first
+        }
+        
+        if let first = newLearnWordQueue.first {
             return first
         }
         
@@ -150,8 +159,11 @@ final class LLDailyLearningManager {
     /// 今日新词队列剩余数量
     var newWordQueueCount: Int { newWordQueue.count }
     
+    /// 今日新学未达标队列剩余数量
+    var newLearnWordQueueCount: Int { newLearnWordQueue.count }
+    
     /// 今日是否还有学习任务
-    var hasPendingTasks: Bool { !reviewQueue.isEmpty || !newWordQueue.isEmpty }
+    var hasPendingTasks: Bool { !reviewQueue.isEmpty || !newWordQueue.isEmpty || !newLearnWordQueue.isEmpty }
     
     // MARK: - Private Methods
     
@@ -185,6 +197,20 @@ final class LLDailyLearningManager {
         } catch {
             LLLogger.error("❌ 加载今日新词队列失败：\(error)")
             newWordQueue = []
+        }
+    }
+    
+    /// 从数据库加载今日新学未达标队列
+    private func loadNewLearnWordQueue(wordList: WordList, listId: String) {
+        do {
+            let newLearnWordProgress = try LLDatabaseManager.shared.getTodayNewLearnWords()
+            newLearnWordQueue = newLearnWordProgress.compactMap { progress -> LLWordEntry? in
+                guard let wordId = progress.wordId else { return nil }
+                return wordList.entries.first(where: { $0.id == wordId })
+            }
+        } catch {
+            LLLogger.error("❌ 加载今日新词学习未达标队列失败：\(error)")
+            newLearnWordQueue = []
         }
     }
     

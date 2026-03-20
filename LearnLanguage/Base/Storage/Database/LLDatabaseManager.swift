@@ -693,7 +693,7 @@ final class LLDatabaseManager {
     }
     
     /// 获取今日新学习的词汇(createdAt <= 今天结束时间戳 && >= 今天开始时间戳，且reviewCount < 4的词汇)
-    func getTodayNewReviews() throws -> [LLDBLearningProgress] {
+    func getTodayNewLearnWords() throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: Date()).timeIntervalSince1970
         let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!.timeIntervalSince1970
