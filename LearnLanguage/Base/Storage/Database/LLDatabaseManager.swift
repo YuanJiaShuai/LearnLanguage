@@ -732,7 +732,7 @@ final class LLDatabaseManager {
         guard let record = try getLearningProgress(wordId: wordId, wordListId: wordListId) else { return }
         
         let now = Date().timeIntervalSince1970
-        var easeFactor = record.easeFactor ?? 2.5
+        var easeFactor = record.easeFactor ?? 2.0
         var interval = record.interval ?? 1
         
         switch feedback {
@@ -743,7 +743,7 @@ final class LLDatabaseManager {
             record.reviewCount! += 1
             record.learnCount! += 1
             if record.reviewCount ?? 0 >= 4 {
-                easeFactor = max(1.3, easeFactor + 0.1)
+                easeFactor = min(2.0, easeFactor + 0.1)
                 interval = max(1, Int(Double(interval) * easeFactor))
             }
         case "unclear":

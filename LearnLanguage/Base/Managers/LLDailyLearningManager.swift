@@ -226,19 +226,18 @@ final class LLDailyLearningManager {
             
             if let record = existing {
                 // 已有记录：更新
-                var easeFactor = record.easeFactor ?? 2.5
+                var easeFactor = record.easeFactor ?? 2.0
                 var interval = record.interval ?? 1
                 
                 switch feedback {
                 case .know:
                     // 正常 SM-2 计算
-                    easeFactor = min(3.0, easeFactor + 0.1)
                     interval = max(1, Int(Double(interval) * easeFactor))
                     record.correctCount = (record.correctCount ?? 0) + 1
                     record.reviewCount = (record.reviewCount ?? 0) + 1
                     record.learnCount! += 1
                     if record.reviewCount ?? 0 >= 4 {
-                        easeFactor = max(1.3, easeFactor + 0.1)
+                        easeFactor = min(2.0, easeFactor + 0.1)
                         interval = max(1, Int(Double(interval) * easeFactor))
                         record.nextReviewAt = now + Double(interval) * 86400
                     }

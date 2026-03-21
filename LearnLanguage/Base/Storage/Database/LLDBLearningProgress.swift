@@ -36,7 +36,7 @@ final class LLDBLearningProgress: TableCodable {
     // 复习调度相关（SM-2算法）
     var nextReviewAt: TimeInterval? = nil   // 下次复习时间
     var reviewCount: Int? = nil             // 已复习次数
-    var easeFactor: Double? = 2.5           // 难度系数（初始2.5）
+    var easeFactor: Double? = 1.3           // 难度系数（初始1.3）
     var interval: Int? = 1                  // 当前复习间隔（天数）
     var lastReviewAt: TimeInterval? = nil   // 上次复习时间
     
@@ -134,7 +134,7 @@ final class LLDBLearningProgress: TableCodable {
         
         // 初始化复习调度字段
         self.reviewCount = 0
-        self.easeFactor = 2.5
+        self.easeFactor = 1.3
         self.interval = 1
         self.nextReviewAt = now + 86400  // 默认明天复习
     }
