@@ -45,13 +45,13 @@ final class LLReviewContentView: NSView {
         var displayName: String {
             switch self {
             case .all:
-                return NSLocalizedString("All", comment: "All time filter")
+                return NSLocalizedString("Filter All", comment: "All time filter")
             case .today:
-                return NSLocalizedString("Today", comment: "Today time filter")
+                return NSLocalizedString("Filter Today", comment: "Today time filter")
             case .week:
-                return NSLocalizedString("Week", comment: "This week time filter")
+                return NSLocalizedString("Filter Week", comment: "Last 7 days time filter")
             case .month:
-                return NSLocalizedString("Month", comment: "This month time filter")
+                return NSLocalizedString("Filter Month", comment: "Last 30 days time filter")
             }
         }
     }

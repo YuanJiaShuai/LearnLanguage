@@ -23,10 +23,10 @@ struct LLTodayRecordItem {
 // MARK: - 时间筛选
 
 enum LLTodayRecordTimeFilter: String, CaseIterable {
+    case all   = "all"
     case today = "today"
     case week  = "week"
     case month = "month"
-    case all   = "all"
     
     var displayName: String {
         switch self {
