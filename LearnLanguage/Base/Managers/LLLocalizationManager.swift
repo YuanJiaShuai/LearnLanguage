@@ -46,7 +46,7 @@ final class LLLocalizationManager {
         
         // 发送通知，让 UI 更新
         NotificationCenter.default.post(
-            name: NSNotification.Name("LLDisplayLanguageChanged"),
+            name: .displayLanguageChanged,
             object: language
         )
         
@@ -69,10 +69,4 @@ final class LLLocalizationManager {
     func localized(_ key: String, comment: String = "") -> String {
         return NSLocalizedString(key, comment: comment)
     }
-}
-
-// MARK: - Notification Extension
-
-extension NSNotification.Name {
-    static let displayLanguageChanged = NSNotification.Name("LLDisplayLanguageChanged")
 }

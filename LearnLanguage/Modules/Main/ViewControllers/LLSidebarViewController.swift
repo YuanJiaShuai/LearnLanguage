@@ -343,11 +343,11 @@ final class LLSidebarViewController: NSViewController {
     }
     
     @objc private func onCurrentWordListChanged() {
-        loadData()
+        loadCurrentWordList()
     }
     
     @objc private func onWrongWordsCountChanged() {
-        loadData()
+        loadWrongWordsCount()
     }
     
     // MARK: - Data Loading
@@ -383,7 +383,7 @@ final class LLSidebarViewController: NSViewController {
     private func loadWrongWordsCount() {
         do {
             // 获取今日需要复习的词汇数量（所有词库）
-            let reviewRecords = try LLDatabaseManager.shared.getTodayReviewRecords()
+            let reviewRecords = try LLDatabaseManager.shared.getTodayReviewWords()
             wrongWordCount = reviewRecords.count
         } catch {
             LLLogger.error("❌ 获取复习词汇数量失败：\(error)")

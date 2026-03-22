@@ -36,5 +36,8 @@ extension Notification.Name {
     
     /// 浮窗设置改变通知
     static let floatingPanelSettingsChanged = Notification.Name("LLFloatingPanelSettingsChanged")
+    
+    // MARK: - 语言切换
+    static let displayLanguageChanged = Notification.Name("LLDisplayLanguageChanged")
 }
 

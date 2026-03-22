@@ -678,7 +678,7 @@ final class LLDatabaseManager {
     // MARK: - 每日学习任务
     
     /// 获取今日需要复习的词汇（nextReviewAt <= 今天结束时间戳，且 createdAt 不是今天，即历史学过的词）
-    func getTodayReviewWords(wordListId: String) throws -> [LLDBLearningProgress] {
+    func getTodayReviewWords() throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: Date()).timeIntervalSince1970
         let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!.timeIntervalSince1970

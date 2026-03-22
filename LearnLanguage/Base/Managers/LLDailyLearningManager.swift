@@ -62,7 +62,7 @@ final class LLDailyLearningManager {
         }
         
         currentWordList = wordList
-        loadReviewQueue(wordList: wordList, listId: listId)
+        loadReviewQueue()
         loadNewWordQueue(wordList: wordList, listId: listId)
         loadNewLearnWordQueue(wordList: wordList, listId: listId)
         isInitialized = true
@@ -92,8 +92,6 @@ final class LLDailyLearningManager {
     
     /// 记录状态栏反馈并更新队列
     func recordFeedback(_ feedback: LLWordFeedback, for entry: LLWordEntry) {
-        guard let listId = currentListId else { return }
-        
         let isFromReviewQueue = reviewQueue.first?.id == entry.id
         let isFromNewQueue = newWordQueue.first?.id == entry.id
         
@@ -107,11 +105,22 @@ final class LLDailyLearningManager {
         // 根据反馈处理
         switch feedback {
         case .know:
-            // 认识：SM-2 正常处理，移出今日队列
-            updateProgress(entry: entry, listId: listId, feedback: feedback, keepToday: false)
+            // 认识：SM-2 正常处理
+            updateProgress(
+                entry: entry,
+                feedback: feedback,
+                keepToday: false
+            ) { [weak self] (wordEntry, reviewCount) in
+                guard let self = self else { return }
+                if reviewCount < 4 {
+                    self.reviewQueue.append(wordEntry)
+                } else {
+                    NotificationCenter.default.post(name: .wrongWordsCountChanged, object: nil)
+                }
+            }
             
         case .unclear:
-            updateProgress(entry: entry, listId: listId, feedback: feedback, keepToday: true)
+            updateProgress(entry: entry, feedback: feedback, keepToday: true)
             if isFromReviewQueue {
                 // 历史复习词标记模糊：留在复习队列尾部继续循环
                 reviewQueue.append(entry)
@@ -119,7 +128,7 @@ final class LLDailyLearningManager {
             // 今日新词标记模糊：不加入复习队列，继续学下一个新词
             
         case .unknown:
-            updateProgress(entry: entry, listId: listId, feedback: feedback, keepToday: true)
+            updateProgress(entry: entry, feedback: feedback, keepToday: true)
             if isFromReviewQueue {
                 // 历史复习词标记不认识：留在复习队列尾部继续循环
                 reviewQueue.append(entry)
@@ -127,7 +136,7 @@ final class LLDailyLearningManager {
             // 今日新词标记不认识：不加入复习队列，继续学下一个新词
         }
         
-        LLLogger.info("📝 反馈记录：\(entry.text) -> \(feedback.rawValue)，来源：\(isFromReviewQueue ? "复习词" : "新词")，复习队列剩余：\(reviewQueue.count)，新词队列剩余：\(newWordQueue.count)")
+        LLLogger.info("📝 反馈记录：\(entry.text) -> \(feedback.rawValue)，来源：\(isFromReviewQueue ? "复习词" : "新词")，wordId: \(entry.id), 复习队列剩余：\(reviewQueue.count)，新词队列剩余：\(newWordQueue.count)")
     }
     
     /// 记录打字练习结果（根据错误次数映射为反馈）
@@ -168,14 +177,15 @@ final class LLDailyLearningManager {
     // MARK: - Private Methods
     
     /// 从数据库加载今日复习队列
-    private func loadReviewQueue(wordList: WordList, listId: String) {
+    private func loadReviewQueue() {
         do {
-            let reviewProgress = try LLDatabaseManager.shared.getTodayReviewWords(wordListId: listId)
-            
-            // 按 nextReviewAt 升序，映射为 LLWordEntry
+            let reviewProgress = try LLDatabaseManager.shared.getTodayReviewWords()
             reviewQueue = reviewProgress.compactMap { progress -> LLWordEntry? in
-                guard let wordId = progress.wordId else { return nil }
-                return wordList.entries.first(where: { $0.id == wordId })
+                guard let wordId = progress.wordId,
+                      let listId = progress.wordListId,
+                      let wordList = LLWordListStorage.shared.list(byId: listId) else { return nil }
+                let emtrys = wordList.entries.first(where: { $0.id == wordId })
+                return emtrys
             }
         } catch {
             LLLogger.error("❌ 加载今日复习队列失败：\(error)")
@@ -215,8 +225,9 @@ final class LLDailyLearningManager {
     }
     
     /// 更新数据库中的学习进度
-    private func updateProgress(entry: LLWordEntry, listId: String, feedback: LLWordFeedback, keepToday: Bool) {
+    private func updateProgress(entry: LLWordEntry, feedback: LLWordFeedback, keepToday: Bool, onKnownWithLowReviewCount: ((LLWordEntry, Int) -> Void)? = nil) {
         do {
+            let listId = entry.wordListId
             let existing = try LLDatabaseManager.shared.getLearningProgress(
                 wordId: entry.id,
                 wordListId: listId
@@ -235,12 +246,10 @@ final class LLDailyLearningManager {
                     interval = max(1, Int(Double(interval) * easeFactor))
                     record.correctCount = (record.correctCount ?? 0) + 1
                     record.reviewCount = (record.reviewCount ?? 0) + 1
-                    record.learnCount! += 1
-                    if record.reviewCount ?? 0 >= 4 {
-                        easeFactor = min(2.0, easeFactor + 0.1)
-                        interval = max(1, Int(Double(interval) * easeFactor))
-                        record.nextReviewAt = now + Double(interval) * 86400
-                    }
+                    
+                    easeFactor = min(2.0, easeFactor + 0.1)
+                    interval = max(1, Int(Double(interval) * easeFactor))
+                    record.nextReviewAt = now + Double(interval) * 86400
                     record.status = 2
                 case .unclear:
                     // 小幅下降，今天继续
@@ -293,7 +302,8 @@ final class LLDailyLearningManager {
                 // 插入学习明细记录
                 let history = LLDBLearningHistory(wordId: entry.id, wordListId: listId, feedback: feedback.rawValue, sessionType: "learn")
                 try LLDatabaseManager.shared.database.insert(objects: [history], intoTable: "learning_history")
-                
+                // 发送回掉 更新侧边栏
+                onKnownWithLowReviewCount?(entry, record.reviewCount ?? 0)
             } else {
                 // 无记录：首次学习，插入新记录
                 let newRecord = LLDBLearningProgress(

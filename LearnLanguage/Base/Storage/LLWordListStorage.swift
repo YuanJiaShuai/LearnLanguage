@@ -162,138 +162,6 @@ final class LLWordListStorage {
         }
     }
     
-    // MARK: - 导入导出
-    
-    /// 从 JSON 文件导入词库
-    func importFromFile(url: URL, listName: String, language: LLLearningLanguage, category: String = "未分类") -> WordList? {
-        guard let data = try? Data(contentsOf: url),
-              let json = Self.parseWordArray(from: data) else {
-            return nil
-        }
-        
-        var entries: [LLWordEntry] = []
-        for item in json {
-            let name = item["name"] as? String ?? item["word"] as? String ?? ""
-            let trans: String
-            if let arr = item["trans"] as? [String], !arr.isEmpty {
-                trans = arr.joined(separator: "；")
-            } else {
-                trans = item["trans"] as? String ?? item["meaning"] as? String ?? ""
-            }
-            let us = item["usphone"] as? String
-            let uk = item["ukphone"] as? String
-            let phonetic = [us, uk].compactMap { $0 }.filter { !$0.isEmpty }.first
-            
-            if !name.isEmpty {
-                entries.append(LLWordEntry(text: name, meaning: trans, phonetic: phonetic, language: language))
-            }
-        }
-        
-        guard !entries.isEmpty else { return nil }
-        
-        let list = WordList(
-            id: UUID().uuidString, // 临时 ID，添加后会被替换
-            name: listName,
-            category: category,
-            language: language,
-            entries: entries
-        )
-        
-        addList(list)
-        return list
-    }
-    
-    /// 导出数据（供备份）
-    func exportData(learningRecords: [LLLearningRecord]) -> Data? {
-        let allLists = self.allLists()
-        
-        let payload: [String: Any] = [
-            "wordLists": allLists.map { list in
-                [
-                    "id": list.id,
-                    "name": list.name,
-                    "category": list.category,
-                    "language": list.language.rawValue,
-                    "createdAt": list.createdAt.timeIntervalSince1970,
-                    "entries": list.entries.map { e in
-                        [
-                            "id": e.id,
-                            "text": e.text,
-                            "meaning": e.meaning,
-                            "phonetic": e.phonetic as Any
-                        ] as [String: Any]
-                    } as [[String: Any]]
-                ] as [String: Any]
-            } as [[String: Any]],
-            "learningRecords": learningRecords.map { r in
-                [
-                    "wordId": r.wordId,
-                    "listId": r.listId,
-                    "feedback": r.feedback.rawValue,
-                    "lastSeenAt": r.lastSeenAt.timeIntervalSince1970,
-                    "nextReviewAt": r.nextReviewAt?.timeIntervalSince1970 as Any
-                ] as [String: Any]
-            } as [[String: Any]],
-            "exportedAt": Date().timeIntervalSince1970
-        ]
-        
-        return try? JSONSerialization.data(withJSONObject: payload)
-    }
-    
-    /// 从备份恢复
-    func restoreFromData(_ data: Data) -> Bool {
-        struct ExportEntry: Codable {
-            let id: String?
-            let text: String
-            let meaning: String
-            let phonetic: String?
-        }
-        struct ExportList: Codable {
-            let id: String?
-            let name: String
-            let category: String?
-            let language: String
-            let createdAt: Double?
-            let entries: [ExportEntry]
-        }
-        struct ExportRoot: Codable {
-            let wordLists: [ExportList]
-        }
-        
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .secondsSince1970
-        
-        guard let root = try? decoder.decode(ExportRoot.self, from: data) else {
-            return false
-        }
-        
-        for el in root.wordLists {
-            let lang = LLLearningLanguage(rawValue: el.language) ?? .english
-            let entries = el.entries.map { e in
-                LLWordEntry(
-                    id: UUID().uuidString,
-                    text: e.text,
-                    meaning: e.meaning,
-                    phonetic: e.phonetic,
-                    language: lang
-                )
-            }
-            
-            let list = WordList(
-                id: UUID().uuidString,
-                name: el.name,
-                category: el.category ?? "未分类",
-                language: lang,
-                entries: entries,
-                createdAt: el.createdAt.map { Date(timeIntervalSince1970: $0) } ?? Date()
-            )
-            
-            addList(list)
-        }
-        
-        return true
-    }
-    
     // MARK: - 辅助方法
     
     /// 将数据库词库对象转换为 WordList
@@ -322,6 +190,7 @@ final class LLWordListStorage {
                 }
                 return LLWordEntry(
                     id: "\(dbWord.id ?? 0)",
+                    wordListId: "\(dbWord.wordListId)",
                     text: dbWord.word,
                     meaning: dbWord.translation,
                     phonetic: phonetic,

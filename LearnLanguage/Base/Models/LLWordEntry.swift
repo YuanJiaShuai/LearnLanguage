@@ -8,13 +8,15 @@ import Foundation
 /// 单条学习项（单词/短语）
 struct LLWordEntry: Codable, Identifiable, Equatable {
     var id: String
+    var wordListId: String
     var text: String           // 原文，如 "apple"
     var meaning: String        // 释义
     var phonetic: String?     // 音标，如 "/ˈæpl/"
     var language: LLLearningLanguage
 
-    init(id: String = UUID().uuidString, text: String, meaning: String, phonetic: String? = nil, language: LLLearningLanguage) {
+    init(id: String = UUID().uuidString, wordListId: String, text: String, meaning: String, phonetic: String? = nil, language: LLLearningLanguage) {
         self.id = id
+        self.wordListId = wordListId
         self.text = text
         self.meaning = meaning
         self.phonetic = phonetic
