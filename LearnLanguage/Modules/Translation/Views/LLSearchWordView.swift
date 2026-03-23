@@ -310,7 +310,14 @@ final class LLSearchWordView: NSView {
 
     /// 让输入框获取焦点
     func focusSearchField() {
-        searchField.becomeFirstResponder()
+        if let window = self.window {
+            window.makeFirstResponder(searchField)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                guard let self, let window = self.window else { return }
+                window.makeFirstResponder(self.searchField)
+            }
+        }
     }
 
     /// 菜单关闭时清理状态

@@ -10,6 +10,10 @@ import SnapKit
 
 final class LLStatusBarPopoverPanel: NSPanel {
 
+    // 允许成为 key/main，才能让文本输入框获取焦点
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
+
     // MARK: - Singleton
 
     static let shared = LLStatusBarPopoverPanel()
@@ -39,11 +43,13 @@ final class LLStatusBarPopoverPanel: NSPanel {
         isMovable = false
         collectionBehavior = [.canJoinAllSpaces, .transient]
 
-        // 外层容器：负责圆角裁切
+        // 外层容器：负责圆角裁切和边框
         let container = NSView()
         container.wantsLayer = true
         container.layer?.cornerRadius = 16
         container.layer?.masksToBounds = true
+        container.layer?.borderWidth = 1
+        container.layer?.borderColor = NSColor.white.withAlphaComponent(0.18).cgColor
         contentView = container
 
         // 毛玻璃层填满容器
@@ -57,17 +63,7 @@ final class LLStatusBarPopoverPanel: NSPanel {
             make.edges.equalToSuperview()
         }
 
-        // 边框层：圆角描边，叠在最上层
-        let border = NSView()
-        border.wantsLayer = true
-        border.layer?.cornerRadius = 16
-        border.layer?.masksToBounds = false
-        border.layer?.borderWidth = 1
-        border.layer?.borderColor = NSColor.white.withAlphaComponent(0.18).cgColor
-        container.addSubview(border)
-        border.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        // 使用 container.layer 的 border 即可，避免额外覆盖层拦截点击
     }
 
     // MARK: - Show / Hide
@@ -111,8 +107,13 @@ final class LLStatusBarPopoverPanel: NSPanel {
         }
 
         setFrame(NSRect(x: originX, y: originY, width: panelWidth, height: panelHeight), display: false)
-        orderFront(nil)
+        makeKeyAndOrderFront(nil)
         isShowing = true
+
+        // 自动聚焦搜索框
+        DispatchQueue.main.async {
+            contentView.focusSearch()
+        }
 
         // 点击 panel 外部时自动关闭
         startMonitoringOutsideClicks()
