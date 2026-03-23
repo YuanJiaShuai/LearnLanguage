@@ -83,13 +83,13 @@ final class LLStatusBarPopoverContentView: NSView {
 
         // 标题在顶部
         titleLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(20)
+            make.leading.trailing.equalToSuperview().inset(12)
+            make.top.equalTo(18)
         }
 
         // 搜索框在标题下方，高度提高到 48
         searchWordView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(48)
         }
