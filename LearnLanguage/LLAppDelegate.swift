@@ -42,11 +42,6 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
             self?.handleStatusBarClick()
         }
         
-        // 设置菜单提供者
-        manager.menuProvider = { [weak self] in
-            self?.createContextMenu() ?? NSMenu()
-        }
-        
         // 初始化状态栏
         manager.setupStatusBar()
     }
@@ -86,41 +81,6 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    private func createContextMenu() -> NSMenu {
-        let menu = NSMenu()
-        
-        // 强制设置菜单为浅色外观
-        if #available(macOS 10.14, *) {
-            menu.appearance = NSAppearance(named: .aqua)
-        }
-        
-        // 调试：打印菜单外观
-        LLLogger.debug("🎨 创建菜单时的外观: \(menu.appearance?.name.rawValue ?? "nil (跟随系统)")")
-        LLLogger.debug("🎨 NSApp.effectiveAppearance: \(NSApp.effectiveAppearance.name)")
-        
-        menu.addItem(NSMenuItem(title: "打开主界面", action: #selector(showMainWindow), keyEquivalent: ""))
-        
-        // 根据浮窗是否显示来设置菜单文字和状态
-        let isVisible = LLStatusBarTypingPractice.shared.isVisible
-        let typingPracticeItem = NSMenuItem(
-            title: isVisible ? "退出打字模式" : "进入打字模式",
-            action: #selector(toggleTypingPracticeMode),
-            keyEquivalent: ""
-        )
-        typingPracticeItem.target = self
-        menu.addItem(typingPracticeItem)
-        
-        menu.addItem(NSMenuItem.separator())
-        
-        let exitItem = NSMenuItem(title: "退出", action: #selector(exitApp), keyEquivalent: "q")
-        exitItem.target = self
-        menu.addItem(exitItem)
-        
-        LLLogger.debug("🎨 菜单创建完成，外观: \(menu.appearance?.name.rawValue ?? "nil (跟随系统)")")
-        
-        return menu
-    }
-
     // MARK: - Window Management
     
     @objc func showMainWindow() {

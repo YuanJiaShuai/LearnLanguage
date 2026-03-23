@@ -48,9 +48,6 @@ final class LLStatusBarManager {
     /// 点击状态栏的回调
     var onStatusBarClicked: (() -> Void)?
     
-    /// 右键菜单项提供者
-    var menuProvider: (() -> NSMenu)?
-    
     // MARK: - Initialization
     
     private init() {
@@ -265,9 +262,8 @@ final class LLStatusBarManager {
         
         statusItem = bar.statusItem(withLength: length)
         
-        // 创建自定义视图
-        let menu = menuProvider?()
-        contentView = LLStatusBarContentView(statusItem: statusItem!, menu: menu)
+        // 创建自定义视图（不再需要 NSMenu）
+        contentView = LLStatusBarContentView(statusItem: statusItem!)
         
         // 将自定义视图添加到 button 中
         if let button = statusItem?.button {

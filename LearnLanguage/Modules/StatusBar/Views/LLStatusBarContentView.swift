@@ -49,28 +49,13 @@ final class LLStatusBarContentView: NSControl {
     
     // MARK: - Initialization
     
-    init(statusItem: NSStatusItem, menu: NSMenu?) {
+    init(statusItem: NSStatusItem) {
         self.statusItem = statusItem
-        // 使用完整的状态栏高度，不留间距
         let height = NSStatusBar.system.thickness
         let width = statusItem.length
         super.init(frame: NSMakeRect(0, 0, width, height))
-        self.menu = menu
-        self.menu?.delegate = self
         self.wantsLayer = true
-        
-        // 调试：打印外观信息
-        LLLogger.debug("🎨 LLStatusBarContentView 初始化")
-        LLLogger.debug("🎨 effectiveAppearance: \(effectiveAppearance.name)")
-        
         setupUI()
-    }
-    
-    override func viewDidMoveToWindow() {
-        super.viewDidMoveToWindow()
-        LLLogger.debug("🎨 LLStatusBarContentView 移动到窗口")
-        LLLogger.debug("🎨 window?.effectiveAppearance: \(window?.effectiveAppearance.name.rawValue ?? "nil")")
-        LLLogger.debug("🎨 effectiveAppearance: \(effectiveAppearance.name)")
     }
     
     override var intrinsicContentSize: NSSize {
@@ -239,7 +224,6 @@ extension LLStatusBarContentView: NSMenuDelegate {
         if !feedbackView.isHidden && feedbackView.alphaValue > 0.5 {
             let feedbackFrame = feedbackView.frame
             if feedbackFrame.contains(loc) {
-                // 转换坐标后传给 feedbackView
                 let localEvent = NSEvent.mouseEvent(
                     with: event.type,
                     location: feedbackView.convert(loc, from: self),
@@ -258,17 +242,15 @@ extension LLStatusBarContentView: NSMenuDelegate {
             }
         }
         
-        // 其他区域：弹出右键菜单
-        if let menu = self.menu {
-            NSMenu.popUpContextMenu(menu, with: event, for: self)
-        }
+        // 弹出自定义 panel
+        LLStatusBarPopoverPanel.shared.toggle(relativeTo: self)
     }
-    
+
     func menuWillOpen(_ menu: NSMenu) {
         needsDisplay = true
         clicked = true
     }
-    
+
     func menuDidClose(_ menu: NSMenu) {
         needsDisplay = true
         clicked = false

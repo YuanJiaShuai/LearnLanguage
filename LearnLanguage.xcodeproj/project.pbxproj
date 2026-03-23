@@ -95,6 +95,13 @@
 		84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */; };
 		84C0D9DB2F6BDFA800F96737 /* LLTodayRecordContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0D9DA2F6BDFA800F96737 /* LLTodayRecordContentView.swift */; };
 		84C0D9DD2F6BE97F00F96737 /* LLDBLearningHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */; };
+		84D21BA02F70F20600AFFE2C /* LLSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21B9A2F70F20600AFFE2C /* LLSpeechService.swift */; };
+		84D21BA12F70F20600AFFE2C /* LLSearchWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21B9D2F70F20600AFFE2C /* LLSearchWordView.swift */; };
+		84D21BA22F70F20600AFFE2C /* LLTranslationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21B972F70F20600AFFE2C /* LLTranslationManager.swift */; };
+		84D21BA32F70F20600AFFE2C /* LLTranslationTaskBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21B982F70F20600AFFE2C /* LLTranslationTaskBridge.swift */; };
+		84D21BA42F70F20600AFFE2C /* LLWordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21B9B2F70F20600AFFE2C /* LLWordService.swift */; };
+		84D21BAA2F71233500AFFE2C /* LLStatusBarPopoverPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21BA92F71233500AFFE2C /* LLStatusBarPopoverPanel.swift */; };
+		84D21BAB2F71233500AFFE2C /* LLStatusBarPopoverContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21BA82F71233500AFFE2C /* LLStatusBarPopoverContentView.swift */; };
 		84E1E32D2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E32C2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift */; };
 		84E1E32F2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */; };
 		84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */; };
@@ -211,6 +218,13 @@
 		84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLShortcutRecorderView.swift; sourceTree = "<group>"; };
 		84C0D9DA2F6BDFA800F96737 /* LLTodayRecordContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTodayRecordContentView.swift; sourceTree = "<group>"; };
 		84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningHistory.swift; sourceTree = "<group>"; };
+		84D21B972F70F20600AFFE2C /* LLTranslationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTranslationManager.swift; sourceTree = "<group>"; };
+		84D21B982F70F20600AFFE2C /* LLTranslationTaskBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTranslationTaskBridge.swift; sourceTree = "<group>"; };
+		84D21B9A2F70F20600AFFE2C /* LLSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSpeechService.swift; sourceTree = "<group>"; };
+		84D21B9B2F70F20600AFFE2C /* LLWordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordService.swift; sourceTree = "<group>"; };
+		84D21B9D2F70F20600AFFE2C /* LLSearchWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSearchWordView.swift; sourceTree = "<group>"; };
+		84D21BA82F71233500AFFE2C /* LLStatusBarPopoverContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarPopoverContentView.swift; sourceTree = "<group>"; };
+		84D21BA92F71233500AFFE2C /* LLStatusBarPopoverPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarPopoverPanel.swift; sourceTree = "<group>"; };
 		84E1E32C2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordLibraryCardItem.swift; sourceTree = "<group>"; };
 		84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarContentView.swift; sourceTree = "<group>"; };
 		84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLScrollingTextView.swift; sourceTree = "<group>"; };
@@ -526,6 +540,8 @@
 			children = (
 				849226C52F3C878F00447E0C /* LLStatusBarFeedbackView.swift */,
 				84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */,
+				84D21BA82F71233500AFFE2C /* LLStatusBarPopoverContentView.swift */,
+				84D21BA92F71233500AFFE2C /* LLStatusBarPopoverPanel.swift */,
 				84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */,
 				84E1E3322F3D85F900D1B7B6 /* LLWordPhoneticView.swift */,
 			);
@@ -572,6 +588,7 @@
 		849226D62F3C878F00447E0C /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				84D21B9F2F70F20600AFFE2C /* Translation */,
 				84E1E39D2F4D53A300D1B7B6 /* TypingPractice */,
 				849226AC2F3C878F00447E0C /* Data */,
 				849226B22F3C878F00447E0C /* Main */,
@@ -603,6 +620,42 @@
 				840D1E6C2F67B6A6002C330E /* Localizable.strings */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		84D21B992F70F20600AFFE2C /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				84D21B972F70F20600AFFE2C /* LLTranslationManager.swift */,
+				84D21B982F70F20600AFFE2C /* LLTranslationTaskBridge.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		84D21B9C2F70F20600AFFE2C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				84D21B9A2F70F20600AFFE2C /* LLSpeechService.swift */,
+				84D21B9B2F70F20600AFFE2C /* LLWordService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		84D21B9E2F70F20600AFFE2C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				84D21B9D2F70F20600AFFE2C /* LLSearchWordView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		84D21B9F2F70F20600AFFE2C /* Translation */ = {
+			isa = PBXGroup;
+			children = (
+				84D21B992F70F20600AFFE2C /* Managers */,
+				84D21B9C2F70F20600AFFE2C /* Services */,
+				84D21B9E2F70F20600AFFE2C /* Views */,
+			);
+			path = Translation;
 			sourceTree = "<group>";
 		};
 		84E1E3922F4D53A300D1B7B6 /* Engine */ = {
@@ -883,6 +936,11 @@
 				849226E92F3C878F00447E0C /* LLWordLibraryCardView.swift in Sources */,
 				849226EA2F3C878F00447E0C /* LLLearningRecord.swift in Sources */,
 				849226EB2F3C878F00447E0C /* LLProgressTabViewController.swift in Sources */,
+				84D21BA02F70F20600AFFE2C /* LLSpeechService.swift in Sources */,
+				84D21BA12F70F20600AFFE2C /* LLSearchWordView.swift in Sources */,
+				84D21BA22F70F20600AFFE2C /* LLTranslationManager.swift in Sources */,
+				84D21BA32F70F20600AFFE2C /* LLTranslationTaskBridge.swift in Sources */,
+				84D21BA42F70F20600AFFE2C /* LLWordService.swift in Sources */,
 				849226EC2F3C878F00447E0C /* LLRecordItemView.swift in Sources */,
 				84E1E32F2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift in Sources */,
 				84E1E39E2F4D53A300D1B7B6 /* LLTypingStatsView.swift in Sources */,
@@ -907,6 +965,8 @@
 				849226F92F3C878F00447E0C /* LLStatusBarManager.swift in Sources */,
 				849226FA2F3C878F00447E0C /* LLAppearanceManager.swift in Sources */,
 				8492270C2F3C888800447E0C /* LLWordCellView.swift in Sources */,
+				84D21BAA2F71233500AFFE2C /* LLStatusBarPopoverPanel.swift in Sources */,
+				84D21BAB2F71233500AFFE2C /* LLStatusBarPopoverContentView.swift in Sources */,
 				849226FB2F3C878F00447E0C /* LLPronunciationManager.swift in Sources */,
 				849226FC2F3C878F00447E0C /* LLDatabaseInitializer.swift in Sources */,
 				849226FD2F3C878F00447E0C /* LLWordListTabViewController.swift in Sources */,
