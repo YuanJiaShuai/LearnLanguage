@@ -39,15 +39,35 @@ final class LLStatusBarPopoverPanel: NSPanel {
         isMovable = false
         collectionBehavior = [.canJoinAllSpaces, .transient]
 
-        // 毛玻璃背景
+        // 外层容器：负责圆角裁切
+        let container = NSView()
+        container.wantsLayer = true
+        container.layer?.cornerRadius = 16
+        container.layer?.masksToBounds = true
+        contentView = container
+
+        // 毛玻璃层填满容器
         let effect = NSVisualEffectView()
         effect.material = .menu
         effect.blendingMode = .behindWindow
         effect.state = .active
         effect.wantsLayer = true
-        effect.layer?.cornerRadius = 10
-        effect.layer?.masksToBounds = true
-        contentView = effect
+        container.addSubview(effect)
+        effect.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        // 边框层：圆角描边，叠在最上层
+        let border = NSView()
+        border.wantsLayer = true
+        border.layer?.cornerRadius = 16
+        border.layer?.masksToBounds = false
+        border.layer?.borderWidth = 1
+        border.layer?.borderColor = NSColor.white.withAlphaComponent(0.18).cgColor
+        container.addSubview(border)
+        border.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     // MARK: - Show / Hide
@@ -59,8 +79,11 @@ final class LLStatusBarPopoverPanel: NSPanel {
 
         let contentView = LLStatusBarPopoverContentView()
         contentView.onClose = { [weak self] in self?.hide() }
-        self.contentView?.subviews.forEach { $0.removeFromSuperview() }
-        self.contentView?.addSubview(contentView)
+        // 找到毛玻璃层（container 的第一个子视图）
+        guard let container = self.contentView,
+              let effect = container.subviews.first else { return }
+        effect.subviews.filter { $0 is LLStatusBarPopoverContentView }.forEach { $0.removeFromSuperview() }
+        effect.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -102,8 +125,10 @@ final class LLStatusBarPopoverPanel: NSPanel {
         isShowing = false
 
         // 重置查词视图
-        if let contentView = contentView?.subviews.first as? LLStatusBarPopoverContentView {
-            contentView.resetSearch()
+        if let container = contentView,
+           let effect = container.subviews.first,
+           let popoverContent = effect.subviews.first(where: { $0 is LLStatusBarPopoverContentView }) as? LLStatusBarPopoverContentView {
+            popoverContent.resetSearch()
         }
     }
 

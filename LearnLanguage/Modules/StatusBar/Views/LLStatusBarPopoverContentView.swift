@@ -34,7 +34,16 @@ final class LLStatusBarPopoverContentView: NSView {
         v.onHeightChanged = { [weak self] _ in
             self?.updatePanelHeight()
         }
+        
         return v
+    }()
+
+    /// 搜索框标题
+    private lazy var titleLabel: NSTextField = {
+        let tf = NSTextField(labelWithString: NSLocalizedString("查词", comment: ""))
+        tf.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
+        tf.textColor = .labelColor
+        return tf
     }()
 
     private lazy var topDivider: NSBox = {
@@ -67,13 +76,22 @@ final class LLStatusBarPopoverContentView: NSView {
     // MARK: - Setup
 
     private func setupUI() {
+        addSubview(titleLabel)
         addSubview(searchWordView)
         addSubview(topDivider)
         addSubview(menuStack)
 
+        // 标题在顶部
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(12)
+            make.height.equalTo(20)
+        }
+
+        // 搜索框在标题下方，高度提高到 48
         searchWordView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(LLSearchWordView.viewHeight)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(48)
         }
 
         topDivider.snp.makeConstraints { make in
@@ -150,7 +168,9 @@ final class LLStatusBarPopoverContentView: NSView {
 
     /// 初始首选高度
     var preferredHeight: CGFloat {
-        return LLSearchWordView.viewHeight
+        return 20  // 标题高度
+            + 8    // 标题到搜索框间距
+            + 48   // 搜索框高度
             + Layout.dividerHeight
             + CGFloat(menuStack.arrangedSubviews.count) * Layout.menuItemHeight
             + Layout.dividerHeight // 菜单内分割线
@@ -158,12 +178,13 @@ final class LLStatusBarPopoverContentView: NSView {
 
     private func updatePanelHeight() {
         guard let panel = window as? LLStatusBarPopoverPanel else { return }
-        // 重新计算搜索视图高度
-        let searchH = searchWordView.fittingSize.height.rounded(.up)
+        // 重新计算总高度
+        let titleH: CGFloat = 20
+        let titleSpacing: CGFloat = 8
+        let searchH: CGFloat = 48
+        let dividerH = Layout.dividerHeight
         let menuH = menuStack.arrangedSubviews.reduce(CGFloat(0)) { $0 + $1.frame.height }
-        let totalH = max(searchH, LLSearchWordView.viewHeight)
-            + Layout.dividerHeight
-            + menuH
+        let totalH = titleH + titleSpacing + searchH + dividerH + menuH
 
         var frame = panel.frame
         let delta = totalH - frame.height

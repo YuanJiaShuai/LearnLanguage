@@ -43,6 +43,17 @@ final class LLStatusBarContentView: NSControl {
         }
         return view
     }()
+
+    /// 右侧菜单触发图标
+    private lazy var menuIconView: NSImageView = {
+        let config = NSImage.SymbolConfiguration(pointSize: 11, weight: .medium)
+        let image = NSImage(systemSymbolName: "line.3.horizontal", accessibilityDescription: "菜单")?
+                    .withSymbolConfiguration(config)
+        let iv = NSImageView(image: image ?? NSImage())
+        iv.contentTintColor = NSColor.white.withAlphaComponent(0.75)
+        iv.wantsLayer = true
+        return iv
+    }()
     
     // 追踪区域，用于检测鼠标进入/离开
     private var trackingArea: NSTrackingArea?
@@ -74,14 +85,22 @@ final class LLStatusBarContentView: NSControl {
         addSubview(wordPhoneticView)
         addSubview(scrollingMeaningView)
         addSubview(feedbackView)
+        addSubview(menuIconView)
         
-        // 单词音标视图在左侧，垂直居中，宽度自适应
+        // 菜单图标在最左侧，垂直居中
+        menuIconView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(6)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(14)
+        }
+        
+        // 单词音标视图在图标右侧
         wordPhoneticView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(8)
+            make.left.equalTo(menuIconView.snp.right).offset(6)
             make.centerY.equalToSuperview()
         }
         
-        // 滚动视图在右侧，填充剩余空间
+        // 滚动视图填充剩余空间
         scrollingMeaningView.snp.makeConstraints { make in
             make.left.equalTo(wordPhoneticView.snp.right).offset(12)
             make.right.equalToSuperview().offset(-8)
@@ -179,6 +198,9 @@ final class LLStatusBarContentView: NSControl {
         // 更新所有子视图的颜色
         wordPhoneticView.textColor = textColor
         scrollingMeaningView.textColor = textColor.withAlphaComponent(0.9)
+        menuIconView.contentTintColor = LLStatusBarPopoverPanel.shared.isShowing
+            ? NSColor.white
+            : NSColor.white.withAlphaComponent(0.6)
     }
     
     // MARK: - Public Methods
@@ -242,7 +264,14 @@ extension LLStatusBarContentView: NSMenuDelegate {
             }
         }
         
-        // 弹出自定义 panel
+        // 点击菜单图标区域（左侧扩大热区）弹出 panel
+        let iconHitArea = menuIconView.frame.insetBy(dx: -6, dy: -4)
+        if iconHitArea.contains(loc) {
+            LLStatusBarPopoverPanel.shared.toggle(relativeTo: self)
+            return
+        }
+        
+        // 点击其他区域也弹出 panel（保持原有行为）
         LLStatusBarPopoverPanel.shared.toggle(relativeTo: self)
     }
 

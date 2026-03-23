@@ -135,10 +135,10 @@ final class LLSearchWordView: NSView {
         inputContainer.addSubview(loadingIndicator)
 
         inputContainer.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(8)
             make.leading.equalToSuperview().offset(12)
             make.trailing.equalToSuperview().offset(-12)
-            make.height.equalTo(36)
+            make.bottom.equalToSuperview().offset(-8)
         }
 
         searchIcon.snp.makeConstraints { make in
