@@ -45,8 +45,12 @@ final class LLTranslationTaskBridge {
             }
 
             // 1x1 隐藏窗口，仅用于承载 SwiftUI translationTask
+            // 将窗口水平居中对齐状态栏弹出 Panel，使系统词库下载提示出现在 Panel 正上方
+            let panelFrame = LLStatusBarPopoverPanel.shared.frame
+            let centerX = panelFrame.midX
+            let originY = panelFrame.maxY - 8
             let window = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 1, height: 1),
+                contentRect: NSRect(x: centerX, y: originY, width: 1, height: 1),
                 styleMask: [.borderless],
                 backing: .buffered,
                 defer: false
