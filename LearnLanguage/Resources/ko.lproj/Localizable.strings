@@ -47,6 +47,7 @@
 
 // MARK: - Settings
 "Learning Settings" = "학습 설정";
+"Translation Settings" = "번역 설정";
 "Status Bar Settings" = "상태 표시줄 설정";
 "Review Settings" = "복습 설정";
 "Pronunciation Settings" = "발음 설정";
@@ -178,6 +179,13 @@
 "Wrong Records Title" = "미복습 오답 단어 (";
 "Wrong Records Suffix" = "개)";
 "Batch Review" = "🔄 일괄 복습";
+
+// MARK: - Translation Settings
+"Double Copy Translate" = "⌘+C 두 번으로 번역";
+"Double Copy Interval" = "트리거 간격";
+"Clipboard OCR Translate" = "클립보드 스크린샷 OCR 번역";
+"Translate Direction" = "번역 방향";
+"Translate Font Size" = "번역 결과 글자 크기";
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "키보드 단축키 기능 준비 중...";

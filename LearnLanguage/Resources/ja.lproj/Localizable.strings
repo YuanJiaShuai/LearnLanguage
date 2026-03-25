@@ -47,6 +47,7 @@
 
 // MARK: - Settings
 "Learning Settings" = "学習設定";
+"Translation Settings" = "翻訳設定";
 "Status Bar Settings" = "ステータスバー設定";
 "Review Settings" = "復習設定";
 "Pronunciation Settings" = "発音設定";
@@ -178,6 +179,13 @@
 "Wrong Records Title" = "未復習の間違い単語（";
 "Wrong Records Suffix" = "件）";
 "Batch Review" = "🔄 一括復習";
+
+// MARK: - Translation Settings
+"Double Copy Translate" = "⌘+C 二回で翻訳";
+"Double Copy Interval" = "トリガー間隔";
+"Clipboard OCR Translate" = "クリップボード画像 OCR 翻訳";
+"Translate Direction" = "翻訳方向";
+"Translate Font Size" = "翻訳結果フォントサイズ";
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "キーボードショートカットは近日公開予定...";

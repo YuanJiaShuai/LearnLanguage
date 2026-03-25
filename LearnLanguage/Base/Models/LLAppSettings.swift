@@ -39,6 +39,24 @@ enum LLLearningLanguage: String, CaseIterable, Codable {
     case english = "英语"
     case japanese = "日语"
     case korean = "韩语"
+
+    /// 对应的翻译方向（学习语言 → 英语，英语学习者则是 英语 → 中文）
+    var translationDirection: LLTranslationManager.Direction {
+        switch self {
+        case .english:  return .enToZh
+        case .japanese: return .jaToEn
+        case .korean:   return .koToEn
+        }
+    }
+
+    /// 朗读该语言时使用的语言代码
+    var speechLanguageCode: String {
+        switch self {
+        case .english:  return "en-US"
+        case .japanese: return "ja-JP"
+        case .korean:   return "ko-KR"
+        }
+    }
 }
 
 /// 应用显示语言
@@ -323,6 +341,18 @@ struct LLAppSettings: Codable {
     var launchAtLogin: Bool
     var shortcutConfig: LLShortcutConfig
 
+    // MARK: - 翻译设置
+    /// 是否开启连续两次 ⌘+C 触发翻译
+    var translateDoubleCopyEnabled: Bool
+    /// 两次 ⌘+C 触发翻译的时间间隔（秒）
+    var translateDoubleCopyInterval: Double
+    /// 是否开启剪贴板截图 OCR 翻译
+    var translateClipboardOCREnabled: Bool
+    /// 翻译方向是否反转（true: 中文→英文，false: 英文→中文）
+    var translateLanguageReversed: Bool
+    /// 翻译结果字体大小
+    var translateFontSize: CGFloat
+
     static let `default` = LLAppSettings(
         displayLanguage: .english,
         currentLanguage: .english,
@@ -355,6 +385,11 @@ struct LLAppSettings: Codable {
         typingInputStyle: .perLetter,
         autoShowAnswerAfterErrors: 3,
         launchAtLogin: false,
-        shortcutConfig: .default
+        shortcutConfig: .default,
+        translateDoubleCopyEnabled: false,
+        translateDoubleCopyInterval: 0.5,
+        translateClipboardOCREnabled: false,
+        translateLanguageReversed: false,
+        translateFontSize: 14
     )
 }

@@ -15,6 +15,9 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
     
     /// 主窗口
     var mainWindow: NSWindow?
+
+    /// 浮动翻译 ViewModel（需要持有引用，避免被释放）
+    private(set) lazy var translateViewModel = LLTranslateViewModel()
     
     // MARK: - Lifecycle
     
@@ -28,16 +31,22 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         setupStatusBar()
         // 3. 创建主窗口（但不显示）
         setupMainWindow()
+        // 4. 初始化翻译模块
+        setupTranslation()
         
         LLLogger.info("🎉 应用启动完成！")
     }
     
     // MARK: - Setup
     
+    private func setupTranslation() {
+        // 触发 lazy 初始化，启动剪贴板监听
+        _ = translateViewModel
+        LLLogger.info("✅ 翻译模块已初始化")
+    }
+
     private func setupStatusBar() {
         let manager = LLStatusBarManager.shared
-        
-        // 设置点击回调
         manager.onStatusBarClicked = { [weak self] in
             self?.handleStatusBarClick()
         }

@@ -120,6 +120,11 @@
 		A88C882B2F3CB589005ACFA6 /* LLSettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C882A2F3CB589005ACFA6 /* LLSettingsCardView.swift */; };
 		A88C882D2F3CBD4D005ACFA6 /* LLMMKVKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */; };
 		A8C7584C2F59D3F40071B6CD /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = A8C7584B2F59D3F40071B6CD /* LaunchAtLogin */; };
+		A8CBFCCD2F741F5200BF926A /* LLTranslateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CBFCCB2F741F5200BF926A /* LLTranslateViewModel.swift */; };
+		A8CBFCCE2F741F5200BF926A /* LLTranslateWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CBFCCC2F741F5200BF926A /* LLTranslateWindowManager.swift */; };
+		A8CBFCD02F741F7600BF926A /* LLTranslateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CBFCCF2F741F7600BF926A /* LLTranslateContentView.swift */; };
+		A8CBFCD22F7420A100BF926A /* LLClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CBFCD12F7420A100BF926A /* LLClipboardMonitor.swift */; };
+		A8CBFCD42F7420CE00BF926A /* LLOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CBFCD32F7420CE00BF926A /* LLOCRService.swift */; };
 		A8D1A74B2F6695E000C4BDF2 /* LLDailyLearningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */; };
 		A8D1A74E2F66AE4000C4BDF2 /* LLStatContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A74D2F66AE4000C4BDF2 /* LLStatContentView.swift */; };
 		A8D1A74F2F66AE4000C4BDF2 /* LLReviewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A74C2F66AE4000C4BDF2 /* LLReviewContentView.swift */; };
@@ -245,6 +250,11 @@
 		A88C88262F3CAF61005ACFA6 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
 		A88C882A2F3CB589005ACFA6 /* LLSettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSettingsCardView.swift; sourceTree = "<group>"; };
 		A88C882C2F3CBD4D005ACFA6 /* LLMMKVKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMMKVKeys.swift; sourceTree = "<group>"; };
+		A8CBFCCB2F741F5200BF926A /* LLTranslateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTranslateViewModel.swift; sourceTree = "<group>"; };
+		A8CBFCCC2F741F5200BF926A /* LLTranslateWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTranslateWindowManager.swift; sourceTree = "<group>"; };
+		A8CBFCCF2F741F7600BF926A /* LLTranslateContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTranslateContentView.swift; sourceTree = "<group>"; };
+		A8CBFCD12F7420A100BF926A /* LLClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLClipboardMonitor.swift; sourceTree = "<group>"; };
+		A8CBFCD32F7420CE00BF926A /* LLOCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLOCRService.swift; sourceTree = "<group>"; };
 		A8D1A74A2F6695E000C4BDF2 /* LLDailyLearningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDailyLearningManager.swift; sourceTree = "<group>"; };
 		A8D1A74C2F66AE4000C4BDF2 /* LLReviewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLReviewContentView.swift; sourceTree = "<group>"; };
 		A8D1A74D2F66AE4000C4BDF2 /* LLStatContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatContentView.swift; sourceTree = "<group>"; };
@@ -627,6 +637,8 @@
 			children = (
 				84D21B972F70F20600AFFE2C /* LLTranslationManager.swift */,
 				84D21B982F70F20600AFFE2C /* LLTranslationTaskBridge.swift */,
+				A8CBFCCB2F741F5200BF926A /* LLTranslateViewModel.swift */,
+				A8CBFCCC2F741F5200BF926A /* LLTranslateWindowManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -636,6 +648,7 @@
 			children = (
 				84D21B9A2F70F20600AFFE2C /* LLSpeechService.swift */,
 				84D21B9B2F70F20600AFFE2C /* LLWordService.swift */,
+				A8CBFCD32F7420CE00BF926A /* LLOCRService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -644,6 +657,7 @@
 			isa = PBXGroup;
 			children = (
 				84D21B9D2F70F20600AFFE2C /* LLSearchWordView.swift */,
+				A8CBFCCF2F741F7600BF926A /* LLTranslateContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -651,6 +665,7 @@
 		84D21B9F2F70F20600AFFE2C /* Translation */ = {
 			isa = PBXGroup;
 			children = (
+				A8CBFCD12F7420A100BF926A /* LLClipboardMonitor.swift */,
 				84D21B992F70F20600AFFE2C /* Managers */,
 				84D21B9C2F70F20600AFFE2C /* Services */,
 				84D21B9E2F70F20600AFFE2C /* Views */,
@@ -929,6 +944,7 @@
 				8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */,
 				84C0D9DD2F6BE97F00F96737 /* LLDBLearningHistory.swift in Sources */,
 				849226E32F3C878F00447E0C /* LLSettingsStore.swift in Sources */,
+				A8CBFCD42F7420CE00BF926A /* LLOCRService.swift in Sources */,
 				849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */,
 				849226E62F3C878F00447E0C /* LLSidebarViewController.swift in Sources */,
 				849226E72F3C878F00447E0C /* LLSettingsTabViewController.swift in Sources */,
@@ -939,6 +955,8 @@
 				84D21BA02F70F20600AFFE2C /* LLSpeechService.swift in Sources */,
 				84D21BA12F70F20600AFFE2C /* LLSearchWordView.swift in Sources */,
 				84D21BA22F70F20600AFFE2C /* LLTranslationManager.swift in Sources */,
+				A8CBFCCD2F741F5200BF926A /* LLTranslateViewModel.swift in Sources */,
+				A8CBFCCE2F741F5200BF926A /* LLTranslateWindowManager.swift in Sources */,
 				84D21BA32F70F20600AFFE2C /* LLTranslationTaskBridge.swift in Sources */,
 				84D21BA42F70F20600AFFE2C /* LLWordService.swift in Sources */,
 				849226EC2F3C878F00447E0C /* LLRecordItemView.swift in Sources */,
@@ -956,6 +974,7 @@
 				849226F02F3C878F00447E0C /* LLCurrentListCardView.swift in Sources */,
 				A85192832F51E908006CEA04 /* LLDBLearningProgress.swift in Sources */,
 				84E1E3332F3D85F900D1B7B6 /* LLWordPhoneticView.swift in Sources */,
+				A8CBFCD22F7420A100BF926A /* LLClipboardMonitor.swift in Sources */,
 				849226F12F3C878F00447E0C /* LLDBWordList.swift in Sources */,
 				849226F22F3C878F00447E0C /* LLAppDelegate.swift in Sources */,
 				849226F32F3C878F00447E0C /* LLAppInitializer.swift in Sources */,
@@ -972,6 +991,7 @@
 				849226FD2F3C878F00447E0C /* LLWordListTabViewController.swift in Sources */,
 				A88C882D2F3CBD4D005ACFA6 /* LLMMKVKeys.swift in Sources */,
 				A8D1A74E2F66AE4000C4BDF2 /* LLStatContentView.swift in Sources */,
+				A8CBFCD02F741F7600BF926A /* LLTranslateContentView.swift in Sources */,
 				A8D1A74F2F66AE4000C4BDF2 /* LLReviewContentView.swift in Sources */,
 				849226FF2F3C878F00447E0C /* LLDatabaseManager.swift in Sources */,
 				849227002F3C878F00447E0C /* LLAppSettings.swift in Sources */,

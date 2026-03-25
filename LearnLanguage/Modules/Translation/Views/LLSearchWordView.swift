@@ -235,7 +235,8 @@ final class LLSearchWordView: NSView {
     @objc private func speakWord() {
         let word = lastSearchedText
         guard !word.isEmpty else { return }
-        LLSpeechService.shared.speak(word, language: "en-US")
+        let lang = LLSettingsStore.shared.currentLanguage.speechLanguageCode
+        LLSpeechService.shared.speak(word, language: lang)
     }
 
     // MARK: - Search
@@ -249,7 +250,10 @@ final class LLSearchWordView: NSView {
         showLoading(true)
         hideResult()
 
-        LLTranslationManager.shared.translate(text, direction: .enToZh) { [weak self] result in
+        // 根据当前学习语言自动选择翻译方向
+        let direction = LLSettingsStore.shared.currentLanguage.translationDirection
+
+        LLTranslationManager.shared.translate(text, direction: direction) { [weak self] result in
             guard let self else { return }
             self.showLoading(false)
 

@@ -47,6 +47,7 @@
 
 // MARK: - Settings
 "Learning Settings" = "学习设置";
+"Translation Settings" = "翻译设置";
 "Status Bar Settings" = "状态栏设置";
 "Review Settings" = "复习设置";
 "Pronunciation Settings" = "发音设置";
@@ -178,6 +179,13 @@
 "Wrong Records Title" = "未复习错题（";
 "Wrong Records Suffix" = "道）";
 "Batch Review" = "🔄 批量复习";
+
+// MARK: - Translation Settings
+"Double Copy Translate" = "两次 ⌘+C 触发翻译";
+"Double Copy Interval" = "触发时间间隔";
+"Clipboard OCR Translate" = "剪贴板截图 OCR 翻译";
+"Translate Direction" = "翻译方向";
+"Translate Font Size" = "翻译结果字体大小";
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "快捷键功能开发中，敬请期待...";

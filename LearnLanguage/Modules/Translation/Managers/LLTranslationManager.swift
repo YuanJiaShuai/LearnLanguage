@@ -36,11 +36,26 @@ final class LLTranslationManager {
     }
 
     enum Direction {
-        case enToZh
-        case zhToEn
+        case enToZh   // 英文 → 中文
+        case zhToEn   // 中文 → 英文
+        case jaToEn   // 日文 → 英文
+        case koToEn   // 韩文 → 英文
 
-        var sourceIdentifier: String { self == .enToZh ? "en" : "zh" }
-        var targetIdentifier: String { self == .enToZh ? "zh" : "en" }
+        var sourceIdentifier: String {
+            switch self {
+            case .enToZh: return "en"
+            case .zhToEn: return "zh"
+            case .jaToEn: return "ja"
+            case .koToEn: return "ko"
+            }
+        }
+
+        var targetIdentifier: String {
+            switch self {
+            case .enToZh: return "zh"
+            case .zhToEn, .jaToEn, .koToEn: return "en"
+            }
+        }
     }
 
     // MARK: - Public
@@ -66,7 +81,7 @@ final class LLTranslationManager {
             return
         }
 
-        // 英 -> 中 时顺便获取音标（离线）
+        // 只有英文 → 中文时才获取音标（离线，基于系统词典）
         let phonetics: String? = direction == .enToZh ? LLWordService.getPhonetics(for: trimmed) : nil
 
         let source = Locale.Language(identifier: direction.sourceIdentifier)

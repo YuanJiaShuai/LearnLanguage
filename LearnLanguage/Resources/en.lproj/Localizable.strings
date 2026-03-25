@@ -47,6 +47,7 @@
 
 // MARK: - Settings
 "Learning Settings" = "Learning Settings";
+"Translation Settings" = "Translation Settings";
 "Status Bar Settings" = "Status Bar Settings";
 "Review Settings" = "Review Settings";
 "Pronunciation Settings" = "Pronunciation Settings";
@@ -178,6 +179,13 @@
 "Wrong Records Title" = "Unreviewed Wrong Words (";
 "Wrong Records Suffix" = ")";
 "Batch Review" = "🔄 Batch Review";
+
+// MARK: - Translation Settings
+"Double Copy Translate" = "Translate on Double ⌘+C";
+"Double Copy Interval" = "Trigger Interval";
+"Clipboard OCR Translate" = "Clipboard Screenshot OCR";
+"Translate Direction" = "Translation Direction";
+"Translate Font Size" = "Result Font Size";
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "Keyboard shortcuts coming soon...";

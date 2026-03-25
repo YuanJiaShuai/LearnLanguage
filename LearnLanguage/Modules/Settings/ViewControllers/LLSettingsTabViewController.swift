@@ -106,7 +106,16 @@ final class LLSettingsTabViewController: NSViewController {
     private var autoShowAnswerPopup: NSPopUpButton!
     
     // 快捷键设置卡片（动态创建，无需存储引用）
-    
+
+    // 翻译设置卡片
+    private var translateDoubleCopyCheck: NSButton!
+    private var translateDoubleCopyIntervalStepper: NSStepper!
+    private var translateDoubleCopyIntervalLabel: NSTextField!
+    private var translateClipboardOCRCheck: NSButton!
+    private var translateLanguageDirectionSegment: NSSegmentedControl!
+    private var translateFontSizeSlider: NSSlider!
+    private var translateFontSizeLabel: NSTextField!
+
     // 其他设置卡片
     private var launchAtLoginCheck: NSButton!
     private var displayLanguagePopup: NSPopUpButton!
@@ -174,14 +183,18 @@ final class LLSettingsTabViewController: NSViewController {
         let shortcutCard = createShortcutCard()
         cardsStack.addArrangedSubview(shortcutCard)
         
-        // 7. 其他设置卡片
+        // 7. 翻译设置卡片
+        let translationCard = createTranslationCard()
+        cardsStack.addArrangedSubview(translationCard)
+        
+        // 8. 其他设置卡片
         let otherCard = createOtherCard()
         cardsStack.addArrangedSubview(otherCard)
         
         contentView.addSubview(cardsStack)
         
         // 设置所有卡片宽度一致
-        [goalCard, statusBarCard, reviewCard, pronunciationCard, floatingPanelCard, shortcutCard, otherCard].forEach { card in
+        [goalCard, statusBarCard, reviewCard, pronunciationCard, floatingPanelCard, shortcutCard, translationCard, otherCard].forEach { card in
             card.snp.makeConstraints { make in
                 make.width.equalTo(564)
             }
@@ -447,6 +460,82 @@ final class LLSettingsTabViewController: NSViewController {
         return card
     }
     
+    private func createTranslationCard() -> LLSettingsCardView {
+        let card = LLSettingsCardView(title: NSLocalizedString("Translation Settings", comment: ""), icon: "🌐")
+
+        // 两次 ⌘+C 翻译开关
+        translateDoubleCopyCheck = NSButton(checkboxWithTitle: NSLocalizedString("Double Copy Translate", comment: ""), target: self, action: #selector(saveSettings))
+
+        // 时间间隔：步进器 + 数值标签
+        translateDoubleCopyIntervalStepper = NSStepper()
+        translateDoubleCopyIntervalStepper.minValue = 0.1
+        translateDoubleCopyIntervalStepper.maxValue = 2.0
+        translateDoubleCopyIntervalStepper.increment = 0.05
+        translateDoubleCopyIntervalStepper.valueWraps = false
+        translateDoubleCopyIntervalStepper.target = self
+        translateDoubleCopyIntervalStepper.action = #selector(onDoubleCopyIntervalChanged)
+
+        translateDoubleCopyIntervalLabel = NSTextField(labelWithString: "0.50s")
+        translateDoubleCopyIntervalLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
+        translateDoubleCopyIntervalLabel.textColor = NSColor(white: 0.4, alpha: 1.0)
+        translateDoubleCopyIntervalLabel.alignment = .right
+        translateDoubleCopyIntervalLabel.snp.makeConstraints { make in
+            make.width.equalTo(44)
+        }
+
+        let intervalStack = NSStackView(views: [translateDoubleCopyIntervalLabel, translateDoubleCopyIntervalStepper])
+        intervalStack.orientation = .horizontal
+        intervalStack.spacing = 6
+        intervalStack.alignment = .centerY
+
+        // 剪贴板截图 OCR 翻译
+        translateClipboardOCRCheck = NSButton(checkboxWithTitle: NSLocalizedString("Clipboard OCR Translate", comment: ""), target: self, action: #selector(saveSettings))
+
+        // 翻译方向
+        translateLanguageDirectionSegment = NSSegmentedControl(labels: ["EN → 中文", "中文 → EN"], trackingMode: .selectOne, target: self, action: #selector(saveSettings))
+        translateLanguageDirectionSegment.selectedSegment = 0
+
+        // 翻译结果字体大小
+        translateFontSizeSlider = NSSlider(value: 14, minValue: 10, maxValue: 30, target: self, action: #selector(onTranslateFontSizeChanged))
+        translateFontSizeSlider.isContinuous = true
+
+        translateFontSizeLabel = NSTextField(labelWithString: "14 pt")
+        translateFontSizeLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
+        translateFontSizeLabel.textColor = NSColor(white: 0.4, alpha: 1.0)
+        translateFontSizeLabel.alignment = .right
+        translateFontSizeLabel.snp.makeConstraints { make in
+            make.width.equalTo(40)
+        }
+
+        let fontSizeStack = NSStackView(views: [translateFontSizeSlider, translateFontSizeLabel])
+        fontSizeStack.orientation = .horizontal
+        fontSizeStack.spacing = 8
+        fontSizeStack.distribution = .fill
+        translateFontSizeSlider.snp.makeConstraints { make in
+            make.width.greaterThanOrEqualTo(200)
+        }
+
+        card.addFormItem(label: NSLocalizedString("Double Copy Translate", comment: ""), control: translateDoubleCopyCheck)
+        card.addFormItem(label: NSLocalizedString("Double Copy Interval", comment: ""), control: intervalStack)
+        card.addFormItem(label: NSLocalizedString("Clipboard OCR Translate", comment: ""), control: translateClipboardOCRCheck)
+        card.addFormItem(label: NSLocalizedString("Translate Direction", comment: ""), control: translateLanguageDirectionSegment)
+        card.addFormItem(label: NSLocalizedString("Translate Font Size", comment: ""), control: fontSizeStack)
+
+        return card
+    }
+
+    @objc private func onDoubleCopyIntervalChanged() {
+        let val = translateDoubleCopyIntervalStepper.doubleValue
+        translateDoubleCopyIntervalLabel.stringValue = String(format: "%.2fs", val)
+        saveSettings()
+    }
+
+    @objc private func onTranslateFontSizeChanged() {
+        let val = Int(translateFontSizeSlider.doubleValue)
+        translateFontSizeLabel.stringValue = "\(val) pt"
+        saveSettings()
+    }
+
     private func createOtherCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: NSLocalizedString("Other Settings", comment: ""), icon: "⚙️")
         
@@ -550,6 +639,15 @@ final class LLSettingsTabViewController: NSViewController {
         }
         
         launchAtLoginCheck.state = LaunchAtLogin.isEnabled ? .on : .off
+        
+        // 翻译设置
+        translateDoubleCopyCheck.state = s.translateDoubleCopyEnabled ? .on : .off
+        translateDoubleCopyIntervalStepper.doubleValue = s.translateDoubleCopyInterval
+        translateDoubleCopyIntervalLabel.stringValue = String(format: "%.2fs", s.translateDoubleCopyInterval)
+        translateClipboardOCRCheck.state = s.translateClipboardOCREnabled ? .on : .off
+        translateLanguageDirectionSegment.selectedSegment = s.translateLanguageReversed ? 1 : 0
+        translateFontSizeSlider.doubleValue = s.translateFontSize
+        translateFontSizeLabel.stringValue = "\(Int(s.translateFontSize)) pt"
         
         // 初始化字体预览
         updateFontPreview()
@@ -663,9 +761,14 @@ final class LLSettingsTabViewController: NSViewController {
             s.autoShowAnswerAfterErrors = LLAutoShowAnswerOption.allCases[autoShowIndex].rawValue
         }
         
-        LLSettingsStore.shared.settings = s
+        // 翻译设置
+        s.translateDoubleCopyEnabled = translateDoubleCopyCheck.state == .on
+        s.translateDoubleCopyInterval = translateDoubleCopyIntervalStepper.doubleValue
+        s.translateClipboardOCREnabled = translateClipboardOCRCheck.state == .on
+        s.translateLanguageReversed = translateLanguageDirectionSegment.selectedSegment == 1
+        s.translateFontSize = CGFloat(Int(translateFontSizeSlider.doubleValue))
         
-        // 发送通知刷新状态栏（状态栏相关设置变化）
+        LLSettingsStore.shared.settings = s
         NotificationCenter.default.post(name: .learnLanguageRefreshStatus, object: nil)
         
         // 发送通知更新浮窗（浮窗相关设置变化）
