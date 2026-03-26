@@ -13,7 +13,7 @@ final class LLSearchWordView: NSView {
     // MARK: - Constants
 
     static let viewWidth: CGFloat  = 280
-    static let viewHeight: CGFloat = 56  // 初始高度，结果出来后会撑开
+    static let viewHeight: CGFloat = 48  // 初始高度：top(8) + inputContainer(32) + bottom(8)
 
     // MARK: - UI
 
@@ -138,7 +138,7 @@ final class LLSearchWordView: NSView {
             make.top.equalToSuperview().offset(8)
             make.leading.equalToSuperview().offset(12)
             make.trailing.equalToSuperview().offset(-12)
-            make.bottom.equalToSuperview().offset(-8)
+            make.height.equalTo(32)
         }
 
         searchIcon.snp.makeConstraints { make in
@@ -183,7 +183,6 @@ final class LLSearchWordView: NSView {
             make.top.equalTo(divider.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(12)
             make.trailing.equalToSuperview().offset(-12)
-            make.bottom.equalToSuperview().offset(-8)
         }
 
         speakButton.snp.makeConstraints { make in
@@ -296,9 +295,61 @@ final class LLSearchWordView: NSView {
         // 通知父级更新高度
         DispatchQueue.main.async {
             self.layoutSubtreeIfNeeded()
-            let newHeight = self.fittingSize.height
+            let newHeight = self.calculatedHeight()
             self.onHeightChanged?(newHeight)
         }
+    }
+
+    /// 根据当前内容计算视图所需总高度
+    private func calculatedHeight() -> CGFloat {
+        // 输入框区域：top 8 + 高度 32 + bottom 8 = 48（固定）
+        let inputH: CGFloat = 48
+
+        // 没有结果时直接返回输入框高度
+        guard !resultContainer.isHidden else { return inputH }
+
+        // 分割线：8（间距）+ 1（线）= 9
+        let dividerH: CGFloat = 9
+
+        // 音标行高度（隐藏时为 0，且不计 resultLabel top 的 4pt offset）
+        let phoneticH: CGFloat
+        if phoneticLabel.isHidden || phoneticLabel.stringValue.isEmpty {
+            phoneticH = 0
+        } else {
+            phoneticH = phoneticLabel.fittingSize.height + 4  // +4 = resultLabel top offset
+        }
+
+        // 翻译结果文字高度（按宽度换行，最多 5 行）
+        let labelWidth = LLSearchWordView.viewWidth - 24  // leading 12 + trailing 12
+        let font = resultLabel.font ?? NSFont.systemFont(ofSize: 13)
+        let singleLineH = "A".boundingRect(
+            with: CGSize(width: labelWidth, height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: font],
+            context: nil
+        ).height
+        let maxResultH = ceil(singleLineH) * 5  // maximumNumberOfLines = 5
+
+        let resultH: CGFloat
+        let text = resultLabel.stringValue
+        if text.isEmpty {
+            resultH = ceil(singleLineH)  // 至少保留一行高度
+        } else {
+            let rect = text.boundingRect(
+                with: CGSize(width: labelWidth, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [.font: font],
+                context: nil
+            )
+            resultH = min(ceil(rect.height), maxResultH)
+        }
+
+        // 结果容器：top 8 + (phonetic含间距 或 0) + result + bottom 8
+        // 注意：phoneticLabel 隐藏时 resultLabel top 约束仍有 4pt，需额外补上
+        let topGap: CGFloat = phoneticH > 0 ? 0 : 4  // phoneticLabel.bottom + 4 = resultLabel.top
+        let resultContainerH: CGFloat = 8 + phoneticH + topGap + resultH + 8
+
+        return inputH + dividerH + resultContainerH
     }
 
     private func hideResult() {
@@ -344,6 +395,10 @@ extension LLSearchWordView: NSTextFieldDelegate {
         // 输入变化时重置 lastSearchedText，允许重新搜索
         if text != lastSearchedText {
             lastSearchedText = ""
+        }
+        // 文本清空时隐藏结果区域并恢复初始高度
+        if text.isEmpty {
+            hideResult()
         }
     }
 

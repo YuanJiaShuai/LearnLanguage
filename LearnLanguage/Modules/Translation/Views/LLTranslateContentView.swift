@@ -24,13 +24,11 @@ final class LLTranslateContentView: NSView {
 
     // MARK: - UI
 
-    /// 背景层（圆角半透明黑色）
-    private lazy var backgroundView: NSVisualEffectView = {
-        let v = NSVisualEffectView()
-        v.material = .hudWindow
-        v.blendingMode = .behindWindow
-        v.state = .active
+    /// 背景层（圆角半透明黑色，与 TranslateP 保持一致）
+    private lazy var backgroundView: NSView = {
+        let v = NSView()
         v.wantsLayer = true
+        v.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.75).cgColor
         v.layer?.cornerRadius = 10
         v.layer?.masksToBounds = true
         return v
@@ -40,7 +38,7 @@ final class LLTranslateContentView: NSView {
     private lazy var resultLabel: NSTextField = {
         let tf = NSTextField(wrappingLabelWithString: "")
         tf.font = NSFont.systemFont(ofSize: 14)
-        tf.textColor = .labelColor
+        tf.textColor = .white
         tf.isSelectable = true
         tf.drawsBackground = false
         tf.isBezeled = false
@@ -48,22 +46,11 @@ final class LLTranslateContentView: NSView {
         return tf
     }()
 
-    /// 滚动容器
-    private lazy var scrollView: NSScrollView = {
-        let sv = NSScrollView()
-        sv.hasVerticalScroller = true
-        sv.autohidesScrollers = true
-        sv.drawsBackground = false
-        sv.borderType = .noBorder
-        sv.documentView = resultLabel
-        return sv
-    }()
-
     /// 音标标签
     private lazy var phoneticLabel: NSTextField = {
         let tf = NSTextField(labelWithString: "")
         tf.font = NSFont.systemFont(ofSize: 11)
-        tf.textColor = .secondaryLabelColor
+        tf.textColor = NSColor.white.withAlphaComponent(0.6)
         tf.isHidden = true
         return tf
     }()
@@ -73,7 +60,7 @@ final class LLTranslateContentView: NSView {
         let btn = NSButton()
         btn.isBordered = false
         btn.image = NSImage(systemSymbolName: "speaker.wave.2", accessibilityDescription: nil)
-        btn.contentTintColor = .secondaryLabelColor
+        btn.contentTintColor = NSColor.white.withAlphaComponent(0.6)
         btn.target = self
         btn.action = #selector(didTapSpeak)
         btn.isHidden = true
@@ -85,7 +72,7 @@ final class LLTranslateContentView: NSView {
         let btn = NSButton()
         btn.isBordered = false
         btn.image = NSImage(systemSymbolName: "document.on.document", accessibilityDescription: nil)
-        btn.contentTintColor = .secondaryLabelColor
+        btn.contentTintColor = NSColor.white.withAlphaComponent(0.6)
         btn.target = self
         btn.action = #selector(didTapCopy)
         btn.isHidden = true
@@ -97,7 +84,7 @@ final class LLTranslateContentView: NSView {
         let btn = NSButton()
         btn.isBordered = false
         btn.image = NSImage(systemSymbolName: "pin", accessibilityDescription: nil)
-        btn.contentTintColor = .secondaryLabelColor
+        btn.contentTintColor = NSColor.white.withAlphaComponent(0.6)
         btn.target = self
         btn.action = #selector(didTapPin)
         return btn
@@ -131,17 +118,16 @@ final class LLTranslateContentView: NSView {
             make.edges.equalToSuperview()
         }
 
-        addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
+        addSubview(resultLabel)
+        resultLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
             make.leading.equalToSuperview().offset(12)
             make.trailing.equalToSuperview().offset(-12)
-            make.height.equalTo(44)
         }
 
         addSubview(phoneticLabel)
         phoneticLabel.snp.makeConstraints { make in
-            make.top.equalTo(scrollView.snp.bottom).offset(4)
+            make.top.equalTo(resultLabel.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(12)
             make.trailing.equalToSuperview().offset(-12)
         }
@@ -182,7 +168,7 @@ final class LLTranslateContentView: NSView {
     /// 显示翻译中占位
     func showLoading() {
         resultLabel.stringValue = "..."
-        resultLabel.textColor = .secondaryLabelColor
+        resultLabel.textColor = NSColor.white.withAlphaComponent(0.4)
         phoneticLabel.isHidden = true
         speakButton.isHidden = true
         copyButton.isHidden = true
@@ -193,7 +179,7 @@ final class LLTranslateContentView: NSView {
     func showResult(text: String, phonetic: String?, fontSize: CGFloat) {
         resultLabel.font = NSFont.systemFont(ofSize: fontSize)
         resultLabel.stringValue = text
-        resultLabel.textColor = .labelColor
+        resultLabel.textColor = .white
 
         if let p = phonetic, !p.isEmpty {
             phoneticLabel.stringValue = p
@@ -249,7 +235,10 @@ final class LLTranslateContentView: NSView {
         )
         let textH = max(44, ceil(rect.height) + 24)
         let clampedH = min(textH, maxTextHeight)
-        scrollView.snp.updateConstraints { make in
+        resultLabel.snp.remakeConstraints { make in
+            make.top.equalToSuperview().offset(12)
+            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalToSuperview().offset(-12)
             make.height.equalTo(clampedH)
         }
         layoutSubtreeIfNeeded()
@@ -260,8 +249,8 @@ final class LLTranslateContentView: NSView {
     override var fittingSize: NSSize {
         layoutSubtreeIfNeeded()
         let phoneticH: CGFloat = phoneticLabel.isHidden ? 0 : (phoneticLabel.fittingSize.height + 4)
-        let scrollH = scrollView.frame.height
-        let totalH = 12 + scrollH + phoneticH + toolbarHeight
+        let labelH = resultLabel.frame.height
+        let totalH = 12 + labelH + phoneticH + 4 + toolbarHeight
         return NSSize(width: LLTranslateContentView.windowWidth, height: totalH)
     }
 }

@@ -15,10 +15,8 @@ final class LLStatusBarPopoverContentView: NSView {
 
     private enum Layout {
         static let width: CGFloat        = 300
-        static let sectionSpacing: CGFloat = 8
         static let menuItemHeight: CGFloat = 32
         static let dividerHeight: CGFloat  = 1
-        static let padding: CGFloat        = 8
     }
 
     // MARK: - Callbacks
@@ -31,8 +29,12 @@ final class LLStatusBarPopoverContentView: NSView {
         let v = LLSearchWordView(
             frame: NSRect(x: 0, y: 0, width: Layout.width, height: LLSearchWordView.viewHeight)
         )
-        v.onHeightChanged = { [weak self] _ in
-            self?.updatePanelHeight()
+        v.onHeightChanged = { [weak self] newHeight in
+            guard let self else { return }
+            self.searchWordView.snp.updateConstraints { make in
+                make.height.equalTo(newHeight)
+            }
+            self.updatePanelHeight(searchHeight: newHeight)
         }
         
         return v
@@ -176,15 +178,14 @@ final class LLStatusBarPopoverContentView: NSView {
             + Layout.dividerHeight // 菜单内分割线
     }
 
-    private func updatePanelHeight() {
+    private func updatePanelHeight(searchHeight: CGFloat = 48) {
         guard let panel = window as? LLStatusBarPopoverPanel else { return }
         // 重新计算总高度
         let titleH: CGFloat = 20
         let titleSpacing: CGFloat = 8
-        let searchH: CGFloat = 48
         let dividerH = Layout.dividerHeight
         let menuH = menuStack.arrangedSubviews.reduce(CGFloat(0)) { $0 + $1.frame.height }
-        let totalH = titleH + titleSpacing + searchH + dividerH + menuH
+        let totalH = titleH + titleSpacing + searchHeight + dividerH + menuH
 
         var frame = panel.frame
         let delta = totalH - frame.height

@@ -284,17 +284,10 @@ final class LLSettingsTabViewController: NSViewController {
         // 新增：是否显示反馈按钮
         showFeedbackButtonsCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Feedback Buttons", comment: ""), target: self, action: #selector(saveSettings))
         
-        // 新增：播放间隔设置
-        statusBarPlaybackIntervalPopup = NSPopUpButton()
-        statusBarPlaybackIntervalPopup.target = self
-        statusBarPlaybackIntervalPopup.action = #selector(saveSettings)
-        statusBarPlaybackIntervalPopup.addItems(withTitles: LLPlaybackInterval.allDisplayNames)
-        
         card.addFormItem(label: NSLocalizedString("Show Content", comment: ""), control: displayOptionsStack)
         card.addFormItem(label: NSLocalizedString("Auto Scroll", comment: ""), control: statusBarAutoScrollCheck)
         card.addFormItem(label: NSLocalizedString("Status Bar Width", comment: ""), control: widthSliderStack)
         card.addFormItem(label: NSLocalizedString("Show Feedback Buttons", comment: ""), control: showFeedbackButtonsCheck)
-        card.addFormItem(label: NSLocalizedString("Playback Interval", comment: ""), control: statusBarPlaybackIntervalPopup)
         
         return card
     }
@@ -342,12 +335,19 @@ final class LLSettingsTabViewController: NSViewController {
         pronunciationRatePopup.action = #selector(saveSettings)
         pronunciationRatePopup.addItems(withTitles: LLSpeechRate.allDisplayNames)
         
+        // 播放间隔设置（从状态栏设置移至此处）
+        statusBarPlaybackIntervalPopup = NSPopUpButton()
+        statusBarPlaybackIntervalPopup.target = self
+        statusBarPlaybackIntervalPopup.action = #selector(saveSettings)
+        statusBarPlaybackIntervalPopup.addItems(withTitles: LLPlaybackInterval.allDisplayNames)
+
         card.addFormItem(label: NSLocalizedString("Enable Pronunciation", comment: ""), control: pronunciationCheck)
         card.addFormRow(items: [
             (label: NSLocalizedString("Pronunciation Provider", comment: ""), control: pronunciationProviderPopup),
             (label: NSLocalizedString("Pronunciation Accent", comment: ""), control: pronunciationAccentPopup)
         ])
         card.addFormItem(label: NSLocalizedString("Speech Rate", comment: ""), control: pronunciationRatePopup)
+        card.addFormItem(label: NSLocalizedString("Playback Interval", comment: ""), control: statusBarPlaybackIntervalPopup)
         
         return card
     }
