@@ -247,9 +247,11 @@ final class LLDailyLearningManager {
                     record.correctCount = (record.correctCount ?? 0) + 1
                     record.reviewCount = (record.reviewCount ?? 0) + 1
                     
-                    easeFactor = min(2.0, easeFactor + 0.1)
-                    interval = max(1, Int(Double(interval) * easeFactor))
-                    record.nextReviewAt = now + Double(interval) * 86400
+                    if record.reviewCount >= 4 {
+                        easeFactor = min(2.0, easeFactor + 0.1)
+                        interval = max(1, Int(Double(interval) * easeFactor))
+                        record.nextReviewAt = now + Double(interval) * 86400
+                    }
                     record.status = 2
                 case .unclear:
                     // 小幅下降，今天继续

@@ -10,6 +10,29 @@ import SnapKit
 
 final class LLStatusBarContentView: NSControl {
     
+    // MARK: - Layout Constants
+    
+    private static let menuLeftInset: CGFloat = 6
+    private static let menuIconSize: CGFloat = 14
+    private static let menuToWordSpacing: CGFloat = 6
+    private static let wordToMeaningSpacing: CGFloat = 12
+    private static let rightInset: CGFloat = 8
+    private static let feedbackWidth: CGFloat = 70
+    private static let minimumWordSample = "WIDE"
+    
+    static func minimumRequiredWidth() -> CGFloat {
+        let font = NSFont.menuBarFont(ofSize: 0)
+        let sampleWidth = (minimumWordSample as NSString).size(withAttributes: [.font: font]).width
+        
+        return menuLeftInset
+            + menuIconSize
+            + menuToWordSpacing
+            + sampleWidth
+            + wordToMeaningSpacing
+            + feedbackWidth
+            + rightInset
+    }
+    
     // MARK: - Properties
     
     var statusItem: NSStatusItem
@@ -41,6 +64,9 @@ final class LLStatusBarContentView: NSControl {
         view.onFeedback = { [weak self] feedback in
             self?.handleFeedback(feedback)
         }
+        view.onShow = { [weak self] in
+            self?.showMeaningTemporarily()
+        }
         return view
     }()
 
@@ -55,8 +81,10 @@ final class LLStatusBarContentView: NSControl {
         return iv
     }()
     
-    // 追踪区域，用于检测鼠标进入/离开
     private var trackingArea: NSTrackingArea?
+    private var temporaryMeaningWorkItem: DispatchWorkItem?
+    private var isTemporaryMeaningVisible = false
+    private let temporaryMeaningDuration: TimeInterval = 10
     
     // MARK: - Initialization
     
@@ -89,27 +117,29 @@ final class LLStatusBarContentView: NSControl {
         
         // 菜单图标在最左侧，垂直居中
         menuIconView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(6)
+            make.left.equalToSuperview().offset(Self.menuLeftInset)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(14)
+            make.width.height.equalTo(Self.menuIconSize)
         }
         
         // 单词音标视图在图标右侧
         wordPhoneticView.snp.makeConstraints { make in
-            make.left.equalTo(menuIconView.snp.right).offset(6)
+            make.left.equalTo(menuIconView.snp.right).offset(Self.menuToWordSpacing)
             make.centerY.equalToSuperview()
         }
         
-        // 滚动视图填充剩余空间
+        // 滚动视图填充剩余空间（为右侧反馈按钮预留固定宽度）
         scrollingMeaningView.snp.makeConstraints { make in
-            make.left.equalTo(wordPhoneticView.snp.right).offset(12)
-            make.right.equalToSuperview().offset(-8)
+            make.left.equalTo(wordPhoneticView.snp.right).offset(Self.wordToMeaningSpacing)
+            make.right.equalToSuperview().offset(-Self.rightInset)
             make.top.bottom.equalToSuperview()
         }
         
-        // 反馈按钮和滚动视图重叠，位置和大小完全相同
+        // 反馈按钮固定在最右侧，覆盖在释义区域之上
         feedbackView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollingMeaningView)
+            make.right.equalToSuperview().offset(-Self.rightInset)
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(Self.feedbackWidth)
         }
     }
     
@@ -133,6 +163,7 @@ final class LLStatusBarContentView: NSControl {
     
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
+        guard !isTemporaryMeaningVisible else { return }
         showFeedbackView()
     }
     
@@ -154,17 +185,53 @@ final class LLStatusBarContentView: NSControl {
     }
     
     private func hideFeedbackView() {
+        // 如果正在临时显示释义，不处理鼠标离开的隐藏逻辑
+        guard !isTemporaryMeaningVisible else { return }
+        
         // 淡出动画
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.2
             feedbackView.animator().alphaValue = 0
         }, completionHandler: {
-            // 动画完成后隐藏反馈按钮，显示滚动视图
+            // 动画完成后隐藏反馈按钮，按设置恢复释义显示
             self.feedbackView.isHidden = true
-            // 获取设置
-            let settings = LLSettingsStore.shared.settings
-            self.scrollingMeaningView.isHidden = false && (!settings.statusBarShowMeaning)
+            self.restoreMeaningVisibilityBySettings()
         })
+    }
+    
+    private func showMeaningTemporarily() {
+        temporaryMeaningWorkItem?.cancel()
+        isTemporaryMeaningVisible = true
+        
+        feedbackView.isHidden = true
+        feedbackView.alphaValue = 0
+        scrollingMeaningView.isHidden = false
+        
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            self.isTemporaryMeaningVisible = false
+            if self.isMouseInsideView() {
+                self.showFeedbackView()
+            } else {
+                self.feedbackView.alphaValue = 0
+                self.feedbackView.isHidden = true
+                self.restoreMeaningVisibilityBySettings()
+            }
+        }
+        temporaryMeaningWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + temporaryMeaningDuration, execute: workItem)
+    }
+    
+    private func restoreMeaningVisibilityBySettings() {
+        let settings = LLSettingsStore.shared.settings
+        scrollingMeaningView.isHidden = !settings.statusBarShowMeaning
+    }
+    
+    private func isMouseInsideView() -> Bool {
+        guard let window = window else { return false }
+        let pointInWindow = window.mouseLocationOutsideOfEventStream
+        let pointInSelf = convert(pointInWindow, from: nil)
+        return bounds.contains(pointInSelf)
     }
     
     private func handleFeedback(_ feedback: LLWordFeedback) {
@@ -223,7 +290,11 @@ final class LLStatusBarContentView: NSControl {
         wordPhoneticView.setPhoneticBlurred(!settings.statusBarShowPhoneticSymbol)
         
         // 根据设置控制释义的显示/隐藏
-        scrollingMeaningView.isHidden = !settings.statusBarShowMeaning
+        if isTemporaryMeaningVisible {
+            scrollingMeaningView.isHidden = false
+        } else {
+            scrollingMeaningView.isHidden = !settings.statusBarShowMeaning
+        }
         
         // 根据设置控制是否启用滚动
         scrollingMeaningView.forcedScroll = settings.statusBarAutoScroll

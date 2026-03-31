@@ -258,7 +258,12 @@ final class LLStatusBarManager {
     
     private func setupMainStatusItem(in bar: NSStatusBar) {
         let settings = LLSettingsStore.shared.settings
-        let length = settings.statusBarShowContent ? CGFloat(settings.statusBarContentWidth) : NSStatusItem.variableLength
+        let configuredLength = settings.statusBarShowContent ? CGFloat(settings.statusBarContentWidth) : NSStatusItem.variableLength
+        let minimumLength = LLStatusBarContentView.minimumRequiredWidth()
+        let length: CGFloat = {
+            guard configuredLength != NSStatusItem.variableLength else { return configuredLength }
+            return max(configuredLength, minimumLength)
+        }()
         
         statusItem = bar.statusItem(withLength: length)
         
