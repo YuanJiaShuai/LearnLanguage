@@ -374,7 +374,7 @@ struct LLAppSettings: Codable {
         floatingPanelFontSize: 24,
         pronunciationEnabled: true,
         pronunciationProvider: .local,
-        pronunciationAccent: .us,
+        pronunciationAccent: .uk,
         pronunciationRate: 1.0,
         newWordsPerDay: 20,
         reviewCountPerDay: 50,
