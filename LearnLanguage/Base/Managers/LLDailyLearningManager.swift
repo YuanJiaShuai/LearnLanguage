@@ -94,12 +94,15 @@ final class LLDailyLearningManager {
     func recordFeedback(_ feedback: LLWordFeedback, for entry: LLWordEntry) {
         let isFromReviewQueue = reviewQueue.first?.id == entry.id
         let isFromNewQueue = newWordQueue.first?.id == entry.id
+        let isFromNewLearnQueue = newLearnWordQueue.first?.id == entry.id
         
         // 从当前队列头部移除
         if isFromReviewQueue {
             reviewQueue.removeFirst()
         } else if isFromNewQueue {
             newWordQueue.removeFirst()
+        } else if isFromNewLearnQueue {
+            newLearnWordQueue.removeFirst()
         }
         
         // 根据反馈处理
@@ -113,7 +116,11 @@ final class LLDailyLearningManager {
             ) { [weak self] (wordEntry, reviewCount) in
                 guard let self = self else { return }
                 if reviewCount < 4 {
-                    self.reviewQueue.append(wordEntry)
+                    if isFromReviewQueue {
+                        self.reviewQueue.append(wordEntry)
+                    } else {
+                        self.newLearnWordQueue.append(wordEntry)
+                    }
                 } else {
                     NotificationCenter.default.post(name: .wrongWordsCountChanged, object: nil)
                 }
@@ -124,6 +131,9 @@ final class LLDailyLearningManager {
             if isFromReviewQueue {
                 // 历史复习词标记模糊：留在复习队列尾部继续循环
                 reviewQueue.append(entry)
+            } else if isFromNewLearnQueue {
+                // 今日新学未达标词标记模糊：留在今日新学队列尾部继续循环
+                newLearnWordQueue.append(entry)
             }
             // 今日新词标记模糊：不加入复习队列，继续学下一个新词
             
@@ -132,11 +142,21 @@ final class LLDailyLearningManager {
             if isFromReviewQueue {
                 // 历史复习词标记不认识：留在复习队列尾部继续循环
                 reviewQueue.append(entry)
+            } else if isFromNewLearnQueue {
+                // 今日新学未达标词标记不认识：留在今日新学队列尾部继续循环
+                newLearnWordQueue.append(entry)
             }
             // 今日新词标记不认识：不加入复习队列，继续学下一个新词
         }
         
-        LLLogger.info("📝 反馈记录：\(entry.text) -> \(feedback.rawValue)，来源：\(isFromReviewQueue ? "复习词" : "新词")，wordId: \(entry.id), 复习队列剩余：\(reviewQueue.count)，新词队列剩余：\(newWordQueue.count)")
+        let source: String = {
+            if isFromReviewQueue { return "复习词" }
+            if isFromNewQueue { return "新词" }
+            if isFromNewLearnQueue { return "今日新学词" }
+            return "未知来源"
+        }()
+        
+        LLLogger.info("📝 反馈记录：\(entry.text) -> \(feedback.rawValue)，来源：\(source)，wordId: \(entry.id), 复习队列剩余：\(reviewQueue.count)，新词队列剩余：\(newWordQueue.count)，今日新学队列剩余：\(newLearnWordQueue.count)")
     }
     
     /// 记录打字练习结果（根据错误次数映射为反馈）
@@ -247,7 +267,7 @@ final class LLDailyLearningManager {
                     record.correctCount = (record.correctCount ?? 0) + 1
                     record.reviewCount = (record.reviewCount ?? 0) + 1
                     
-                    if record.reviewCount >= 4 {
+                    if record.reviewCount ?? 0 >= 4 {
                         easeFactor = min(2.0, easeFactor + 0.1)
                         interval = max(1, Int(Double(interval) * easeFactor))
                         record.nextReviewAt = now + Double(interval) * 86400
