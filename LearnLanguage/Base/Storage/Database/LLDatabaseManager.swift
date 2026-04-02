@@ -708,6 +708,22 @@ final class LLDatabaseManager {
         )
     }
     
+    /// 获取今日已学习的词汇（createdAt 在今天范围内）
+    func getTodayLearnedProgress(wordListId: String) throws -> [LLDBLearningProgress] {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date()).timeIntervalSince1970
+        let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!.timeIntervalSince1970
+        
+        return try database.getObjects(
+            on: LLDBLearningProgress.Properties.all,
+            fromTable: learningProgressTable,
+            where: LLDBLearningProgress.Properties.wordListId == wordListId
+                && LLDBLearningProgress.Properties.createdAt >= startOfDay
+                && LLDBLearningProgress.Properties.createdAt <= endOfDay,
+            orderBy: [LLDBLearningProgress.Properties.updatedAt.asOrder(by: .descending)]
+        )
+    }
+    
     /// 获取今日需要学习的新词汇（在 learning_progress 中没有记录的词，按原始顺序取 limit 个）
     func getTodayNewWords(wordListId: String, wordList: WordList, limit: Int) throws -> [LLWordEntry] {
         // 取出该词库所有已有学习记录的 wordId

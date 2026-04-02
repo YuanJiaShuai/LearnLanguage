@@ -17,7 +17,10 @@ final class LLStatusBarPopoverContentView: NSView {
         static let width: CGFloat        = 300
         static let menuItemHeight: CGFloat = 32
         static let dividerHeight: CGFloat  = 1
+        static let completionSectionHeight: CGFloat = 34
     }
+    
+    private let shouldShowCompletionActions = !LLDailyLearningManager.shared.hasPendingTasks
 
     // MARK: - Callbacks
 
@@ -62,6 +65,26 @@ final class LLStatusBarPopoverContentView: NSView {
         sv.distribution = .fill
         return sv
     }()
+    
+    private lazy var completionActionContainer: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        return view
+    }()
+    
+    private lazy var reviewTodayButton: NSButton = {
+        let button = NSButton(title: NSLocalizedString("复习当日", comment: ""), target: self, action: #selector(onReviewToday))
+        button.bezelStyle = .rounded
+        button.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        return button
+    }()
+    
+    private lazy var learnAnotherBatchButton: NSButton = {
+        let button = NSButton(title: NSLocalizedString("再学一组", comment: ""), target: self, action: #selector(onLearnAnotherBatch))
+        button.bezelStyle = .rounded
+        button.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        return button
+    }()
 
     // MARK: - Init
 
@@ -95,11 +118,39 @@ final class LLStatusBarPopoverContentView: NSView {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(48)
         }
-
-        topDivider.snp.makeConstraints { make in
-            make.top.equalTo(searchWordView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(Layout.dividerHeight)
+        
+        if shouldShowCompletionActions {
+            addSubview(completionActionContainer)
+            completionActionContainer.addSubview(reviewTodayButton)
+            completionActionContainer.addSubview(learnAnotherBatchButton)
+            
+            completionActionContainer.snp.makeConstraints { make in
+                make.top.equalTo(searchWordView.snp.bottom).offset(6)
+                make.leading.trailing.equalToSuperview().inset(12)
+                make.height.equalTo(Layout.completionSectionHeight)
+            }
+            
+            reviewTodayButton.snp.makeConstraints { make in
+                make.left.top.bottom.equalToSuperview()
+                make.right.equalTo(learnAnotherBatchButton.snp.left).offset(-8)
+                make.width.equalTo(learnAnotherBatchButton)
+            }
+            
+            learnAnotherBatchButton.snp.makeConstraints { make in
+                make.right.top.bottom.equalToSuperview()
+            }
+            
+            topDivider.snp.makeConstraints { make in
+                make.top.equalTo(completionActionContainer.snp.bottom).offset(6)
+                make.leading.trailing.equalToSuperview()
+                make.height.equalTo(Layout.dividerHeight)
+            }
+        } else {
+            topDivider.snp.makeConstraints { make in
+                make.top.equalTo(searchWordView.snp.bottom)
+                make.leading.trailing.equalToSuperview()
+                make.height.equalTo(Layout.dividerHeight)
+            }
         }
 
         menuStack.snp.makeConstraints { make in
@@ -170,9 +221,11 @@ final class LLStatusBarPopoverContentView: NSView {
 
     /// 初始首选高度
     var preferredHeight: CGFloat {
+        let completionSection: CGFloat = shouldShowCompletionActions ? (6 + Layout.completionSectionHeight + 6) : 0
         return 20  // 标题高度
             + 8    // 标题到搜索框间距
             + 48   // 搜索框高度
+            + completionSection
             + Layout.dividerHeight
             + CGFloat(menuStack.arrangedSubviews.count) * Layout.menuItemHeight
             + Layout.dividerHeight // 菜单内分割线
@@ -183,15 +236,30 @@ final class LLStatusBarPopoverContentView: NSView {
         // 重新计算总高度
         let titleH: CGFloat = 20
         let titleSpacing: CGFloat = 8
+        let completionSection: CGFloat = shouldShowCompletionActions ? (6 + Layout.completionSectionHeight + 6) : 0
         let dividerH = Layout.dividerHeight
         let menuH = menuStack.arrangedSubviews.reduce(CGFloat(0)) { $0 + $1.frame.height }
-        let totalH = titleH + titleSpacing + searchHeight + dividerH + menuH
+        let totalH = titleH + titleSpacing + searchHeight + completionSection + dividerH + menuH
 
         var frame = panel.frame
         let delta = totalH - frame.height
         frame.origin.y -= delta
         frame.size.height = totalH
         panel.setFrame(frame, display: true, animate: false)
+    }
+
+    // MARK: - Actions
+    
+    @objc private func onReviewToday() {
+        LLDailyLearningManager.shared.restartTodayReview()
+        LLStatusBarManager.shared.refreshStatusBar()
+        onClose?()
+    }
+    
+    @objc private func onLearnAnotherBatch() {
+        LLDailyLearningManager.shared.learnAnotherBatch()
+        LLStatusBarManager.shared.refreshStatusBar()
+        onClose?()
     }
 
     // MARK: - Public

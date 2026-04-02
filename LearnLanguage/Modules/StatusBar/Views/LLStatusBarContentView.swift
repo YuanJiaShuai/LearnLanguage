@@ -15,7 +15,10 @@ final class LLStatusBarContentView: NSControl {
     private static let menuLeftInset: CGFloat = 6
     private static let menuIconSize: CGFloat = 14
     private static let menuToWordSpacing: CGFloat = 6
-    private static let wordToMeaningSpacing: CGFloat = 12
+    private static let wordToIndicatorSpacing: CGFloat = 8
+    private static let indicatorWidth: CGFloat = 4
+    private static let indicatorHeight: CGFloat = 24
+    private static let indicatorToMeaningSpacing: CGFloat = 8
     private static let rightInset: CGFloat = 8
     private static let feedbackWidth: CGFloat = 70
     private static let minimumWordSample = "WIDE"
@@ -28,7 +31,9 @@ final class LLStatusBarContentView: NSControl {
             + menuIconSize
             + menuToWordSpacing
             + sampleWidth
-            + wordToMeaningSpacing
+            + wordToIndicatorSpacing
+            + indicatorWidth
+            + indicatorToMeaningSpacing
             + feedbackWidth
             + rightInset
     }
@@ -52,6 +57,12 @@ final class LLStatusBarContentView: NSControl {
     
     private lazy var scrollingMeaningView: LLScrollingTextView = {
         let view = LLScrollingTextView(frame: .zero)
+        view.wantsLayer = true
+        return view
+    }()
+    
+    private lazy var learnIndicatorView: LLStatusLearnIndicatorView = {
+        let view = LLStatusLearnIndicatorView(frame: .zero)
         view.wantsLayer = true
         return view
     }()
@@ -111,6 +122,7 @@ final class LLStatusBarContentView: NSControl {
     
     private func setupUI() {
         addSubview(wordPhoneticView)
+        addSubview(learnIndicatorView)
         addSubview(scrollingMeaningView)
         addSubview(feedbackView)
         addSubview(menuIconView)
@@ -128,9 +140,17 @@ final class LLStatusBarContentView: NSControl {
             make.centerY.equalToSuperview()
         }
         
+        // 学习次数指示器在单词音标之后
+        learnIndicatorView.snp.makeConstraints { make in
+            make.left.equalTo(wordPhoneticView.snp.right).offset(Self.wordToIndicatorSpacing)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(Self.indicatorWidth)
+            make.height.equalTo(Self.indicatorHeight)
+        }
+        
         // 滚动视图填充剩余空间（为右侧反馈按钮预留固定宽度）
         scrollingMeaningView.snp.makeConstraints { make in
-            make.left.equalTo(wordPhoneticView.snp.right).offset(Self.wordToMeaningSpacing)
+            make.left.equalTo(learnIndicatorView.snp.right).offset(Self.indicatorToMeaningSpacing)
             make.right.equalToSuperview().offset(-Self.rightInset)
             make.top.bottom.equalToSuperview()
         }
@@ -272,7 +292,7 @@ final class LLStatusBarContentView: NSControl {
     
     // MARK: - Public Methods
     
-    func updateContent(word: String, phonetic: String, meaning: String) {
+    func updateContent(word: String, phonetic: String, meaning: String, reviewCount: Int = 0) {
         self.wordText = word
         self.phoneticText = phonetic
         self.meaningText = meaning
@@ -280,6 +300,7 @@ final class LLStatusBarContentView: NSControl {
         // 始终更新内容（不清空文字）
         wordPhoneticView.word = word
         wordPhoneticView.phonetic = phonetic
+        learnIndicatorView.reviewCount = reviewCount
         scrollingMeaningView.text = meaning
         
         // 获取设置

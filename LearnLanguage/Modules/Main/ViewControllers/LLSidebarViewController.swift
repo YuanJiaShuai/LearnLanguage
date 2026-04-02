@@ -143,6 +143,13 @@ final class LLSidebarViewController: NSViewController {
         return view
     }()
     
+    private lazy var feedbackButton: NSButton = {
+        let button = NSButton(title: "意见&建议反馈", target: self, action: #selector(onFeedbackButtonClicked))
+        button.bezelStyle = .rounded
+        button.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        return button
+    }()
+    
     // MARK: - Lifecycle
     
     override func loadView() {
@@ -163,6 +170,7 @@ final class LLSidebarViewController: NSViewController {
     private func setupUI() {
         setupLogoSection()
         setupShortcutSection()
+        setupBottomFeedbackButton()
         setupNavigationSection()
     }
     
@@ -262,7 +270,7 @@ final class LLSidebarViewController: NSViewController {
         navigationContainerView.snp.makeConstraints { make in
             make.top.equalTo(middleDivider.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(feedbackButton.snp.top).offset(-10)
         }
         
         var previousView: NSView?
@@ -289,6 +297,16 @@ final class LLSidebarViewController: NSViewController {
         }
         
         updateNavigationSelection()
+    }
+    
+    private func setupBottomFeedbackButton() {
+        view.addSubview(feedbackButton)
+        feedbackButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-14)
+            make.height.equalTo(30)
+        }
     }
     
     private func setupNotifications() {
@@ -340,6 +358,37 @@ final class LLSidebarViewController: NSViewController {
         updateNavigationSelection()
         delegate?.sidebarViewController(self, didSelectModule: .learningRecord)
         delegate?.sidebarViewController(self, didSelectWrongWords: ())
+    }
+    
+    @objc private func onFeedbackButtonClicked() {
+        let email = "yjs_maoge@163.com"
+        let alert = NSAlert()
+        alert.messageText = "意见与建议反馈"
+        alert.informativeText = "反馈邮箱：\(email)\n你可以先复制邮箱，或直接前往邮件客户端发送。"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "复制")
+        alert.addButton(withTitle: "发送")
+        alert.addButton(withTitle: "取消")
+        
+        let result = alert.runModal()
+        switch result {
+        case .alertFirstButtonReturn:
+            copyEmailToPasteboard(email)
+        case .alertSecondButtonReturn:
+            openMailClient(email)
+        default:
+            break
+        }
+    }
+    
+    private func copyEmailToPasteboard(_ email: String) {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(email, forType: .string)
+    }
+    
+    private func openMailClient(_ email: String) {
+        guard let url = URL(string: "mailto:\(email)") else { return }
+        NSWorkspace.shared.open(url)
     }
     
     @objc private func onCurrentWordListChanged() {

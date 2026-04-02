@@ -88,6 +88,22 @@ class LLStatusBarTypingPractice {
         }
     }
     
+    /// 与状态栏当前单词同步（用于状态栏反馈切词后更新打字浮窗）
+    func syncWithStatusBarCurrentWord() {
+        guard isVisible,
+              let currentListId = LLSettingsStore.shared.currentListId,
+              let vc = viewController else { return }
+        
+        LLTypingPracticeManager.shared.startPractice(listId: currentListId)
+        
+        if let word = LLTypingPracticeManager.shared.getCurrentStatusBarWord()
+            ?? LLTypingPracticeManager.shared.getNextWord() {
+            vc.startPractice(with: word, listId: currentListId)
+        } else {
+            vc.resetView()
+        }
+    }
+    
     private func createWindow(origin: NSPoint? = nil) {
         // 从设置中读取浮窗宽高
         let settings = LLSettingsStore.shared.settings

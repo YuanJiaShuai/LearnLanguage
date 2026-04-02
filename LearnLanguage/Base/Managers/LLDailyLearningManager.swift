@@ -182,6 +182,51 @@ final class LLDailyLearningManager {
         }
     }
     
+    /// 复习当日：将今天学过的词加入今日新学队列
+    func restartTodayReview() {
+        guard let listId = currentListId,
+              let wordList = currentWordList else { return }
+        
+        do {
+            let progressList = try LLDatabaseManager.shared.getTodayLearnedProgress(wordListId: listId)
+            let words = progressList.compactMap { progress -> LLWordEntry? in
+                guard let wordId = progress.wordId else { return nil }
+                return wordList.entries.first(where: { $0.id == wordId })
+            }
+            
+            reviewQueue = []
+            newWordQueue = []
+            newLearnWordQueue = words
+            
+            LLLogger.info("🔁 复习当日：已载入 \(newLearnWordQueue.count) 个词")
+        } catch {
+            LLLogger.error("❌ 复习当日加载失败：\(error)")
+        }
+    }
+    
+    /// 再学一组：追加一组今日新词到新词队列
+    func learnAnotherBatch() {
+        guard let listId = currentListId,
+              let wordList = currentWordList else { return }
+        
+        let limit = LLSettingsStore.shared.settings.newWordsPerDay
+        do {
+            let candidates = try LLDatabaseManager.shared.getTodayNewWords(
+                wordListId: listId,
+                wordList: wordList,
+                limit: limit
+            )
+            
+            let existingIds = Set(reviewQueue.map(\.id) + newWordQueue.map(\.id) + newLearnWordQueue.map(\.id))
+            let newBatch = candidates.filter { !existingIds.contains($0.id) }
+            newWordQueue.append(contentsOf: newBatch)
+            
+            LLLogger.info("➕ 再学一组：新增 \(newBatch.count) 个词")
+        } catch {
+            LLLogger.error("❌ 再学一组加载失败：\(error)")
+        }
+    }
+    
     /// 今日复习队列剩余数量
     var reviewQueueCount: Int { reviewQueue.count }
     

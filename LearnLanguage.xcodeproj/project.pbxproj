@@ -31,6 +31,7 @@
 		846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 846629602F56D78F004466B1 /* CocoaLumberjack */; };
 		846629632F56D78F004466B1 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 846629622F56D78F004466B1 /* CocoaLumberjackSwift */; };
 		846629652F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 846629642F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend */; };
+		84673B8A2F7E189C00BBAD1F /* LLStatusLearnIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84673B892F7E189C00BBAD1F /* LLStatusLearnIndicatorView.swift */; };
 		848FAF722F6D253D007C8349 /* Englebert-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 848FAF642F6D253D007C8349 /* Englebert-Regular.ttf */; };
 		848FAF732F6D253D007C8349 /* Capriola-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 848FAF602F6D253D007C8349 /* Capriola-Regular.ttf */; };
 		848FAF742F6D253D007C8349 /* GothamRnd-Md.otf in Resources */ = {isa = PBXBuildFile; fileRef = 848FAF652F6D253D007C8349 /* GothamRnd-Md.otf */; };
@@ -160,6 +161,7 @@
 		840D1E982F67F517002C330E /* LLAudioCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLAudioCacheManager.swift; sourceTree = "<group>"; };
 		840D1E992F67F517002C330E /* LLLocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLLocalizationManager.swift; sourceTree = "<group>"; };
 		8466295D2F56D6AB004466B1 /* LLLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLLogger.swift; sourceTree = "<group>"; };
+		84673B892F7E189C00BBAD1F /* LLStatusLearnIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusLearnIndicatorView.swift; sourceTree = "<group>"; };
 		848FAF5E2F6D253D007C8349 /* Bangers-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bangers-Regular.ttf"; sourceTree = "<group>"; };
 		848FAF5F2F6D253D007C8349 /* BitcountGridSingleInk.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BitcountGridSingleInk.ttf; sourceTree = "<group>"; };
 		848FAF602F6D253D007C8349 /* Capriola-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Capriola-Regular.ttf"; sourceTree = "<group>"; };
@@ -552,6 +554,7 @@
 				84E1E32E2F3D6C6100D1B7B6 /* LLStatusBarContentView.swift */,
 				84D21BA82F71233500AFFE2C /* LLStatusBarPopoverContentView.swift */,
 				84D21BA92F71233500AFFE2C /* LLStatusBarPopoverPanel.swift */,
+				84673B892F7E189C00BBAD1F /* LLStatusLearnIndicatorView.swift */,
 				84E1E3302F3D760200D1B7B6 /* LLScrollingTextView.swift */,
 				84E1E3322F3D85F900D1B7B6 /* LLWordPhoneticView.swift */,
 			);
@@ -976,6 +979,7 @@
 				84E1E3332F3D85F900D1B7B6 /* LLWordPhoneticView.swift in Sources */,
 				A8CBFCD22F7420A100BF926A /* LLClipboardMonitor.swift in Sources */,
 				849226F12F3C878F00447E0C /* LLDBWordList.swift in Sources */,
+				84673B8A2F7E189C00BBAD1F /* LLStatusLearnIndicatorView.swift in Sources */,
 				849226F22F3C878F00447E0C /* LLAppDelegate.swift in Sources */,
 				849226F32F3C878F00447E0C /* LLAppInitializer.swift in Sources */,
 				849226F42F3C878F00447E0C /* LLMMKVManager.swift in Sources */,
@@ -1193,7 +1197,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ruijia.LearnLanguage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ruijia.learnlanguage;
 				PRODUCT_NAME = "划水记词";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1240,7 +1244,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ruijia.LearnLanguage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ruijia.learnlanguage;
 				PRODUCT_NAME = "划水记词";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

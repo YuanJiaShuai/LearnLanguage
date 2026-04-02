@@ -160,13 +160,24 @@ final class LLStatusBarManager {
         currentEntry = next
         currentListId = listId
         
-        // 获取单词、音标、释义
+        // 获取单词、音标、释义、复习次数
         let word = next.text
         let phonetic = next.phonetic ?? ""
         let meaning = next.meaning
         
-        contentView?.updateContent(word: word, phonetic: phonetic, meaning: meaning)
-        LLLogger.debug("✅ 状态栏显示: \(word) \(phonetic) - \(meaning)")
+        var reviewCount = 0
+        do {
+            let progress = try LLDatabaseManager.shared.getLearningProgress(
+                wordId: next.id,
+                wordListId: listId
+            )
+            reviewCount = progress?.reviewCount ?? 0
+        } catch {
+            LLLogger.warn("⚠️ 获取 reviewCount 失败: \(error)")
+        }
+        
+        contentView?.updateContent(word: word, phonetic: phonetic, meaning: meaning, reviewCount: reviewCount)
+        LLLogger.debug("✅ 状态栏显示: \(word) \(phonetic) - \(meaning), reviewCount: \(reviewCount)")
         
         // 根据发音设置播放单词发音
         let interval = settings.statusBarPlaybackInterval
@@ -195,6 +206,9 @@ final class LLStatusBarManager {
         
         // 刷新显示下一个单词
         refreshStatusBar()
+        
+        // 如果打字练习浮窗已打开，同步切换到状态栏当前词
+        LLStatusBarTypingPractice.shared.syncWithStatusBarCurrentWord()
     }
     
     /// 获取当前单词
