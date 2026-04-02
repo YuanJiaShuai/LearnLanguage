@@ -264,8 +264,8 @@ final class LLPronunciationManager {
         // 初始化所有提供者
         providers[.local] = LLLocalPronunciationProvider()
         providers[.youdao] = LLYoudaoPronunciationProvider()
-        providers[.google] = LLGooglePronunciationProvider()
-        providers[.azure] = LLAzurePronunciationProvider()
+        // providers[.google] = LLGooglePronunciationProvider()
+        // providers[.azure] = LLAzurePronunciationProvider()
         
         // 设置当前提供者
         updateCurrentProvider()
