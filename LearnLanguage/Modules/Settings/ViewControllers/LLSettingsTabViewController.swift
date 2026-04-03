@@ -346,7 +346,8 @@ final class LLSettingsTabViewController: NSViewController {
             (label: NSLocalizedString("Pronunciation Provider", comment: ""), control: pronunciationProviderPopup),
             (label: NSLocalizedString("Pronunciation Accent", comment: ""), control: pronunciationAccentPopup)
         ])
-        card.addFormItem(label: NSLocalizedString("Speech Rate", comment: ""), control: pronunciationRatePopup)
+        // 临时隐藏语速设置（保留代码，后续可恢复）
+        // card.addFormItem(label: NSLocalizedString("Speech Rate", comment: ""), control: pronunciationRatePopup)
         card.addFormItem(label: NSLocalizedString("Playback Interval", comment: ""), control: statusBarPlaybackIntervalPopup)
         
         return card

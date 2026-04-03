@@ -24,6 +24,8 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         // 0. 确保应用跟随系统外观
         NSApp.appearance = nil
+        // 默认以状态栏模式运行（不显示 Dock 图标）
+        NSApp.setActivationPolicy(.accessory)
         // 1. 执行应用初始化（包括 MMKV、数据库、键盘快捷键等）
         LLAppInitializer.shared.performStartupInitialization()
         
@@ -95,6 +97,9 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
     @objc func showMainWindow() {
         LLLogger.info("📱 显示主窗口")
         
+        // 切换为常规应用，显示 Dock 图标
+        NSApp.setActivationPolicy(.regular)
+        
         // 检查窗口是否存在或已被释放
         if mainWindow == nil || mainWindow?.contentView == nil {
             LLLogger.warn("⚠️ 主窗口为 nil 或已释放，重新创建")
@@ -144,6 +149,11 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         // 清理资源
     }
 
+    /// 点击主窗口关闭按钮后，不退出应用（状态栏常驻）
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return false
+    }
+
     /// 关闭可恢复状态，避免 NSXPCDecoder 用 NSObject 作为允许类解码导致的控制台警告及 "decode: bad range" 错误。
     /// 若曾开启过恢复，旧的状态数据可能已损坏，关闭后不再尝试解码即可消除报错。
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
@@ -158,15 +168,20 @@ extension LLAppDelegate: NSWindowDelegate {
     /// 窗口即将关闭时调用
     func windowWillClose(_ notification: Notification) {
         if let window = notification.object as? NSWindow, window == mainWindow {
-            LLLogger.info("🔄 主窗口即将关闭，清理引用")
-            // 将 mainWindow 设为 nil，下次打开时会重新创建
-            mainWindow = nil
+            LLLogger.info("🔄 主窗口即将关闭（隐藏窗口，保留状态栏应用）")
+            // 不释放主窗口，后续可直接再次显示
+            mainWindow?.orderOut(nil)
         }
     }
     
-    /// 窗口是否应该关闭（可选）
+    /// 点击关闭按钮时，隐藏主窗口而不是销毁，避免崩溃且保留状态栏常驻
     func windowShouldClose(_ sender: NSWindow) -> Bool {
-        // 允许关闭窗口
+        if sender == mainWindow {
+            sender.orderOut(nil)
+            // 关闭主窗口后回到状态栏模式，隐藏 Dock 图标
+            NSApp.setActivationPolicy(.accessory)
+            return false
+        }
         return true
     }
 }

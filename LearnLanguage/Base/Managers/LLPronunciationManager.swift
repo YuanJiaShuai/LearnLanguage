@@ -55,8 +55,9 @@ final class LLLocalPronunciationProvider: NSObject, LLPronunciationProviderProto
         let languageCode = accent == .us ? "en-US" : "en-GB"
         utterance.voice = AVSpeechSynthesisVoice(language: languageCode)
         
-        // 设置语速（AVSpeechSynthesizer 的范围是 0.0-1.0）
-        utterance.rate = rate
+        // 临时固定本地发音语速为 0.5（保留原设置参数代码，后续可恢复）
+        // utterance.rate = rate
+        utterance.rate = 0.5
         
         // 设置音量和音调
         utterance.volume = 1.0
