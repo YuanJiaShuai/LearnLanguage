@@ -41,14 +41,14 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
         addChild(sidebarVC)
         splitView.addArrangedSubview(sidebarVC.view)
         sidebarVC.view.snp.makeConstraints { make in
-            make.width.equalTo(180)
+            make.width.equalTo(256)
         }
         
         // 右侧内容区
         addChild(contentVC)
         splitView.addArrangedSubview(contentVC.view)
         
-        splitView.setPosition(180, ofDividerAt: 0)
+        splitView.setPosition(256, ofDividerAt: 0)
     }
     
     // MARK: - SidebarViewControllerDelegate

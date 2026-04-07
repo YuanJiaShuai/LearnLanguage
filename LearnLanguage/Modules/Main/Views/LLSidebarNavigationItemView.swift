@@ -21,11 +21,10 @@ final class LLSidebarNavigationItemView: NSView {
     
     // MARK: - UI Components
     
-    private lazy var leftBar: NSView = {
+    private lazy var contentView: NSView = {
         let view = NSView()
         view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
-        view.isHidden = true
+        view.layer?.cornerRadius = 12
         return view
     }()
     
@@ -33,7 +32,7 @@ final class LLSidebarNavigationItemView: NSView {
         let imageView = NSImageView()
         if let icon = module.icon {
             icon.isTemplate = true
-            icon.size = NSSize(width: 16, height: 16)
+            icon.size = NSSize(width: 18, height: 18)
             imageView.image = icon
         }
         imageView.imageScaling = .scaleProportionallyDown
@@ -42,13 +41,13 @@ final class LLSidebarNavigationItemView: NSView {
     
     private lazy var titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: module.title)
-        label.font = NSFont.systemFont(ofSize: 14, weight: .medium)
-        label.textColor = LLAppearanceManager.shared.colors.primaryText
+        label.font = NSFont.systemFont(ofSize: 13, weight: .medium)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false
         label.isBezeled = false
         label.drawsBackground = false
-        label.lineBreakMode = .byWordWrapping
-        label.maximumNumberOfLines = 0
+        label.lineBreakMode = .byTruncatingTail
+        label.maximumNumberOfLines = 1
         return label
     }()
     
@@ -58,6 +57,7 @@ final class LLSidebarNavigationItemView: NSView {
         self.module = module
         super.init(frame: .zero)
         setupUI()
+        updateAppearance()
     }
     
     required init?(coder: NSCoder) {
@@ -69,29 +69,27 @@ final class LLSidebarNavigationItemView: NSView {
     private func setupUI() {
         wantsLayer = true
         
-        addSubview(leftBar)
-        addSubview(iconView)
-        addSubview(titleLabel)
+        addSubview(contentView)
+        contentView.addSubview(iconView)
+        contentView.addSubview(titleLabel)
         
-        leftBar.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-            make.width.equalTo(3)
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(NSEdgeInsets(top: 2, left: 10, bottom: 2, right: 10))
+            make.height.equalTo(41)
         }
         
         iconView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(14)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(16)
+            make.width.height.equalTo(18)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(iconView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-12)
-            make.top.equalToSuperview().offset(8)
-            make.bottom.equalToSuperview().offset(-8)
+            make.leading.equalTo(iconView.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().offset(-14)
+            make.centerY.equalToSuperview()
         }
         
-        // 添加点击手势
         let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(clickGesture)
     }
@@ -102,10 +100,10 @@ final class LLSidebarNavigationItemView: NSView {
     
     private func updateAppearance() {
         let colors = LLAppearanceManager.shared.colors
-        layer?.backgroundColor = isSelected ? colors.accentLightBackground.cgColor : NSColor.clear.cgColor
-        leftBar.isHidden = !isSelected
-        let tintColor = isSelected ? colors.accentColor : colors.primaryText
+        contentView.layer?.backgroundColor = isSelected ? colors.accentLightBackground.withAlphaComponent(0.9).cgColor : NSColor.clear.cgColor
+        let tintColor = isSelected ? colors.accentColor : colors.secondaryText
         iconView.contentTintColor = tintColor
         titleLabel.textColor = tintColor
+        titleLabel.font = NSFont.systemFont(ofSize: 13, weight: isSelected ? .semibold : .medium)
     }
 }

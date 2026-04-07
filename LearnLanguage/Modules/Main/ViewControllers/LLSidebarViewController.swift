@@ -31,9 +31,9 @@ enum SidebarModule {
     
     var icon: NSImage? {
         switch self {
-        case .wordList: return NSImage(systemSymbolName: "book.fill", accessibilityDescription: nil)
-        case .learningRecord: return NSImage(systemSymbolName: "chart.bar.fill", accessibilityDescription: nil)
-        case .settings: return NSImage(systemSymbolName: "gearshape.fill", accessibilityDescription: nil)
+        case .wordList: return NSImage(systemSymbolName: "books.vertical.fill", accessibilityDescription: nil)
+        case .learningRecord: return NSImage(systemSymbolName: "chart.bar.xaxis", accessibilityDescription: nil)
+        case .settings: return NSImage(systemSymbolName: "slider.horizontal.3", accessibilityDescription: nil)
         case .dataManagement: return NSImage(systemSymbolName: "externaldrive.fill", accessibilityDescription: nil)
         }
     }
@@ -45,7 +45,7 @@ final class LLSidebarViewController: NSViewController {
     
     weak var delegate: SidebarViewControllerDelegate?
     private var selectedModule: SidebarModule = .wordList
-    private let modules: [SidebarModule] = [.wordList, .learningRecord, .settings, .dataManagement]
+    private let modules: [SidebarModule] = [.wordList, .settings, .learningRecord, .dataManagement]
     
     // 数据源
     private var currentWordList: WordList?
@@ -63,14 +63,17 @@ final class LLSidebarViewController: NSViewController {
     
     private lazy var logoIconView: NSImageView = {
         let imageView = NSImageView()
-        imageView.image = NSImage(systemSymbolName: "book.fill", accessibilityDescription: nil)
-        imageView.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+        imageView.image = NSImage(systemSymbolName: "book.closed.fill", accessibilityDescription: nil)
+        imageView.contentTintColor = .white
+        imageView.wantsLayer = true
+        imageView.layer?.backgroundColor = LLAppearanceManager.shared.colors.primaryContainer.cgColor
+        imageView.layer?.cornerRadius = 12
         return imageView
     }()
     
     private lazy var logoLabel: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("App Name", comment: "Application name"))
-        label.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = NSFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = LLAppearanceManager.shared.colors.accentColor
         return label
     }()
@@ -95,9 +98,9 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var currentWordLibTitleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: NSLocalizedString("Current Word List", comment: "Current word list section title"))
-        label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        label.textColor = LLAppearanceManager.shared.colors.secondaryText
+        let label = NSTextField(labelWithString: "快速访问")
+        label.font = NSFont.systemFont(ofSize: 11, weight: .bold)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.5)
         return label
     }()
     
@@ -117,9 +120,9 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var wrongWordsTitleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: NSLocalizedString("Today's Review", comment: "Today's review section title"))
-        label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        label.textColor = LLAppearanceManager.shared.colors.secondaryText
+        let label = NSTextField(labelWithString: "主菜单")
+        label.font = NSFont.systemFont(ofSize: 11, weight: .bold)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.5)
         return label
     }()
     
@@ -144,16 +147,24 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var feedbackButton: NSButton = {
-        let button = NSButton(title: "意见&建议反馈", target: self, action: #selector(onFeedbackButtonClicked))
-        button.bezelStyle = .rounded
+        let button = NSButton(title: "Curator\nHigh-End Curator", target: self, action: #selector(onFeedbackButtonClicked))
+        button.bezelStyle = .regularSquare
+        button.isBordered = false
         button.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        button.contentTintColor = LLAppearanceManager.shared.colors.primaryText
+        button.wantsLayer = true
+        button.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.42).cgColor
+        button.layer?.cornerRadius = 14
+        button.layer?.borderWidth = 1
+        button.layer?.borderColor = NSColor.white.withAlphaComponent(0.5).cgColor
+        button.alignment = .left
         return button
     }()
     
     // MARK: - Lifecycle
     
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 180, height: 400))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 256, height: 400))
         view.wantsLayer = true
         view.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
     }
@@ -172,6 +183,10 @@ final class LLSidebarViewController: NSViewController {
         setupShortcutSection()
         setupBottomFeedbackButton()
         setupNavigationSection()
+        topDivider.isHidden = true
+        middleDivider.isHidden = true
+        currentWordLibIconView.isHidden = true
+        wrongWordsIconView.isHidden = true
     }
     
     private func setupLogoSection() {
@@ -181,19 +196,20 @@ final class LLSidebarViewController: NSViewController {
         view.addSubview(topDivider)
         
         logoContainerView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(52)
+            make.top.equalToSuperview().offset(22)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(64)
         }
         
         logoIconView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(18)
+            make.width.height.equalTo(40)
         }
         
         logoLabel.snp.makeConstraints { make in
-            make.leading.equalTo(logoIconView.snp.trailing).offset(8)
-            make.centerY.equalToSuperview()
+            make.leading.equalTo(logoIconView.snp.trailing).offset(12)
+            make.top.equalToSuperview().offset(8)
         }
         
         topDivider.snp.makeConstraints { make in
@@ -214,47 +230,43 @@ final class LLSidebarViewController: NSViewController {
         view.addSubview(middleDivider)
         
         shortcutContainerView.snp.makeConstraints { make in
-            make.top.equalTo(topDivider.snp.bottom)
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(logoContainerView.snp.bottom).offset(28)
+            make.leading.trailing.equalToSuperview().inset(18)
         }
         
         currentWordLibIconView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
-            make.top.equalToSuperview().offset(10)
-            make.width.height.equalTo(12)
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview()
+            make.width.height.equalTo(0)
         }
         
         currentWordLibTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(currentWordLibIconView.snp.trailing).offset(5)
-            make.centerY.equalTo(currentWordLibIconView)
-            make.trailing.equalToSuperview().offset(-12)
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.top.equalToSuperview()
             make.height.equalTo(16)
         }
         
         currentWordLibCardView.snp.makeConstraints { make in
             make.top.equalTo(currentWordLibTitleLabel.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-12)
+            make.leading.trailing.equalToSuperview()
         }
         
         wrongWordsIconView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
-            make.top.equalTo(currentWordLibCardView.snp.bottom).offset(10)
-            make.width.height.equalTo(12)
+            make.leading.equalToSuperview()
+            make.top.equalTo(currentWordLibCardView.snp.bottom).offset(30)
+            make.width.height.equalTo(0)
         }
         
         wrongWordsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(wrongWordsIconView.snp.trailing).offset(5)
-            make.centerY.equalTo(wrongWordsIconView)
-            make.trailing.equalToSuperview().offset(-12)
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.top.equalTo(currentWordLibCardView.snp.bottom).offset(30)
             make.height.equalTo(16)
         }
         
         wrongWordsCardView.snp.makeConstraints { make in
             make.top.equalTo(wrongWordsTitleLabel.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-12)
-            make.bottom.equalToSuperview().offset(-6)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
         middleDivider.snp.makeConstraints { make in
@@ -268,9 +280,9 @@ final class LLSidebarViewController: NSViewController {
         view.addSubview(navigationContainerView)
         
         navigationContainerView.snp.makeConstraints { make in
-            make.top.equalTo(middleDivider.snp.bottom).offset(10)
+            make.top.equalTo(middleDivider.snp.bottom).offset(18)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(feedbackButton.snp.top).offset(-10)
+            make.bottom.equalTo(feedbackButton.snp.top).offset(-20)
         }
         
         var previousView: NSView?
@@ -302,10 +314,9 @@ final class LLSidebarViewController: NSViewController {
     private func setupBottomFeedbackButton() {
         view.addSubview(feedbackButton)
         feedbackButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(-14)
-            make.height.equalTo(30)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().offset(-16)
+            make.height.equalTo(56)
         }
     }
     

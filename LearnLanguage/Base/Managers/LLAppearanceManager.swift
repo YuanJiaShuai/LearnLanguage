@@ -34,48 +34,46 @@ final class LLAppearanceManager {
     // MARK: - Colors
     
     struct Colors {
-        // 与网页设计稿一致 (#f5f5f7 / #fafafa / #e5e5e7 / #007aff)
-        /// 主背景、标题栏
-        let mainBackground = NSColor(srgbRed: 245/255, green: 245/255, blue: 247/255, alpha: 1)  // #f5f5f7
-        /// 侧边栏、卡片背景
-        let sidebarBackground = NSColor(srgbRed: 250/255, green: 250/255, blue: 250/255, alpha: 1)  // #fafafa
+        let mainBackground = NSColor(srgbRed: 249/255, green: 249/255, blue: 254/255, alpha: 1)          // #f9f9fe
+        let sidebarBackground = NSColor(srgbRed: 249/255, green: 249/255, blue: 254/255, alpha: 0.72)
         let cardBackground = NSColor.white
+        let surfaceContainerLowest = NSColor.white                                                          // #ffffff
+        let surfaceContainerLow = NSColor(srgbRed: 243/255, green: 243/255, blue: 248/255, alpha: 1)     // #f3f3f8
+        let surfaceContainer = NSColor(srgbRed: 237/255, green: 237/255, blue: 242/255, alpha: 1)        // #ededf2
         
-        // 文本色
-        let moduleTitleText = NSColor(srgbRed: 29/255, green: 29/255, blue: 31/255, alpha: 1)   // #1d1d1f
-        let primaryText = NSColor(srgbRed: 51/255, green: 51/255, blue: 51/255, alpha: 1)      // #333
-        let secondaryText = NSColor(srgbRed: 102/255, green: 102/255, blue: 102/255, alpha: 1)   // #666
-        let tertiaryText = NSColor(srgbRed: 0.6, green: 0.6, blue: 0.6, alpha: 1)
+        let moduleTitleText = NSColor(srgbRed: 26/255, green: 28/255, blue: 31/255, alpha: 1)            // #1a1c1f
+        let primaryText = NSColor(srgbRed: 26/255, green: 28/255, blue: 31/255, alpha: 1)
+        let secondaryText = NSColor(srgbRed: 65/255, green: 71/255, blue: 85/255, alpha: 1)              // #414755
+        let tertiaryText = NSColor(srgbRed: 113/255, green: 119/255, blue: 134/255, alpha: 1)            // #717786
         
-        // 强调色
-        let accentColor = NSColor(srgbRed: 0, green: 122/255, blue: 1, alpha: 1)  // #007aff
-        /// 导航选中、卡片选中浅底
-        let accentLightBackground = NSColor(srgbRed: 232/255, green: 240/255, blue: 254/255, alpha: 1)  // #e8f0fe
+        let accentColor = NSColor(srgbRed: 0, green: 88/255, blue: 188/255, alpha: 1)                    // #0058bc
+        let primaryContainer = NSColor(srgbRed: 0, green: 112/255, blue: 235/255, alpha: 1)              // #0070eb
+        let accentLightBackground = NSColor(srgbRed: 216/255, green: 226/255, blue: 255/255, alpha: 1)   // #d8e2ff
+        let borderColor = NSColor(srgbRed: 193/255, green: 198/255, blue: 215/255, alpha: 0.15)          // #c1c6d7 @ 15%
+        let ghostBorder = NSColor.white.withAlphaComponent(0.2)
+        let sidebarTintStart = NSColor(srgbRed: 0, green: 88/255, blue: 188/255, alpha: 0.11)
+        let sidebarTintEnd = NSColor.white.withAlphaComponent(0.04)
         
-        // 边框/分隔线（与设计稿 #e5e5e7）
-        let borderColor = NSColor(srgbRed: 229/255, green: 229/255, blue: 231/255, alpha: 1)  // #e5e5e7
-        
-        // 状态色
         let successColor = NSColor(srgbRed: 0.2, green: 0.78, blue: 0.35, alpha: 1)
         let warningColor = NSColor(srgbRed: 1, green: 0.67, blue: 0, alpha: 1)
-        /// 错题徽章红 #ff3b30
-        let errorColor = NSColor(srgbRed: 1, green: 59/255, blue: 48/255, alpha: 1)
+        let errorColor = NSColor(srgbRed: 186/255, green: 26/255, blue: 26/255, alpha: 1)                // #ba1a1a
+        let errorContainer = NSColor(srgbRed: 1, green: 218/255, blue: 214/255, alpha: 1)                // #ffdad6
+        let errorText = NSColor(srgbRed: 147/255, green: 0, blue: 10/255, alpha: 1)                       // #93000a
     }
     
     // MARK: - Typography
     
     struct Typography {
-        // 尽量与 HTML 原型中 Inter 字体的尺寸与重量匹配
-        let largeTitle = NSFont.systemFont(ofSize: 22, weight: .semibold)
-        let title1 = NSFont.systemFont(ofSize: 20, weight: .semibold)
+        let largeTitle = NSFont.systemFont(ofSize: 22, weight: .bold)
+        let title1 = NSFont.systemFont(ofSize: 20, weight: .bold)
         let title2 = NSFont.systemFont(ofSize: 16, weight: .semibold)
         let title3 = NSFont.systemFont(ofSize: 14, weight: .semibold)
 
         let body = NSFont.systemFont(ofSize: 14)
         let callout = NSFont.systemFont(ofSize: 13, weight: .medium)
         let subheadline = NSFont.systemFont(ofSize: 12)
-        let caption1 = NSFont.systemFont(ofSize: 11)
-        let caption2 = NSFont.systemFont(ofSize: 10)
+        let caption1 = NSFont.systemFont(ofSize: 11, weight: .medium)
+        let caption2 = NSFont.systemFont(ofSize: 10, weight: .bold)
     }
     
     // MARK: - Spacing
@@ -99,7 +97,6 @@ final class LLAppearanceManager {
     func setTheme(_ theme: Theme) {
         currentTheme = theme
         
-        // 当设置为 system 时，使用 nil 让应用跟随系统外观
         if theme == .system {
             NSApp.appearance = nil
         } else {
@@ -115,7 +112,6 @@ extension NSButton {
         bezelStyle = .rounded
         controlSize = .regular
         font = LLAppearanceManager.shared.typography.callout
-        // NSButton 在 AppKit 上没有 `backgroundColor` 属性 — 使用 layer 背景色
         wantsLayer = true
         layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
         setTitleColor(.white)
@@ -146,7 +142,6 @@ extension NSView {
         layer?.borderWidth = 1
         layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
         layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
-        // 轻微阴影以接近 HTML 原型的卡片浮层感
         layer?.shadowColor = NSColor.black.withAlphaComponent(0.06).cgColor
         layer?.shadowOpacity = 1
         layer?.shadowOffset = CGSize(width: 0, height: -2)
