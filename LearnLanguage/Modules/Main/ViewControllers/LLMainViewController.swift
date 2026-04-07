@@ -32,7 +32,8 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
         view.addSubview(splitView)
         
         splitView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.left.right.bottom.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
         // 左侧导航栏

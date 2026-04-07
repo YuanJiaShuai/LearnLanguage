@@ -60,7 +60,7 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
     private func setupMainWindow() {
         mainWindow = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 900, height: 600),
-            styleMask: [.titled, .closable, .miniaturizable],
+            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
@@ -80,7 +80,7 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         mainWindow?.minSize = NSSize(width: 900, height: 600)
         mainWindow?.maxSize = NSSize(width: 900, height: 600)
         
-        LLLogger.info("✅ 主窗口已创建（透明标题栏）")
+        LLLogger.info("✅ 主窗口已创建（透明标题栏 + 全尺寸内容区）")
     }
     
     // MARK: - Status Bar Actions
