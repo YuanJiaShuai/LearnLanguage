@@ -28,16 +28,16 @@
 
 // MARK: - Sidebar
 "App Name" = "划水记词";
-"Current Word List" = "当前学习的词库";
-"Today's Review" = "当天需复习";
+"Current Word List" = "当前词库";
+"Today's Review" = "当前需复习";
 "No Word List" = "暂无词库";
-
+"No Review Words" = "暂无复习";
 // MARK: - Card Views
 "No Review Words" = "未复习错题";
 "Current Learning List" = "当前学习词库";
 "No Word List Selected" = "还未选择学习词库\n请前往「词库管理」选择一个词库开始学习";
 "Change List" = "切换词库";
-"Select List" = "选择词库";
+"Select List" = "选择";
 "Learned %d/%d words (%.1f%%)" = "已学习 %d / %d 词 (%.1f%%)";
 "Today's Learning" = "今日学习";
 "Total Words" = "总词数";

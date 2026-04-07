@@ -73,7 +73,7 @@ final class LLSidebarViewController: NSViewController {
     
     private lazy var logoLabel: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("App Name", comment: "Application name"))
-        label.font = NSFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = LLAppearanceManager.appFont(name: "InterDisplay-Bold", size: 20, fallbackWeight: .bold)
         label.textColor = LLAppearanceManager.shared.colors.accentColor
         return label
     }()
@@ -85,7 +85,7 @@ final class LLSidebarViewController: NSViewController {
         return view
     }()
     
-    private lazy var shortcutContainerView: NSView = {
+    private lazy var quickAccessContainerView: NSView = {
         let view = NSView()
         return view
     }()
@@ -97,14 +97,14 @@ final class LLSidebarViewController: NSViewController {
         return imageView
     }()
     
-    private lazy var currentWordLibTitleLabel: NSTextField = {
+    private lazy var quickAccessTitleLabel: NSTextField = {
         let label = NSTextField(labelWithString: "快速访问")
-        label.font = NSFont.systemFont(ofSize: 11, weight: .bold)
+        label.font = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 11, fallbackWeight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.5)
         return label
     }()
     
-    private lazy var currentWordLibCardView: LLShortcutCardView = {
+    private lazy var currentWordListShortcutCardView: LLShortcutCardView = {
         let card = LLShortcutCardView(type: .wordList)
         card.onTap = { [weak self] in
             self?.didClickCurrentWordLib()
@@ -119,14 +119,14 @@ final class LLSidebarViewController: NSViewController {
         return imageView
     }()
     
-    private lazy var wrongWordsTitleLabel: NSTextField = {
+    private lazy var menuSectionTitleLabel: NSTextField = {
         let label = NSTextField(labelWithString: "主菜单")
-        label.font = NSFont.systemFont(ofSize: 11, weight: .bold)
+        label.font = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 11, fallbackWeight: .semibold)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.5)
         return label
     }()
     
-    private lazy var wrongWordsCardView: LLShortcutCardView = {
+    private lazy var reviewShortcutCardView: LLShortcutCardView = {
         let card = LLShortcutCardView(type: .wrongWords)
         card.onTap = { [weak self] in
             self?.didClickWrongWords()
@@ -150,7 +150,7 @@ final class LLSidebarViewController: NSViewController {
         let button = NSButton(title: "Curator\nHigh-End Curator", target: self, action: #selector(onFeedbackButtonClicked))
         button.bezelStyle = .regularSquare
         button.isBordered = false
-        button.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        button.font = LLAppearanceManager.appFont(name: "Inter-Medium", size: 12, fallbackWeight: .medium)
         button.contentTintColor = LLAppearanceManager.shared.colors.primaryText
         button.wantsLayer = true
         button.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.42).cgColor
@@ -220,16 +220,15 @@ final class LLSidebarViewController: NSViewController {
     }
     
     private func setupShortcutSection() {
-        view.addSubview(shortcutContainerView)
-        shortcutContainerView.addSubview(currentWordLibIconView)
-        shortcutContainerView.addSubview(currentWordLibTitleLabel)
-        shortcutContainerView.addSubview(currentWordLibCardView)
-        shortcutContainerView.addSubview(wrongWordsIconView)
-        shortcutContainerView.addSubview(wrongWordsTitleLabel)
-        shortcutContainerView.addSubview(wrongWordsCardView)
+        view.addSubview(quickAccessContainerView)
+        quickAccessContainerView.addSubview(currentWordLibIconView)
+        quickAccessContainerView.addSubview(quickAccessTitleLabel)
+        quickAccessContainerView.addSubview(currentWordListShortcutCardView)
+        quickAccessContainerView.addSubview(wrongWordsIconView)
+        quickAccessContainerView.addSubview(reviewShortcutCardView)
         view.addSubview(middleDivider)
         
-        shortcutContainerView.snp.makeConstraints { make in
+        quickAccessContainerView.snp.makeConstraints { make in
             make.top.equalTo(logoContainerView.snp.bottom).offset(28)
             make.leading.trailing.equalToSuperview().inset(18)
         }
@@ -240,47 +239,48 @@ final class LLSidebarViewController: NSViewController {
             make.width.height.equalTo(0)
         }
         
-        currentWordLibTitleLabel.snp.makeConstraints { make in
+        quickAccessTitleLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(8)
             make.top.equalToSuperview()
             make.height.equalTo(16)
         }
         
-        currentWordLibCardView.snp.makeConstraints { make in
-            make.top.equalTo(currentWordLibTitleLabel.snp.bottom).offset(10)
+        currentWordListShortcutCardView.snp.makeConstraints { make in
+            make.top.equalTo(quickAccessTitleLabel.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
         }
         
         wrongWordsIconView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
-            make.top.equalTo(currentWordLibCardView.snp.bottom).offset(30)
+            make.top.equalTo(currentWordListShortcutCardView.snp.bottom).offset(8)
             make.width.height.equalTo(0)
         }
         
-        wrongWordsTitleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.top.equalTo(currentWordLibCardView.snp.bottom).offset(30)
-            make.height.equalTo(16)
-        }
-        
-        wrongWordsCardView.snp.makeConstraints { make in
-            make.top.equalTo(wrongWordsTitleLabel.snp.bottom).offset(10)
+        reviewShortcutCardView.snp.makeConstraints { make in
+            make.top.equalTo(currentWordListShortcutCardView.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
         middleDivider.snp.makeConstraints { make in
-            make.top.equalTo(shortcutContainerView.snp.bottom)
+            make.top.equalTo(quickAccessContainerView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(1)
         }
     }
     
     private func setupNavigationSection() {
+        view.addSubview(menuSectionTitleLabel)
         view.addSubview(navigationContainerView)
         
+        menuSectionTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(quickAccessContainerView.snp.bottom).offset(30)
+            make.leading.trailing.equalToSuperview().inset(26)
+            make.height.equalTo(16)
+        }
+        
         navigationContainerView.snp.makeConstraints { make in
-            make.top.equalTo(middleDivider.snp.bottom).offset(18)
+            make.top.equalTo(menuSectionTitleLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(feedbackButton.snp.top).offset(-20)
         }
@@ -422,7 +422,7 @@ final class LLSidebarViewController: NSViewController {
               let list = LLWordListStorage.shared.list(byId: currentId) else {
             // 没有词库时显示空状态
             currentWordList = nil
-            currentWordLibCardView.updateContent(title: NSLocalizedString("No Word List", comment: "No word list placeholder"), badge: "0/0")
+            currentWordListShortcutCardView.updateContent(title: NSLocalizedString("No Word List", comment: "No word list placeholder"), badge: NSLocalizedString("Select List", comment: "Select list action"))
             return
         }
         
@@ -437,7 +437,7 @@ final class LLSidebarViewController: NSViewController {
         }
         let badgeText = "\(learned)/\(list.entries.count)"
         
-        currentWordLibCardView.updateContent(title: list.name, badge: badgeText)
+        currentWordListShortcutCardView.updateContent(title: list.name, badge: badgeText)
     }
     
     private func loadWrongWordsCount() {
@@ -449,6 +449,10 @@ final class LLSidebarViewController: NSViewController {
             LLLogger.error("❌ 获取复习词汇数量失败：\(error)")
             wrongWordCount = 0
         }
-        wrongWordsCardView.updateContent(title: NSLocalizedString("Today's Review", comment: "Today's review section title"), badge: "\(wrongWordCount)")
+        
+        let titleText = wrongWordCount == 0
+            ? NSLocalizedString("No Review Words", comment: "No review words placeholder")
+            : NSLocalizedString("Today's Review", comment: "Today's review section title")
+        reviewShortcutCardView.updateContent(title: titleText, badge: "\(wrongWordCount)")
     }
 }

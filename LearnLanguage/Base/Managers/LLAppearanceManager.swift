@@ -63,17 +63,21 @@ final class LLAppearanceManager {
     
     // MARK: - Typography
     
+    static func appFont(name: String, size: CGFloat, fallbackWeight: NSFont.Weight = .regular) -> NSFont {
+        NSFont(name: name, size: size) ?? NSFont.systemFont(ofSize: size, weight: fallbackWeight)
+    }
+    
     struct Typography {
-        let largeTitle = NSFont.systemFont(ofSize: 22, weight: .bold)
-        let title1 = NSFont.systemFont(ofSize: 20, weight: .bold)
-        let title2 = NSFont.systemFont(ofSize: 16, weight: .semibold)
-        let title3 = NSFont.systemFont(ofSize: 14, weight: .semibold)
+        let largeTitle = LLAppearanceManager.appFont(name: "InterDisplay-Bold", size: 22, fallbackWeight: .bold)
+        let title1 = LLAppearanceManager.appFont(name: "InterDisplay-Bold", size: 20, fallbackWeight: .bold)
+        let title2 = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 16, fallbackWeight: .semibold)
+        let title3 = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 14, fallbackWeight: .semibold)
 
-        let body = NSFont.systemFont(ofSize: 14)
-        let callout = NSFont.systemFont(ofSize: 13, weight: .medium)
-        let subheadline = NSFont.systemFont(ofSize: 12)
-        let caption1 = NSFont.systemFont(ofSize: 11, weight: .medium)
-        let caption2 = NSFont.systemFont(ofSize: 10, weight: .bold)
+        let body = LLAppearanceManager.appFont(name: "Inter-Regular", size: 14)
+        let callout = LLAppearanceManager.appFont(name: "Inter-Medium", size: 13, fallbackWeight: .medium)
+        let subheadline = LLAppearanceManager.appFont(name: "Inter-Regular", size: 12)
+        let caption1 = LLAppearanceManager.appFont(name: "Inter-Medium", size: 11, fallbackWeight: .medium)
+        let caption2 = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 10, fallbackWeight: .bold)
     }
     
     // MARK: - Spacing

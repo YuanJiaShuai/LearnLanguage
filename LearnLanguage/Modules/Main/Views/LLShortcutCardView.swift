@@ -17,16 +17,16 @@ final class LLShortcutCardView: NSView {
         var icon: NSImage? {
             switch self {
             case .wordList:
-                return NSImage(systemSymbolName: "book.closed.fill", accessibilityDescription: nil)
+                return NSImage(systemSymbolName: "school", accessibilityDescription: nil)
             case .wrongWords:
-                return NSImage(systemSymbolName: "exclamationmark.circle.fill", accessibilityDescription: nil)
+                return NSImage(systemSymbolName: "error", accessibilityDescription: nil)
             }
         }
         
         var placeholderTitle: String {
             switch self {
-            case .wordList: return NSLocalizedString("No Word List", comment: "No word list placeholder")
-            case .wrongWords: return NSLocalizedString("Today's Review", comment: "Today's review section title")
+            case .wordList: return NSLocalizedString("Current Word List", comment: "Current word list shortcut title")
+            case .wrongWords: return NSLocalizedString("Today's Review", comment: "Today's review shortcut title")
             }
         }
         
@@ -61,13 +61,20 @@ final class LLShortcutCardView: NSView {
     private let cardType: CardType
     var onTap: (() -> Void)?
     
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        trackingAreas.forEach(removeTrackingArea)
+        let options: NSTrackingArea.Options = [.mouseEnteredAndExited, .activeInKeyWindow, .inVisibleRect]
+        addTrackingArea(NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil))
+    }
+    
     // MARK: - UI Components
     
     private lazy var containerView: NSView = {
         let view = NSView()
         view.wantsLayer = true
         view.layer?.cornerRadius = 10
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainerLow.withAlphaComponent(0.92).cgColor
+        view.layer?.backgroundColor = NSColor.clear.cgColor
         return view
     }()
     
@@ -75,7 +82,7 @@ final class LLShortcutCardView: NSView {
         let imageView = NSImageView()
         if let image = cardType.icon {
             image.isTemplate = true
-            image.size = NSSize(width: 18, height: 18)
+            image.size = NSSize(width: 17, height: 17)
             imageView.image = image
         }
         imageView.contentTintColor = cardType.iconColor
@@ -85,7 +92,7 @@ final class LLShortcutCardView: NSView {
     
     private lazy var titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: cardType.placeholderTitle)
-        label.font = NSFont.systemFont(ofSize: 13, weight: .medium)
+        label.font = LLAppearanceManager.appFont(name: "Inter-Medium", size: 13, fallbackWeight: .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.lineBreakMode = .byTruncatingTail
         label.isBezeled = false
@@ -96,14 +103,14 @@ final class LLShortcutCardView: NSView {
     
     private lazy var badgeLabel: NSTextField = {
         let label = NSTextField(labelWithString: "0")
-        label.font = NSFont.systemFont(ofSize: 10, weight: .bold)
+        label.font = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 10, fallbackWeight: .bold)
         label.textColor = cardType.badgeTextColor
         label.alignment = .center
         label.isBezeled = false
         label.isEditable = false
         label.drawsBackground = false
         label.wantsLayer = true
-        label.layer?.cornerRadius = 5
+        label.layer?.cornerRadius = 4
         label.layer?.backgroundColor = cardType.badgeBackgroundColor.cgColor
         label.usesSingleLineMode = true
         label.cell?.usesSingleLineMode = true
@@ -136,13 +143,13 @@ final class LLShortcutCardView: NSView {
         
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(38)
+            make.height.equalTo(34)
         }
         
         iconView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(12)
+            make.leading.equalToSuperview().offset(10)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(18)
+            make.width.height.equalTo(17)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -152,10 +159,10 @@ final class LLShortcutCardView: NSView {
         }
         
         badgeLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-10)
+            make.trailing.equalToSuperview().offset(-8)
             make.centerY.equalToSuperview()
-            make.height.equalTo(18)
-            make.width.greaterThanOrEqualTo(34)
+            make.height.equalTo(16)
+            make.width.greaterThanOrEqualTo(30)
         }
     }
     
@@ -166,6 +173,16 @@ final class LLShortcutCardView: NSView {
     
     @objc private func handleTap() {
         onTap?()
+    }
+    
+    override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
+        containerView.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainerLow.cgColor
+    }
+    
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+        containerView.layer?.backgroundColor = NSColor.clear.cgColor
     }
     
     // MARK: - Public Methods

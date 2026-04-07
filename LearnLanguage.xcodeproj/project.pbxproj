@@ -115,6 +115,42 @@
 		84E1E3A52F4D53A300D1B7B6 /* LLTypingPracticeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E39C2F4D53A300D1B7B6 /* LLTypingPracticeManager.swift */; };
 		84E1E3A62F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3932F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift */; };
 		A85192832F51E908006CEA04 /* LLDBLearningProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */; };
+		A873E7632F855AFD00CEA380 /* InterDisplay-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E75D2F855AFD00CEA380 /* InterDisplay-MediumItalic.ttf */; };
+		A873E7642F855AFD00CEA380 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7432F855AFD00CEA380 /* Inter-ExtraBold.ttf */; };
+		A873E7652F855AFD00CEA380 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E74C2F855AFD00CEA380 /* Inter-Regular.ttf */; };
+		A873E7662F855AFD00CEA380 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E73F2F855AFD00CEA380 /* Inter-Black.ttf */; };
+		A873E7672F855AFD00CEA380 /* Inter-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7462F855AFD00CEA380 /* Inter-ExtraLightItalic.ttf */; };
+		A873E7682F855AFD00CEA380 /* InterDisplay-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7542F855AFD00CEA380 /* InterDisplay-BoldItalic.ttf */; };
+		A873E7692F855AFD00CEA380 /* InterDisplay-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7582F855AFD00CEA380 /* InterDisplay-ExtraLightItalic.ttf */; };
+		A873E76A2F855AFD00CEA380 /* InterDisplay-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7552F855AFD00CEA380 /* InterDisplay-ExtraBold.ttf */; };
+		A873E76B2F855AFD00CEA380 /* Inter-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7502F855AFD00CEA380 /* Inter-ThinItalic.ttf */; };
+		A873E76C2F855AFD00CEA380 /* InterDisplay-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E75B2F855AFD00CEA380 /* InterDisplay-LightItalic.ttf */; };
+		A873E76D2F855AFD00CEA380 /* InterDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7532F855AFD00CEA380 /* InterDisplay-Bold.ttf */; };
+		A873E76E2F855AFD00CEA380 /* Inter-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E74B2F855AFD00CEA380 /* Inter-MediumItalic.ttf */; };
+		A873E76F2F855AFD00CEA380 /* InterDisplay-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7562F855AFD00CEA380 /* InterDisplay-ExtraBoldItalic.ttf */; };
+		A873E7702F855AFD00CEA380 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E74D2F855AFD00CEA380 /* Inter-SemiBold.ttf */; };
+		A873E7712F855AFD00CEA380 /* Inter-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7442F855AFD00CEA380 /* Inter-ExtraBoldItalic.ttf */; };
+		A873E7722F855AFD00CEA380 /* InterDisplay-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E75A2F855AFD00CEA380 /* InterDisplay-Light.ttf */; };
+		A873E7732F855AFD00CEA380 /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7452F855AFD00CEA380 /* Inter-ExtraLight.ttf */; };
+		A873E7742F855AFD00CEA380 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E74A2F855AFD00CEA380 /* Inter-Medium.ttf */; };
+		A873E7752F855AFD00CEA380 /* InterDisplay-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7522F855AFD00CEA380 /* InterDisplay-BlackItalic.ttf */; };
+		A873E7762F855AFD00CEA380 /* InterDisplay-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7592F855AFD00CEA380 /* InterDisplay-Italic.ttf */; };
+		A873E7772F855AFD00CEA380 /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E74F2F855AFD00CEA380 /* Inter-Thin.ttf */; };
+		A873E7782F855AFD00CEA380 /* Inter-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7472F855AFD00CEA380 /* Inter-Italic.ttf */; };
+		A873E7792F855AFD00CEA380 /* InterDisplay-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7512F855AFD00CEA380 /* InterDisplay-Black.ttf */; };
+		A873E77A2F855AFD00CEA380 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7412F855AFD00CEA380 /* Inter-Bold.ttf */; };
+		A873E77B2F855AFD00CEA380 /* InterDisplay-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E75C2F855AFD00CEA380 /* InterDisplay-Medium.ttf */; };
+		A873E77C2F855AFD00CEA380 /* InterDisplay-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7572F855AFD00CEA380 /* InterDisplay-ExtraLight.ttf */; };
+		A873E77D2F855AFD00CEA380 /* InterDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E75E2F855AFD00CEA380 /* InterDisplay-Regular.ttf */; };
+		A873E77E2F855AFD00CEA380 /* Inter-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E74E2F855AFD00CEA380 /* Inter-SemiBoldItalic.ttf */; };
+		A873E77F2F855AFD00CEA380 /* InterDisplay-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7602F855AFD00CEA380 /* InterDisplay-SemiBoldItalic.ttf */; };
+		A873E7802F855AFD00CEA380 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7482F855AFD00CEA380 /* Inter-Light.ttf */; };
+		A873E7812F855AFD00CEA380 /* InterDisplay-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7622F855AFD00CEA380 /* InterDisplay-ThinItalic.ttf */; };
+		A873E7822F855AFD00CEA380 /* InterDisplay-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E75F2F855AFD00CEA380 /* InterDisplay-SemiBold.ttf */; };
+		A873E7832F855AFD00CEA380 /* Inter-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7422F855AFD00CEA380 /* Inter-BoldItalic.ttf */; };
+		A873E7842F855AFD00CEA380 /* Inter-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7402F855AFD00CEA380 /* Inter-BlackItalic.ttf */; };
+		A873E7852F855AFD00CEA380 /* Inter-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7492F855AFD00CEA380 /* Inter-LightItalic.ttf */; };
+		A873E7862F855AFD00CEA380 /* InterDisplay-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A873E7612F855AFD00CEA380 /* InterDisplay-Thin.ttf */; };
 		A88C88242F3CA10D005ACFA6 /* LLShortcutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */; };
 		A88C88252F3CA10D005ACFA6 /* LLSidebarNavigationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88232F3CA10D005ACFA6 /* LLSidebarNavigationItemView.swift */; };
 		A88C88292F3CAF61005ACFA6 /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88262F3CAF61005ACFA6 /* NotificationName+Extensions.swift */; };
@@ -247,6 +283,42 @@
 		A80BC32D2F378E8900A40D9B /* 划水记词.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "划水记词.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningProgress.swift; sourceTree = "<group>"; };
 		A85ECB032F4C2149009F8DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A873E73F2F855AFD00CEA380 /* Inter-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Black.ttf"; sourceTree = "<group>"; };
+		A873E7402F855AFD00CEA380 /* Inter-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-BlackItalic.ttf"; sourceTree = "<group>"; };
+		A873E7412F855AFD00CEA380 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
+		A873E7422F855AFD00CEA380 /* Inter-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-BoldItalic.ttf"; sourceTree = "<group>"; };
+		A873E7432F855AFD00CEA380 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
+		A873E7442F855AFD00CEA380 /* Inter-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		A873E7452F855AFD00CEA380 /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
+		A873E7462F855AFD00CEA380 /* Inter-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		A873E7472F855AFD00CEA380 /* Inter-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Italic.ttf"; sourceTree = "<group>"; };
+		A873E7482F855AFD00CEA380 /* Inter-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Light.ttf"; sourceTree = "<group>"; };
+		A873E7492F855AFD00CEA380 /* Inter-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-LightItalic.ttf"; sourceTree = "<group>"; };
+		A873E74A2F855AFD00CEA380 /* Inter-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Medium.ttf"; sourceTree = "<group>"; };
+		A873E74B2F855AFD00CEA380 /* Inter-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-MediumItalic.ttf"; sourceTree = "<group>"; };
+		A873E74C2F855AFD00CEA380 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
+		A873E74D2F855AFD00CEA380 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		A873E74E2F855AFD00CEA380 /* Inter-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		A873E74F2F855AFD00CEA380 /* Inter-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Thin.ttf"; sourceTree = "<group>"; };
+		A873E7502F855AFD00CEA380 /* Inter-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ThinItalic.ttf"; sourceTree = "<group>"; };
+		A873E7512F855AFD00CEA380 /* InterDisplay-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Black.ttf"; sourceTree = "<group>"; };
+		A873E7522F855AFD00CEA380 /* InterDisplay-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-BlackItalic.ttf"; sourceTree = "<group>"; };
+		A873E7532F855AFD00CEA380 /* InterDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		A873E7542F855AFD00CEA380 /* InterDisplay-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-BoldItalic.ttf"; sourceTree = "<group>"; };
+		A873E7552F855AFD00CEA380 /* InterDisplay-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-ExtraBold.ttf"; sourceTree = "<group>"; };
+		A873E7562F855AFD00CEA380 /* InterDisplay-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		A873E7572F855AFD00CEA380 /* InterDisplay-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-ExtraLight.ttf"; sourceTree = "<group>"; };
+		A873E7582F855AFD00CEA380 /* InterDisplay-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		A873E7592F855AFD00CEA380 /* InterDisplay-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Italic.ttf"; sourceTree = "<group>"; };
+		A873E75A2F855AFD00CEA380 /* InterDisplay-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Light.ttf"; sourceTree = "<group>"; };
+		A873E75B2F855AFD00CEA380 /* InterDisplay-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-LightItalic.ttf"; sourceTree = "<group>"; };
+		A873E75C2F855AFD00CEA380 /* InterDisplay-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Medium.ttf"; sourceTree = "<group>"; };
+		A873E75D2F855AFD00CEA380 /* InterDisplay-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-MediumItalic.ttf"; sourceTree = "<group>"; };
+		A873E75E2F855AFD00CEA380 /* InterDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		A873E75F2F855AFD00CEA380 /* InterDisplay-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-SemiBold.ttf"; sourceTree = "<group>"; };
+		A873E7602F855AFD00CEA380 /* InterDisplay-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		A873E7612F855AFD00CEA380 /* InterDisplay-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Thin.ttf"; sourceTree = "<group>"; };
+		A873E7622F855AFD00CEA380 /* InterDisplay-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-ThinItalic.ttf"; sourceTree = "<group>"; };
 		A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLShortcutCardView.swift; sourceTree = "<group>"; };
 		A88C88232F3CA10D005ACFA6 /* LLSidebarNavigationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSidebarNavigationItemView.swift; sourceTree = "<group>"; };
 		A88C88262F3CAF61005ACFA6 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
@@ -324,6 +396,42 @@
 		848FAF5D2F6D24F2007C8349 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				A873E73F2F855AFD00CEA380 /* Inter-Black.ttf */,
+				A873E7402F855AFD00CEA380 /* Inter-BlackItalic.ttf */,
+				A873E7412F855AFD00CEA380 /* Inter-Bold.ttf */,
+				A873E7422F855AFD00CEA380 /* Inter-BoldItalic.ttf */,
+				A873E7432F855AFD00CEA380 /* Inter-ExtraBold.ttf */,
+				A873E7442F855AFD00CEA380 /* Inter-ExtraBoldItalic.ttf */,
+				A873E7452F855AFD00CEA380 /* Inter-ExtraLight.ttf */,
+				A873E7462F855AFD00CEA380 /* Inter-ExtraLightItalic.ttf */,
+				A873E7472F855AFD00CEA380 /* Inter-Italic.ttf */,
+				A873E7482F855AFD00CEA380 /* Inter-Light.ttf */,
+				A873E7492F855AFD00CEA380 /* Inter-LightItalic.ttf */,
+				A873E74A2F855AFD00CEA380 /* Inter-Medium.ttf */,
+				A873E74B2F855AFD00CEA380 /* Inter-MediumItalic.ttf */,
+				A873E74C2F855AFD00CEA380 /* Inter-Regular.ttf */,
+				A873E74D2F855AFD00CEA380 /* Inter-SemiBold.ttf */,
+				A873E74E2F855AFD00CEA380 /* Inter-SemiBoldItalic.ttf */,
+				A873E74F2F855AFD00CEA380 /* Inter-Thin.ttf */,
+				A873E7502F855AFD00CEA380 /* Inter-ThinItalic.ttf */,
+				A873E7512F855AFD00CEA380 /* InterDisplay-Black.ttf */,
+				A873E7522F855AFD00CEA380 /* InterDisplay-BlackItalic.ttf */,
+				A873E7532F855AFD00CEA380 /* InterDisplay-Bold.ttf */,
+				A873E7542F855AFD00CEA380 /* InterDisplay-BoldItalic.ttf */,
+				A873E7552F855AFD00CEA380 /* InterDisplay-ExtraBold.ttf */,
+				A873E7562F855AFD00CEA380 /* InterDisplay-ExtraBoldItalic.ttf */,
+				A873E7572F855AFD00CEA380 /* InterDisplay-ExtraLight.ttf */,
+				A873E7582F855AFD00CEA380 /* InterDisplay-ExtraLightItalic.ttf */,
+				A873E7592F855AFD00CEA380 /* InterDisplay-Italic.ttf */,
+				A873E75A2F855AFD00CEA380 /* InterDisplay-Light.ttf */,
+				A873E75B2F855AFD00CEA380 /* InterDisplay-LightItalic.ttf */,
+				A873E75C2F855AFD00CEA380 /* InterDisplay-Medium.ttf */,
+				A873E75D2F855AFD00CEA380 /* InterDisplay-MediumItalic.ttf */,
+				A873E75E2F855AFD00CEA380 /* InterDisplay-Regular.ttf */,
+				A873E75F2F855AFD00CEA380 /* InterDisplay-SemiBold.ttf */,
+				A873E7602F855AFD00CEA380 /* InterDisplay-SemiBoldItalic.ttf */,
+				A873E7612F855AFD00CEA380 /* InterDisplay-Thin.ttf */,
+				A873E7622F855AFD00CEA380 /* InterDisplay-ThinItalic.ttf */,
 				848FAF5E2F6D253D007C8349 /* Bangers-Regular.ttf */,
 				848FAF5F2F6D253D007C8349 /* BitcountGridSingleInk.ttf */,
 				848FAF602F6D253D007C8349 /* Capriola-Regular.ttf */,
@@ -868,6 +976,42 @@
 				840D1E8D2F67DC76002C330E /* Holy Pandas.mp3 in Resources */,
 				840D1E8E2F67DC76002C330E /* SKCM Blue Alps.mp3 in Resources */,
 				840D1E8F2F67DC76002C330E /* Cherry MX Blues.mp3 in Resources */,
+				A873E7632F855AFD00CEA380 /* InterDisplay-MediumItalic.ttf in Resources */,
+				A873E7642F855AFD00CEA380 /* Inter-ExtraBold.ttf in Resources */,
+				A873E7652F855AFD00CEA380 /* Inter-Regular.ttf in Resources */,
+				A873E7662F855AFD00CEA380 /* Inter-Black.ttf in Resources */,
+				A873E7672F855AFD00CEA380 /* Inter-ExtraLightItalic.ttf in Resources */,
+				A873E7682F855AFD00CEA380 /* InterDisplay-BoldItalic.ttf in Resources */,
+				A873E7692F855AFD00CEA380 /* InterDisplay-ExtraLightItalic.ttf in Resources */,
+				A873E76A2F855AFD00CEA380 /* InterDisplay-ExtraBold.ttf in Resources */,
+				A873E76B2F855AFD00CEA380 /* Inter-ThinItalic.ttf in Resources */,
+				A873E76C2F855AFD00CEA380 /* InterDisplay-LightItalic.ttf in Resources */,
+				A873E76D2F855AFD00CEA380 /* InterDisplay-Bold.ttf in Resources */,
+				A873E76E2F855AFD00CEA380 /* Inter-MediumItalic.ttf in Resources */,
+				A873E76F2F855AFD00CEA380 /* InterDisplay-ExtraBoldItalic.ttf in Resources */,
+				A873E7702F855AFD00CEA380 /* Inter-SemiBold.ttf in Resources */,
+				A873E7712F855AFD00CEA380 /* Inter-ExtraBoldItalic.ttf in Resources */,
+				A873E7722F855AFD00CEA380 /* InterDisplay-Light.ttf in Resources */,
+				A873E7732F855AFD00CEA380 /* Inter-ExtraLight.ttf in Resources */,
+				A873E7742F855AFD00CEA380 /* Inter-Medium.ttf in Resources */,
+				A873E7752F855AFD00CEA380 /* InterDisplay-BlackItalic.ttf in Resources */,
+				A873E7762F855AFD00CEA380 /* InterDisplay-Italic.ttf in Resources */,
+				A873E7772F855AFD00CEA380 /* Inter-Thin.ttf in Resources */,
+				A873E7782F855AFD00CEA380 /* Inter-Italic.ttf in Resources */,
+				A873E7792F855AFD00CEA380 /* InterDisplay-Black.ttf in Resources */,
+				A873E77A2F855AFD00CEA380 /* Inter-Bold.ttf in Resources */,
+				A873E77B2F855AFD00CEA380 /* InterDisplay-Medium.ttf in Resources */,
+				A873E77C2F855AFD00CEA380 /* InterDisplay-ExtraLight.ttf in Resources */,
+				A873E77D2F855AFD00CEA380 /* InterDisplay-Regular.ttf in Resources */,
+				A873E77E2F855AFD00CEA380 /* Inter-SemiBoldItalic.ttf in Resources */,
+				A873E77F2F855AFD00CEA380 /* InterDisplay-SemiBoldItalic.ttf in Resources */,
+				A873E7802F855AFD00CEA380 /* Inter-Light.ttf in Resources */,
+				A873E7812F855AFD00CEA380 /* InterDisplay-ThinItalic.ttf in Resources */,
+				A873E7822F855AFD00CEA380 /* InterDisplay-SemiBold.ttf in Resources */,
+				A873E7832F855AFD00CEA380 /* Inter-BoldItalic.ttf in Resources */,
+				A873E7842F855AFD00CEA380 /* Inter-BlackItalic.ttf in Resources */,
+				A873E7852F855AFD00CEA380 /* Inter-LightItalic.ttf in Resources */,
+				A873E7862F855AFD00CEA380 /* InterDisplay-Thin.ttf in Resources */,
 				840D1E902F67DC76002C330E /* Cherry MX Blacks.mp3 in Resources */,
 				840D1E912F67DC76002C330E /* Cherry MX Browns.mp3 in Resources */,
 				840D1E922F67DC76002C330E /* Default.wav in Resources */,

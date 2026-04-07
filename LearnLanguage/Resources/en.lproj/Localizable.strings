@@ -28,16 +28,16 @@
 
 // MARK: - Sidebar
 "App Name" = "VocabIdle";
-"Current Word List" = "Current Word List";
-"Today's Review" = "Today's Review";
+"Current Word List" = "Current List";
+"Today's Review" = "Review Due";
 "No Word List" = "No Word List";
-
+"No Review Words" = "No Reviews";
 // MARK: - Card Views
 "No Review Words" = "No Review Words";
 "Current Learning List" = "Current Learning List";
 "No Word List Selected" = "No word list selected\nGo to \"Word List\" to select a word list to start learning";
 "Change List" = "Change List";
-"Select List" = "Select List";
+"Select List" = "Select";
 "Learned %d/%d words (%.1f%%)" = "Learned %d/%d words (%.1f%%)";
 "Today's Learning" = "Today's Learning";
 "Total Words" = "Total Words";
