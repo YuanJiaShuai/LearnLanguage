@@ -66,6 +66,9 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         )
         mainWindow?.title = ""
         mainWindow?.titleVisibility = .hidden
+        mainWindow?.titlebarAppearsTransparent = true
+        mainWindow?.isMovableByWindowBackground = true
+        mainWindow?.backgroundColor = LLAppearanceManager.shared.colors.mainBackground
         mainWindow?.contentViewController = LLMainViewController()
         mainWindow?.center()
         mainWindow?.delegate = self
@@ -77,7 +80,7 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
         mainWindow?.minSize = NSSize(width: 900, height: 600)
         mainWindow?.maxSize = NSSize(width: 900, height: 600)
         
-        LLLogger.info("✅ 主窗口已创建（隐藏状态）")
+        LLLogger.info("✅ 主窗口已创建（透明标题栏）")
     }
     
     // MARK: - Status Bar Actions
