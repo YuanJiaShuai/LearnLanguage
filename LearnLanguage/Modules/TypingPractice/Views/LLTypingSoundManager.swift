@@ -29,8 +29,16 @@ class LLTypingSoundManager {
     // MARK: - Setup
     
     private func setupSounds() {
-        // 使用系统音效
-        // 也可以添加自定义音效文件
+        if let url = Bundle.main.url(forResource: "click", withExtension: "wav") {
+            do {
+                keyPlayer = try AVAudioPlayer(contentsOf: url)
+                keyPlayer?.prepareToPlay()
+            } catch {
+                LLLogger.error("❌ 加载按键音效失败：\(error)")
+            }
+        } else {
+            LLLogger.warn("⚠️ 未找到按键音效文件 click.wav")
+        }
     }
     
     // MARK: - Public Methods
@@ -43,7 +51,9 @@ class LLTypingSoundManager {
     /// 播放按键音效
     func playKeySound() {
         guard isEnabled else { return }
-        NSSound.beep()
+        guard let keyPlayer = keyPlayer else { return }
+        keyPlayer.currentTime = 0
+        keyPlayer.play()
     }
     
     /// 播放正确音效
