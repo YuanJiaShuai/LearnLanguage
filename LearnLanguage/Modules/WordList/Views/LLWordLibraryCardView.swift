@@ -1,22 +1,20 @@
-//
-//  LLWordLibraryCardView.swift
-//  LearnLanguage
-//
-//  单个词库卡片视图，支持选中态和进度展示
-//
-
 import AppKit
 import SnapKit
 
 final class LLWordLibraryCardView: NSView {
     
+    private let iconContainerView = NSView()
     private let iconView = NSImageView()
+    private let categoryBadgeLabel = NSTextField(labelWithString: "")
     private let nameLabel = NSTextField(labelWithString: "词库名称")
-    private let countLabel = NSTextField(labelWithString: "0/1000")
+    private let learnedCountLabel = NSTextField(labelWithString: "0")
+    private let totalCountLabel = NSTextField(labelWithString: "/ 0 词")
+    private let progressTitleLabel = NSTextField(labelWithString: NSLocalizedString("Learning Progress", comment: "Learning progress title"))
+    private let progressPercentLabel = NSTextField(labelWithString: "0%")
     private let progressBar = NSView()
     private let progressFill = NSView()
-    private let learningBadge = NSTextField(labelWithString: "")
     private var progressFillWidthConstraint: Constraint?
+    private var tracking: NSTrackingArea?
     
     var data: WordList? {
         didSet { updateUI() }
@@ -27,11 +25,11 @@ final class LLWordLibraryCardView: NSView {
     }
     
     var isSelected: Bool = false {
-        didSet { updateSelection() }
+        didSet { updateCardAppearance(animated: true) }
     }
     
     var isCurrentLearning: Bool = false {
-        didSet { updateLearningBadge() }
+        didSet { updateCardAppearance(animated: false) }
     }
     
     var onClicked: ((WordList) -> Void)?
@@ -45,177 +43,204 @@ final class LLWordLibraryCardView: NSView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        if let tracking {
+            removeTrackingArea(tracking)
+        }
+        let options: NSTrackingArea.Options = [.mouseEnteredAndExited, .activeInKeyWindow, .inVisibleRect]
+        let area = NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil)
+        addTrackingArea(area)
+        tracking = area
+    }
+    
     private func setupUI() {
         wantsLayer = true
-        layer?.cornerRadius = 12
+        layer?.cornerRadius = 16
         layer?.borderWidth = 1
-        layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
+        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.4).cgColor
         layer?.backgroundColor = NSColor.white.cgColor
+        layer?.shadowColor = NSColor.black.withAlphaComponent(0.06).cgColor
+        layer?.shadowOpacity = 1
+        layer?.shadowOffset = CGSize(width: 0, height: -2)
+        layer?.shadowRadius = 10
         
-        // 图标和标题容器
-        let headerStack = NSStackView()
-        headerStack.orientation = .horizontal
-        headerStack.spacing = 8
-        headerStack.alignment = .centerY
-        addSubview(headerStack)
+        iconContainerView.wantsLayer = true
+        iconContainerView.layer?.cornerRadius = 12
+        iconContainerView.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.withAlphaComponent(0.1).cgColor
+        addSubview(iconContainerView)
         
-        headerStack.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-        }
+        iconView.image = NSImage(systemSymbolName: "translate", accessibilityDescription: nil)
+        iconView.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+        iconView.imageScaling = .scaleProportionallyDown
+        iconContainerView.addSubview(iconView)
         
-        // 图标
-        iconView.image = NSImage(systemSymbolName: "book.fill", accessibilityDescription: nil)
-        iconView.contentTintColor = NSColor.systemBlue
-        iconView.snp.makeConstraints { make in
-            make.width.height.equalTo(18)
-        }
-        headerStack.addArrangedSubview(iconView)
+        categoryBadgeLabel.font = NSFont.inter(10, .semiBold)
+        categoryBadgeLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.8)
+        categoryBadgeLabel.alignment = .center
+        categoryBadgeLabel.isBezeled = false
+        categoryBadgeLabel.isEditable = false
+        categoryBadgeLabel.drawsBackground = false
+        categoryBadgeLabel.wantsLayer = true
+        categoryBadgeLabel.layer?.cornerRadius = 6
+        categoryBadgeLabel.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainer.withAlphaComponent(0.85).cgColor
+        addSubview(categoryBadgeLabel)
         
-        // 标题
-        nameLabel.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
+        nameLabel.font = NSFont.inter(20, .bold)
         nameLabel.textColor = LLAppearanceManager.shared.colors.primaryText
         nameLabel.lineBreakMode = .byTruncatingTail
-        headerStack.addArrangedSubview(nameLabel)
+        nameLabel.maximumNumberOfLines = 1
+        addSubview(nameLabel)
         
-        // 学习中徽章
-        learningBadge.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        learningBadge.textColor = .white
-        learningBadge.alignment = .center
-        learningBadge.wantsLayer = true
-        learningBadge.layer?.cornerRadius = 9
-        learningBadge.layer?.backgroundColor = NSColor.systemBlue.cgColor
-        learningBadge.stringValue = NSLocalizedString("Learning", comment: "Currently learning badge")
-        learningBadge.isHidden = true
-        learningBadge.snp.makeConstraints { make in
-            make.width.equalTo(56)
-            make.height.equalTo(18)
-        }
-        headerStack.addArrangedSubview(learningBadge)
+        learnedCountLabel.font = NSFont.inter(28, .bold)
+        learnedCountLabel.textColor = LLAppearanceManager.shared.colors.accentColor
+        addSubview(learnedCountLabel)
         
-        // 进度文字
-        countLabel.font = NSFont.systemFont(ofSize: 13)
-        countLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-        addSubview(countLabel)
-        countLabel.snp.makeConstraints { make in
-            make.top.equalTo(headerStack.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-        }
+        totalCountLabel.font = NSFont.inter(12, .medium)
+        totalCountLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
+        addSubview(totalCountLabel)
         
-        // 进度条
+        progressTitleLabel.font = NSFont.inter(11, .semiBold)
+        progressTitleLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.6)
+        addSubview(progressTitleLabel)
+        
+        progressPercentLabel.font = NSFont.inter(11, .semiBold)
+        progressPercentLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.6)
+        progressPercentLabel.alignment = .right
+        addSubview(progressPercentLabel)
+        
         progressBar.wantsLayer = true
-        progressBar.layer?.cornerRadius = 1.5
-        progressBar.layer?.backgroundColor = NSColor.systemGray.withAlphaComponent(0.15).cgColor
+        progressBar.layer?.cornerRadius = 3
+        progressBar.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainer.cgColor
         addSubview(progressBar)
-        progressBar.snp.makeConstraints { make in
-            make.top.equalTo(countLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.height.equalTo(3)
-            make.bottom.equalToSuperview().offset(-16)
-        }
         
         progressFill.wantsLayer = true
-        progressFill.layer?.cornerRadius = 1.5
-        progressFill.layer?.backgroundColor = NSColor.systemBlue.cgColor
+        progressFill.layer?.cornerRadius = 3
+        progressFill.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
         progressBar.addSubview(progressFill)
-        progressFill.snp.makeConstraints { make in
-            make.top.leading.bottom.equalToSuperview()
-            progressFillWidthConstraint = make.width.equalTo(0).constraint
+        
+        iconContainerView.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview().offset(24)
+            make.width.height.equalTo(48)
         }
         
-        // 鼠标事件
-        let trackingArea = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect], owner: self, userInfo: nil)
-        addTrackingArea(trackingArea)
+        iconView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(24)
+        }
+        
+        categoryBadgeLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().offset(-24)
+            make.height.equalTo(22)
+            make.width.greaterThanOrEqualTo(74)
+        }
+        
+        nameLabel.snp.makeConstraints { make in
+            make.top.equalTo(iconContainerView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().offset(-24)
+        }
+        
+        learnedCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(24)
+        }
+        
+        totalCountLabel.snp.makeConstraints { make in
+            make.leading.equalTo(learnedCountLabel.snp.trailing).offset(4)
+            make.bottom.equalTo(learnedCountLabel.snp.bottom).offset(-3)
+            make.trailing.lessThanOrEqualToSuperview().offset(-24)
+        }
+        
+        progressTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.bottom.equalTo(progressBar.snp.top).offset(-8)
+        }
+        
+        progressPercentLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-24)
+            make.centerY.equalTo(progressTitleLabel)
+        }
+        
+        progressBar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.bottom.equalToSuperview().offset(-24)
+            make.height.equalTo(6)
+        }
+        
+        progressFill.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+            progressFillWidthConstraint = make.width.equalTo(0).constraint
+        }
     }
     
     private func updateUI() {
-        guard let data = data else { return }
+        guard let data else { return }
+        
+        let totalCount = max(data.entryCount, data.totalWords ?? data.entryCount)
+        let progress = totalCount > 0 ? CGFloat(learnedCount) / CGFloat(totalCount) : 0
+        let percentText = String(format: "%.1f%%", progress * 100)
         
         nameLabel.stringValue = data.name
-        countLabel.stringValue = "\(learnedCount)/\(data.entryCount) " + NSLocalizedString("words learned", comment: "Words learned count")
+        categoryBadgeLabel.stringValue = data.category
+        learnedCountLabel.stringValue = "\(learnedCount)"
+        totalCountLabel.stringValue = "/ \(totalCount) \(NSLocalizedString("words", comment: "Words unit"))"
+        progressPercentLabel.stringValue = percentText
         
-        // 计算进度百分比
-        let progress = CGFloat(learnedCount) / CGFloat(max(1, data.entryCount))
-        
-        // 使用约束来设置进度条宽度，而不是依赖 bounds
-        // 进度条的最大宽度是 progressBar 的宽度减去左右 padding (16*2)
-        // 但我们直接设置为百分比乘以 progressBar 的宽度
-        DispatchQueue.main.async {
-            let maxWidth = self.progressBar.bounds.width
-            let width = maxWidth * progress
-            self.progressFillWidthConstraint?.update(offset: width)
-        }
+        layoutSubtreeIfNeeded()
+        let maxWidth = progressBar.bounds.width
+        progressFillWidthConstraint?.update(offset: max(0, min(maxWidth, maxWidth * progress)))
     }
     
-    private func updateSelection() {
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(0.2)
-        if isSelected {
-            layer?.borderColor = NSColor.systemBlue.cgColor
-            layer?.borderWidth = 2
-            layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05).cgColor
-            iconView.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: nil)
-            iconView.contentTintColor = NSColor.systemBlue
-        } else {
-            layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
-            layer?.borderWidth = 1
-            layer?.backgroundColor = NSColor.white.cgColor
-            iconView.image = NSImage(systemSymbolName: "book.fill", accessibilityDescription: nil)
-            iconView.contentTintColor = NSColor.systemBlue
+    private func updateCardAppearance(animated: Bool) {
+        let changes = {
+            if self.isSelected || self.isCurrentLearning {
+                self.layer?.borderColor = LLAppearanceManager.shared.colors.accentColor.withAlphaComponent(0.28).cgColor
+                self.layer?.backgroundColor = NSColor.white.cgColor
+                self.layer?.shadowColor = NSColor.black.withAlphaComponent(0.08).cgColor
+                self.layer?.shadowRadius = 16
+                self.layer?.shadowOffset = CGSize(width: 0, height: -4)
+            } else {
+                self.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.4).cgColor
+                self.layer?.backgroundColor = NSColor.white.cgColor
+                self.layer?.shadowColor = NSColor.black.withAlphaComponent(0.06).cgColor
+                self.layer?.shadowRadius = 10
+                self.layer?.shadowOffset = CGSize(width: 0, height: -2)
+            }
         }
-        CATransaction.commit()
+        
+        if animated {
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.18
+                changes()
+            }
+        } else {
+            changes()
+        }
     }
     
     override func mouseDown(with event: NSEvent) {
-        if let data = data {
+        if let data {
             onClicked?(data)
         }
     }
     
     override func mouseEntered(with event: NSEvent) {
-        if !isSelected && !isCurrentLearning {
+        if !isSelected {
             NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.2
-                layer?.borderWidth = 1
-                layer?.borderColor = NSColor.systemBlue.cgColor
-                layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.03).cgColor
+                context.duration = 0.18
+                self.layer?.shadowColor = NSColor.black.withAlphaComponent(0.08).cgColor
+                self.layer?.shadowRadius = 16
+                self.layer?.shadowOffset = CGSize(width: 0, height: -4)
+                self.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.22).cgColor
             }
         }
     }
     
     override func mouseExited(with event: NSEvent) {
         if !isSelected {
-            NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.2
-                // 如果是正在学习的词库，保持边框为 2 和浅蓝色背景
-                if isCurrentLearning {
-                    layer?.borderWidth = 2
-                    layer?.borderColor = NSColor.systemBlue.cgColor
-                    layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05).cgColor
-                } else {
-                    layer?.borderWidth = 1
-                    layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
-                    layer?.backgroundColor = NSColor.white.cgColor
-                }
-            }
-        }
-    }
-    
-    private func updateLearningBadge() {
-        learningBadge.isHidden = true  // 始终隐藏徽章
-        
-        // 如果是正在学习的词库，设置边框为 2 和浅蓝色背景
-        if isCurrentLearning && !isSelected {
-            layer?.borderWidth = 2
-            layer?.borderColor = NSColor.systemBlue.cgColor
-            layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05).cgColor
-        } else if !isSelected {
-            layer?.borderWidth = 1
-            layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.3).cgColor
-            layer?.backgroundColor = NSColor.white.cgColor
+            updateCardAppearance(animated: true)
         }
     }
 }

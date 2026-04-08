@@ -12,15 +12,47 @@ final class LLWordListTabViewController: NSViewController {
     
     // MARK: - UI Components
     
-    // 顶部标题
+    // 顶部小标题
     private lazy var titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("Word List Module Title", comment: ""))
-        label.font = NSFont.systemFont(ofSize: 20, weight: .semibold)
-        label.textColor = LLAppearanceManager.shared.colors.moduleTitleText
+        label.font = NSFont.inter(13, .semiBold)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.62)
         label.isEditable = false
         label.isBezeled = false
         label.drawsBackground = false
         return label
+    }()
+    
+    // 主标题
+    private lazy var heroTitleLabel: NSTextField = {
+        let label = NSTextField(labelWithString: NSLocalizedString("My Word Libraries", comment: "My word libraries title"))
+        label.font = NSFont.inter(42, .bold)
+        label.textColor = LLAppearanceManager.shared.colors.primaryText
+        label.isEditable = false
+        label.isBezeled = false
+        label.drawsBackground = false
+        return label
+    }()
+    
+    // 副标题
+    private lazy var heroSubtitleLabel: NSTextField = {
+        let label = NSTextField(labelWithString: "")
+        label.font = NSFont.inter(14, .medium)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.6)
+        label.isEditable = false
+        label.isBezeled = false
+        label.drawsBackground = false
+        return label
+    }()
+    
+    private lazy var newWordLibButtonShadowView: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.shadowColor = LLAppearanceManager.shared.colors.accentColor.withAlphaComponent(0.22).cgColor
+        view.layer?.shadowOpacity = 1
+        view.layer?.shadowOffset = CGSize(width: 0, height: -4)
+        view.layer?.shadowRadius = 12
+        return view
     }()
     
     // 新建词库按钮
@@ -32,32 +64,33 @@ final class LLWordListTabViewController: NSViewController {
         button.imagePosition = .imageLeading
         button.image?.isTemplate = true
         button.contentTintColor = .white
-        button.font = NSFont.systemFont(ofSize: 14, weight: .medium)
+        button.font = NSFont.inter(14, .semiBold)
         button.wantsLayer = true
-        button.layer?.backgroundColor = NSColor.systemBlue.cgColor
-        button.layer?.cornerRadius = 8
+        button.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
+        button.layer?.cornerRadius = 12
         button.isBordered = false
         button.imageHugsTitle = true  // 让图标和文字靠近
         
         return button
     }()
     
+    // 控制条容器
+    private lazy var controlsContainerView: NSView = {
+        let view = NSView()
+        return view
+    }()
+    
     // 主内容容器（卡片背景）
     private lazy var contentContainerView: NSView = {
         let view = NSView()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
-        view.layer?.cornerRadius = 8
-        view.layer?.borderWidth = 1
-        view.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
         return view
     }()
     
     // 卡片标题
     private lazy var cardTitleLabel: NSTextField = {
-        let label = NSTextField(labelWithString: String(format: NSLocalizedString("Word List Count", comment: ""), 0))
-        label.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
-        label.textColor = LLAppearanceManager.shared.colors.primaryText
+        let label = NSTextField(labelWithString: String(format: NSLocalizedString("Word Libraries Summary", comment: "Word libraries summary"), 0))
+        label.font = NSFont.inter(14, .medium)
+        label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.6)
         label.isEditable = false
         label.isBezeled = false
         label.drawsBackground = false
@@ -67,10 +100,36 @@ final class LLWordListTabViewController: NSViewController {
     // 搜索框
     private lazy var searchField: NSSearchField = {
         let field = NSSearchField()
-        field.placeholderString = NSLocalizedString("Search Word List", comment: "")
+        field.placeholderString = NSLocalizedString("Search My Word Libraries", comment: "Search my word libraries placeholder")
         field.target = self
         field.action = #selector(onSearchChanged)
+        field.focusRingType = .none
+        field.bezelStyle = .roundedBezel
         return field
+    }()
+    
+    private lazy var gridViewButton: NSButton = {
+        let button = NSButton()
+        button.isBordered = false
+        button.image = NSImage(systemSymbolName: "square.grid.2x2", accessibilityDescription: nil)
+        button.imagePosition = .imageOnly
+        button.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+        button.wantsLayer = true
+        button.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentLightBackground.cgColor
+        button.layer?.cornerRadius = 10
+        return button
+    }()
+    
+    private lazy var listViewButton: NSButton = {
+        let button = NSButton()
+        button.isBordered = false
+        button.image = NSImage(systemSymbolName: "list.bullet", accessibilityDescription: nil)
+        button.imagePosition = .imageOnly
+        button.contentTintColor = LLAppearanceManager.shared.colors.secondaryText
+        button.wantsLayer = true
+        button.layer?.backgroundColor = NSColor.clear.cgColor
+        button.layer?.cornerRadius = 10
+        return button
     }()
     
     // 类型筛选
@@ -122,9 +181,9 @@ final class LLWordListTabViewController: NSViewController {
     // MARK: - Constants
     
     private let itemIdentifier = NSUserInterfaceItemIdentifier("LLWordLibraryCardItem")
-    private let itemSpacing: CGFloat = 12
+    private let itemSpacing: CGFloat = 24
     private let itemsPerRow: CGFloat = 3
-    private let sectionInsets = NSEdgeInsets(top: 20, left: 0, bottom: 20, right: 20)
+    private let sectionInsets = NSEdgeInsets(top: 4, left: 0, bottom: 28, right: 4)
     
     // MARK: - Lifecycle
     
@@ -159,70 +218,86 @@ final class LLWordListTabViewController: NSViewController {
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.white.cgColor
         
-        // 1. 添加顶部标题
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(28)
-            make.top.equalToSuperview().offset(28)
+            make.left.equalToSuperview().offset(32)
+            make.top.equalToSuperview().offset(24)
         }
         
-        // 2. 添加新建词库按钮
-        view.addSubview(newWordLibButton)
-        newWordLibButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-28)
-            make.top.equalToSuperview().offset(28)
-            make.height.equalTo(32)
+        view.addSubview(heroTitleLabel)
+        heroTitleLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(32)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
         
-        // 3. 添加主内容容器
-        view.addSubview(contentContainerView)
-        contentContainerView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(28)
-            make.right.equalToSuperview().offset(-28)
-            make.top.equalTo(titleLabel.snp.bottom).offset(24)
-            make.bottom.equalToSuperview().offset(-28)
-        }
-        
-        // 4. 在容器内添加卡片标题
-        contentContainerView.addSubview(cardTitleLabel)
+        view.addSubview(cardTitleLabel)
         cardTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(32)
+            make.top.equalTo(heroTitleLabel.snp.bottom).offset(8)
         }
         
-        // 5. 添加搜索框
-        contentContainerView.addSubview(searchField)
-        searchField.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(cardTitleLabel.snp.bottom).offset(16)
-            make.width.equalTo(200)
-            make.height.equalTo(28)
+        view.addSubview(newWordLibButtonShadowView)
+        newWordLibButtonShadowView.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-32)
+            make.centerY.equalTo(heroTitleLabel.snp.centerY).offset(4)
+            make.height.equalTo(40)
         }
         
-        // 6. 添加类型筛选
+        newWordLibButtonShadowView.addSubview(newWordLibButton)
+        newWordLibButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        view.addSubview(controlsContainerView)
+        controlsContainerView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(32)
+            make.right.equalToSuperview().offset(-32)
+            make.top.equalTo(cardTitleLabel.snp.bottom).offset(28)
+            make.height.equalTo(36)
+        }
+        
+        controlsContainerView.addSubview(typeFilterPopUp)
+        controlsContainerView.addSubview(statusFilterPopUp)
+        controlsContainerView.addSubview(gridViewButton)
+        controlsContainerView.addSubview(listViewButton)
+        
         loadCategoriesForFilter()
-        contentContainerView.addSubview(typeFilterPopUp)
+        styleFilterPopUp(typeFilterPopUp)
+        styleFilterPopUp(statusFilterPopUp)
+        
         typeFilterPopUp.snp.makeConstraints { make in
-            make.left.equalTo(searchField.snp.right).offset(12)
-            make.centerY.equalTo(searchField)
-            make.width.equalTo(120)
+            make.left.top.bottom.equalToSuperview()
+            make.width.equalTo(128)
         }
         
-        // 7. 添加状态筛选
-        contentContainerView.addSubview(statusFilterPopUp)
         statusFilterPopUp.snp.makeConstraints { make in
             make.left.equalTo(typeFilterPopUp.snp.right).offset(12)
-            make.centerY.equalTo(searchField)
-            make.width.equalTo(120)
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(128)
         }
         
-        // 8. 添加 CollectionView 滚动容器
+        listViewButton.snp.makeConstraints { make in
+            make.right.top.bottom.equalToSuperview()
+            make.width.equalTo(36)
+        }
+        
+        gridViewButton.snp.makeConstraints { make in
+            make.right.equalTo(listViewButton.snp.left).offset(-8)
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(36)
+        }
+        
+        view.addSubview(contentContainerView)
+        contentContainerView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(32)
+            make.right.equalToSuperview().offset(-32)
+            make.top.equalTo(controlsContainerView.snp.bottom).offset(28)
+            make.bottom.equalToSuperview().offset(-32)
+        }
+        
         contentContainerView.addSubview(collectionScrollView)
         collectionScrollView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(searchField.snp.bottom).offset(16)
-            make.bottom.equalToSuperview().offset(-20)
+            make.edges.equalToSuperview()
         }
     }
     
@@ -263,6 +338,19 @@ final class LLWordListTabViewController: NSViewController {
             LLLogger.error("❌ 加载分类失败：\(error)")
             typeFilterPopUp.addItems(withTitles: ["官方词库", "自定义词库"])
         }
+    }
+    
+    private func styleFilterPopUp(_ popUp: NSPopUpButton) {
+        popUp.wantsLayer = true
+        popUp.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainerLow.cgColor
+        popUp.layer?.cornerRadius = 18
+        popUp.font = NSFont.inter(12, .semiBold)
+        popUp.contentTintColor = LLAppearanceManager.shared.colors.secondaryText
+    }
+    
+    private func refreshSummaryTexts() {
+        cardTitleLabel.stringValue = String(format: NSLocalizedString("Word Libraries Summary", comment: "Word libraries summary"), filteredLists.count)
+        heroSubtitleLabel.stringValue = String(format: NSLocalizedString("Word Libraries Summary", comment: "Word libraries summary"), filteredLists.count)
     }
     
     private func loadAndFilterData() {
@@ -329,11 +417,7 @@ final class LLWordListTabViewController: NSViewController {
         
         filteredLists = result
         LLLogger.debug("🔍 筛选后得到 \(filteredLists.count) 个词库")
-        
-        // 更新标题
-        cardTitleLabel.stringValue = String(format: NSLocalizedString("Word List Count", comment: ""), filteredLists.count)
-        
-        // 刷新 CollectionView
+        refreshSummaryTexts()
         collectionView.reloadData()
     }
     
@@ -445,7 +529,7 @@ extension LLWordListTabViewController: NSCollectionViewDelegateFlowLayout {
         // 使用更精确的计算，避免累积误差
         let itemWidth = (availableWidth / itemsPerRow).rounded(.down)
         
-        return NSSize(width: itemWidth, height: 90)
+        return NSSize(width: itemWidth, height: 244)
     }
 }
 

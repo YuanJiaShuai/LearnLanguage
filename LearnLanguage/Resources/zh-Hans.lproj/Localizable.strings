@@ -136,6 +136,14 @@
 
 // MARK: - Word List Module
 "Word List Module Title" = "词库管理";
+"My Word Libraries" = "我的词库";
+"Word Libraries Summary" = "共有 %d 个词库正在同步学习进度";
+"Word Library Type" = "词库类型";
+"Learning Status" = "学习状态";
+"Grid View" = "网格视图";
+"List View" = "列表视图";
+"Search My Word Libraries" = "搜索我的词库...";
+"Learning Progress" = "学习进度";
 "New Word List" = "新建词库";
 "Word List Count" = "词库管理（共 %d 个）";
 "Search Word List" = "搜索词库名称...";

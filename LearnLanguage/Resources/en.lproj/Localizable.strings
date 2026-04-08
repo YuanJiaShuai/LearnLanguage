@@ -136,6 +136,14 @@
 
 // MARK: - Word List Module
 "Word List Module Title" = "Word Library";
+"My Word Libraries" = "My Libraries";
+"Word Libraries Summary" = "%d libraries are syncing learning progress";
+"Word Library Type" = "Library Type";
+"Learning Status" = "Learning Status";
+"Grid View" = "Grid View";
+"List View" = "List View";
+"Search My Word Libraries" = "Search my libraries...";
+"Learning Progress" = "Learning Progress";
 "New Word List" = "New Word List";
 "Word List Count" = "Word Library (%d total)";
 "Search Word List" = "Search word lists...";

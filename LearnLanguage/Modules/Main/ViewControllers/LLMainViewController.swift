@@ -19,7 +19,7 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
     private let contentVC = LLMainContentViewController()
 
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 900, height: 620))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 1100, height: 620))
     }
 
     override func viewDidLoad() {
