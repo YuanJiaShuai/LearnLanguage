@@ -36,7 +36,7 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
         
         splitView.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalToSuperview()
         }
         
         // 左侧导航栏

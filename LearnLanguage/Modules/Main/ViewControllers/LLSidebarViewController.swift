@@ -63,7 +63,7 @@ final class LLSidebarViewController: NSViewController {
     
     private lazy var logoIconView: NSImageView = {
         let imageView = NSImageView()
-        imageView.image = NSImage(systemSymbolName: "book.closed.fill", accessibilityDescription: nil)
+        imageView.image = NSImage(named: "logo")
         imageView.contentTintColor = .white
         imageView.wantsLayer = true
         imageView.layer?.backgroundColor = LLAppearanceManager.shared.colors.primaryContainer.cgColor
@@ -73,7 +73,7 @@ final class LLSidebarViewController: NSViewController {
     
     private lazy var logoLabel: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("App Name", comment: "Application name"))
-        label.font = NSFont.interDisplay(20, .bold)
+        label.font = NSFont.interDisplay(16, .bold)
         label.textColor = LLAppearanceManager.shared.colors.accentColor
         return label
     }()
@@ -196,7 +196,7 @@ final class LLSidebarViewController: NSViewController {
         view.addSubview(topDivider)
         
         logoContainerView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(22)
+            make.top.equalToSuperview().offset(44)
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(64)
         }
@@ -204,7 +204,7 @@ final class LLSidebarViewController: NSViewController {
         logoIconView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(40)
+            make.width.height.equalTo(44)
         }
         
         logoLabel.snp.makeConstraints { make in
