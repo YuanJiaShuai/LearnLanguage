@@ -61,26 +61,26 @@ enum LLLearningLanguage: String, CaseIterable, Codable {
 
 /// 应用显示语言
 enum LLDisplayLanguage: String, CaseIterable, Codable {
-    case english = "English"
+    // case english = "English"
     case simplifiedChinese = "简体中文"
-    case japanese = "日本語"
-    case korean = "한국어"
+    // case japanese = "日本語"
+    // case korean = "한국어"
     
     var displayName: String {
         switch self {
-        case .english: return "English"
+        // case .english: return "English"
         case .simplifiedChinese: return "简体中文"
-        case .japanese: return "日本語"
-        case .korean: return "한국어"
+        // case .japanese: return "日本語"
+        // case .korean: return "한국어"
         }
     }
     
     var languageCode: String {
         switch self {
-        case .english: return "en"
+        // case .english: return "en"
         case .simplifiedChinese: return "zh-Hans"
-        case .japanese: return "ja"
-        case .korean: return "ko"
+        // case .japanese: return "ja"
+        // case .korean: return "ko"
         }
     }
 }
@@ -352,7 +352,7 @@ struct LLAppSettings: Codable {
     var translateFontSize: CGFloat
 
     static let `default` = LLAppSettings(
-        displayLanguage: .english,
+        displayLanguage: .simplifiedChinese,
         currentLanguage: .english,
         currentListId: nil,
         statusBarShowPhonetic: false,

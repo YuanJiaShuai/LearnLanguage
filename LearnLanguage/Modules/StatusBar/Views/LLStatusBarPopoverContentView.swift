@@ -20,7 +20,12 @@ final class LLStatusBarPopoverContentView: NSView {
         static let completionSectionHeight: CGFloat = 34
     }
     
-    private let shouldShowCompletionActions = !LLDailyLearningManager.shared.hasPendingTasks
+    private var shouldShowLearnAnotherBatchAction: Bool {
+        if let listId = LLSettingsStore.shared.currentListId {
+            LLDailyLearningManager.shared.setup(listId: listId)
+        }
+        return !LLDailyLearningManager.shared.hasPendingTasks
+    }
 
     // MARK: - Callbacks
 
@@ -72,13 +77,6 @@ final class LLStatusBarPopoverContentView: NSView {
         return view
     }()
     
-    private lazy var reviewTodayButton: NSButton = {
-        let button = NSButton(title: NSLocalizedString("复习当日", comment: ""), target: self, action: #selector(onReviewToday))
-        button.bezelStyle = .rounded
-        button.font = NSFont.systemFont(ofSize: 12, weight: .medium)
-        return button
-    }()
-    
     private lazy var learnAnotherBatchButton: NSButton = {
         let button = NSButton(title: NSLocalizedString("再学一组", comment: ""), target: self, action: #selector(onLearnAnotherBatch))
         button.bezelStyle = .rounded
@@ -119,9 +117,8 @@ final class LLStatusBarPopoverContentView: NSView {
             make.height.equalTo(48)
         }
         
-        if shouldShowCompletionActions {
+        if shouldShowLearnAnotherBatchAction {
             addSubview(completionActionContainer)
-            completionActionContainer.addSubview(reviewTodayButton)
             completionActionContainer.addSubview(learnAnotherBatchButton)
             
             completionActionContainer.snp.makeConstraints { make in
@@ -130,14 +127,8 @@ final class LLStatusBarPopoverContentView: NSView {
                 make.height.equalTo(Layout.completionSectionHeight)
             }
             
-            reviewTodayButton.snp.makeConstraints { make in
-                make.left.top.bottom.equalToSuperview()
-                make.right.equalTo(learnAnotherBatchButton.snp.left).offset(-8)
-                make.width.equalTo(learnAnotherBatchButton)
-            }
-            
             learnAnotherBatchButton.snp.makeConstraints { make in
-                make.right.top.bottom.equalToSuperview()
+                make.edges.equalToSuperview()
             }
             
             topDivider.snp.makeConstraints { make in
@@ -221,7 +212,7 @@ final class LLStatusBarPopoverContentView: NSView {
 
     /// 初始首选高度
     var preferredHeight: CGFloat {
-        let completionSection: CGFloat = shouldShowCompletionActions ? (6 + Layout.completionSectionHeight + 6) : 0
+        let completionSection: CGFloat = shouldShowLearnAnotherBatchAction ? (6 + Layout.completionSectionHeight + 6) : 0
         return 20  // 标题高度
             + 8    // 标题到搜索框间距
             + 48   // 搜索框高度
@@ -236,7 +227,7 @@ final class LLStatusBarPopoverContentView: NSView {
         // 重新计算总高度
         let titleH: CGFloat = 20
         let titleSpacing: CGFloat = 8
-        let completionSection: CGFloat = shouldShowCompletionActions ? (6 + Layout.completionSectionHeight + 6) : 0
+        let completionSection: CGFloat = shouldShowLearnAnotherBatchAction ? (6 + Layout.completionSectionHeight + 6) : 0
         let dividerH = Layout.dividerHeight
         let menuH = menuStack.arrangedSubviews.reduce(CGFloat(0)) { $0 + $1.frame.height }
         let totalH = titleH + titleSpacing + searchHeight + completionSection + dividerH + menuH
@@ -249,12 +240,6 @@ final class LLStatusBarPopoverContentView: NSView {
     }
 
     // MARK: - Actions
-    
-    @objc private func onReviewToday() {
-        LLDailyLearningManager.shared.restartTodayReview()
-        LLStatusBarManager.shared.refreshStatusBar()
-        onClose?()
-    }
     
     @objc private func onLearnAnotherBatch() {
         LLDailyLearningManager.shared.learnAnotherBatch()

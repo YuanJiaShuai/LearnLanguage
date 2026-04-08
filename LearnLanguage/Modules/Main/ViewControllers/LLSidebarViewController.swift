@@ -147,7 +147,7 @@ final class LLSidebarViewController: NSViewController {
     }()
     
     private lazy var feedbackButton: NSButton = {
-        let button = NSButton(title: "Curator\nHigh-End Curator", target: self, action: #selector(onFeedbackButtonClicked))
+        let button = NSButton(title: "意见反馈", target: self, action: #selector(onFeedbackButtonClicked))
         button.bezelStyle = .regularSquare
         button.isBordered = false
         button.font = LLAppearanceManager.appFont(name: "Inter-Medium", size: 12, fallbackWeight: .medium)
