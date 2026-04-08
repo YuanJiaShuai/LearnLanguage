@@ -34,7 +34,9 @@ final class LLMainContentViewController: NSViewController {
     
     private func setupUI() {
         view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.mainBackground.cgColor
+        view.layer?.backgroundColor = NSColor.white.cgColor
+        containerView.wantsLayer = true
+        containerView.layer?.backgroundColor = NSColor.white.cgColor
         
         view.addSubview(containerView)
         

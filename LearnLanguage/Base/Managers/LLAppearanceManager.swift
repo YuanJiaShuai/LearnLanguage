@@ -63,21 +63,58 @@ final class LLAppearanceManager {
     
     // MARK: - Typography
     
+    enum AppFontWeight {
+        case thin
+        case extraLight
+        case light
+        case regular
+        case medium
+        case semiBold
+        case bold
+        case extraBold
+        
+        var pingFangName: String {
+            switch self {
+            case .thin: return "PingFangSC-Thin"
+            case .extraLight: return "PingFangSC-Ultralight"
+            case .light: return "PingFangSC-Light"
+            case .regular: return "PingFangSC-Regular"
+            case .medium: return "PingFangSC-Medium"
+            case .semiBold: return "PingFangSC-Semibold"
+            case .bold: return "PingFangSC-Semibold"
+            case .extraBold: return "PingFangSC-Semibold"
+            }
+        }
+        
+        var fallbackWeight: NSFont.Weight {
+            switch self {
+            case .thin: return .thin
+            case .extraLight: return .ultraLight
+            case .light: return .light
+            case .regular: return .regular
+            case .medium: return .medium
+            case .semiBold: return .semibold
+            case .bold: return .bold
+            case .extraBold: return .heavy
+            }
+        }
+    }
+    
     static func appFont(name: String, size: CGFloat, fallbackWeight: NSFont.Weight = .regular) -> NSFont {
         NSFont(name: name, size: size) ?? NSFont.systemFont(ofSize: size, weight: fallbackWeight)
     }
     
     struct Typography {
-        let largeTitle = LLAppearanceManager.appFont(name: "InterDisplay-Bold", size: 22, fallbackWeight: .bold)
-        let title1 = LLAppearanceManager.appFont(name: "InterDisplay-Bold", size: 20, fallbackWeight: .bold)
-        let title2 = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 16, fallbackWeight: .semibold)
-        let title3 = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 14, fallbackWeight: .semibold)
+        let largeTitle = NSFont.interDisplay(22, .bold)
+        let title1 = NSFont.interDisplay(20, .bold)
+        let title2 = NSFont.inter(16, .semiBold)
+        let title3 = NSFont.inter(14, .semiBold)
 
-        let body = LLAppearanceManager.appFont(name: "Inter-Regular", size: 14)
-        let callout = LLAppearanceManager.appFont(name: "Inter-Medium", size: 13, fallbackWeight: .medium)
-        let subheadline = LLAppearanceManager.appFont(name: "Inter-Regular", size: 12)
-        let caption1 = LLAppearanceManager.appFont(name: "Inter-Medium", size: 11, fallbackWeight: .medium)
-        let caption2 = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 10, fallbackWeight: .bold)
+        let body = NSFont.inter(14)
+        let callout = NSFont.inter(13, .medium)
+        let subheadline = NSFont.inter(12)
+        let caption1 = NSFont.inter(11, .medium)
+        let caption2 = NSFont.inter(10, .semiBold)
     }
     
     // MARK: - Spacing
@@ -110,6 +147,16 @@ final class LLAppearanceManager {
 }
 
 // MARK: - NSButton 扩展，提供预设样式
+
+extension NSFont {
+    static func inter(_ size: CGFloat, _ weight: LLAppearanceManager.AppFontWeight = .regular) -> NSFont {
+        LLAppearanceManager.appFont(name: weight.pingFangName, size: size, fallbackWeight: weight.fallbackWeight)
+    }
+    
+    static func interDisplay(_ size: CGFloat, _ weight: LLAppearanceManager.AppFontWeight = .regular) -> NSFont {
+        LLAppearanceManager.appFont(name: weight.pingFangName, size: size, fallbackWeight: weight.fallbackWeight)
+    }
+}
 
 extension NSButton {
     func applyPrimaryStyle() {

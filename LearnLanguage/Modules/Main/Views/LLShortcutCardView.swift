@@ -92,7 +92,7 @@ final class LLShortcutCardView: NSView {
     
     private lazy var titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: cardType.placeholderTitle)
-        label.font = LLAppearanceManager.appFont(name: "Inter-Medium", size: 13, fallbackWeight: .medium)
+        label.font = NSFont.inter(13, .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.lineBreakMode = .byTruncatingTail
         label.isBezeled = false
@@ -103,7 +103,7 @@ final class LLShortcutCardView: NSView {
     
     private lazy var badgeLabel: NSTextField = {
         let label = NSTextField(labelWithString: "0")
-        label.font = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 10, fallbackWeight: .bold)
+        label.font = NSFont.inter(10, .semiBold)
         label.textColor = cardType.badgeTextColor
         label.alignment = .center
         label.isBezeled = false

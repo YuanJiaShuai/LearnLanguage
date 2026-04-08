@@ -41,7 +41,7 @@ final class LLSidebarNavigationItemView: NSView {
     
     private lazy var titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: module.title)
-        label.font = LLAppearanceManager.appFont(name: "Inter-Medium", size: 13, fallbackWeight: .medium)
+        label.font = NSFont.inter(13, .light)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false
         label.isBezeled = false
@@ -104,6 +104,6 @@ final class LLSidebarNavigationItemView: NSView {
         let tintColor = isSelected ? colors.accentColor : colors.secondaryText
         iconView.contentTintColor = tintColor
         titleLabel.textColor = tintColor
-        titleLabel.font = LLAppearanceManager.appFont(name: isSelected ? "Inter-SemiBold" : "Inter-Medium", size: 13, fallbackWeight: isSelected ? .semibold : .medium)
+        titleLabel.font = NSFont.inter(13, isSelected ? .medium : .light)
     }
 }

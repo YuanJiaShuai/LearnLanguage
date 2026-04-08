@@ -7,15 +7,19 @@
 import AppKit
 import SnapKit
 
+final class LLMainSplitView: NSSplitView {
+    override var dividerThickness: CGFloat { 0 }
+}
+
 /// 主窗口：Finder 风格的词库管理应用
 final class LLMainViewController: NSViewController, SidebarViewControllerDelegate {
 
-    private let splitView = NSSplitView()
+    private let splitView = LLMainSplitView()
     private let sidebarVC = LLSidebarViewController()
     private let contentVC = LLMainContentViewController()
 
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 900, height: 550))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 900, height: 620))
     }
 
     override func viewDidLoad() {
@@ -28,7 +32,6 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
         view.layer?.backgroundColor = LLAppearanceManager.shared.colors.mainBackground.cgColor
         
         splitView.isVertical = true
-        splitView.dividerStyle = .thin
         view.addSubview(splitView)
         
         splitView.snp.makeConstraints { make in

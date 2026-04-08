@@ -157,7 +157,7 @@ final class LLWordListTabViewController: NSViewController {
     
     private func setupUI() {
         view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.mainBackground.cgColor
+        view.layer?.backgroundColor = NSColor.white.cgColor
         
         // 1. 添加顶部标题
         view.addSubview(titleLabel)

@@ -73,7 +73,7 @@ final class LLSidebarViewController: NSViewController {
     
     private lazy var logoLabel: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("App Name", comment: "Application name"))
-        label.font = LLAppearanceManager.appFont(name: "InterDisplay-Bold", size: 20, fallbackWeight: .bold)
+        label.font = NSFont.interDisplay(20, .bold)
         label.textColor = LLAppearanceManager.shared.colors.accentColor
         return label
     }()
@@ -99,7 +99,7 @@ final class LLSidebarViewController: NSViewController {
     
     private lazy var quickAccessTitleLabel: NSTextField = {
         let label = NSTextField(labelWithString: "快速访问")
-        label.font = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 11, fallbackWeight: .semibold)
+        label.font = NSFont.inter(11, .semiBold)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.5)
         return label
     }()
@@ -121,7 +121,7 @@ final class LLSidebarViewController: NSViewController {
     
     private lazy var menuSectionTitleLabel: NSTextField = {
         let label = NSTextField(labelWithString: "主菜单")
-        label.font = LLAppearanceManager.appFont(name: "Inter-SemiBold", size: 11, fallbackWeight: .semibold)
+        label.font = NSFont.inter(11, .semiBold)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.5)
         return label
     }()
@@ -150,7 +150,7 @@ final class LLSidebarViewController: NSViewController {
         let button = NSButton(title: "意见反馈", target: self, action: #selector(onFeedbackButtonClicked))
         button.bezelStyle = .regularSquare
         button.isBordered = false
-        button.font = LLAppearanceManager.appFont(name: "Inter-Medium", size: 12, fallbackWeight: .medium)
+        button.font = NSFont.inter(12, .medium)
         button.contentTintColor = LLAppearanceManager.shared.colors.primaryText
         button.wantsLayer = true
         button.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.42).cgColor

@@ -54,7 +54,7 @@ final class LLDataTabViewController: NSViewController {
     
     private func setupUI() {
         view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.mainBackground.cgColor
+        view.layer?.backgroundColor = NSColor.white.cgColor
         
         // 1. 添加标题
         view.addSubview(titleLabel)
