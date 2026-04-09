@@ -8,6 +8,16 @@
 import AppKit
 import SnapKit
 
+private final class LLBadgeVerticalCenterTextFieldCell: NSTextFieldCell {
+    override func drawingRect(forBounds rect: NSRect) -> NSRect {
+        var newRect = super.drawingRect(forBounds: rect)
+        let textSize = cellSize(forBounds: rect)
+        newRect.origin.y = rect.origin.y + (rect.height - textSize.height) / 2
+        newRect.size.height = textSize.height
+        return newRect
+    }
+}
+
 final class LLShortcutCardView: NSView {
     
     enum CardType {
@@ -103,9 +113,11 @@ final class LLShortcutCardView: NSView {
     
     private lazy var badgeLabel: NSTextField = {
         let label = NSTextField(labelWithString: "0")
-        label.font = NSFont.inter(10, .semiBold)
+        label.font = NSFont.inter(9, .semiBold)
         label.textColor = cardType.badgeTextColor
         label.alignment = .center
+        label.cell = LLBadgeVerticalCenterTextFieldCell(textCell: "0")
+        label.cell?.alignment = .center
         label.isBezeled = false
         label.isEditable = false
         label.drawsBackground = false
@@ -161,7 +173,7 @@ final class LLShortcutCardView: NSView {
         badgeLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-8)
             make.centerY.equalToSuperview()
-            make.height.equalTo(16)
+            make.height.equalTo(15)
             make.width.greaterThanOrEqualTo(30)
         }
     }

@@ -10,6 +10,11 @@ import UniformTypeIdentifiers
 
 final class LLWordListTabViewController: NSViewController {
     
+    private enum ViewMode {
+        case grid
+        case list
+    }
+    
     // MARK: - UI Components
     
     // 顶部小标题
@@ -117,6 +122,8 @@ final class LLWordListTabViewController: NSViewController {
         button.wantsLayer = true
         button.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentLightBackground.cgColor
         button.layer?.cornerRadius = 10
+        button.target = self
+        button.action = #selector(switchToGridView)
         return button
     }()
     
@@ -129,29 +136,27 @@ final class LLWordListTabViewController: NSViewController {
         button.wantsLayer = true
         button.layer?.backgroundColor = NSColor.clear.cgColor
         button.layer?.cornerRadius = 10
+        button.target = self
+        button.action = #selector(switchToListView)
         return button
     }()
     
     // 类型筛选
-    private lazy var typeFilterPopUp: NSPopUpButton = {
-        let popUp = NSPopUpButton()
-        popUp.target = self
-        popUp.action = #selector(onFilterChanged)
-        return popUp
+    private lazy var typeFilterChipView: LLFilterChipView = {
+        let chip = LLFilterChipView()
+        chip.onSelectionChanged = { [weak self] _, _ in
+            self?.applyFilters()
+        }
+        return chip
     }()
     
     // 状态筛选
-    private lazy var statusFilterPopUp: NSPopUpButton = {
-        let popUp = NSPopUpButton()
-        popUp.addItems(withTitles: [
-            NSLocalizedString("All Status", comment: ""),
-            NSLocalizedString("Not Started", comment: ""),
-            NSLocalizedString("Learning", comment: ""),
-            NSLocalizedString("Completed", comment: "")
-        ])
-        popUp.target = self
-        popUp.action = #selector(onFilterChanged)
-        return popUp
+    private lazy var statusFilterChipView: LLFilterChipView = {
+        let chip = LLFilterChipView()
+        chip.onSelectionChanged = { [weak self] _, _ in
+            self?.applyFilters()
+        }
+        return chip
     }()
     
     // CollectionView 滚动容器
@@ -177,13 +182,15 @@ final class LLWordListTabViewController: NSViewController {
     private var allLists: [WordList] = []
     private var filteredLists: [WordList] = []
     private var selectedListId: String?
+    private var viewMode: ViewMode = .grid
     
     // MARK: - Constants
     
     private let itemIdentifier = NSUserInterfaceItemIdentifier("LLWordLibraryCardItem")
     private let itemSpacing: CGFloat = 24
-    private let itemsPerRow: CGFloat = 3
-    private let sectionInsets = NSEdgeInsets(top: 4, left: 0, bottom: 28, right: 4)
+    private let gridItemsPerRow: CGFloat = 3
+    private let gridSectionInsets = NSEdgeInsets(top: 4, left: 0, bottom: 28, right: 4)
+    private let listSectionInsets = NSEdgeInsets(top: 4, left: 0, bottom: 28, right: 4)
     
     // MARK: - Lifecycle
     
@@ -195,6 +202,7 @@ final class LLWordListTabViewController: NSViewController {
         super.viewDidLoad()
         setupUI()
         setupCollectionView()
+        updateViewModeUI()
         loadAndFilterData()
         
         NotificationCenter.default.addObserver(
@@ -256,22 +264,21 @@ final class LLWordListTabViewController: NSViewController {
             make.height.equalTo(36)
         }
         
-        controlsContainerView.addSubview(typeFilterPopUp)
-        controlsContainerView.addSubview(statusFilterPopUp)
+        controlsContainerView.addSubview(typeFilterChipView)
+        controlsContainerView.addSubview(statusFilterChipView)
         controlsContainerView.addSubview(gridViewButton)
         controlsContainerView.addSubview(listViewButton)
         
         loadCategoriesForFilter()
-        styleFilterPopUp(typeFilterPopUp)
-        styleFilterPopUp(statusFilterPopUp)
+        configureStatusFilterChip()
         
-        typeFilterPopUp.snp.makeConstraints { make in
+        typeFilterChipView.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview()
             make.width.equalTo(128)
         }
         
-        statusFilterPopUp.snp.makeConstraints { make in
-            make.left.equalTo(typeFilterPopUp.snp.right).offset(12)
+        statusFilterChipView.snp.makeConstraints { make in
+            make.left.equalTo(typeFilterChipView.snp.right).offset(12)
             make.top.bottom.equalToSuperview()
             make.width.equalTo(128)
         }
@@ -303,11 +310,10 @@ final class LLWordListTabViewController: NSViewController {
     
     
     private func setupCollectionView() {
-        // 配置 FlowLayout
         let flowLayout = NSCollectionViewFlowLayout()
         flowLayout.minimumInteritemSpacing = itemSpacing
         flowLayout.minimumLineSpacing = itemSpacing
-        flowLayout.sectionInset = sectionInsets
+        flowLayout.sectionInset = gridSectionInsets
         
         collectionView.collectionViewLayout = flowLayout
         collectionView.delegate = self
@@ -326,31 +332,59 @@ final class LLWordListTabViewController: NSViewController {
     // MARK: - Data Loading
     
     private func loadCategoriesForFilter() {
-        typeFilterPopUp.removeAllItems()
-        typeFilterPopUp.addItem(withTitle: NSLocalizedString("All Types", comment: ""))
+        var items: [LLFilterChipView.Item] = [
+            .init(title: NSLocalizedString("Word Library Type", comment: "Word library type filter"), representedValue: "")
+        ]
         
         do {
             let categories = try LLDatabaseManager.shared.getAllCategories()
-            for category in categories {
-                typeFilterPopUp.addItem(withTitle: category.name)
-            }
+            items.append(contentsOf: categories.map { .init(title: $0.name, representedValue: $0.name) })
         } catch {
             LLLogger.error("❌ 加载分类失败：\(error)")
-            typeFilterPopUp.addItems(withTitles: ["官方词库", "自定义词库"])
+            items.append(contentsOf: [
+                .init(title: "官方词库", representedValue: "官方词库"),
+                .init(title: "自定义词库", representedValue: "自定义词库")
+            ])
         }
+        
+        typeFilterChipView.configure(items: items)
     }
     
-    private func styleFilterPopUp(_ popUp: NSPopUpButton) {
-        popUp.wantsLayer = true
-        popUp.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainerLow.cgColor
-        popUp.layer?.cornerRadius = 18
-        popUp.font = NSFont.inter(12, .semiBold)
-        popUp.contentTintColor = LLAppearanceManager.shared.colors.secondaryText
+    private func configureStatusFilterChip() {
+        let items: [LLFilterChipView.Item] = [
+            .init(title: NSLocalizedString("Learning Status", comment: "Learning status filter"), representedValue: ""),
+            .init(title: NSLocalizedString("Not Started", comment: ""), representedValue: "0"),
+            .init(title: NSLocalizedString("Learning", comment: ""), representedValue: "1"),
+            .init(title: NSLocalizedString("Completed", comment: ""), representedValue: "2")
+        ]
+        statusFilterChipView.configure(items: items)
     }
     
     private func refreshSummaryTexts() {
         cardTitleLabel.stringValue = String(format: NSLocalizedString("Word Libraries Summary", comment: "Word libraries summary"), filteredLists.count)
         heroSubtitleLabel.stringValue = String(format: NSLocalizedString("Word Libraries Summary", comment: "Word libraries summary"), filteredLists.count)
+    }
+    
+    private var currentItemsPerRow: CGFloat {
+        viewMode == .grid ? gridItemsPerRow : 1
+    }
+    
+    private var currentSectionInsets: NSEdgeInsets {
+        viewMode == .grid ? gridSectionInsets : listSectionInsets
+    }
+    
+    private func updateViewModeUI() {
+        let isGrid = viewMode == .grid
+        gridViewButton.contentTintColor = isGrid ? LLAppearanceManager.shared.colors.accentColor : LLAppearanceManager.shared.colors.secondaryText
+        gridViewButton.layer?.backgroundColor = isGrid ? LLAppearanceManager.shared.colors.accentLightBackground.cgColor : NSColor.clear.cgColor
+        listViewButton.contentTintColor = isGrid ? LLAppearanceManager.shared.colors.secondaryText : LLAppearanceManager.shared.colors.accentColor
+        listViewButton.layer?.backgroundColor = isGrid ? NSColor.clear.cgColor : LLAppearanceManager.shared.colors.accentLightBackground.cgColor
+        
+        if let flowLayout = collectionView.collectionViewLayout as? NSCollectionViewFlowLayout {
+            flowLayout.sectionInset = currentSectionInsets
+            flowLayout.invalidateLayout()
+        }
+        collectionView.reloadData()
     }
     
     private func loadAndFilterData() {
@@ -403,16 +437,17 @@ final class LLWordListTabViewController: NSViewController {
         }
         
         // 类型筛选
-        let typeIndex = typeFilterPopUp.indexOfSelectedItem
+        let typeIndex = typeFilterChipView.selectedIndex
         if typeIndex > 0 {
-            let selectedCategory = typeFilterPopUp.titleOfSelectedItem ?? ""
+            let selectedCategory = typeFilterChipView.items[typeIndex].representedValue
             result = result.filter { $0.category == selectedCategory }
         }
         
         // 状态筛选
-        let statusIndex = statusFilterPopUp.indexOfSelectedItem
+        let statusIndex = statusFilterChipView.selectedIndex
         if statusIndex > 0 {
-            result = result.filter { getListStatus($0) == statusIndex - 1 }
+            let selectedStatus = Int(statusFilterChipView.items[statusIndex].representedValue) ?? 0
+            result = result.filter { getListStatus($0) == selectedStatus }
         }
         
         filteredLists = result
@@ -439,6 +474,18 @@ final class LLWordListTabViewController: NSViewController {
     }
     
     // MARK: - Actions
+    
+    @objc private func switchToGridView() {
+        guard viewMode != .grid else { return }
+        viewMode = .grid
+        updateViewModeUI()
+    }
+    
+    @objc private func switchToListView() {
+        guard viewMode != .list else { return }
+        viewMode = .list
+        updateViewModeUI()
+    }
     
     @objc private func didClickNewWordLib() {
         let alert = NSAlert()
@@ -501,6 +548,7 @@ extension LLWordListTabViewController: NSCollectionViewDataSource {
             for: indexPath
         ) as! LLWordLibraryCardItem
         
+        item.layoutMode = (viewMode == .grid) ? .grid : .list
         let wordList = filteredLists[indexPath.item]
         item.configure(with: wordList) { [weak self] selectedList in
             // 点击卡片后跳转到详情页
@@ -523,13 +571,14 @@ extension LLWordListTabViewController: NSCollectionViewDelegateFlowLayout {
         // 计算可用宽度时，要考虑滚动条的宽度
         let scrollerWidth: CGFloat = scrollView?.verticalScroller?.isHidden == false ? NSScroller.scrollerWidth(for: .regular, scrollerStyle: .overlay) : 0
         
-        let totalSpacing = sectionInsets.left + sectionInsets.right + (itemSpacing * (itemsPerRow - 1))
+        let totalSpacing = currentSectionInsets.left + currentSectionInsets.right + (itemSpacing * (currentItemsPerRow - 1))
         let availableWidth = visibleWidth - totalSpacing - scrollerWidth
         
         // 使用更精确的计算，避免累积误差
-        let itemWidth = (availableWidth / itemsPerRow).rounded(.down)
+        let itemWidth = (availableWidth / currentItemsPerRow).rounded(.down)
+        let itemHeight: CGFloat = viewMode == .grid ? 244 : 156
         
-        return NSSize(width: itemWidth, height: 244)
+        return NSSize(width: itemWidth, height: itemHeight)
     }
 }
 

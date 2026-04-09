@@ -115,6 +115,7 @@
 		84E1E3A52F4D53A300D1B7B6 /* LLTypingPracticeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E39C2F4D53A300D1B7B6 /* LLTypingPracticeManager.swift */; };
 		84E1E3A62F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3932F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift */; };
 		A85192832F51E908006CEA04 /* LLDBLearningProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */; };
+		A873E7882F87ED4A00CEA380 /* LLFilterChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A873E7872F87ED4A00CEA380 /* LLFilterChipView.swift */; };
 		A88C88242F3CA10D005ACFA6 /* LLShortcutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */; };
 		A88C88252F3CA10D005ACFA6 /* LLSidebarNavigationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88232F3CA10D005ACFA6 /* LLSidebarNavigationItemView.swift */; };
 		A88C88292F3CAF61005ACFA6 /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88262F3CAF61005ACFA6 /* NotificationName+Extensions.swift */; };
@@ -247,6 +248,7 @@
 		A80BC32D2F378E8900A40D9B /* 划水记词.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "划水记词.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningProgress.swift; sourceTree = "<group>"; };
 		A85ECB032F4C2149009F8DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A873E7872F87ED4A00CEA380 /* LLFilterChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLFilterChipView.swift; sourceTree = "<group>"; };
 		A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLShortcutCardView.swift; sourceTree = "<group>"; };
 		A88C88232F3CA10D005ACFA6 /* LLSidebarNavigationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSidebarNavigationItemView.swift; sourceTree = "<group>"; };
 		A88C88262F3CAF61005ACFA6 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 		849226B12F3C878F00447E0C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A873E7872F87ED4A00CEA380 /* LLFilterChipView.swift */,
 				A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */,
 				A88C88232F3CA10D005ACFA6 /* LLSidebarNavigationItemView.swift */,
 			);
@@ -939,6 +942,7 @@
 				849226DE2F3C878F00447E0C /* LLStatCardView.swift in Sources */,
 				849226DF2F3C878F00447E0C /* LLWordFeedback.swift in Sources */,
 				A8D1A74B2F6695E000C4BDF2 /* LLDailyLearningManager.swift in Sources */,
+				A873E7882F87ED4A00CEA380 /* LLFilterChipView.swift in Sources */,
 				849226E12F3C878F00447E0C /* LLDataTabViewController.swift in Sources */,
 				84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */,
 				849226E22F3C878F00447E0C /* LLDBWord.swift in Sources */,

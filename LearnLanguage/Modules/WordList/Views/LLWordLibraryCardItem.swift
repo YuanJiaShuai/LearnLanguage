@@ -12,6 +12,12 @@ import SnapKit
 
 class LLWordLibraryCardItem: NSCollectionViewItem {
     
+    var layoutMode: LLWordLibraryCardView.LayoutMode = .grid {
+        didSet {
+            cardView.layoutMode = layoutMode
+        }
+    }
+    
     private let cardView = LLWordLibraryCardView(frame: .zero)
     private var wordList: WordList?
     private var onCardClicked: ((WordList) -> Void)?
@@ -36,6 +42,7 @@ class LLWordLibraryCardItem: NSCollectionViewItem {
     func configure(with wordList: WordList, onClicked: @escaping (WordList) -> Void) {
         self.wordList = wordList
         self.onCardClicked = onClicked
+        cardView.layoutMode = layoutMode
         cardView.data = wordList
         
         // 从数据库获取学习进度
