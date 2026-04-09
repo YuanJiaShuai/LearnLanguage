@@ -15,9 +15,10 @@ final class LLStatusBarPopoverContentView: NSView {
 
     private enum Layout {
         static let width: CGFloat        = 300
-        static let menuItemHeight: CGFloat = 32
+        static let menuItemHeight: CGFloat = 40
         static let dividerHeight: CGFloat  = 1
-        static let completionSectionHeight: CGFloat = 34
+        static let completionSectionHeight: CGFloat = 38
+        static let cornerRadius: CGFloat = 18
     }
     
     private var shouldShowLearnAnotherBatchAction: Bool {
@@ -50,15 +51,34 @@ final class LLStatusBarPopoverContentView: NSView {
 
     /// 搜索框标题
     private lazy var titleLabel: NSTextField = {
-        let tf = NSTextField(labelWithString: NSLocalizedString("查词", comment: ""))
-        tf.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
-        tf.textColor = .labelColor
+        let tf = NSTextField(labelWithString: NSLocalizedString("查询", comment: ""))
+        tf.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
+        tf.textColor = NSColor.labelColor.withAlphaComponent(0.92)
         return tf
+    }()
+
+    private lazy var visualEffectView: NSVisualEffectView = {
+        let view = NSVisualEffectView()
+        view.material = .hudWindow
+        view.blendingMode = .behindWindow
+        view.state = .active
+        view.wantsLayer = true
+        view.layer?.cornerRadius = Layout.cornerRadius
+        view.layer?.masksToBounds = true
+        return view
+    }()
+
+    private lazy var tintOverlayView: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.06).cgColor
+        return view
     }()
 
     private lazy var topDivider: NSBox = {
         let box = NSBox()
         box.boxType = .separator
+        box.alphaValue = 0.24
         return box
     }()
 
@@ -74,13 +94,18 @@ final class LLStatusBarPopoverContentView: NSView {
     private lazy var completionActionContainer: NSView = {
         let view = NSView()
         view.wantsLayer = true
+        view.layer?.cornerRadius = 12
+        view.layer?.borderWidth = 1
+        view.layer?.borderColor = NSColor.white.withAlphaComponent(0.10).cgColor
+        view.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.16).cgColor
         return view
     }()
     
     private lazy var learnAnotherBatchButton: NSButton = {
         let button = NSButton(title: NSLocalizedString("再学一组", comment: ""), target: self, action: #selector(onLearnAnotherBatch))
-        button.bezelStyle = .rounded
-        button.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        button.isBordered = false
+        button.font = NSFont.systemFont(ofSize: 13, weight: .medium)
+        button.contentTintColor = NSColor.labelColor.withAlphaComponent(0.92)
         return button
     }()
 
@@ -99,20 +124,40 @@ final class LLStatusBarPopoverContentView: NSView {
     // MARK: - Setup
 
     private func setupUI() {
+        wantsLayer = true
+        layer?.cornerRadius = Layout.cornerRadius
+        layer?.masksToBounds = true
+        layer?.borderWidth = 1
+        layer?.borderColor = NSColor.white.withAlphaComponent(0.12).cgColor
+        layer?.shadowColor = NSColor.black.withAlphaComponent(0.16).cgColor
+        layer?.shadowOpacity = 1
+        layer?.shadowRadius = 18
+        layer?.shadowOffset = CGSize(width: 0, height: -2)
+
+        addSubview(visualEffectView)
+        addSubview(tintOverlayView)
         addSubview(titleLabel)
         addSubview(searchWordView)
         addSubview(topDivider)
         addSubview(menuStack)
 
+        visualEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        tintOverlayView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         // 标题在顶部
         titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(12)
+            make.leading.trailing.equalToSuperview().inset(24)
             make.top.equalTo(18)
         }
 
-        // 搜索框在标题下方，高度提高到 48
+        // 搜索框在标题下方
         searchWordView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.top.equalTo(titleLabel.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(48)
         }
@@ -122,8 +167,8 @@ final class LLStatusBarPopoverContentView: NSView {
             completionActionContainer.addSubview(learnAnotherBatchButton)
             
             completionActionContainer.snp.makeConstraints { make in
-                make.top.equalTo(searchWordView.snp.bottom).offset(6)
-                make.leading.trailing.equalToSuperview().inset(12)
+                make.top.equalTo(searchWordView.snp.bottom).offset(8)
+                make.leading.trailing.equalToSuperview().inset(18)
                 make.height.equalTo(Layout.completionSectionHeight)
             }
             
@@ -132,13 +177,13 @@ final class LLStatusBarPopoverContentView: NSView {
             }
             
             topDivider.snp.makeConstraints { make in
-                make.top.equalTo(completionActionContainer.snp.bottom).offset(6)
+                make.top.equalTo(completionActionContainer.snp.bottom).offset(8)
                 make.leading.trailing.equalToSuperview()
                 make.height.equalTo(Layout.dividerHeight)
             }
         } else {
             topDivider.snp.makeConstraints { make in
-                make.top.equalTo(searchWordView.snp.bottom)
+                make.top.equalTo(searchWordView.snp.bottom).offset(10)
                 make.leading.trailing.equalToSuperview()
                 make.height.equalTo(Layout.dividerHeight)
             }
@@ -201,6 +246,7 @@ final class LLStatusBarPopoverContentView: NSView {
     private func addDivider() {
         let box = NSBox()
         box.boxType = .separator
+        box.alphaValue = 0.24
         box.snp.makeConstraints { make in
             make.height.equalTo(Layout.dividerHeight)
             make.width.equalTo(Layout.width)
@@ -269,14 +315,14 @@ private final class LLPopoverMenuItem: NSView {
 
     private lazy var iconView: NSImageView = {
         let iv = NSImageView()
-        iv.contentTintColor = .labelColor
+        iv.contentTintColor = NSColor.labelColor.withAlphaComponent(0.76)
         return iv
     }()
 
     private lazy var titleLabel: NSTextField = {
         let tf = NSTextField(labelWithString: "")
-        tf.font = NSFont.systemFont(ofSize: 13)
-        tf.textColor = .labelColor
+        tf.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
+        tf.textColor = NSColor.labelColor.withAlphaComponent(0.9)
         return tf
     }()
 
@@ -284,7 +330,7 @@ private final class LLPopoverMenuItem: NSView {
         self.action = action
         super.init(frame: .zero)
         wantsLayer = true
-        layer?.cornerRadius = 6
+        layer?.cornerRadius = 10
 
         titleLabel.stringValue = title
         if let img = NSImage(systemSymbolName: iconName, accessibilityDescription: nil) {
@@ -295,15 +341,15 @@ private final class LLPopoverMenuItem: NSView {
         addSubview(titleLabel)
 
         iconView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(14)
+            make.leading.equalToSuperview().offset(18)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(14)
+            make.width.height.equalTo(15)
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(iconView.snp.trailing).offset(8)
+            make.leading.equalTo(iconView.snp.trailing).offset(10)
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-14)
+            make.trailing.equalToSuperview().offset(-18)
         }
     }
 
@@ -323,21 +369,31 @@ private final class LLPopoverMenuItem: NSView {
 
     override func mouseEntered(with event: NSEvent) {
         isHovered = true
-        layer?.backgroundColor = NSColor.selectedContentBackgroundColor.withAlphaComponent(0.15).cgColor
+        layer?.backgroundColor = NSColor.white.withAlphaComponent(0.20).cgColor
+        layer?.borderWidth = 1
+        layer?.borderColor = NSColor.white.withAlphaComponent(0.09).cgColor
     }
 
     override func mouseExited(with event: NSEvent) {
         isHovered = false
         layer?.backgroundColor = .none
+        layer?.borderWidth = 0
+        layer?.borderColor = .none
     }
 
     override func mouseDown(with event: NSEvent) {
-        layer?.backgroundColor = NSColor.selectedContentBackgroundColor.withAlphaComponent(0.25).cgColor
+        layer?.backgroundColor = NSColor.white.withAlphaComponent(0.28).cgColor
+        layer?.borderWidth = 1
+        layer?.borderColor = NSColor.white.withAlphaComponent(0.12).cgColor
     }
 
     override func mouseUp(with event: NSEvent) {
         layer?.backgroundColor = isHovered
-            ? NSColor.selectedContentBackgroundColor.withAlphaComponent(0.15).cgColor
+            ? NSColor.white.withAlphaComponent(0.20).cgColor
+            : .none
+        layer?.borderWidth = isHovered ? 1 : 0
+        layer?.borderColor = isHovered
+            ? NSColor.white.withAlphaComponent(0.16).cgColor
             : .none
         let loc = convert(event.locationInWindow, from: nil)
         if bounds.contains(loc) {

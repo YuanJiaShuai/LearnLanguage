@@ -192,26 +192,24 @@ final class LLSettingsTabViewController: NSViewController {
         cardsStack.addArrangedSubview(otherCard)
         
         contentView.addSubview(cardsStack)
+        scrollView.documentView = contentView
         
-        // 设置所有卡片宽度一致
+        contentView.snp.makeConstraints { make in
+            make.width.equalTo(scrollView.contentView)
+        }
+        
+        // 设置所有卡片宽度跟随父容器
         [goalCard, statusBarCard, reviewCard, pronunciationCard, floatingPanelCard, shortcutCard, translationCard, otherCard].forEach { card in
             card.snp.makeConstraints { make in
-                make.width.equalTo(564)
+                make.width.equalTo(cardsStack)
             }
         }
         
         cardsStack.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-20)
-            make.width.equalTo(564)
+            make.width.equalTo(contentView)
         }
-        
-        // 设置 contentView 的约束
-        contentView.snp.makeConstraints { make in
-            make.width.equalTo(564)
-        }
-        
-        scrollView.documentView = contentView
     }
     
     // MARK: - Create Cards

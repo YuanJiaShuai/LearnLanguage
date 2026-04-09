@@ -99,6 +99,9 @@ final class LLSettingsCardView: NSView {
     func addFormItem(label: String, control: NSView) {
         let itemView = createFormItem(label: label, control: control)
         contentStackView.addArrangedSubview(itemView)
+        itemView.snp.makeConstraints { make in
+            make.width.equalTo(contentStackView)
+        }
     }
     
     /// 左右水平布局：左边标题，右边控件

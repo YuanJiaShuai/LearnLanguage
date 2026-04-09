@@ -20,7 +20,7 @@ final class LLSearchWordView: NSView {
     private lazy var inputContainer: NSView = {
         let v = NSView()
         v.wantsLayer = true
-        v.layer?.cornerRadius = 7
+        v.layer?.cornerRadius = 14
         v.layer?.borderWidth = 1
         return v
     }()
@@ -37,8 +37,9 @@ final class LLSearchWordView: NSView {
         tf.isBezeled = false
         tf.drawsBackground = false
         tf.focusRingType = .none
-        tf.font = NSFont.systemFont(ofSize: 13)
-        tf.placeholderString = "查词（回车翻译）"
+        tf.font = NSFont.systemFont(ofSize: 14, weight: .medium)
+        tf.placeholderString = "查询（回车翻译）"
+        tf.textColor = NSColor.labelColor.withAlphaComponent(0.9)
         tf.delegate = self
         return tf
     }()
@@ -136,31 +137,31 @@ final class LLSearchWordView: NSView {
 
         inputContainer.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
-            make.leading.equalToSuperview().offset(12)
-            make.trailing.equalToSuperview().offset(-12)
-            make.height.equalTo(32)
+            make.leading.equalToSuperview().offset(18)
+            make.trailing.equalToSuperview().offset(-18)
+            make.height.equalTo(42)
         }
 
         searchIcon.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(8)
+            make.leading.equalToSuperview().offset(14)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(13)
+            make.width.height.equalTo(16)
         }
 
         searchField.snp.makeConstraints { make in
-            make.leading.equalTo(searchIcon.snp.trailing).offset(6)
-            make.trailing.equalTo(clearButton.snp.leading).offset(-4)
+            make.leading.equalTo(searchIcon.snp.trailing).offset(10)
+            make.trailing.equalTo(clearButton.snp.leading).offset(-6)
             make.centerY.equalToSuperview()
         }
 
         clearButton.snp.makeConstraints { make in
-            make.trailing.equalTo(loadingIndicator.snp.leading).offset(-4)
+            make.trailing.equalTo(loadingIndicator.snp.leading).offset(-6)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(16)
         }
 
         loadingIndicator.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-8)
+            make.trailing.equalToSuperview().offset(-12)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(14)
         }
@@ -209,11 +210,15 @@ final class LLSearchWordView: NSView {
     private func updateAppearance() {
         let isDark = effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
         inputContainer.layer?.backgroundColor = (isDark
-            ? NSColor.white.withAlphaComponent(0.08)
-            : NSColor.black.withAlphaComponent(0.05)).cgColor
+            ? NSColor.white.withAlphaComponent(0.14)
+            : NSColor.white.withAlphaComponent(0.22)).cgColor
         inputContainer.layer?.borderColor = (isDark
-            ? NSColor.white.withAlphaComponent(0.12)
-            : NSColor.black.withAlphaComponent(0.1)).cgColor
+            ? NSColor.white.withAlphaComponent(0.22)
+            : NSColor(calibratedWhite: 0.42, alpha: 0.18)).cgColor
+        inputContainer.layer?.shadowColor = NSColor.white.withAlphaComponent(isDark ? 0.06 : 0.18).cgColor
+        inputContainer.layer?.shadowOpacity = 1
+        inputContainer.layer?.shadowRadius = 10
+        inputContainer.layer?.shadowOffset = CGSize(width: 0, height: -1)
     }
 
     override func viewDidChangeEffectiveAppearance() {
@@ -302,8 +307,8 @@ final class LLSearchWordView: NSView {
 
     /// 根据当前内容计算视图所需总高度
     private func calculatedHeight() -> CGFloat {
-        // 输入框区域：top 8 + 高度 32 + bottom 8 = 48（固定）
-        let inputH: CGFloat = 48
+        // 输入框区域：top 8 + 高度 42 + bottom 8 = 58（固定）
+        let inputH: CGFloat = 58
 
         // 没有结果时直接返回输入框高度
         guard !resultContainer.isHidden else { return inputH }
