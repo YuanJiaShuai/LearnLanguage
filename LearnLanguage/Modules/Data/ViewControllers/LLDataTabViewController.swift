@@ -8,7 +8,135 @@ import AppKit
 import SnapKit
 import UniformTypeIdentifiers
 
+private struct LLLearningLabItem {
+    let title: String
+    let subtitle: String
+    let description: String
+    let symbolName: String
+    let tintColor: NSColor
+    let badge: String
+}
+
+private final class LLLearningLabCollectionItem: NSCollectionViewItem {
+    private let cardView = NSView()
+    private let iconWrap = NSView()
+    private let iconView = NSImageView()
+    private let badgeLabel = NSTextField(labelWithString: "")
+    private let titleLabel = NSTextField(labelWithString: "")
+    private let subtitleLabel = NSTextField(labelWithString: "")
+    private let descriptionLabel = NSTextField(labelWithString: "")
+    private let footerLabel = NSTextField(labelWithString: "统一卡片布局，后续点击进入具体功能")
+    
+    override func loadView() {
+        view = NSView()
+        view.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        setupUI()
+    }
+    
+    private func setupUI() {
+        cardView.wantsLayer = true
+        cardView.layer?.cornerRadius = 16
+        cardView.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
+        cardView.layer?.borderWidth = 1
+        cardView.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.4).cgColor
+        cardView.layer?.shadowColor = NSColor.black.withAlphaComponent(0.06).cgColor
+        cardView.layer?.shadowOpacity = 1
+        cardView.layer?.shadowOffset = CGSize(width: 0, height: -2)
+        cardView.layer?.shadowRadius = 10
+        
+        iconWrap.wantsLayer = true
+        iconWrap.layer?.cornerRadius = 12
+        cardView.addSubview(iconWrap)
+        
+        iconView.imageScaling = .scaleProportionallyDown
+        iconWrap.addSubview(iconView)
+        
+        badgeLabel.font = NSFont.systemFont(ofSize: 10, weight: .semibold)
+        badgeLabel.alignment = .center
+        badgeLabel.wantsLayer = true
+        badgeLabel.layer?.cornerRadius = 6
+        badgeLabel.layer?.masksToBounds = true
+        cardView.addSubview(badgeLabel)
+        
+        titleLabel.font = NSFont.systemFont(ofSize: 20, weight: .bold)
+        titleLabel.textColor = LLAppearanceManager.shared.colors.primaryText
+        cardView.addSubview(titleLabel)
+        
+        subtitleLabel.font = NSFont.systemFont(ofSize: 12, weight: .semibold)
+        subtitleLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.65)
+        cardView.addSubview(subtitleLabel)
+        
+        descriptionLabel.font = NSFont.systemFont(ofSize: 13, weight: .regular)
+        descriptionLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
+        descriptionLabel.lineBreakMode = .byWordWrapping
+        descriptionLabel.maximumNumberOfLines = 0
+        cardView.addSubview(descriptionLabel)
+        
+        footerLabel.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        cardView.addSubview(footerLabel)
+        
+        iconWrap.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview().offset(24)
+            make.width.height.equalTo(48)
+        }
+        
+        iconView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(24)
+        }
+        
+        badgeLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(24)
+            make.trailing.equalToSuperview().offset(-24)
+            make.height.equalTo(22)
+            make.width.greaterThanOrEqualTo(60)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(iconWrap.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(14)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+        footerLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.trailing.lessThanOrEqualToSuperview().offset(-24)
+            make.bottom.equalToSuperview().offset(-24)
+        }
+    }
+    
+    func configure(with item: LLLearningLabItem) {
+        iconWrap.layer?.backgroundColor = item.tintColor.withAlphaComponent(0.12).cgColor
+        iconView.image = NSImage(systemSymbolName: item.symbolName, accessibilityDescription: nil)
+        iconView.contentTintColor = item.tintColor
+        badgeLabel.stringValue = item.badge
+        badgeLabel.textColor = item.tintColor
+        badgeLabel.layer?.backgroundColor = item.tintColor.withAlphaComponent(0.12).cgColor
+        titleLabel.stringValue = item.title
+        subtitleLabel.stringValue = item.subtitle
+        descriptionLabel.stringValue = item.description
+        footerLabel.textColor = item.tintColor.withAlphaComponent(0.88)
+    }
+}
+
 final class LLDataTabViewController: NSViewController {
+    
+    private enum Tab {
+        case dataManagement
+        case learningLab
+    }
     
     // MARK: - UI Components
     
@@ -22,6 +150,16 @@ final class LLDataTabViewController: NSViewController {
         label.drawsBackground = false
         return label
     }()
+    
+    // 标签按钮容器
+    private lazy var tabContainer: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        return view
+    }()
+    
+    private lazy var dataManagementTabButton: NSButton = makeTabButton(title: NSLocalizedString("Data Module Title", comment: ""), action: #selector(switchToDataManagementTab))
+    private lazy var learningLabTabButton: NSButton = makeTabButton(title: "学习实验室", action: #selector(switchToLearningLabTab))
     
     // 滚动容器
     private lazy var scrollView: NSScrollView = {
@@ -40,6 +178,63 @@ final class LLDataTabViewController: NSViewController {
         let view = NSView()
         return view
     }()
+    
+    private lazy var learningLabContainer: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        view.isHidden = true
+        return view
+    }()
+    
+    private lazy var learningLabScrollView: NSScrollView = {
+        let scrollView = NSScrollView()
+        scrollView.hasVerticalScroller = true
+        scrollView.autohidesScrollers = true
+        scrollView.drawsBackground = false
+        scrollView.borderType = .noBorder
+        scrollView.documentView = learningLabCollectionView
+        return scrollView
+    }()
+    
+    private lazy var learningLabCollectionView: NSCollectionView = {
+        let collectionView = NSCollectionView()
+        collectionView.backgroundColors = [.clear]
+        return collectionView
+    }()
+    
+    private let learningLabItemIdentifier = NSUserInterfaceItemIdentifier("LLLearningLabCollectionItem")
+    private let learningLabItemSpacing: CGFloat = 20
+    private let learningLabItemsPerRow: CGFloat = 3
+    private let learningLabSectionInsets = NSEdgeInsets(top: 0, left: 0, bottom: 24, right: 4)
+    
+    private let learningLabItems: [LLLearningLabItem] = [
+        LLLearningLabItem(
+            title: "语法笔记",
+            subtitle: "Grammar Notes",
+            description: "导入语法资料后，在这里以阅读卡片或文档页面的形式查看。",
+            symbolName: "text.book.closed.fill",
+            tintColor: NSColor.systemBlue,
+            badge: "优先"
+        ),
+        LLLearningLabItem(
+            title: "相似词练习",
+            subtitle: "Similar Words",
+            description: "用于近义词、易混词辨析训练，后面会扩展成专项练习页。",
+            symbolName: "rectangle.3.group.bubble.left.fill",
+            tintColor: NSColor.systemPurple,
+            badge: "准备中"
+        ),
+        LLLearningLabItem(
+            title: "更多功能",
+            subtitle: "Coming Next",
+            description: "固定搭配、词根词缀、迷你测验等后续能力都可以放在这里。",
+            symbolName: "sparkles.rectangle.stack.fill",
+            tintColor: NSColor.systemOrange,
+            badge: "预留"
+        )
+    ]
+    
+    private var currentTab: Tab = .dataManagement
 
     override func loadView() {
         view = NSView(frame: NSRect(x: 0, y: 0, width: 700, height: 450))
@@ -63,22 +258,43 @@ final class LLDataTabViewController: NSViewController {
             make.top.equalToSuperview().offset(28)
         }
         
-        // 2. 添加滚动容器
+        // 2. 添加标签按钮容器
+        view.addSubview(tabContainer)
+        tabContainer.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(28)
+            make.height.equalTo(28)
+        }
+        
+        tabContainer.addSubview(dataManagementTabButton)
+        dataManagementTabButton.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+            make.width.greaterThanOrEqualTo(96)
+        }
+        
+        tabContainer.addSubview(learningLabTabButton)
+        learningLabTabButton.snp.makeConstraints { make in
+            make.leading.equalTo(dataManagementTabButton.snp.trailing).offset(4)
+            make.top.bottom.trailing.equalToSuperview()
+            make.width.greaterThanOrEqualTo(96)
+        }
+        
+        // 3. 添加滚动容器
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(28)
             make.right.equalToSuperview().offset(-28)
-            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.top.equalTo(tabContainer.snp.bottom).offset(20)
             make.bottom.equalToSuperview().offset(-28)
         }
         
-        // 3. 设置 contentView 的宽度约束
+        // 4. 设置 contentView 的宽度约束
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView)
             make.width.equalTo(scrollView)
         }
         
-        // 4. 创建功能卡片
+        // 5. 创建功能卡片
         var lastCard: NSView?
         
         // 本地备份卡片
@@ -107,8 +323,81 @@ final class LLDataTabViewController: NSViewController {
             make.top.equalTo(lastCard!.snp.bottom).offset(20)
             make.bottom.equalToSuperview()
         }
+        
+        // 6. 学习实验室页面
+        view.addSubview(learningLabContainer)
+        learningLabContainer.snp.makeConstraints { make in
+            make.top.equalTo(tabContainer.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(28)
+            make.bottom.equalToSuperview().offset(-28)
+        }
+        
+        learningLabContainer.addSubview(learningLabScrollView)
+        learningLabScrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        setupLearningLabCollectionView()
+        
+        updateTabButtonStyles()
     }
     
+    private func setupLearningLabCollectionView() {
+        let flowLayout = NSCollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = learningLabItemSpacing
+        flowLayout.minimumLineSpacing = learningLabItemSpacing
+        flowLayout.sectionInset = learningLabSectionInsets
+        
+        learningLabCollectionView.collectionViewLayout = flowLayout
+        learningLabCollectionView.delegate = self
+        learningLabCollectionView.dataSource = self
+        learningLabCollectionView.isSelectable = false
+        learningLabCollectionView.allowsMultipleSelection = false
+        learningLabCollectionView.backgroundColors = [.clear]
+        learningLabCollectionView.register(
+            LLLearningLabCollectionItem.self,
+            forItemWithIdentifier: learningLabItemIdentifier
+        )
+    }
+    
+    @objc private func switchToDataManagementTab() {
+        currentTab = .dataManagement
+        updateTabButtonStyles()
+        scrollView.isHidden = false
+        learningLabContainer.isHidden = true
+    }
+    
+    @objc private func switchToLearningLabTab() {
+        currentTab = .learningLab
+        updateTabButtonStyles()
+        scrollView.isHidden = true
+        learningLabContainer.isHidden = false
+    }
+    
+    private func updateTabButtonStyles() {
+        styleTabButton(dataManagementTabButton, selected: currentTab == .dataManagement)
+        styleTabButton(learningLabTabButton, selected: currentTab == .learningLab)
+    }
+    
+    private func makeTabButton(title: String, action: Selector) -> NSButton {
+        let button = NSButton(title: title, target: self, action: action)
+        button.isBordered = false
+        button.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
+        button.contentTintColor = LLAppearanceManager.shared.colors.secondaryText
+        button.wantsLayer = true
+        button.layer?.cornerRadius = 8
+        return button
+    }
+    
+    private func styleTabButton(_ button: NSButton, selected: Bool) {
+        button.contentTintColor = selected
+            ? LLAppearanceManager.shared.colors.accentColor
+            : LLAppearanceManager.shared.colors.secondaryText
+        button.layer?.backgroundColor = selected
+            ? LLAppearanceManager.shared.colors.accentLightBackground.cgColor
+            : NSColor.clear.cgColor
+    }
+
     // MARK: - 创建功能卡片
     
     /// 创建本地备份卡片
@@ -452,8 +741,38 @@ final class LLDataTabViewController: NSViewController {
     }
 
     private func dateString() -> String {
-        let f = DateFormatter()
-        f.dateFormat = "yyyyMMdd_HHmm"
-        return f.string(from: Date())
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd_HHmm"
+        return formatter.string(from: Date())
     }
 }
+
+// MARK: - Learning Lab Collection View
+
+extension LLDataTabViewController: NSCollectionViewDataSource {
+    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+        return learningLabItems.count
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+        let item = collectionView.makeItem(
+            withIdentifier: learningLabItemIdentifier,
+            for: indexPath
+        ) as! LLLearningLabCollectionItem
+        item.configure(with: learningLabItems[indexPath.item])
+        return item
+    }
+}
+
+extension LLDataTabViewController: NSCollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        let scrollView = collectionView.enclosingScrollView
+        let visibleWidth = scrollView?.documentVisibleRect.width ?? collectionView.bounds.width
+        let scrollerWidth: CGFloat = scrollView?.verticalScroller?.isHidden == false ? NSScroller.scrollerWidth(for: .regular, scrollerStyle: .overlay) : 0
+        let totalSpacing = learningLabSectionInsets.left + learningLabSectionInsets.right + (learningLabItemSpacing * (learningLabItemsPerRow - 1))
+        let availableWidth = visibleWidth - totalSpacing - scrollerWidth
+        let itemWidth = (availableWidth / learningLabItemsPerRow).rounded(.down)
+        return NSSize(width: itemWidth, height: 244)
+    }
+}
+
