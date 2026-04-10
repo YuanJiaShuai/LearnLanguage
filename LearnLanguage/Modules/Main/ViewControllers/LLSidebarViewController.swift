@@ -39,13 +39,121 @@ enum SidebarModule {
     }
 }
 
+private final class LLFeedbackCardView: NSView {
+    var onTap: (() -> Void)?
+
+    private let iconWrap = NSView()
+    private let iconView = NSImageView()
+    private let titleLabel = NSTextField(labelWithString: "意见反馈")
+    private let subtitleLabel = NSTextField(labelWithString: "欢迎反馈体验问题与功能建议")
+    private var tracking: NSTrackingArea?
+    private var hovered = false
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        wantsLayer = true
+        layer?.cornerRadius = 16
+        layer?.borderWidth = 1
+
+        iconWrap.wantsLayer = true
+        iconWrap.layer?.cornerRadius = 12
+        iconWrap.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentLightBackground.cgColor
+        addSubview(iconWrap)
+
+        iconView.image = NSImage(systemSymbolName: "bubble.left.and.bubble.right.fill", accessibilityDescription: nil)
+        iconView.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+        iconView.imageScaling = .scaleProportionallyDown
+        iconWrap.addSubview(iconView)
+
+        titleLabel.font = NSFont.inter(13, .semiBold)
+        titleLabel.textColor = LLAppearanceManager.shared.colors.primaryText
+        addSubview(titleLabel)
+
+        subtitleLabel.font = NSFont.inter(11, .medium)
+        subtitleLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.75)
+        subtitleLabel.maximumNumberOfLines = 2
+        subtitleLabel.lineBreakMode = .byWordWrapping
+        addSubview(subtitleLabel)
+
+        iconWrap.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(14)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(38)
+        }
+
+        iconView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(18)
+        }
+
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.leading.equalTo(iconWrap.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().offset(-14)
+        }
+
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(iconWrap.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().offset(-14)
+            make.bottom.lessThanOrEqualToSuperview().offset(-14)
+        }
+
+        updateStyle()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        if let tracking {
+            removeTrackingArea(tracking)
+        }
+        let area = NSTrackingArea(
+            rect: bounds,
+            options: [.mouseEnteredAndExited, .activeInKeyWindow, .inVisibleRect],
+            owner: self,
+            userInfo: nil
+        )
+        addTrackingArea(area)
+        tracking = area
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        hovered = true
+        updateStyle()
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        hovered = false
+        updateStyle()
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        onTap?()
+    }
+
+    private func updateStyle() {
+        layer?.backgroundColor = (hovered
+            ? NSColor.white.withAlphaComponent(0.72)
+            : NSColor.white.withAlphaComponent(0.5)).cgColor
+        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(hovered ? 0.85 : 0.55).cgColor
+        layer?.shadowColor = NSColor.black.withAlphaComponent(0.06).cgColor
+        layer?.shadowOpacity = 1
+        layer?.shadowOffset = CGSize(width: 0, height: -1)
+        layer?.shadowRadius = hovered ? 10 : 7
+    }
+}
+
 final class LLSidebarViewController: NSViewController {
     
     // MARK: - Properties
     
     weak var delegate: SidebarViewControllerDelegate?
     private var selectedModule: SidebarModule = .wordList
-    private let modules: [SidebarModule] = [.wordList, .settings, .learningRecord, .dataManagement]
+    private let modules: [SidebarModule] = [.wordList, .learningRecord, .dataManagement, .settings]
     
     // 数据源
     private var currentWordList: WordList?
@@ -146,19 +254,12 @@ final class LLSidebarViewController: NSViewController {
         return view
     }()
     
-    private lazy var feedbackButton: NSButton = {
-        let button = NSButton(title: "意见反馈", target: self, action: #selector(onFeedbackButtonClicked))
-        button.bezelStyle = .regularSquare
-        button.isBordered = false
-        button.font = NSFont.inter(12, .medium)
-        button.contentTintColor = LLAppearanceManager.shared.colors.primaryText
-        button.wantsLayer = true
-        button.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.42).cgColor
-        button.layer?.cornerRadius = 14
-        button.layer?.borderWidth = 1
-        button.layer?.borderColor = NSColor.white.withAlphaComponent(0.5).cgColor
-        button.alignment = .left
-        return button
+    private lazy var feedbackCardView: LLFeedbackCardView = {
+        let card = LLFeedbackCardView()
+        card.onTap = { [weak self] in
+            self?.onFeedbackButtonClicked()
+        }
+        return card
     }()
     
     // MARK: - Lifecycle
@@ -282,7 +383,7 @@ final class LLSidebarViewController: NSViewController {
         navigationContainerView.snp.makeConstraints { make in
             make.top.equalTo(menuSectionTitleLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(feedbackButton.snp.top).offset(-20)
+            make.bottom.equalTo(feedbackCardView.snp.top).offset(-20)
         }
         
         var previousView: NSView?
@@ -312,11 +413,11 @@ final class LLSidebarViewController: NSViewController {
     }
     
     private func setupBottomFeedbackButton() {
-        view.addSubview(feedbackButton)
-        feedbackButton.snp.makeConstraints { make in
+        view.addSubview(feedbackCardView)
+        feedbackCardView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().offset(-16)
-            make.height.equalTo(56)
+            make.height.equalTo(72)
         }
     }
     

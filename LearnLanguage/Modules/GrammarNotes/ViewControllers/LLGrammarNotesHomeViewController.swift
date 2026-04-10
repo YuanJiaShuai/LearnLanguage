@@ -113,17 +113,18 @@ private final class LLGrammarSidebarItemView: NSView {
 
 final class LLGrammarNotesHomeViewController: NSViewController {
     private let onBack: () -> Void
+    private let resourceBundle = Bundle.main
     private var articles: [LLGrammarArticleMeta] = []
     private var sidebarItems: [String: LLGrammarSidebarItemView] = [:]
+    private var isSidebarCollapsed = false
 
     private let sidebarContainer = NSView()
     private let sidebarScrollView = NSScrollView()
     private let sidebarContentView = NSView()
     private let sidebarStackView = NSStackView()
     private let contentContainer = NSView()
-    private let articleTitleLabel = NSTextField(labelWithString: "")
-    private let articleSubtitleLabel = NSTextField(labelWithString: "")
     private let webView = WKWebView(frame: .zero)
+    private var sidebarWidthConstraint: Constraint?
 
     init(onBack: @escaping () -> Void) {
         self.onBack = onBack
@@ -148,8 +149,12 @@ final class LLGrammarNotesHomeViewController: NSViewController {
     }
 
     private func loadArticles() {
-        let url = URL(fileURLWithPath: "/Users/admin/Documents/learn/ios/LearnLanguage/LearnLanguage/Modules/GrammarNotes/Resources/grammar-index.json")
-        guard let data = try? Data(contentsOf: url) else { return }
+        guard let url = resourceBundle.url(
+            forResource: "grammar-index",
+            withExtension: "json"
+        ), let data = try? Data(contentsOf: url) else {
+            return
+        }
         let decoded = (try? JSONDecoder().decode([LLGrammarArticleMeta].self, from: data)) ?? []
         articles = decoded.sorted { $0.order < $1.order }
     }
@@ -158,40 +163,27 @@ final class LLGrammarNotesHomeViewController: NSViewController {
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.white.cgColor
 
-        let backButton = NSButton(title: "返回", target: self, action: #selector(onBackTapped))
-        backButton.isBordered = false
-        backButton.font = .systemFont(ofSize: 14, weight: .semibold)
-        backButton.image = NSImage(systemSymbolName: "chevron.left", accessibilityDescription: nil)
-        backButton.imagePosition = .imageLeading
-        backButton.contentTintColor = .systemBlue
+        let backButton = makeFloatingIconButton(symbolName: "chevron.left", action: #selector(onBackTapped))
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(28)
-            make.leading.equalToSuperview().offset(28)
+            make.top.equalToSuperview().offset(18)
+            make.leading.equalToSuperview().offset(24)
+            make.width.height.equalTo(42)
         }
 
-        let titleLabel = NSTextField(labelWithString: "语法笔记")
-        titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
-        titleLabel.textColor = LLAppearanceManager.shared.colors.primaryText
-        view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(32)
-        }
-
-        let subtitleLabel = NSTextField(labelWithString: "左侧目录，右侧正文")
-        subtitleLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        subtitleLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.7)
-        view.addSubview(subtitleLabel)
-        subtitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(32)
+        let pageTitleLabel = NSTextField(labelWithString: "语法笔记")
+        pageTitleLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        pageTitleLabel.textColor = LLAppearanceManager.shared.colors.primaryText
+        view.addSubview(pageTitleLabel)
+        pageTitleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(backButton)
+            make.leading.equalTo(backButton.snp.trailing).offset(14)
         }
 
         let splitContainer = NSView()
         view.addSubview(splitContainer)
         splitContainer.snp.makeConstraints { make in
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(24)
+            make.top.equalTo(backButton.snp.bottom).offset(14)
             make.leading.trailing.equalToSuperview().inset(24)
             make.bottom.equalToSuperview().offset(-24)
         }
@@ -204,36 +196,41 @@ final class LLGrammarNotesHomeViewController: NSViewController {
         splitContainer.addSubview(sidebarContainer)
         sidebarContainer.snp.makeConstraints { make in
             make.top.leading.bottom.equalToSuperview()
-            make.width.equalTo(280)
+            self.sidebarWidthConstraint = make.width.equalTo(280).constraint
         }
 
-        let sidebarHeader = NSTextField(labelWithString: "语法目录")
-        sidebarHeader.font = .systemFont(ofSize: 14, weight: .bold)
-        sidebarHeader.textColor = LLAppearanceManager.shared.colors.primaryText
-        sidebarContainer.addSubview(sidebarHeader)
-        sidebarHeader.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.leading.equalToSuperview().offset(18)
+        let sidebarToggleButton = makeFloatingIconButton(symbolName: "sidebar.left", action: #selector(toggleSidebar))
+        sidebarContainer.addSubview(sidebarToggleButton)
+        sidebarToggleButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.leading.equalToSuperview().offset(14)
+            make.width.height.equalTo(34)
         }
 
         sidebarScrollView.drawsBackground = false
         sidebarScrollView.borderType = .noBorder
         sidebarScrollView.hasVerticalScroller = true
         sidebarScrollView.autohidesScrollers = true
-        sidebarScrollView.documentView = sidebarContentView
         sidebarContainer.addSubview(sidebarScrollView)
         sidebarScrollView.snp.makeConstraints { make in
-            make.top.equalTo(sidebarHeader.snp.bottom).offset(14)
+            make.top.equalTo(sidebarToggleButton.snp.bottom).offset(12)
             make.leading.trailing.bottom.equalToSuperview().inset(12)
+        }
+
+        sidebarContentView.translatesAutoresizingMaskIntoConstraints = false
+        sidebarScrollView.documentView = sidebarContentView
+        sidebarContentView.snp.makeConstraints { make in
+            make.edges.equalTo(sidebarScrollView.contentView)
+            make.width.equalTo(sidebarScrollView.contentView)
         }
 
         sidebarStackView.orientation = .vertical
         sidebarStackView.spacing = 10
         sidebarStackView.alignment = .leading
+        sidebarStackView.distribution = .gravityAreas
         sidebarContentView.addSubview(sidebarStackView)
         sidebarStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.width.equalTo(sidebarScrollView.contentView)
         }
 
         contentContainer.wantsLayer = true
@@ -247,37 +244,10 @@ final class LLGrammarNotesHomeViewController: NSViewController {
             make.leading.equalTo(sidebarContainer.snp.trailing).offset(18)
         }
 
-        articleTitleLabel.font = .systemFont(ofSize: 24, weight: .bold)
-        articleTitleLabel.textColor = LLAppearanceManager.shared.colors.primaryText
-        contentContainer.addSubview(articleTitleLabel)
-        articleTitleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.leading.equalToSuperview().offset(22)
-        }
-
-        articleSubtitleLabel.font = .systemFont(ofSize: 12, weight: .semibold)
-        articleSubtitleLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.68)
-        contentContainer.addSubview(articleSubtitleLabel)
-        articleSubtitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(articleTitleLabel.snp.bottom).offset(6)
-            make.leading.equalToSuperview().offset(22)
-        }
-
-        let divider = NSView()
-        divider.wantsLayer = true
-        divider.layer?.backgroundColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.5).cgColor
-        contentContainer.addSubview(divider)
-        divider.snp.makeConstraints { make in
-            make.top.equalTo(articleSubtitleLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(1)
-        }
-
         webView.setValue(false, forKey: "drawsBackground")
         contentContainer.addSubview(webView)
         webView.snp.makeConstraints { make in
-            make.top.equalTo(divider.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
 
         buildSidebarItems()
@@ -292,21 +262,51 @@ final class LLGrammarNotesHomeViewController: NSViewController {
 
         for article in articles {
             let item = LLGrammarSidebarItemView()
+            item.translatesAutoresizingMaskIntoConstraints = false
             item.configure(with: article)
             item.onTap = { [weak self] in
                 self?.selectArticle(article)
             }
             sidebarStackView.addArrangedSubview(item)
             item.snp.makeConstraints { make in
-                make.width.equalToSuperview()
+                make.width.equalTo(sidebarStackView)
             }
             sidebarItems[article.id] = item
         }
     }
 
+    private func makeFloatingIconButton(symbolName: String, action: Selector) -> NSButton {
+        let button = NSButton(title: "", target: self, action: action)
+        button.isBordered = false
+        button.bezelStyle = .regularSquare
+        button.wantsLayer = true
+        button.layer?.cornerRadius = 21
+        button.layer?.backgroundColor = NSColor.white.cgColor
+        button.layer?.borderWidth = 1
+        button.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.75).cgColor
+        button.layer?.shadowColor = NSColor.black.withAlphaComponent(0.08).cgColor
+        button.layer?.shadowOpacity = 1
+        button.layer?.shadowOffset = CGSize(width: 0, height: -1)
+        button.layer?.shadowRadius = 10
+        button.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+        button.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)
+        button.imagePosition = .imageOnly
+        return button
+    }
+
+    @objc private func toggleSidebar() {
+        isSidebarCollapsed.toggle()
+        sidebarWidthConstraint?.update(offset: isSidebarCollapsed ? 56 : 280)
+        sidebarScrollView.alphaValue = isSidebarCollapsed ? 0 : 1
+
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.22
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            self.view.layoutSubtreeIfNeeded()
+        }
+    }
+
     private func selectArticle(_ article: LLGrammarArticleMeta) {
-        articleTitleLabel.stringValue = article.title
-        articleSubtitleLabel.stringValue = article.subtitle
         sidebarItems.forEach { key, view in
             view.isActive = (key == article.id)
         }
@@ -314,13 +314,57 @@ final class LLGrammarNotesHomeViewController: NSViewController {
     }
 
     private func loadArticle(_ article: LLGrammarArticleMeta) {
-        let root = URL(fileURLWithPath: "/Users/admin/Documents/learn/ios/LearnLanguage/LearnLanguage/Modules/GrammarNotes/Resources", isDirectory: true)
-        let articleURL = root.appendingPathComponent(article.articlePath)
-        guard let markdown = try? String(contentsOf: articleURL, encoding: .utf8) else {
-            webView.loadHTMLString("<html><body><p>内容加载失败</p></body></html>", baseURL: root)
+        guard let articleURL = bundledResourceURL(forRelativePath: article.articlePath) else {
+            webView.loadHTMLString("<html><body><p>内容加载失败</p></body></html>", baseURL: resourceBundle.resourceURL)
             return
         }
-        webView.loadHTMLString(buildHTML(from: markdown), baseURL: articleURL.deletingLastPathComponent())
+
+        guard let markdown = try? String(contentsOf: articleURL, encoding: .utf8) else {
+            webView.loadHTMLString("<html><body><p>内容加载失败</p></body></html>", baseURL: resourceBundle.resourceURL)
+            return
+        }
+
+        let normalizedMarkdown = rewriteBundledImagePaths(in: markdown)
+        webView.loadHTMLString(buildHTML(from: normalizedMarkdown), baseURL: articleURL.deletingLastPathComponent())
+    }
+
+    private func bundledResourceURL(forRelativePath relativePath: String) -> URL? {
+        if let root = resourceBundle.resourceURL {
+            let directURL = root.appendingPathComponent(relativePath)
+            if FileManager.default.fileExists(atPath: directURL.path) {
+                return directURL
+            }
+        }
+
+        let fileURL = URL(fileURLWithPath: relativePath)
+        let fileName = fileURL.deletingPathExtension().lastPathComponent
+        let fileExtension = fileURL.pathExtension.isEmpty ? nil : fileURL.pathExtension
+        return resourceBundle.url(forResource: fileName, withExtension: fileExtension)
+    }
+
+    private func rewriteBundledImagePaths(in markdown: String) -> String {
+        let pattern = #"<img\s+src=\"([^\"]+)\"\s*>"#
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return markdown }
+
+        let nsRange = NSRange(markdown.startIndex..., in: markdown)
+        let matches = regex.matches(in: markdown, options: [], range: nsRange).reversed()
+        var result = markdown
+
+        for match in matches {
+            guard match.numberOfRanges == 2,
+                  let srcRange = Range(match.range(at: 1), in: result) else {
+                continue
+            }
+
+            let src = String(result[srcRange])
+            guard let imageURL = bundledResourceURL(forRelativePath: src) else {
+                continue
+            }
+
+            result.replaceSubrange(srcRange, with: imageURL.absoluteString)
+        }
+
+        return result
     }
 
     private func buildHTML(from markdown: String) -> String {
@@ -332,11 +376,11 @@ final class LLGrammarNotesHomeViewController: NSViewController {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <style>
-            body { margin: 0; padding: 28px 32px 48px; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; color: #1f2937; background: #ffffff; line-height: 1.8; font-size: 16px; }
+            body { margin: 0; padding: 26px 28px 40px; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; color: #1f2937; background: #ffffff; line-height: 1.8; font-size: 16px; }
             h1, h2, h3 { color: #111827; line-height: 1.25; margin: 0 0 16px; }
-            h1 { font-size: 30px; }
-            h2 { font-size: 24px; margin-top: 28px; }
-            h3 { font-size: 20px; margin-top: 24px; }
+            h1 { font-size: 28px; }
+            h2 { font-size: 22px; margin-top: 26px; }
+            h3 { font-size: 18px; margin-top: 22px; }
             p { margin: 0 0 14px; }
             img { display: block; max-width: 100%; height: auto; margin: 18px auto; border-radius: 14px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }
             blockquote { margin: 18px 0; padding: 10px 14px; border-left: 4px solid rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.06); border-radius: 8px; }

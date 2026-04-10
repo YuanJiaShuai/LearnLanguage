@@ -18,6 +18,16 @@ private struct LLLearningLabItem {
     let route: LLLearningLabRoute
 }
 
+private final class LLLearningLabBadgeTextFieldCell: NSTextFieldCell {
+    override func drawingRect(forBounds rect: NSRect) -> NSRect {
+        var newRect = super.drawingRect(forBounds: rect)
+        let textSize = cellSize(forBounds: rect)
+        newRect.origin.y = rect.origin.y + (rect.height - textSize.height) / 2
+        newRect.size.height = textSize.height
+        return newRect
+    }
+}
+
 private final class LLLearningLabCollectionItem: NSCollectionViewItem {
     private let cardView = NSView()
     private let iconWrap = NSView()
@@ -57,6 +67,11 @@ private final class LLLearningLabCollectionItem: NSCollectionViewItem {
         
         badgeLabel.font = NSFont.systemFont(ofSize: 10, weight: .semibold)
         badgeLabel.alignment = .center
+        badgeLabel.cell = LLLearningLabBadgeTextFieldCell(textCell: "")
+        badgeLabel.cell?.alignment = .center
+        badgeLabel.cell?.usesSingleLineMode = true
+        badgeLabel.cell?.wraps = false
+        badgeLabel.cell?.isScrollable = false
         badgeLabel.wantsLayer = true
         badgeLabel.layer?.cornerRadius = 6
         badgeLabel.layer?.masksToBounds = true
