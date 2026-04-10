@@ -15,10 +15,13 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     private var displayView: LLTypingDisplayView!
     private let meaningLabel = NSTextField()
+    private let hintLabel = NSTextField()
     
     private var currentEntry: LLWordEntry?
     private var currentListId: String?
     private var completedCount = 0
+    private var isWaitingForNextWord = false
+    private var pendingFeedback: LLWordFeedback?
     private var currentWordErrorCount = 0 {
         didSet {
             displayView.answerAfterErrorCount(errorCount: currentWordErrorCount)
@@ -77,11 +80,25 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         meaningLabel.cell?.isScrollable = false
         meaningLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
+        hintLabel.isBezeled = false
+        hintLabel.drawsBackground = false
+        hintLabel.isEditable = false
+        hintLabel.isSelectable = false
+        hintLabel.alignment = .center
+        hintLabel.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        hintLabel.textColor = NSColor.secondaryLabelColor.withAlphaComponent(0.78)
+        hintLabel.stringValue = ""
+        hintLabel.alphaValue = 0
+        hintLabel.isHidden = true
+        hintLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
         // StackView 作为父视图，垂直排列，整体居中
-        let stackView = NSStackView(views: [displayView, meaningLabel])
+        let stackView = NSStackView(views: [displayView, meaningLabel, hintLabel])
         stackView.orientation = .vertical
         stackView.alignment = .centerX
-        stackView.spacing = 16
+        stackView.spacing = 12
+        stackView.setCustomSpacing(10, after: displayView)
+        stackView.setCustomSpacing(6, after: meaningLabel)
         stackView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         view.addSubview(stackView)
         
@@ -94,6 +111,10 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         }
         
         meaningLabel.snp.makeConstraints { make in
+            make.width.equalTo(stackView)
+        }
+        
+        hintLabel.snp.makeConstraints { make in
             make.width.equalTo(stackView)
         }
         
@@ -112,13 +133,15 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         currentListId = listId
         currentWordErrorCount = 0  // 重置错误计数
         hasRecordedFeedback = false  // 重置反馈记录标记
+        isWaitingForNextWord = false
+        pendingFeedback = nil
         displayView.reset(word: entry.text)
         
-        // 设置释义
-        let settings = LLSettingsStore.shared.settings
-        meaningLabel.stringValue = settings.typingPracticeShowMeaning ? entry.meaning : ""
+        updateMeaningVisibility(forceShow: false)
+        updateCompletionHint(isVisible: false)
         
         // 播放发音
+        let settings = LLSettingsStore.shared.settings
         if settings.pronunciationEnabled {
             LLPronunciationManager.shared.speak(word: entry.text)
         }
@@ -132,6 +155,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     /// 重置视图
     func resetView() {
         meaningLabel.stringValue = "点击切换到练习"
+        updateCompletionHint(isVisible: false)
     }
     
     // 保留这个属性用于外部访问（兼容性）
@@ -142,6 +166,11 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     override func keyDown(with event: NSEvent) {
         // 处理特殊键
         switch event.keyCode {
+        case 49: // Space - 完成后切换到下一个单词
+            if isWaitingForNextWord {
+                moveToNextWord()
+                return
+            }
         case 53: // ESC - 隐藏窗口
             view.window?.orderOut(nil)
             return
@@ -150,6 +179,12 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             return
         default:
             break
+        }
+        
+        // 已完成当前单词时，忽略普通字符输入
+        if isWaitingForNextWord {
+            updateCompletionHint(isVisible: true)
+            return
         }
         
         // 处理字符输入
@@ -191,35 +226,81 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         // 播放完成音效
         LLTypingSoundManager.shared.playCompleteSound()
         
-        // 如果一次性输入正确（没有错误），记录为"认识"
-        if currentWordErrorCount == 0 && !hasRecordedFeedback {
-            recordFeedbackToDatabase(.know)
-            hasRecordedFeedback = true
-        } else if currentWordErrorCount == 1 && !hasRecordedFeedback {
-            recordFeedbackToDatabase(.unclear)
-            hasRecordedFeedback = true
-        } else if currentWordErrorCount >= 2 && !hasRecordedFeedback {
-            recordFeedbackToDatabase(.unknown)
+        let feedback: LLWordFeedback
+        if currentWordErrorCount == 0 {
+            feedback = .know
+        } else if currentWordErrorCount == 1 {
+            feedback = .unclear
+        } else {
+            feedback = .unknown
+        }
+        
+        if !hasRecordedFeedback {
+            pendingFeedback = feedback
             hasRecordedFeedback = true
         }
         
         completedCount += 1
+        isWaitingForNextWord = true
+        updateMeaningVisibility(forceShow: true)
+    }
+    
+    private func moveToNextWord() {
+        guard isWaitingForNextWord else { return }
+        isWaitingForNextWord = false
+        updateCompletionHint(isVisible: false)
         
-        // 延迟 0.4s 后切换下一个单词
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            // 传递 feedback 用于其他逻辑（如音效、动画等）
-            let feedback: LLWordFeedback = (self?.currentWordErrorCount == 0) ? .know : .unknown
-            self?.onWordCompleted?(feedback)
+        if let feedback = pendingFeedback {
+            recordFeedbackToDatabase(feedback)
+            pendingFeedback = nil
+            onWordCompleted?(feedback)
         }
     }
     
     private func skipCurrentWord() {
+        isWaitingForNextWord = false
+        pendingFeedback = nil
+        updateCompletionHint(isVisible: false)
+        
         // 跳过当前单词，标记为不认识
         if !hasRecordedFeedback {
             recordFeedbackToDatabase(.unknown)
             hasRecordedFeedback = true
         }
         onWordCompleted?(.unknown)
+    }
+    
+    private func updateMeaningVisibility(forceShow: Bool) {
+        guard let entry = currentEntry else {
+            meaningLabel.stringValue = ""
+            return
+        }
+        
+        let settings = LLSettingsStore.shared.settings
+        meaningLabel.stringValue = (forceShow || settings.typingPracticeShowMeaning) ? entry.meaning : ""
+    }
+    
+    private func updateCompletionHint(isVisible: Bool) {
+        hintLabel.stringValue = "已完成，按 Space 继续"
+        
+        if isVisible {
+            guard hintLabel.isHidden || hintLabel.alphaValue == 0 else { return }
+            hintLabel.isHidden = false
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.18
+                context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+                hintLabel.animator().alphaValue = 1
+            }
+        } else {
+            guard !hintLabel.isHidden || hintLabel.alphaValue > 0 else { return }
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.14
+                context.timingFunction = CAMediaTimingFunction(name: .easeIn)
+                hintLabel.animator().alphaValue = 0
+            }, completionHandler: {
+                self.hintLabel.isHidden = true
+            })
+        }
     }
     
     /// 记录反馈到数据库（只记录一次）

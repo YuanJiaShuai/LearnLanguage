@@ -109,8 +109,15 @@ class LLAppDelegate: NSObject, NSApplicationDelegate {
             setupMainWindow()
         }
         
-        mainWindow?.makeKeyAndOrderFront(nil)
+        // 先激活应用，再在下一轮 RunLoop 中抬升窗口，避免状态栏模式切换与 Popover 关闭导致窗口未到最前层
         NSApp.activate(ignoringOtherApps: true)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self, let mainWindow = self.mainWindow else { return }
+            mainWindow.makeKeyAndOrderFront(nil)
+            mainWindow.orderFrontRegardless()
+            NSApp.activate(ignoringOtherApps: true)
+        }
     }
 
     func createFloatingPanel() {
