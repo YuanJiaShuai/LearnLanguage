@@ -114,6 +114,154 @@
 		84E1E3A42F4D53A300D1B7B6 /* LLTypingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3912F4D53A300D1B7B6 /* LLTypingEngine.swift */; };
 		84E1E3A52F4D53A300D1B7B6 /* LLTypingPracticeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E39C2F4D53A300D1B7B6 /* LLTypingPracticeManager.swift */; };
 		84E1E3A62F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1E3932F4D53A300D1B7B6 /* LLTypingPracticeFloatingViewController.swift */; };
+		84EE8F392F88EFC10082A167 /* LLMoreFeaturesHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EE8F332F88EFC10082A167 /* LLMoreFeaturesHomeViewController.swift */; };
+		84EE8F3A2F88EFC10082A167 /* LLSimilarWordsHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EE8F362F88EFC10082A167 /* LLSimilarWordsHomeViewController.swift */; };
+		84EE8F3B2F88EFC10082A167 /* LLGrammarNotesHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EE8F302F88EFC10082A167 /* LLGrammarNotesHomeViewController.swift */; };
+		84EE92412F88F81A0082A167 /* adverb_17.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C02F88F81A0082A167 /* adverb_17.png */; };
+		84EE92422F88F81A0082A167 /* compare_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D42F88F81A0082A167 /* compare_14.png */; };
+		84EE92432F88F81A0082A167 /* grammar_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F22F88F81A0082A167 /* grammar_8.png */; };
+		84EE92442F88F81A0082A167 /* preposition_17.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92232F88F81A0082A167 /* preposition_17.png */; };
+		84EE92452F88F81A0082A167 /* grammar_37.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE920F2F88F81A0082A167 /* grammar_37.png */; };
+		84EE92462F88F81A0082A167 /* sentence_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92322F88F81A0082A167 /* sentence_8.png */; };
+		84EE92472F88F81A0082A167 /* adverb_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B22F88F81A0082A167 /* adverb_3.png */; };
+		84EE92482F88F81A0082A167 /* adverb_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C52F88F81A0082A167 /* adverb_article.md */; };
+		84EE92492F88F81A0082A167 /* grammar_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91EE2F88F81A0082A167 /* grammar_4.png */; };
+		84EE924A2F88F81A0082A167 /* adverb_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B12F88F81A0082A167 /* adverb_2.png */; };
+		84EE924B2F88F81A0082A167 /* adjective_to_noun_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A62F88F81A0082A167 /* adjective_to_noun_7.png */; };
+		84EE924C2F88F81A0082A167 /* preposition_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92262F88F81A0082A167 /* preposition_20.png */; };
+		84EE924D2F88F81A0082A167 /* giant_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91DA2F88F81A0082A167 /* giant_3.png */; };
+		84EE924E2F88F81A0082A167 /* grammar_22.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92002F88F81A0082A167 /* grammar_22.png */; };
+		84EE924F2F88F81A0082A167 /* grammar_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F52F88F81A0082A167 /* grammar_11.png */; };
+		84EE92502F88F81A0082A167 /* giant_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91DE2F88F81A0082A167 /* giant_7.png */; };
+		84EE92512F88F81A0082A167 /* grammar_35.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE920D2F88F81A0082A167 /* grammar_35.png */; };
+		84EE92522F88F81A0082A167 /* compare_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91CD2F88F81A0082A167 /* compare_7.png */; };
+		84EE92532F88F81A0082A167 /* sentence_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE922E2F88F81A0082A167 /* sentence_4.png */; };
+		84EE92542F88F81A0082A167 /* grammar_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92112F88F81A0082A167 /* grammar_article.md */; };
+		84EE92552F88F81A0082A167 /* sentence_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE922D2F88F81A0082A167 /* sentence_3.png */; };
+		84EE92562F88F81A0082A167 /* grammar_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92022F88F81A0082A167 /* grammar_24.png */; };
+		84EE92572F88F81A0082A167 /* adverb_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91BA2F88F81A0082A167 /* adverb_11.png */; };
+		84EE92582F88F81A0082A167 /* grammar_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F92F88F81A0082A167 /* grammar_15.png */; };
+		84EE92592F88F81A0082A167 /* grammar_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F42F88F81A0082A167 /* grammar_10.png */; };
+		84EE925A2F88F81A0082A167 /* adjective_to_noun_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A22F88F81A0082A167 /* adjective_to_noun_3.png */; };
+		84EE925B2F88F81A0082A167 /* preposition_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92142F88F81A0082A167 /* preposition_2.png */; };
+		84EE925C2F88F81A0082A167 /* preposition_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92192F88F81A0082A167 /* preposition_7.png */; };
+		84EE925D2F88F81A0082A167 /* compare_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D02F88F81A0082A167 /* compare_10.png */; };
+		84EE925E2F88F81A0082A167 /* grammar_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91FE2F88F81A0082A167 /* grammar_20.png */; };
+		84EE925F2F88F81A0082A167 /* giant_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E62F88F81A0082A167 /* giant_15.png */; };
+		84EE92602F88F81A0082A167 /* adverb_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B62F88F81A0082A167 /* adverb_7.png */; };
+		84EE92612F88F81A0082A167 /* preposition_21.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92272F88F81A0082A167 /* preposition_21.png */; };
+		84EE92622F88F81A0082A167 /* adjective_to_noun_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91AB2F88F81A0082A167 /* adjective_to_noun_12.png */; };
+		84EE92632F88F81A0082A167 /* grammar_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F32F88F81A0082A167 /* grammar_9.png */; };
+		84EE92642F88F81A0082A167 /* compare_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D32F88F81A0082A167 /* compare_13.png */; };
+		84EE92652F88F81A0082A167 /* giant_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E42F88F81A0082A167 /* giant_13.png */; };
+		84EE92662F88F81A0082A167 /* preposition_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92292F88F81A0082A167 /* preposition_article.md */; };
+		84EE92672F88F81A0082A167 /* sentence_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE922C2F88F81A0082A167 /* sentence_2.png */; };
+		84EE92682F88F81A0082A167 /* adverb_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B92F88F81A0082A167 /* adverb_10.png */; };
+		84EE92692F88F81A0082A167 /* grammar_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE920A2F88F81A0082A167 /* grammar_32.png */; };
+		84EE926A2F88F81A0082A167 /* adjective_to_noun_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A52F88F81A0082A167 /* adjective_to_noun_6.png */; };
+		84EE926B2F88F81A0082A167 /* giant_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E12F88F81A0082A167 /* giant_10.png */; };
+		84EE926C2F88F81A0082A167 /* grammar_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91EF2F88F81A0082A167 /* grammar_5.png */; };
+		84EE926D2F88F81A0082A167 /* compare_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91CB2F88F81A0082A167 /* compare_5.png */; };
+		84EE926E2F88F81A0082A167 /* adjective_to_noun_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91AC2F88F81A0082A167 /* adjective_to_noun_13.png */; };
+		84EE926F2F88F81A0082A167 /* grammar_31.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92092F88F81A0082A167 /* grammar_31.png */; };
+		84EE92702F88F81A0082A167 /* preposition_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92132F88F81A0082A167 /* preposition_1.png */; };
+		84EE92712F88F81A0082A167 /* adverb_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B52F88F81A0082A167 /* adverb_6.png */; };
+		84EE92722F88F81A0082A167 /* grammar_33.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE920B2F88F81A0082A167 /* grammar_33.png */; };
+		84EE92732F88F81A0082A167 /* compare_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91CC2F88F81A0082A167 /* compare_6.png */; };
+		84EE92742F88F81A0082A167 /* compare_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D12F88F81A0082A167 /* compare_11.png */; };
+		84EE92752F88F81A0082A167 /* grammar_27.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92052F88F81A0082A167 /* grammar_27.png */; };
+		84EE92762F88F81A0082A167 /* grammar_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91EC2F88F81A0082A167 /* grammar_2.png */; };
+		84EE92772F88F81A0082A167 /* sentence_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE922F2F88F81A0082A167 /* sentence_5.png */; };
+		84EE92782F88F81A0082A167 /* compare_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C72F88F81A0082A167 /* compare_1.png */; };
+		84EE92792F88F81A0082A167 /* sentence_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92392F88F81A0082A167 /* sentence_15.png */; };
+		84EE927A2F88F81A0082A167 /* adverb_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91BE2F88F81A0082A167 /* adverb_15.png */; };
+		84EE927B2F88F81A0082A167 /* compare_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91CF2F88F81A0082A167 /* compare_9.png */; };
+		84EE927C2F88F81A0082A167 /* adjective_to_noun_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91AA2F88F81A0082A167 /* adjective_to_noun_11.png */; };
+		84EE927D2F88F81A0082A167 /* giant_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D92F88F81A0082A167 /* giant_2.png */; };
+		84EE927E2F88F81A0082A167 /* sentence_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92372F88F81A0082A167 /* sentence_13.png */; };
+		84EE927F2F88F81A0082A167 /* adjective_to_noun_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A32F88F81A0082A167 /* adjective_to_noun_4.png */; };
+		84EE92802F88F81A0082A167 /* sentence_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92352F88F81A0082A167 /* sentence_11.png */; };
+		84EE92812F88F81A0082A167 /* sentence_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92312F88F81A0082A167 /* sentence_7.png */; };
+		84EE92822F88F81A0082A167 /* preposition_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE921A2F88F81A0082A167 /* preposition_8.png */; };
+		84EE92832F88F81A0082A167 /* preposition_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE921C2F88F81A0082A167 /* preposition_10.png */; };
+		84EE92842F88F81A0082A167 /* adjective_to_noun_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A12F88F81A0082A167 /* adjective_to_noun_2.png */; };
+		84EE92852F88F81A0082A167 /* adverb_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B42F88F81A0082A167 /* adverb_5.png */; };
+		84EE92862F88F81A0082A167 /* adverb_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C32F88F81A0082A167 /* adverb_20.png */; };
+		84EE92872F88F81A0082A167 /* grammar_28.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92062F88F81A0082A167 /* grammar_28.png */; };
+		84EE92882F88F81A0082A167 /* sentence_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92332F88F81A0082A167 /* sentence_9.png */; };
+		84EE92892F88F81A0082A167 /* sentence_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE923A2F88F81A0082A167 /* sentence_16.png */; };
+		84EE928A2F88F81A0082A167 /* giant_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E32F88F81A0082A167 /* giant_12.png */; };
+		84EE928B2F88F81A0082A167 /* preposition_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92182F88F81A0082A167 /* preposition_6.png */; };
+		84EE928C2F88F81A0082A167 /* preposition_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE921E2F88F81A0082A167 /* preposition_12.png */; };
+		84EE928D2F88F81A0082A167 /* preposition_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92162F88F81A0082A167 /* preposition_4.png */; };
+		84EE928E2F88F81A0082A167 /* adverb_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91BD2F88F81A0082A167 /* adverb_14.png */; };
+		84EE928F2F88F81A0082A167 /* giant_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91DF2F88F81A0082A167 /* giant_8.png */; };
+		84EE92902F88F81A0082A167 /* grammar_36.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE920E2F88F81A0082A167 /* grammar_36.png */; };
+		84EE92912F88F81A0082A167 /* adverb_18.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C12F88F81A0082A167 /* adverb_18.png */; };
+		84EE92922F88F81A0082A167 /* giant_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91DB2F88F81A0082A167 /* giant_4.png */; };
+		84EE92932F88F81A0082A167 /* adjective_to_noun_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A42F88F81A0082A167 /* adjective_to_noun_5.png */; };
+		84EE92942F88F81A0082A167 /* preposition_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92152F88F81A0082A167 /* preposition_3.png */; };
+		84EE92952F88F81A0082A167 /* preposition_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE921D2F88F81A0082A167 /* preposition_11.png */; };
+		84EE92962F88F81A0082A167 /* adverb_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91BB2F88F81A0082A167 /* adverb_12.png */; };
+		84EE92972F88F81A0082A167 /* preposition_19.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92252F88F81A0082A167 /* preposition_19.png */; };
+		84EE92982F88F81A0082A167 /* grammar_29.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92072F88F81A0082A167 /* grammar_29.png */; };
+		84EE92992F88F81A0082A167 /* grammar_34.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE920C2F88F81A0082A167 /* grammar_34.png */; };
+		84EE929A2F88F81A0082A167 /* grammar_19.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91FD2F88F81A0082A167 /* grammar_19.png */; };
+		84EE929B2F88F81A0082A167 /* grammar_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91EB2F88F81A0082A167 /* grammar_1.png */; };
+		84EE929C2F88F81A0082A167 /* giant_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E92F88F81A0082A167 /* giant_article.md */; };
+		84EE929D2F88F81A0082A167 /* adverb_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B02F88F81A0082A167 /* adverb_1.png */; };
+		84EE929E2F88F81A0082A167 /* adverb_19.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C22F88F81A0082A167 /* adverb_19.png */; };
+		84EE929F2F88F81A0082A167 /* sentence_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92362F88F81A0082A167 /* sentence_12.png */; };
+		84EE92A02F88F81A0082A167 /* adjective_to_noun_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91AE2F88F81A0082A167 /* adjective_to_noun_article.md */; };
+		84EE92A12F88F81A0082A167 /* adverb_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B72F88F81A0082A167 /* adverb_8.png */; };
+		84EE92A22F88F81A0082A167 /* preposition_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE921F2F88F81A0082A167 /* preposition_13.png */; };
+		84EE92A32F88F81A0082A167 /* grammar_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F62F88F81A0082A167 /* grammar_12.png */; };
+		84EE92A42F88F81A0082A167 /* preposition_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92212F88F81A0082A167 /* preposition_15.png */; };
+		84EE92A52F88F81A0082A167 /* preposition_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92172F88F81A0082A167 /* preposition_5.png */; };
+		84EE92A62F88F81A0082A167 /* grammar_18.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91FC2F88F81A0082A167 /* grammar_18.png */; };
+		84EE92A72F88F81A0082A167 /* preposition_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92202F88F81A0082A167 /* preposition_14.png */; };
+		84EE92A82F88F81A0082A167 /* adverb_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B32F88F81A0082A167 /* adverb_4.png */; };
+		84EE92A92F88F81A0082A167 /* grammar_21.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91FF2F88F81A0082A167 /* grammar_21.png */; };
+		84EE92AA2F88F81A0082A167 /* grammar_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91ED2F88F81A0082A167 /* grammar_3.png */; };
+		84EE92AB2F88F81A0082A167 /* preposition_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE921B2F88F81A0082A167 /* preposition_9.png */; };
+		84EE92AC2F88F81A0082A167 /* adverb_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91BF2F88F81A0082A167 /* adverb_16.png */; };
+		84EE92AD2F88F81A0082A167 /* adverb_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91BC2F88F81A0082A167 /* adverb_13.png */; };
+		84EE92AE2F88F81A0082A167 /* adverb_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91B82F88F81A0082A167 /* adverb_9.png */; };
+		84EE92AF2F88F81A0082A167 /* grammar_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F02F88F81A0082A167 /* grammar_6.png */; };
+		84EE92B02F88F81A0082A167 /* giant_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E22F88F81A0082A167 /* giant_11.png */; };
+		84EE92B12F88F81A0082A167 /* preposition_18.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92242F88F81A0082A167 /* preposition_18.png */; };
+		84EE92B22F88F81A0082A167 /* compare_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D62F88F81A0082A167 /* compare_article.md */; };
+		84EE92B32F88F81A0082A167 /* compare_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91CE2F88F81A0082A167 /* compare_8.png */; };
+		84EE92B42F88F81A0082A167 /* sentence_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92382F88F81A0082A167 /* sentence_14.png */; };
+		84EE92B52F88F81A0082A167 /* grammar_26.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92042F88F81A0082A167 /* grammar_26.png */; };
+		84EE92B62F88F81A0082A167 /* sentence_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92302F88F81A0082A167 /* sentence_6.png */; };
+		84EE92B72F88F81A0082A167 /* grammar_17.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91FB2F88F81A0082A167 /* grammar_17.png */; };
+		84EE92B82F88F81A0082A167 /* compare_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C82F88F81A0082A167 /* compare_2.png */; };
+		84EE92B92F88F81A0082A167 /* giant_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D82F88F81A0082A167 /* giant_1.png */; };
+		84EE92BA2F88F81A0082A167 /* sentence_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92342F88F81A0082A167 /* sentence_10.png */; };
+		84EE92BB2F88F81A0082A167 /* grammar_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91FA2F88F81A0082A167 /* grammar_16.png */; };
+		84EE92BC2F88F81A0082A167 /* grammar_30.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92082F88F81A0082A167 /* grammar_30.png */; };
+		84EE92BD2F88F81A0082A167 /* grammar_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F12F88F81A0082A167 /* grammar_7.png */; };
+		84EE92BE2F88F81A0082A167 /* compare_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91D22F88F81A0082A167 /* compare_12.png */; };
+		84EE92BF2F88F81A0082A167 /* adjective_to_noun_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A92F88F81A0082A167 /* adjective_to_noun_10.png */; };
+		84EE92C02F88F81A0082A167 /* compare_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91CA2F88F81A0082A167 /* compare_4.png */; };
+		84EE92C12F88F81A0082A167 /* grammar_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F82F88F81A0082A167 /* grammar_14.png */; };
+		84EE92C22F88F81A0082A167 /* grammar_25.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92032F88F81A0082A167 /* grammar_25.png */; };
+		84EE92C32F88F81A0082A167 /* preposition_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92222F88F81A0082A167 /* preposition_16.png */; };
+		84EE92C42F88F81A0082A167 /* giant_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91DC2F88F81A0082A167 /* giant_5.png */; };
+		84EE92C52F88F81A0082A167 /* giant_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E52F88F81A0082A167 /* giant_14.png */; };
+		84EE92C62F88F81A0082A167 /* grammar_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91F72F88F81A0082A167 /* grammar_13.png */; };
+		84EE92C72F88F81A0082A167 /* giant_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E02F88F81A0082A167 /* giant_9.png */; };
+		84EE92C82F88F81A0082A167 /* giant_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91DD2F88F81A0082A167 /* giant_6.png */; };
+		84EE92C92F88F81A0082A167 /* giant_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91E72F88F81A0082A167 /* giant_16.png */; };
+		84EE92CA2F88F81A0082A167 /* grammar-index.json in Resources */ = {isa = PBXBuildFile; fileRef = 84EE923F2F88F81A0082A167 /* grammar-index.json */; };
+		84EE92CB2F88F81A0082A167 /* adjective_to_noun_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A72F88F81A0082A167 /* adjective_to_noun_8.png */; };
+		84EE92CC2F88F81A0082A167 /* sentence_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE922B2F88F81A0082A167 /* sentence_1.png */; };
+		84EE92CD2F88F81A0082A167 /* compare_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91C92F88F81A0082A167 /* compare_3.png */; };
+		84EE92CE2F88F81A0082A167 /* adjective_to_noun_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A02F88F81A0082A167 /* adjective_to_noun_1.png */; };
+		84EE92CF2F88F81A0082A167 /* adjective_to_noun_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A82F88F81A0082A167 /* adjective_to_noun_9.png */; };
+		84EE92D02F88F81A0082A167 /* grammar_23.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92012F88F81A0082A167 /* grammar_23.png */; };
+		84EE92D12F88F81A0082A167 /* sentence_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE923C2F88F81A0082A167 /* sentence_article.md */; };
 		A85192832F51E908006CEA04 /* LLDBLearningProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */; };
 		A873E7882F87ED4A00CEA380 /* LLFilterChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A873E7872F87ED4A00CEA380 /* LLFilterChipView.swift */; };
 		A88C88242F3CA10D005ACFA6 /* LLShortcutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */; };
@@ -244,6 +392,154 @@
 		84E1E3992F4D53A300D1B7B6 /* LLTypingStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingStatsView.swift; sourceTree = "<group>"; };
 		84E1E39B2F4D53A300D1B7B6 /* LLStatusBarTypingPractice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLStatusBarTypingPractice.swift; sourceTree = "<group>"; };
 		84E1E39C2F4D53A300D1B7B6 /* LLTypingPracticeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTypingPracticeManager.swift; sourceTree = "<group>"; };
+		84EE8F302F88EFC10082A167 /* LLGrammarNotesHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGrammarNotesHomeViewController.swift; sourceTree = "<group>"; };
+		84EE8F332F88EFC10082A167 /* LLMoreFeaturesHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMoreFeaturesHomeViewController.swift; sourceTree = "<group>"; };
+		84EE8F362F88EFC10082A167 /* LLSimilarWordsHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSimilarWordsHomeViewController.swift; sourceTree = "<group>"; };
+		84EE91A02F88F81A0082A167 /* adjective_to_noun_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_1.png; sourceTree = "<group>"; };
+		84EE91A12F88F81A0082A167 /* adjective_to_noun_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_2.png; sourceTree = "<group>"; };
+		84EE91A22F88F81A0082A167 /* adjective_to_noun_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_3.png; sourceTree = "<group>"; };
+		84EE91A32F88F81A0082A167 /* adjective_to_noun_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_4.png; sourceTree = "<group>"; };
+		84EE91A42F88F81A0082A167 /* adjective_to_noun_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_5.png; sourceTree = "<group>"; };
+		84EE91A52F88F81A0082A167 /* adjective_to_noun_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_6.png; sourceTree = "<group>"; };
+		84EE91A62F88F81A0082A167 /* adjective_to_noun_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_7.png; sourceTree = "<group>"; };
+		84EE91A72F88F81A0082A167 /* adjective_to_noun_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_8.png; sourceTree = "<group>"; };
+		84EE91A82F88F81A0082A167 /* adjective_to_noun_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_9.png; sourceTree = "<group>"; };
+		84EE91A92F88F81A0082A167 /* adjective_to_noun_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_10.png; sourceTree = "<group>"; };
+		84EE91AA2F88F81A0082A167 /* adjective_to_noun_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_11.png; sourceTree = "<group>"; };
+		84EE91AB2F88F81A0082A167 /* adjective_to_noun_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_12.png; sourceTree = "<group>"; };
+		84EE91AC2F88F81A0082A167 /* adjective_to_noun_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adjective_to_noun_13.png; sourceTree = "<group>"; };
+		84EE91AE2F88F81A0082A167 /* adjective_to_noun_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = adjective_to_noun_article.md; sourceTree = "<group>"; };
+		84EE91B02F88F81A0082A167 /* adverb_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_1.png; sourceTree = "<group>"; };
+		84EE91B12F88F81A0082A167 /* adverb_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_2.png; sourceTree = "<group>"; };
+		84EE91B22F88F81A0082A167 /* adverb_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_3.png; sourceTree = "<group>"; };
+		84EE91B32F88F81A0082A167 /* adverb_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_4.png; sourceTree = "<group>"; };
+		84EE91B42F88F81A0082A167 /* adverb_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_5.png; sourceTree = "<group>"; };
+		84EE91B52F88F81A0082A167 /* adverb_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_6.png; sourceTree = "<group>"; };
+		84EE91B62F88F81A0082A167 /* adverb_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_7.png; sourceTree = "<group>"; };
+		84EE91B72F88F81A0082A167 /* adverb_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_8.png; sourceTree = "<group>"; };
+		84EE91B82F88F81A0082A167 /* adverb_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_9.png; sourceTree = "<group>"; };
+		84EE91B92F88F81A0082A167 /* adverb_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_10.png; sourceTree = "<group>"; };
+		84EE91BA2F88F81A0082A167 /* adverb_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_11.png; sourceTree = "<group>"; };
+		84EE91BB2F88F81A0082A167 /* adverb_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_12.png; sourceTree = "<group>"; };
+		84EE91BC2F88F81A0082A167 /* adverb_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_13.png; sourceTree = "<group>"; };
+		84EE91BD2F88F81A0082A167 /* adverb_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_14.png; sourceTree = "<group>"; };
+		84EE91BE2F88F81A0082A167 /* adverb_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_15.png; sourceTree = "<group>"; };
+		84EE91BF2F88F81A0082A167 /* adverb_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_16.png; sourceTree = "<group>"; };
+		84EE91C02F88F81A0082A167 /* adverb_17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_17.png; sourceTree = "<group>"; };
+		84EE91C12F88F81A0082A167 /* adverb_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_18.png; sourceTree = "<group>"; };
+		84EE91C22F88F81A0082A167 /* adverb_19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_19.png; sourceTree = "<group>"; };
+		84EE91C32F88F81A0082A167 /* adverb_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adverb_20.png; sourceTree = "<group>"; };
+		84EE91C52F88F81A0082A167 /* adverb_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = adverb_article.md; sourceTree = "<group>"; };
+		84EE91C72F88F81A0082A167 /* compare_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_1.png; sourceTree = "<group>"; };
+		84EE91C82F88F81A0082A167 /* compare_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_2.png; sourceTree = "<group>"; };
+		84EE91C92F88F81A0082A167 /* compare_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_3.png; sourceTree = "<group>"; };
+		84EE91CA2F88F81A0082A167 /* compare_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_4.png; sourceTree = "<group>"; };
+		84EE91CB2F88F81A0082A167 /* compare_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_5.png; sourceTree = "<group>"; };
+		84EE91CC2F88F81A0082A167 /* compare_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_6.png; sourceTree = "<group>"; };
+		84EE91CD2F88F81A0082A167 /* compare_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_7.png; sourceTree = "<group>"; };
+		84EE91CE2F88F81A0082A167 /* compare_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_8.png; sourceTree = "<group>"; };
+		84EE91CF2F88F81A0082A167 /* compare_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_9.png; sourceTree = "<group>"; };
+		84EE91D02F88F81A0082A167 /* compare_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_10.png; sourceTree = "<group>"; };
+		84EE91D12F88F81A0082A167 /* compare_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_11.png; sourceTree = "<group>"; };
+		84EE91D22F88F81A0082A167 /* compare_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_12.png; sourceTree = "<group>"; };
+		84EE91D32F88F81A0082A167 /* compare_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_13.png; sourceTree = "<group>"; };
+		84EE91D42F88F81A0082A167 /* compare_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compare_14.png; sourceTree = "<group>"; };
+		84EE91D62F88F81A0082A167 /* compare_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = compare_article.md; sourceTree = "<group>"; };
+		84EE91D82F88F81A0082A167 /* giant_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_1.png; sourceTree = "<group>"; };
+		84EE91D92F88F81A0082A167 /* giant_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_2.png; sourceTree = "<group>"; };
+		84EE91DA2F88F81A0082A167 /* giant_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_3.png; sourceTree = "<group>"; };
+		84EE91DB2F88F81A0082A167 /* giant_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_4.png; sourceTree = "<group>"; };
+		84EE91DC2F88F81A0082A167 /* giant_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_5.png; sourceTree = "<group>"; };
+		84EE91DD2F88F81A0082A167 /* giant_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_6.png; sourceTree = "<group>"; };
+		84EE91DE2F88F81A0082A167 /* giant_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_7.png; sourceTree = "<group>"; };
+		84EE91DF2F88F81A0082A167 /* giant_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_8.png; sourceTree = "<group>"; };
+		84EE91E02F88F81A0082A167 /* giant_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_9.png; sourceTree = "<group>"; };
+		84EE91E12F88F81A0082A167 /* giant_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_10.png; sourceTree = "<group>"; };
+		84EE91E22F88F81A0082A167 /* giant_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_11.png; sourceTree = "<group>"; };
+		84EE91E32F88F81A0082A167 /* giant_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_12.png; sourceTree = "<group>"; };
+		84EE91E42F88F81A0082A167 /* giant_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_13.png; sourceTree = "<group>"; };
+		84EE91E52F88F81A0082A167 /* giant_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_14.png; sourceTree = "<group>"; };
+		84EE91E62F88F81A0082A167 /* giant_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_15.png; sourceTree = "<group>"; };
+		84EE91E72F88F81A0082A167 /* giant_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = giant_16.png; sourceTree = "<group>"; };
+		84EE91E92F88F81A0082A167 /* giant_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = giant_article.md; sourceTree = "<group>"; };
+		84EE91EB2F88F81A0082A167 /* grammar_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_1.png; sourceTree = "<group>"; };
+		84EE91EC2F88F81A0082A167 /* grammar_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_2.png; sourceTree = "<group>"; };
+		84EE91ED2F88F81A0082A167 /* grammar_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_3.png; sourceTree = "<group>"; };
+		84EE91EE2F88F81A0082A167 /* grammar_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_4.png; sourceTree = "<group>"; };
+		84EE91EF2F88F81A0082A167 /* grammar_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_5.png; sourceTree = "<group>"; };
+		84EE91F02F88F81A0082A167 /* grammar_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_6.png; sourceTree = "<group>"; };
+		84EE91F12F88F81A0082A167 /* grammar_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_7.png; sourceTree = "<group>"; };
+		84EE91F22F88F81A0082A167 /* grammar_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_8.png; sourceTree = "<group>"; };
+		84EE91F32F88F81A0082A167 /* grammar_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_9.png; sourceTree = "<group>"; };
+		84EE91F42F88F81A0082A167 /* grammar_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_10.png; sourceTree = "<group>"; };
+		84EE91F52F88F81A0082A167 /* grammar_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_11.png; sourceTree = "<group>"; };
+		84EE91F62F88F81A0082A167 /* grammar_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_12.png; sourceTree = "<group>"; };
+		84EE91F72F88F81A0082A167 /* grammar_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_13.png; sourceTree = "<group>"; };
+		84EE91F82F88F81A0082A167 /* grammar_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_14.png; sourceTree = "<group>"; };
+		84EE91F92F88F81A0082A167 /* grammar_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_15.png; sourceTree = "<group>"; };
+		84EE91FA2F88F81A0082A167 /* grammar_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_16.png; sourceTree = "<group>"; };
+		84EE91FB2F88F81A0082A167 /* grammar_17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_17.png; sourceTree = "<group>"; };
+		84EE91FC2F88F81A0082A167 /* grammar_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_18.png; sourceTree = "<group>"; };
+		84EE91FD2F88F81A0082A167 /* grammar_19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_19.png; sourceTree = "<group>"; };
+		84EE91FE2F88F81A0082A167 /* grammar_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_20.png; sourceTree = "<group>"; };
+		84EE91FF2F88F81A0082A167 /* grammar_21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_21.png; sourceTree = "<group>"; };
+		84EE92002F88F81A0082A167 /* grammar_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_22.png; sourceTree = "<group>"; };
+		84EE92012F88F81A0082A167 /* grammar_23.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_23.png; sourceTree = "<group>"; };
+		84EE92022F88F81A0082A167 /* grammar_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_24.png; sourceTree = "<group>"; };
+		84EE92032F88F81A0082A167 /* grammar_25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_25.png; sourceTree = "<group>"; };
+		84EE92042F88F81A0082A167 /* grammar_26.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_26.png; sourceTree = "<group>"; };
+		84EE92052F88F81A0082A167 /* grammar_27.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_27.png; sourceTree = "<group>"; };
+		84EE92062F88F81A0082A167 /* grammar_28.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_28.png; sourceTree = "<group>"; };
+		84EE92072F88F81A0082A167 /* grammar_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_29.png; sourceTree = "<group>"; };
+		84EE92082F88F81A0082A167 /* grammar_30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_30.png; sourceTree = "<group>"; };
+		84EE92092F88F81A0082A167 /* grammar_31.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_31.png; sourceTree = "<group>"; };
+		84EE920A2F88F81A0082A167 /* grammar_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_32.png; sourceTree = "<group>"; };
+		84EE920B2F88F81A0082A167 /* grammar_33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_33.png; sourceTree = "<group>"; };
+		84EE920C2F88F81A0082A167 /* grammar_34.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_34.png; sourceTree = "<group>"; };
+		84EE920D2F88F81A0082A167 /* grammar_35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_35.png; sourceTree = "<group>"; };
+		84EE920E2F88F81A0082A167 /* grammar_36.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_36.png; sourceTree = "<group>"; };
+		84EE920F2F88F81A0082A167 /* grammar_37.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grammar_37.png; sourceTree = "<group>"; };
+		84EE92112F88F81A0082A167 /* grammar_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = grammar_article.md; sourceTree = "<group>"; };
+		84EE92132F88F81A0082A167 /* preposition_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_1.png; sourceTree = "<group>"; };
+		84EE92142F88F81A0082A167 /* preposition_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_2.png; sourceTree = "<group>"; };
+		84EE92152F88F81A0082A167 /* preposition_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_3.png; sourceTree = "<group>"; };
+		84EE92162F88F81A0082A167 /* preposition_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_4.png; sourceTree = "<group>"; };
+		84EE92172F88F81A0082A167 /* preposition_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_5.png; sourceTree = "<group>"; };
+		84EE92182F88F81A0082A167 /* preposition_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_6.png; sourceTree = "<group>"; };
+		84EE92192F88F81A0082A167 /* preposition_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_7.png; sourceTree = "<group>"; };
+		84EE921A2F88F81A0082A167 /* preposition_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_8.png; sourceTree = "<group>"; };
+		84EE921B2F88F81A0082A167 /* preposition_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_9.png; sourceTree = "<group>"; };
+		84EE921C2F88F81A0082A167 /* preposition_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_10.png; sourceTree = "<group>"; };
+		84EE921D2F88F81A0082A167 /* preposition_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_11.png; sourceTree = "<group>"; };
+		84EE921E2F88F81A0082A167 /* preposition_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_12.png; sourceTree = "<group>"; };
+		84EE921F2F88F81A0082A167 /* preposition_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_13.png; sourceTree = "<group>"; };
+		84EE92202F88F81A0082A167 /* preposition_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_14.png; sourceTree = "<group>"; };
+		84EE92212F88F81A0082A167 /* preposition_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_15.png; sourceTree = "<group>"; };
+		84EE92222F88F81A0082A167 /* preposition_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_16.png; sourceTree = "<group>"; };
+		84EE92232F88F81A0082A167 /* preposition_17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_17.png; sourceTree = "<group>"; };
+		84EE92242F88F81A0082A167 /* preposition_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_18.png; sourceTree = "<group>"; };
+		84EE92252F88F81A0082A167 /* preposition_19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_19.png; sourceTree = "<group>"; };
+		84EE92262F88F81A0082A167 /* preposition_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_20.png; sourceTree = "<group>"; };
+		84EE92272F88F81A0082A167 /* preposition_21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preposition_21.png; sourceTree = "<group>"; };
+		84EE92292F88F81A0082A167 /* preposition_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = preposition_article.md; sourceTree = "<group>"; };
+		84EE922B2F88F81A0082A167 /* sentence_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_1.png; sourceTree = "<group>"; };
+		84EE922C2F88F81A0082A167 /* sentence_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_2.png; sourceTree = "<group>"; };
+		84EE922D2F88F81A0082A167 /* sentence_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_3.png; sourceTree = "<group>"; };
+		84EE922E2F88F81A0082A167 /* sentence_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_4.png; sourceTree = "<group>"; };
+		84EE922F2F88F81A0082A167 /* sentence_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_5.png; sourceTree = "<group>"; };
+		84EE92302F88F81A0082A167 /* sentence_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_6.png; sourceTree = "<group>"; };
+		84EE92312F88F81A0082A167 /* sentence_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_7.png; sourceTree = "<group>"; };
+		84EE92322F88F81A0082A167 /* sentence_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_8.png; sourceTree = "<group>"; };
+		84EE92332F88F81A0082A167 /* sentence_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_9.png; sourceTree = "<group>"; };
+		84EE92342F88F81A0082A167 /* sentence_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_10.png; sourceTree = "<group>"; };
+		84EE92352F88F81A0082A167 /* sentence_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_11.png; sourceTree = "<group>"; };
+		84EE92362F88F81A0082A167 /* sentence_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_12.png; sourceTree = "<group>"; };
+		84EE92372F88F81A0082A167 /* sentence_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_13.png; sourceTree = "<group>"; };
+		84EE92382F88F81A0082A167 /* sentence_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_14.png; sourceTree = "<group>"; };
+		84EE92392F88F81A0082A167 /* sentence_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_15.png; sourceTree = "<group>"; };
+		84EE923A2F88F81A0082A167 /* sentence_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_16.png; sourceTree = "<group>"; };
+		84EE923C2F88F81A0082A167 /* sentence_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sentence_article.md; sourceTree = "<group>"; };
+		84EE923F2F88F81A0082A167 /* grammar-index.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "grammar-index.json"; sourceTree = "<group>"; };
 		8F7924CFE36F820B30511F8A /* Pods-LearnLanguage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LearnLanguage.debug.xcconfig"; path = "Target Support Files/Pods-LearnLanguage/Pods-LearnLanguage.debug.xcconfig"; sourceTree = "<group>"; };
 		A80BC32D2F378E8900A40D9B /* 划水记词.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "划水记词.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningProgress.swift; sourceTree = "<group>"; };
@@ -604,6 +900,9 @@
 		849226D62F3C878F00447E0C /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				84EE8F322F88EFC10082A167 /* GrammarNotes */,
+				84EE8F352F88EFC10082A167 /* MoreFeatures */,
+				84EE8F382F88EFC10082A167 /* SimilarWords */,
 				84D21B9F2F70F20600AFFE2C /* Translation */,
 				84E1E39D2F4D53A300D1B7B6 /* TypingPractice */,
 				849226AC2F3C878F00447E0C /* Data */,
@@ -715,6 +1014,327 @@
 				84E1E39C2F4D53A300D1B7B6 /* LLTypingPracticeManager.swift */,
 			);
 			path = TypingPractice;
+			sourceTree = "<group>";
+		};
+		84EE8F312F88EFC10082A167 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				84EE8F302F88EFC10082A167 /* LLGrammarNotesHomeViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		84EE8F322F88EFC10082A167 /* GrammarNotes */ = {
+			isa = PBXGroup;
+			children = (
+				84EE92402F88F81A0082A167 /* Resources */,
+				84EE8F312F88EFC10082A167 /* ViewControllers */,
+			);
+			path = GrammarNotes;
+			sourceTree = "<group>";
+		};
+		84EE8F342F88EFC10082A167 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				84EE8F332F88EFC10082A167 /* LLMoreFeaturesHomeViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		84EE8F352F88EFC10082A167 /* MoreFeatures */ = {
+			isa = PBXGroup;
+			children = (
+				84EE8F342F88EFC10082A167 /* ViewControllers */,
+			);
+			path = MoreFeatures;
+			sourceTree = "<group>";
+		};
+		84EE8F372F88EFC10082A167 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				84EE8F362F88EFC10082A167 /* LLSimilarWordsHomeViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		84EE8F382F88EFC10082A167 /* SimilarWords */ = {
+			isa = PBXGroup;
+			children = (
+				84EE8F372F88EFC10082A167 /* ViewControllers */,
+			);
+			path = SimilarWords;
+			sourceTree = "<group>";
+		};
+		84EE91AD2F88F81A0082A167 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91A02F88F81A0082A167 /* adjective_to_noun_1.png */,
+				84EE91A12F88F81A0082A167 /* adjective_to_noun_2.png */,
+				84EE91A22F88F81A0082A167 /* adjective_to_noun_3.png */,
+				84EE91A32F88F81A0082A167 /* adjective_to_noun_4.png */,
+				84EE91A42F88F81A0082A167 /* adjective_to_noun_5.png */,
+				84EE91A52F88F81A0082A167 /* adjective_to_noun_6.png */,
+				84EE91A62F88F81A0082A167 /* adjective_to_noun_7.png */,
+				84EE91A72F88F81A0082A167 /* adjective_to_noun_8.png */,
+				84EE91A82F88F81A0082A167 /* adjective_to_noun_9.png */,
+				84EE91A92F88F81A0082A167 /* adjective_to_noun_10.png */,
+				84EE91AA2F88F81A0082A167 /* adjective_to_noun_11.png */,
+				84EE91AB2F88F81A0082A167 /* adjective_to_noun_12.png */,
+				84EE91AC2F88F81A0082A167 /* adjective_to_noun_13.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		84EE91AF2F88F81A0082A167 /* adjectiveToNoun */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91AD2F88F81A0082A167 /* images */,
+				84EE91AE2F88F81A0082A167 /* adjective_to_noun_article.md */,
+			);
+			path = adjectiveToNoun;
+			sourceTree = "<group>";
+		};
+		84EE91C42F88F81A0082A167 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91B02F88F81A0082A167 /* adverb_1.png */,
+				84EE91B12F88F81A0082A167 /* adverb_2.png */,
+				84EE91B22F88F81A0082A167 /* adverb_3.png */,
+				84EE91B32F88F81A0082A167 /* adverb_4.png */,
+				84EE91B42F88F81A0082A167 /* adverb_5.png */,
+				84EE91B52F88F81A0082A167 /* adverb_6.png */,
+				84EE91B62F88F81A0082A167 /* adverb_7.png */,
+				84EE91B72F88F81A0082A167 /* adverb_8.png */,
+				84EE91B82F88F81A0082A167 /* adverb_9.png */,
+				84EE91B92F88F81A0082A167 /* adverb_10.png */,
+				84EE91BA2F88F81A0082A167 /* adverb_11.png */,
+				84EE91BB2F88F81A0082A167 /* adverb_12.png */,
+				84EE91BC2F88F81A0082A167 /* adverb_13.png */,
+				84EE91BD2F88F81A0082A167 /* adverb_14.png */,
+				84EE91BE2F88F81A0082A167 /* adverb_15.png */,
+				84EE91BF2F88F81A0082A167 /* adverb_16.png */,
+				84EE91C02F88F81A0082A167 /* adverb_17.png */,
+				84EE91C12F88F81A0082A167 /* adverb_18.png */,
+				84EE91C22F88F81A0082A167 /* adverb_19.png */,
+				84EE91C32F88F81A0082A167 /* adverb_20.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		84EE91C62F88F81A0082A167 /* adverb */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91C42F88F81A0082A167 /* images */,
+				84EE91C52F88F81A0082A167 /* adverb_article.md */,
+			);
+			path = adverb;
+			sourceTree = "<group>";
+		};
+		84EE91D52F88F81A0082A167 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91C72F88F81A0082A167 /* compare_1.png */,
+				84EE91C82F88F81A0082A167 /* compare_2.png */,
+				84EE91C92F88F81A0082A167 /* compare_3.png */,
+				84EE91CA2F88F81A0082A167 /* compare_4.png */,
+				84EE91CB2F88F81A0082A167 /* compare_5.png */,
+				84EE91CC2F88F81A0082A167 /* compare_6.png */,
+				84EE91CD2F88F81A0082A167 /* compare_7.png */,
+				84EE91CE2F88F81A0082A167 /* compare_8.png */,
+				84EE91CF2F88F81A0082A167 /* compare_9.png */,
+				84EE91D02F88F81A0082A167 /* compare_10.png */,
+				84EE91D12F88F81A0082A167 /* compare_11.png */,
+				84EE91D22F88F81A0082A167 /* compare_12.png */,
+				84EE91D32F88F81A0082A167 /* compare_13.png */,
+				84EE91D42F88F81A0082A167 /* compare_14.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		84EE91D72F88F81A0082A167 /* compare */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91D52F88F81A0082A167 /* images */,
+				84EE91D62F88F81A0082A167 /* compare_article.md */,
+			);
+			path = compare;
+			sourceTree = "<group>";
+		};
+		84EE91E82F88F81A0082A167 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91D82F88F81A0082A167 /* giant_1.png */,
+				84EE91D92F88F81A0082A167 /* giant_2.png */,
+				84EE91DA2F88F81A0082A167 /* giant_3.png */,
+				84EE91DB2F88F81A0082A167 /* giant_4.png */,
+				84EE91DC2F88F81A0082A167 /* giant_5.png */,
+				84EE91DD2F88F81A0082A167 /* giant_6.png */,
+				84EE91DE2F88F81A0082A167 /* giant_7.png */,
+				84EE91DF2F88F81A0082A167 /* giant_8.png */,
+				84EE91E02F88F81A0082A167 /* giant_9.png */,
+				84EE91E12F88F81A0082A167 /* giant_10.png */,
+				84EE91E22F88F81A0082A167 /* giant_11.png */,
+				84EE91E32F88F81A0082A167 /* giant_12.png */,
+				84EE91E42F88F81A0082A167 /* giant_13.png */,
+				84EE91E52F88F81A0082A167 /* giant_14.png */,
+				84EE91E62F88F81A0082A167 /* giant_15.png */,
+				84EE91E72F88F81A0082A167 /* giant_16.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		84EE91EA2F88F81A0082A167 /* giant */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91E82F88F81A0082A167 /* images */,
+				84EE91E92F88F81A0082A167 /* giant_article.md */,
+			);
+			path = giant;
+			sourceTree = "<group>";
+		};
+		84EE92102F88F81A0082A167 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91EB2F88F81A0082A167 /* grammar_1.png */,
+				84EE91EC2F88F81A0082A167 /* grammar_2.png */,
+				84EE91ED2F88F81A0082A167 /* grammar_3.png */,
+				84EE91EE2F88F81A0082A167 /* grammar_4.png */,
+				84EE91EF2F88F81A0082A167 /* grammar_5.png */,
+				84EE91F02F88F81A0082A167 /* grammar_6.png */,
+				84EE91F12F88F81A0082A167 /* grammar_7.png */,
+				84EE91F22F88F81A0082A167 /* grammar_8.png */,
+				84EE91F32F88F81A0082A167 /* grammar_9.png */,
+				84EE91F42F88F81A0082A167 /* grammar_10.png */,
+				84EE91F52F88F81A0082A167 /* grammar_11.png */,
+				84EE91F62F88F81A0082A167 /* grammar_12.png */,
+				84EE91F72F88F81A0082A167 /* grammar_13.png */,
+				84EE91F82F88F81A0082A167 /* grammar_14.png */,
+				84EE91F92F88F81A0082A167 /* grammar_15.png */,
+				84EE91FA2F88F81A0082A167 /* grammar_16.png */,
+				84EE91FB2F88F81A0082A167 /* grammar_17.png */,
+				84EE91FC2F88F81A0082A167 /* grammar_18.png */,
+				84EE91FD2F88F81A0082A167 /* grammar_19.png */,
+				84EE91FE2F88F81A0082A167 /* grammar_20.png */,
+				84EE91FF2F88F81A0082A167 /* grammar_21.png */,
+				84EE92002F88F81A0082A167 /* grammar_22.png */,
+				84EE92012F88F81A0082A167 /* grammar_23.png */,
+				84EE92022F88F81A0082A167 /* grammar_24.png */,
+				84EE92032F88F81A0082A167 /* grammar_25.png */,
+				84EE92042F88F81A0082A167 /* grammar_26.png */,
+				84EE92052F88F81A0082A167 /* grammar_27.png */,
+				84EE92062F88F81A0082A167 /* grammar_28.png */,
+				84EE92072F88F81A0082A167 /* grammar_29.png */,
+				84EE92082F88F81A0082A167 /* grammar_30.png */,
+				84EE92092F88F81A0082A167 /* grammar_31.png */,
+				84EE920A2F88F81A0082A167 /* grammar_32.png */,
+				84EE920B2F88F81A0082A167 /* grammar_33.png */,
+				84EE920C2F88F81A0082A167 /* grammar_34.png */,
+				84EE920D2F88F81A0082A167 /* grammar_35.png */,
+				84EE920E2F88F81A0082A167 /* grammar_36.png */,
+				84EE920F2F88F81A0082A167 /* grammar_37.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		84EE92122F88F81A0082A167 /* grammar */ = {
+			isa = PBXGroup;
+			children = (
+				84EE92102F88F81A0082A167 /* images */,
+				84EE92112F88F81A0082A167 /* grammar_article.md */,
+			);
+			path = grammar;
+			sourceTree = "<group>";
+		};
+		84EE92282F88F81A0082A167 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				84EE92132F88F81A0082A167 /* preposition_1.png */,
+				84EE92142F88F81A0082A167 /* preposition_2.png */,
+				84EE92152F88F81A0082A167 /* preposition_3.png */,
+				84EE92162F88F81A0082A167 /* preposition_4.png */,
+				84EE92172F88F81A0082A167 /* preposition_5.png */,
+				84EE92182F88F81A0082A167 /* preposition_6.png */,
+				84EE92192F88F81A0082A167 /* preposition_7.png */,
+				84EE921A2F88F81A0082A167 /* preposition_8.png */,
+				84EE921B2F88F81A0082A167 /* preposition_9.png */,
+				84EE921C2F88F81A0082A167 /* preposition_10.png */,
+				84EE921D2F88F81A0082A167 /* preposition_11.png */,
+				84EE921E2F88F81A0082A167 /* preposition_12.png */,
+				84EE921F2F88F81A0082A167 /* preposition_13.png */,
+				84EE92202F88F81A0082A167 /* preposition_14.png */,
+				84EE92212F88F81A0082A167 /* preposition_15.png */,
+				84EE92222F88F81A0082A167 /* preposition_16.png */,
+				84EE92232F88F81A0082A167 /* preposition_17.png */,
+				84EE92242F88F81A0082A167 /* preposition_18.png */,
+				84EE92252F88F81A0082A167 /* preposition_19.png */,
+				84EE92262F88F81A0082A167 /* preposition_20.png */,
+				84EE92272F88F81A0082A167 /* preposition_21.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		84EE922A2F88F81A0082A167 /* preposition */ = {
+			isa = PBXGroup;
+			children = (
+				84EE92282F88F81A0082A167 /* images */,
+				84EE92292F88F81A0082A167 /* preposition_article.md */,
+			);
+			path = preposition;
+			sourceTree = "<group>";
+		};
+		84EE923B2F88F81A0082A167 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				84EE922B2F88F81A0082A167 /* sentence_1.png */,
+				84EE922C2F88F81A0082A167 /* sentence_2.png */,
+				84EE922D2F88F81A0082A167 /* sentence_3.png */,
+				84EE922E2F88F81A0082A167 /* sentence_4.png */,
+				84EE922F2F88F81A0082A167 /* sentence_5.png */,
+				84EE92302F88F81A0082A167 /* sentence_6.png */,
+				84EE92312F88F81A0082A167 /* sentence_7.png */,
+				84EE92322F88F81A0082A167 /* sentence_8.png */,
+				84EE92332F88F81A0082A167 /* sentence_9.png */,
+				84EE92342F88F81A0082A167 /* sentence_10.png */,
+				84EE92352F88F81A0082A167 /* sentence_11.png */,
+				84EE92362F88F81A0082A167 /* sentence_12.png */,
+				84EE92372F88F81A0082A167 /* sentence_13.png */,
+				84EE92382F88F81A0082A167 /* sentence_14.png */,
+				84EE92392F88F81A0082A167 /* sentence_15.png */,
+				84EE923A2F88F81A0082A167 /* sentence_16.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		84EE923D2F88F81A0082A167 /* sentence */ = {
+			isa = PBXGroup;
+			children = (
+				84EE923B2F88F81A0082A167 /* images */,
+				84EE923C2F88F81A0082A167 /* sentence_article.md */,
+			);
+			path = sentence;
+			sourceTree = "<group>";
+		};
+		84EE923E2F88F81A0082A167 /* Articles */ = {
+			isa = PBXGroup;
+			children = (
+				84EE91AF2F88F81A0082A167 /* adjectiveToNoun */,
+				84EE91C62F88F81A0082A167 /* adverb */,
+				84EE91D72F88F81A0082A167 /* compare */,
+				84EE91EA2F88F81A0082A167 /* giant */,
+				84EE92122F88F81A0082A167 /* grammar */,
+				84EE922A2F88F81A0082A167 /* preposition */,
+				84EE923D2F88F81A0082A167 /* sentence */,
+			);
+			path = Articles;
+			sourceTree = "<group>";
+		};
+		84EE92402F88F81A0082A167 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				84EE923E2F88F81A0082A167 /* Articles */,
+				84EE923F2F88F81A0082A167 /* grammar-index.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		981E8A615B7D4282436F0768 /* Frameworks */ = {
@@ -854,6 +1474,151 @@
 				848FAF792F6D253D007C8349 /* IndieFlower-Regular.ttf in Resources */,
 				848FAF7A2F6D253D007C8349 /* MontserratAlternates-Regular.ttf in Resources */,
 				848FAF7B2F6D253D007C8349 /* Srisakdi-Regular.ttf in Resources */,
+				84EE92412F88F81A0082A167 /* adverb_17.png in Resources */,
+				84EE92422F88F81A0082A167 /* compare_14.png in Resources */,
+				84EE92432F88F81A0082A167 /* grammar_8.png in Resources */,
+				84EE92442F88F81A0082A167 /* preposition_17.png in Resources */,
+				84EE92452F88F81A0082A167 /* grammar_37.png in Resources */,
+				84EE92462F88F81A0082A167 /* sentence_8.png in Resources */,
+				84EE92472F88F81A0082A167 /* adverb_3.png in Resources */,
+				84EE92482F88F81A0082A167 /* adverb_article.md in Resources */,
+				84EE92492F88F81A0082A167 /* grammar_4.png in Resources */,
+				84EE924A2F88F81A0082A167 /* adverb_2.png in Resources */,
+				84EE924B2F88F81A0082A167 /* adjective_to_noun_7.png in Resources */,
+				84EE924C2F88F81A0082A167 /* preposition_20.png in Resources */,
+				84EE924D2F88F81A0082A167 /* giant_3.png in Resources */,
+				84EE924E2F88F81A0082A167 /* grammar_22.png in Resources */,
+				84EE924F2F88F81A0082A167 /* grammar_11.png in Resources */,
+				84EE92502F88F81A0082A167 /* giant_7.png in Resources */,
+				84EE92512F88F81A0082A167 /* grammar_35.png in Resources */,
+				84EE92522F88F81A0082A167 /* compare_7.png in Resources */,
+				84EE92532F88F81A0082A167 /* sentence_4.png in Resources */,
+				84EE92542F88F81A0082A167 /* grammar_article.md in Resources */,
+				84EE92552F88F81A0082A167 /* sentence_3.png in Resources */,
+				84EE92562F88F81A0082A167 /* grammar_24.png in Resources */,
+				84EE92572F88F81A0082A167 /* adverb_11.png in Resources */,
+				84EE92582F88F81A0082A167 /* grammar_15.png in Resources */,
+				84EE92592F88F81A0082A167 /* grammar_10.png in Resources */,
+				84EE925A2F88F81A0082A167 /* adjective_to_noun_3.png in Resources */,
+				84EE925B2F88F81A0082A167 /* preposition_2.png in Resources */,
+				84EE925C2F88F81A0082A167 /* preposition_7.png in Resources */,
+				84EE925D2F88F81A0082A167 /* compare_10.png in Resources */,
+				84EE925E2F88F81A0082A167 /* grammar_20.png in Resources */,
+				84EE925F2F88F81A0082A167 /* giant_15.png in Resources */,
+				84EE92602F88F81A0082A167 /* adverb_7.png in Resources */,
+				84EE92612F88F81A0082A167 /* preposition_21.png in Resources */,
+				84EE92622F88F81A0082A167 /* adjective_to_noun_12.png in Resources */,
+				84EE92632F88F81A0082A167 /* grammar_9.png in Resources */,
+				84EE92642F88F81A0082A167 /* compare_13.png in Resources */,
+				84EE92652F88F81A0082A167 /* giant_13.png in Resources */,
+				84EE92662F88F81A0082A167 /* preposition_article.md in Resources */,
+				84EE92672F88F81A0082A167 /* sentence_2.png in Resources */,
+				84EE92682F88F81A0082A167 /* adverb_10.png in Resources */,
+				84EE92692F88F81A0082A167 /* grammar_32.png in Resources */,
+				84EE926A2F88F81A0082A167 /* adjective_to_noun_6.png in Resources */,
+				84EE926B2F88F81A0082A167 /* giant_10.png in Resources */,
+				84EE926C2F88F81A0082A167 /* grammar_5.png in Resources */,
+				84EE926D2F88F81A0082A167 /* compare_5.png in Resources */,
+				84EE926E2F88F81A0082A167 /* adjective_to_noun_13.png in Resources */,
+				84EE926F2F88F81A0082A167 /* grammar_31.png in Resources */,
+				84EE92702F88F81A0082A167 /* preposition_1.png in Resources */,
+				84EE92712F88F81A0082A167 /* adverb_6.png in Resources */,
+				84EE92722F88F81A0082A167 /* grammar_33.png in Resources */,
+				84EE92732F88F81A0082A167 /* compare_6.png in Resources */,
+				84EE92742F88F81A0082A167 /* compare_11.png in Resources */,
+				84EE92752F88F81A0082A167 /* grammar_27.png in Resources */,
+				84EE92762F88F81A0082A167 /* grammar_2.png in Resources */,
+				84EE92772F88F81A0082A167 /* sentence_5.png in Resources */,
+				84EE92782F88F81A0082A167 /* compare_1.png in Resources */,
+				84EE92792F88F81A0082A167 /* sentence_15.png in Resources */,
+				84EE927A2F88F81A0082A167 /* adverb_15.png in Resources */,
+				84EE927B2F88F81A0082A167 /* compare_9.png in Resources */,
+				84EE927C2F88F81A0082A167 /* adjective_to_noun_11.png in Resources */,
+				84EE927D2F88F81A0082A167 /* giant_2.png in Resources */,
+				84EE927E2F88F81A0082A167 /* sentence_13.png in Resources */,
+				84EE927F2F88F81A0082A167 /* adjective_to_noun_4.png in Resources */,
+				84EE92802F88F81A0082A167 /* sentence_11.png in Resources */,
+				84EE92812F88F81A0082A167 /* sentence_7.png in Resources */,
+				84EE92822F88F81A0082A167 /* preposition_8.png in Resources */,
+				84EE92832F88F81A0082A167 /* preposition_10.png in Resources */,
+				84EE92842F88F81A0082A167 /* adjective_to_noun_2.png in Resources */,
+				84EE92852F88F81A0082A167 /* adverb_5.png in Resources */,
+				84EE92862F88F81A0082A167 /* adverb_20.png in Resources */,
+				84EE92872F88F81A0082A167 /* grammar_28.png in Resources */,
+				84EE92882F88F81A0082A167 /* sentence_9.png in Resources */,
+				84EE92892F88F81A0082A167 /* sentence_16.png in Resources */,
+				84EE928A2F88F81A0082A167 /* giant_12.png in Resources */,
+				84EE928B2F88F81A0082A167 /* preposition_6.png in Resources */,
+				84EE928C2F88F81A0082A167 /* preposition_12.png in Resources */,
+				84EE928D2F88F81A0082A167 /* preposition_4.png in Resources */,
+				84EE928E2F88F81A0082A167 /* adverb_14.png in Resources */,
+				84EE928F2F88F81A0082A167 /* giant_8.png in Resources */,
+				84EE92902F88F81A0082A167 /* grammar_36.png in Resources */,
+				84EE92912F88F81A0082A167 /* adverb_18.png in Resources */,
+				84EE92922F88F81A0082A167 /* giant_4.png in Resources */,
+				84EE92932F88F81A0082A167 /* adjective_to_noun_5.png in Resources */,
+				84EE92942F88F81A0082A167 /* preposition_3.png in Resources */,
+				84EE92952F88F81A0082A167 /* preposition_11.png in Resources */,
+				84EE92962F88F81A0082A167 /* adverb_12.png in Resources */,
+				84EE92972F88F81A0082A167 /* preposition_19.png in Resources */,
+				84EE92982F88F81A0082A167 /* grammar_29.png in Resources */,
+				84EE92992F88F81A0082A167 /* grammar_34.png in Resources */,
+				84EE929A2F88F81A0082A167 /* grammar_19.png in Resources */,
+				84EE929B2F88F81A0082A167 /* grammar_1.png in Resources */,
+				84EE929C2F88F81A0082A167 /* giant_article.md in Resources */,
+				84EE929D2F88F81A0082A167 /* adverb_1.png in Resources */,
+				84EE929E2F88F81A0082A167 /* adverb_19.png in Resources */,
+				84EE929F2F88F81A0082A167 /* sentence_12.png in Resources */,
+				84EE92A02F88F81A0082A167 /* adjective_to_noun_article.md in Resources */,
+				84EE92A12F88F81A0082A167 /* adverb_8.png in Resources */,
+				84EE92A22F88F81A0082A167 /* preposition_13.png in Resources */,
+				84EE92A32F88F81A0082A167 /* grammar_12.png in Resources */,
+				84EE92A42F88F81A0082A167 /* preposition_15.png in Resources */,
+				84EE92A52F88F81A0082A167 /* preposition_5.png in Resources */,
+				84EE92A62F88F81A0082A167 /* grammar_18.png in Resources */,
+				84EE92A72F88F81A0082A167 /* preposition_14.png in Resources */,
+				84EE92A82F88F81A0082A167 /* adverb_4.png in Resources */,
+				84EE92A92F88F81A0082A167 /* grammar_21.png in Resources */,
+				84EE92AA2F88F81A0082A167 /* grammar_3.png in Resources */,
+				84EE92AB2F88F81A0082A167 /* preposition_9.png in Resources */,
+				84EE92AC2F88F81A0082A167 /* adverb_16.png in Resources */,
+				84EE92AD2F88F81A0082A167 /* adverb_13.png in Resources */,
+				84EE92AE2F88F81A0082A167 /* adverb_9.png in Resources */,
+				84EE92AF2F88F81A0082A167 /* grammar_6.png in Resources */,
+				84EE92B02F88F81A0082A167 /* giant_11.png in Resources */,
+				84EE92B12F88F81A0082A167 /* preposition_18.png in Resources */,
+				84EE92B22F88F81A0082A167 /* compare_article.md in Resources */,
+				84EE92B32F88F81A0082A167 /* compare_8.png in Resources */,
+				84EE92B42F88F81A0082A167 /* sentence_14.png in Resources */,
+				84EE92B52F88F81A0082A167 /* grammar_26.png in Resources */,
+				84EE92B62F88F81A0082A167 /* sentence_6.png in Resources */,
+				84EE92B72F88F81A0082A167 /* grammar_17.png in Resources */,
+				84EE92B82F88F81A0082A167 /* compare_2.png in Resources */,
+				84EE92B92F88F81A0082A167 /* giant_1.png in Resources */,
+				84EE92BA2F88F81A0082A167 /* sentence_10.png in Resources */,
+				84EE92BB2F88F81A0082A167 /* grammar_16.png in Resources */,
+				84EE92BC2F88F81A0082A167 /* grammar_30.png in Resources */,
+				84EE92BD2F88F81A0082A167 /* grammar_7.png in Resources */,
+				84EE92BE2F88F81A0082A167 /* compare_12.png in Resources */,
+				84EE92BF2F88F81A0082A167 /* adjective_to_noun_10.png in Resources */,
+				84EE92C02F88F81A0082A167 /* compare_4.png in Resources */,
+				84EE92C12F88F81A0082A167 /* grammar_14.png in Resources */,
+				84EE92C22F88F81A0082A167 /* grammar_25.png in Resources */,
+				84EE92C32F88F81A0082A167 /* preposition_16.png in Resources */,
+				84EE92C42F88F81A0082A167 /* giant_5.png in Resources */,
+				84EE92C52F88F81A0082A167 /* giant_14.png in Resources */,
+				84EE92C62F88F81A0082A167 /* grammar_13.png in Resources */,
+				84EE92C72F88F81A0082A167 /* giant_9.png in Resources */,
+				84EE92C82F88F81A0082A167 /* giant_6.png in Resources */,
+				84EE92C92F88F81A0082A167 /* giant_16.png in Resources */,
+				84EE92CA2F88F81A0082A167 /* grammar-index.json in Resources */,
+				84EE92CB2F88F81A0082A167 /* adjective_to_noun_8.png in Resources */,
+				84EE92CC2F88F81A0082A167 /* sentence_1.png in Resources */,
+				84EE92CD2F88F81A0082A167 /* compare_3.png in Resources */,
+				84EE92CE2F88F81A0082A167 /* adjective_to_noun_1.png in Resources */,
+				84EE92CF2F88F81A0082A167 /* adjective_to_noun_9.png in Resources */,
+				84EE92D02F88F81A0082A167 /* grammar_23.png in Resources */,
+				84EE92D12F88F81A0082A167 /* sentence_article.md in Resources */,
 				848FAF7C2F6D253D007C8349 /* Unkempt-Regular.ttf in Resources */,
 				848FAF7D2F6D253D007C8349 /* Rajdhani-Regular.ttf in Resources */,
 				848FAF7E2F6D253D007C8349 /* Bangers-Regular.ttf in Resources */,
@@ -955,6 +1720,9 @@
 				849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */,
 				849226E62F3C878F00447E0C /* LLSidebarViewController.swift in Sources */,
 				849226E72F3C878F00447E0C /* LLSettingsTabViewController.swift in Sources */,
+				84EE8F392F88EFC10082A167 /* LLMoreFeaturesHomeViewController.swift in Sources */,
+				84EE8F3A2F88EFC10082A167 /* LLSimilarWordsHomeViewController.swift in Sources */,
+				84EE8F3B2F88EFC10082A167 /* LLGrammarNotesHomeViewController.swift in Sources */,
 				849226E82F3C878F00447E0C /* LLWordListStorage.swift in Sources */,
 				849226E92F3C878F00447E0C /* LLWordLibraryCardView.swift in Sources */,
 				849226EA2F3C878F00447E0C /* LLLearningRecord.swift in Sources */,

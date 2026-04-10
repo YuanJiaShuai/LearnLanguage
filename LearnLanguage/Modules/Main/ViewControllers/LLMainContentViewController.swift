@@ -10,6 +10,8 @@ import SnapKit
 
 final class LLMainContentViewController: NSViewController {
     
+    var onOpenLearningLabRoute: ((LLLearningLabRoute) -> Void)?
+    
     private let containerView = NSView()
     private let emptyView = NSView()
     
@@ -28,6 +30,9 @@ final class LLMainContentViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        dataManagementVC.onOpenLearningLabRoute = { [weak self] route in
+            self?.onOpenLearningLabRoute?(route)
+        }
         setupUI()
         switchModule(to: .wordList)
     }

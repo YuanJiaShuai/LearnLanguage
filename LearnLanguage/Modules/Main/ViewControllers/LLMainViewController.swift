@@ -7,6 +7,12 @@
 import AppKit
 import SnapKit
 
+enum LLLearningLabRoute {
+    case grammarNotes
+    case similarWords
+    case moreFeatures
+}
+
 final class LLMainSplitView: NSSplitView {
     override var dividerThickness: CGFloat { 0 }
 }
@@ -17,6 +23,9 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
     private let splitView = LLMainSplitView()
     private let sidebarVC = LLSidebarViewController()
     private let contentVC = LLMainContentViewController()
+    private let overlayContainerView = NSView()
+    private var overlayStack: [NSViewController] = []
+    private var isOverlayTransitioning = false
 
     override func loadView() {
         view = NSView(frame: NSRect(x: 0, y: 0, width: 1100, height: 620))
@@ -49,9 +58,116 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
         
         // 右侧内容区
         addChild(contentVC)
+        contentVC.onOpenLearningLabRoute = { [weak self] route in
+            self?.openLearningLabRoute(route)
+        }
         splitView.addArrangedSubview(contentVC.view)
         
         splitView.setPosition(256, ofDividerAt: 0)
+        
+        overlayContainerView.wantsLayer = true
+        overlayContainerView.layer?.backgroundColor = NSColor.white.cgColor
+        overlayContainerView.isHidden = true
+        view.addSubview(overlayContainerView)
+        overlayContainerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    private func openLearningLabRoute(_ route: LLLearningLabRoute) {
+        let viewController: NSViewController
+        
+        switch route {
+        case .grammarNotes:
+            viewController = LLGrammarNotesHomeViewController { [weak self] in
+                self?.popOverlayPage(animated: true)
+            }
+        case .similarWords:
+            viewController = LLSimilarWordsHomeViewController { [weak self] in
+                self?.popOverlayPage(animated: true)
+            }
+        case .moreFeatures:
+            viewController = LLMoreFeaturesHomeViewController { [weak self] in
+                self?.popOverlayPage(animated: true)
+            }
+        }
+        
+        pushOverlayPage(viewController, animated: true)
+    }
+    
+    private func pushOverlayPage(_ viewController: NSViewController, animated: Bool) {
+        guard !isOverlayTransitioning else { return }
+        isOverlayTransitioning = true
+        
+        let previousVC = overlayStack.last
+        if overlayContainerView.isHidden {
+            overlayContainerView.isHidden = false
+        }
+        
+        addChild(viewController)
+        overlayContainerView.addSubview(viewController.view)
+        viewController.view.frame = overlayContainerView.bounds.offsetBy(dx: overlayContainerView.bounds.width, dy: 0)
+        viewController.view.autoresizingMask = [.width, .height]
+        
+        let completeTransition = {
+            previousVC?.view.frame = self.overlayContainerView.bounds.offsetBy(dx: -self.overlayContainerView.bounds.width * 0.28, dy: 0)
+            viewController.view.frame = self.overlayContainerView.bounds
+            self.overlayStack.append(viewController)
+            self.isOverlayTransitioning = false
+        }
+        
+        guard animated else {
+            previousVC?.view.removeFromSuperview()
+            completeTransition()
+            return
+        }
+        
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.28
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            previousVC?.view.animator().frame = self.overlayContainerView.bounds.offsetBy(dx: -self.overlayContainerView.bounds.width * 0.28, dy: 0)
+            viewController.view.animator().frame = self.overlayContainerView.bounds
+        } completionHandler: {
+            completeTransition()
+        }
+    }
+    
+    private func popOverlayPage(animated: Bool) {
+        guard overlayStack.count > 0, !isOverlayTransitioning else { return }
+        isOverlayTransitioning = true
+        
+        let currentVC = overlayStack.removeLast()
+        let previousVC = overlayStack.last
+        
+        if let previousVC, previousVC.view.superview == nil {
+            overlayContainerView.addSubview(previousVC.view, positioned: .below, relativeTo: currentVC.view)
+            previousVC.view.frame = overlayContainerView.bounds.offsetBy(dx: -overlayContainerView.bounds.width * 0.28, dy: 0)
+            previousVC.view.autoresizingMask = [.width, .height]
+        }
+        
+        let finish = {
+            currentVC.view.removeFromSuperview()
+            currentVC.removeFromParent()
+            previousVC?.view.frame = self.overlayContainerView.bounds
+            if self.overlayStack.isEmpty {
+                self.overlayContainerView.isHidden = true
+            }
+            self.isOverlayTransitioning = false
+        }
+        
+        guard animated else {
+            finish()
+            return
+        }
+        
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.26
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            currentVC.view.animator().frame = self.overlayContainerView.bounds.offsetBy(dx: self.overlayContainerView.bounds.width, dy: 0)
+            previousVC?.view.animator().frame = self.overlayContainerView.bounds
+        } completionHandler: {
+            finish()
+        }
     }
     
     // MARK: - SidebarViewControllerDelegate

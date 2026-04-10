@@ -15,6 +15,7 @@ private struct LLLearningLabItem {
     let symbolName: String
     let tintColor: NSColor
     let badge: String
+    let route: LLLearningLabRoute
 }
 
 private final class LLLearningLabCollectionItem: NSCollectionViewItem {
@@ -133,6 +134,8 @@ private final class LLLearningLabCollectionItem: NSCollectionViewItem {
 
 final class LLDataTabViewController: NSViewController {
     
+    var onOpenLearningLabRoute: ((LLLearningLabRoute) -> Void)?
+    
     private enum Tab {
         case dataManagement
         case learningLab
@@ -214,7 +217,8 @@ final class LLDataTabViewController: NSViewController {
             description: "导入语法资料后，在这里以阅读卡片或文档页面的形式查看。",
             symbolName: "text.book.closed.fill",
             tintColor: NSColor.systemBlue,
-            badge: "优先"
+            badge: "优先",
+            route: .grammarNotes
         ),
         LLLearningLabItem(
             title: "相似词练习",
@@ -222,7 +226,8 @@ final class LLDataTabViewController: NSViewController {
             description: "用于近义词、易混词辨析训练，后面会扩展成专项练习页。",
             symbolName: "rectangle.3.group.bubble.left.fill",
             tintColor: NSColor.systemPurple,
-            badge: "准备中"
+            badge: "准备中",
+            route: .similarWords
         ),
         LLLearningLabItem(
             title: "更多功能",
@@ -230,7 +235,8 @@ final class LLDataTabViewController: NSViewController {
             description: "固定搭配、词根词缀、迷你测验等后续能力都可以放在这里。",
             symbolName: "sparkles.rectangle.stack.fill",
             tintColor: NSColor.systemOrange,
-            badge: "预留"
+            badge: "预留",
+            route: .moreFeatures
         )
     ]
     
@@ -351,7 +357,7 @@ final class LLDataTabViewController: NSViewController {
         learningLabCollectionView.collectionViewLayout = flowLayout
         learningLabCollectionView.delegate = self
         learningLabCollectionView.dataSource = self
-        learningLabCollectionView.isSelectable = false
+        learningLabCollectionView.isSelectable = true
         learningLabCollectionView.allowsMultipleSelection = false
         learningLabCollectionView.backgroundColors = [.clear]
         learningLabCollectionView.register(
@@ -765,6 +771,13 @@ extension LLDataTabViewController: NSCollectionViewDataSource {
 }
 
 extension LLDataTabViewController: NSCollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        guard let indexPath = indexPaths.first, learningLabItems.indices.contains(indexPath.item) else { return }
+        let item = learningLabItems[indexPath.item]
+        onOpenLearningLabRoute?(item.route)
+        collectionView.deselectItems(at: indexPaths)
+    }
+    
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         let scrollView = collectionView.enclosingScrollView
         let visibleWidth = scrollView?.documentVisibleRect.width ?? collectionView.bounds.width

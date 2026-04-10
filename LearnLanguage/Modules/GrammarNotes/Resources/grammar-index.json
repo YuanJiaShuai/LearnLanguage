@@ -1,0 +1,58 @@
+[
+  {
+    "id": "grammar",
+    "title": "从词性开始",
+    "subtitle": "Grammar Basics",
+    "order": 1,
+    "articlePath": "Articles/grammar/grammar_article.md",
+    "imagesPath": "Articles/grammar/images"
+  },
+  {
+    "id": "sentence",
+    "title": "八大句子成分",
+    "subtitle": "Sentence Components",
+    "order": 2,
+    "articlePath": "Articles/sentence/sentence_article.md",
+    "imagesPath": "Articles/sentence/images"
+  },
+  {
+    "id": "giant",
+    "title": "英语句型总览",
+    "subtitle": "Sentence Patterns",
+    "order": 3,
+    "articlePath": "Articles/giant/giant_article.md",
+    "imagesPath": "Articles/giant/images"
+  },
+  {
+    "id": "adjectiveToNoun",
+    "title": "形容词变名词",
+    "subtitle": "Adjective to Noun",
+    "order": 4,
+    "articlePath": "Articles/adjectiveToNoun/adjective_to_noun_article.md",
+    "imagesPath": "Articles/adjectiveToNoun/images"
+  },
+  {
+    "id": "adverb",
+    "title": "副词",
+    "subtitle": "Adverb",
+    "order": 5,
+    "articlePath": "Articles/adverb/adverb_article.md",
+    "imagesPath": "Articles/adverb/images"
+  },
+  {
+    "id": "preposition",
+    "title": "介词",
+    "subtitle": "Preposition",
+    "order": 6,
+    "articlePath": "Articles/preposition/preposition_article.md",
+    "imagesPath": "Articles/preposition/images"
+  },
+  {
+    "id": "compare",
+    "title": "比较级",
+    "subtitle": "Comparison",
+    "order": 7,
+    "articlePath": "Articles/compare/compare_article.md",
+    "imagesPath": "Articles/compare/images"
+  }
+]
