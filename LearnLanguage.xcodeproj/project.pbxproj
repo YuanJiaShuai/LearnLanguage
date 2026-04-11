@@ -288,6 +288,7 @@
 		84F36D6B2F89E47100142F1D /* ll_t.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D4B2F89E47100142F1D /* ll_t.mp3 */; };
 		84F36D6C2F89E47100142F1D /* ll_u.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D4C2F89E47100142F1D /* ll_u.mp3 */; };
 		84F36D6D2F89E47100142F1D /* ll_e.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D3C2F89E47100142F1D /* ll_e.mp3 */; };
+		84F36D702F8A3A0C00142F1D /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = 84F36D6F2F8A3A0C00142F1D /* Ink */; };
 		A85192832F51E908006CEA04 /* LLDBLearningProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */; };
 		A873E7882F87ED4A00CEA380 /* LLFilterChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A873E7872F87ED4A00CEA380 /* LLFilterChipView.swift */; };
 		A88C88242F3CA10D005ACFA6 /* LLShortcutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */; };
@@ -620,6 +621,7 @@
 			files = (
 				A8C7584C2F59D3F40071B6CD /* LaunchAtLogin in Frameworks */,
 				846629612F56D78F004466B1 /* CocoaLumberjack in Frameworks */,
+				84F36D702F8A3A0C00142F1D /* Ink in Frameworks */,
 				8492259A2F3C6C4F00447E0C /* LaunchAtLogin in Frameworks */,
 				C5993F841617E33BB9BC1598 /* Pods_LearnLanguage.framework in Frameworks */,
 				846629652F56D78F004466B1 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
@@ -1529,6 +1531,7 @@
 			packageReferences = (
 				A8C758472F59CD2A0071B6CD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 				A8C7584A2F59D3F40071B6CD /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */,
+				84F36D6E2F8A3A0C00142F1D /* XCRemoteSwiftPackageReference "ink" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A80BC32E2F378E8900A40D9B /* Products */;
@@ -2180,6 +2183,14 @@
 				kind = branch;
 			};
 		};
+		84F36D6E2F8A3A0C00142F1D /* XCRemoteSwiftPackageReference "ink" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnsundell/ink.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
 		A8C758472F59CD2A0071B6CD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack.git";
@@ -2218,6 +2229,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 849225982F3C6C4F00447E0C /* XCRemoteSwiftPackageReference "LaunchAtLogin-Legacy" */;
 			productName = LaunchAtLogin;
+		};
+		84F36D6F2F8A3A0C00142F1D /* Ink */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84F36D6E2F8A3A0C00142F1D /* XCRemoteSwiftPackageReference "ink" */;
+			productName = Ink;
 		};
 		A8C7584B2F59D3F40071B6CD /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -50,6 +50,33 @@ final class LLWordListTabViewController: NSViewController {
         return label
     }()
     
+    private lazy var vocabularyNotebookButtonShadowView: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.shadowColor = NSColor.systemOrange.withAlphaComponent(0.18).cgColor
+        view.layer?.shadowOpacity = 1
+        view.layer?.shadowOffset = CGSize(width: 0, height: -4)
+        view.layer?.shadowRadius = 12
+        return view
+    }()
+    
+    private lazy var vocabularyNotebookButton: NSButton = {
+        let button = NSButton(title: "生词本", target: self, action: #selector(didClickVocabularyNotebook))
+        button.bezelStyle = .rounded
+        button.controlSize = .large
+        button.image = NSImage(systemSymbolName: "text.badge.plus", accessibilityDescription: nil)
+        button.imagePosition = .imageLeading
+        button.image?.isTemplate = true
+        button.contentTintColor = .white
+        button.font = NSFont.inter(14, .semiBold)
+        button.wantsLayer = true
+        button.layer?.backgroundColor = NSColor.systemOrange.cgColor
+        button.layer?.cornerRadius = 12
+        button.isBordered = false
+        button.imageHugsTitle = true
+        return button
+    }()
+    
     private lazy var newWordLibButtonShadowView: NSView = {
         let view = NSView()
         view.wantsLayer = true
@@ -256,6 +283,18 @@ final class LLWordListTabViewController: NSViewController {
             make.edges.equalToSuperview()
         }
         
+        view.addSubview(vocabularyNotebookButtonShadowView)
+        vocabularyNotebookButtonShadowView.snp.makeConstraints { make in
+            make.right.equalTo(newWordLibButtonShadowView.snp.left).offset(-12)
+            make.centerY.equalTo(heroTitleLabel.snp.centerY).offset(4)
+            make.height.equalTo(40)
+        }
+        
+        vocabularyNotebookButtonShadowView.addSubview(vocabularyNotebookButton)
+        vocabularyNotebookButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
         view.addSubview(controlsContainerView)
         controlsContainerView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(32)
@@ -387,6 +426,10 @@ final class LLWordListTabViewController: NSViewController {
         collectionView.reloadData()
     }
     
+    private func badgeTitle(for list: WordList) -> String? {
+        return nil
+    }
+    
     private func loadAndFilterData() {
         // 从数据库加载词库数据
         do {
@@ -398,7 +441,9 @@ final class LLWordListTabViewController: NSViewController {
                 guard let id = dbList.id else { return nil }
                 
                 var categoryName = NSLocalizedString("Uncategorized", comment: "")
-                if let categoryId = dbList.categoryId {
+                if dbList.description == LLWordListStorage.vocabularyNotebookDescription {
+                    categoryName = "内置"
+                } else if let categoryId = dbList.categoryId {
                     if let category = try? LLDatabaseManager.shared.getCategoryById(categoryId) {
                         categoryName = category.name
                     }
@@ -412,7 +457,8 @@ final class LLWordListTabViewController: NSViewController {
                     category: categoryName,
                     language: .english,
                     entries: [],
-                    totalWords: totalWords
+                    totalWords: totalWords,
+                    isVocabularyNotebook: dbList.description == LLWordListStorage.vocabularyNotebookDescription
                 )
             }
             
@@ -425,6 +471,15 @@ final class LLWordListTabViewController: NSViewController {
         
         // 应用筛选
         applyFilters()
+    }
+    
+    private func orderedLists(_ lists: [WordList]) -> [WordList] {
+        lists.sorted {
+            if $0.isVocabularyNotebook != $1.isVocabularyNotebook {
+                return $0.isVocabularyNotebook && !$1.isVocabularyNotebook
+            }
+            return $0.name.localizedStandardCompare($1.name) == .orderedAscending
+        }
     }
     
     private func applyFilters() {
@@ -450,7 +505,7 @@ final class LLWordListTabViewController: NSViewController {
             result = result.filter { getListStatus($0) == selectedStatus }
         }
         
-        filteredLists = result
+        filteredLists = orderedLists(result)
         LLLogger.debug("🔍 筛选后得到 \(filteredLists.count) 个词库")
         refreshSummaryTexts()
         collectionView.reloadData()
@@ -485,6 +540,11 @@ final class LLWordListTabViewController: NSViewController {
         guard viewMode != .list else { return }
         viewMode = .list
         updateViewModeUI()
+    }
+    
+    @objc private func didClickVocabularyNotebook() {
+        guard let notebook = LLWordListStorage.shared.vocabularyNotebook(language: LLSettingsStore.shared.currentLanguage) else { return }
+        showWordListDetail(wordList: notebook)
     }
     
     @objc private func didClickNewWordLib() {
@@ -550,6 +610,7 @@ extension LLWordListTabViewController: NSCollectionViewDataSource {
         
         item.layoutMode = (viewMode == .grid) ? .grid : .list
         let wordList = filteredLists[indexPath.item]
+        item.badgeTitle = badgeTitle(for: wordList)
         item.configure(with: wordList) { [weak self] selectedList in
             // 点击卡片后跳转到详情页
             self?.showWordListDetail(wordList: selectedList)

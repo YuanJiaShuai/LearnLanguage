@@ -21,6 +21,11 @@ class LLWordLibraryCardItem: NSCollectionViewItem {
     private let cardView = LLWordLibraryCardView(frame: .zero)
     private var wordList: WordList?
     private var onCardClicked: ((WordList) -> Void)?
+    var badgeTitle: String? {
+        didSet {
+            cardView.badgeTitle = badgeTitle
+        }
+    }
     
     override func loadView() {
         view = NSView()

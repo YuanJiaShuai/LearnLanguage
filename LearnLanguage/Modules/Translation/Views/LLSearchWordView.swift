@@ -104,9 +104,20 @@ final class LLSearchWordView: NSView {
         return btn
     }()
 
+    private lazy var addVocabularyButton: NSButton = {
+        let btn = NSButton(title: "添加生词", target: self, action: #selector(addToVocabularyNotebook))
+        btn.isBordered = false
+        btn.font = NSFont.systemFont(ofSize: 12, weight: .semibold)
+        btn.contentTintColor = NSColor.systemOrange
+        btn.isHidden = true
+        return btn
+    }()
+
     // MARK: - State
 
     private var lastSearchedText = ""
+    private var lastTranslatedText = ""
+    private var lastPhonetics: String?
 
     /// 高度变化回调，菜单项需要监听此回调来更新尺寸
     var onHeightChanged: ((CGFloat) -> Void)?
@@ -179,6 +190,7 @@ final class LLSearchWordView: NSView {
         resultContainer.addSubview(phoneticLabel)
         resultContainer.addSubview(resultLabel)
         resultContainer.addSubview(speakButton)
+        resultContainer.addSubview(addVocabularyButton)
 
         resultContainer.snp.makeConstraints { make in
             make.top.equalTo(divider.snp.bottom).offset(8)
@@ -191,11 +203,16 @@ final class LLSearchWordView: NSView {
             make.trailing.equalToSuperview()
             make.width.height.equalTo(20)
         }
+        
+        addVocabularyButton.snp.makeConstraints { make in
+            make.centerY.equalTo(speakButton)
+            make.trailing.equalTo(speakButton.snp.leading).offset(-8)
+        }
 
         phoneticLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview()
-            make.trailing.equalTo(speakButton.snp.leading).offset(-4)
+            make.trailing.lessThanOrEqualTo(addVocabularyButton.snp.leading).offset(-8)
         }
 
         resultLabel.snp.makeConstraints { make in
@@ -242,6 +259,20 @@ final class LLSearchWordView: NSView {
         let lang = LLSettingsStore.shared.currentLanguage.speechLanguageCode
         LLSpeechService.shared.speak(word, language: lang)
     }
+    
+    @objc private func addToVocabularyNotebook() {
+        let added = LLWordListStorage.shared.addWordToVocabularyNotebook(
+            text: lastSearchedText,
+            meaning: lastTranslatedText,
+            phonetic: lastPhonetics,
+            language: LLSettingsStore.shared.currentLanguage
+        )
+        if added || LLWordListStorage.shared.containsWordInVocabularyNotebook(lastSearchedText, language: LLSettingsStore.shared.currentLanguage) {
+            addVocabularyButton.title = "已添加"
+            addVocabularyButton.contentTintColor = .secondaryLabelColor
+            addVocabularyButton.isEnabled = false
+        }
+    }
 
     // MARK: - Search
 
@@ -283,6 +314,8 @@ final class LLSearchWordView: NSView {
     }
 
     private func showResult(translated: String, phonetics: String?) {
+        lastTranslatedText = translated
+        lastPhonetics = phonetics
         resultLabel.stringValue = translated
 
         if let p = phonetics, !p.isEmpty {
@@ -292,6 +325,13 @@ final class LLSearchWordView: NSView {
             phoneticLabel.stringValue = ""
             phoneticLabel.isHidden = true
         }
+
+        let canAdd = !lastSearchedText.isEmpty && !translated.isEmpty && !translated.hasPrefix("翻译失败")
+        let exists = LLWordListStorage.shared.containsWordInVocabularyNotebook(lastSearchedText, language: LLSettingsStore.shared.currentLanguage)
+        addVocabularyButton.title = exists ? "已添加" : "添加生词"
+        addVocabularyButton.contentTintColor = exists ? .secondaryLabelColor : .systemOrange
+        addVocabularyButton.isEnabled = canAdd && !exists
+        addVocabularyButton.isHidden = !canAdd
 
         speakButton.isHidden = false
         divider.isHidden = false
@@ -361,8 +401,11 @@ final class LLSearchWordView: NSView {
         resultContainer.isHidden = true
         divider.isHidden = true
         speakButton.isHidden = true
+        addVocabularyButton.isHidden = true
         phoneticLabel.isHidden = true
         resultLabel.stringValue = ""
+        lastTranslatedText = ""
+        lastPhonetics = nil
         onHeightChanged?(LLSearchWordView.viewHeight)
     }
 

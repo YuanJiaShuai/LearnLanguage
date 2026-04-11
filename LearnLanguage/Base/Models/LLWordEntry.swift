@@ -33,8 +33,9 @@ struct WordList: Codable, Identifiable {
     var entries: [LLWordEntry]
     var createdAt: Date
     var totalWords: Int? // 实际单词数量（用于列表页显示，避免加载所有单词）
+    var isVocabularyNotebook: Bool = false
 
-    init(id: String = UUID().uuidString, name: String, category: String = "未分类", language: LLLearningLanguage, entries: [LLWordEntry] = [], createdAt: Date = Date(), totalWords: Int? = nil) {
+    init(id: String = UUID().uuidString, name: String, category: String = "未分类", language: LLLearningLanguage, entries: [LLWordEntry] = [], createdAt: Date = Date(), totalWords: Int? = nil, isVocabularyNotebook: Bool = false) {
         self.id = id
         self.name = name
         self.category = category
@@ -42,6 +43,7 @@ struct WordList: Codable, Identifiable {
         self.entries = entries
         self.createdAt = createdAt
         self.totalWords = totalWords
+        self.isVocabularyNotebook = isVocabularyNotebook
     }
 
     var entryCount: Int { 
@@ -49,7 +51,7 @@ struct WordList: Codable, Identifiable {
         totalWords ?? entries.count 
     }
 
-    enum CodingKeys: String, CodingKey { case id, name, category, language, entries, createdAt, totalWords }
+    enum CodingKeys: String, CodingKey { case id, name, category, language, entries, createdAt, totalWords, isVocabularyNotebook }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -60,5 +62,6 @@ struct WordList: Codable, Identifiable {
         entries = try c.decode([LLWordEntry].self, forKey: .entries)
         createdAt = try c.decode(Date.self, forKey: .createdAt)
         totalWords = try c.decodeIfPresent(Int.self, forKey: .totalWords)
+        isVocabularyNotebook = try c.decodeIfPresent(Bool.self, forKey: .isVocabularyNotebook) ?? false
     }
 }

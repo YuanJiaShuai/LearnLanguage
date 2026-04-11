@@ -10,6 +10,9 @@ import Foundation
 final class LLWordListStorage {
     static let shared = LLWordListStorage()
     
+    static let vocabularyNotebookDescription = "__system_vocabulary_notebook__"
+    static let vocabularyNotebookName = "生词本"
+    
     private init() {}
     
     // MARK: - 词库查询
@@ -61,6 +64,97 @@ final class LLWordListStorage {
         } catch {
             LLLogger.error("❌ 获取分类词库失败：\(error)")
             return []
+        }
+    }
+    
+    func ensureVocabularyNotebook(language: LLLearningLanguage) -> WordList? {
+        do {
+            if let existing = try LLDatabaseManager.shared.getWordList(description: Self.vocabularyNotebookDescription) {
+                return convertToWordList(existing)
+            }
+            
+            let categories = try LLDatabaseManager.shared.getAllCategories()
+            let fallbackCategoryId = categories.first?.id
+            let notebook = LLDBWordList(
+                categoryId: fallbackCategoryId,
+                name: Self.vocabularyNotebookName,
+                description: Self.vocabularyNotebookDescription
+            )
+            notebook.totalWords = 0
+            let insertedId = try LLDatabaseManager.shared.insertWordList(notebook)
+            
+            NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
+            return WordList(
+                id: String(insertedId),
+                name: Self.vocabularyNotebookName,
+                category: "内置",
+                language: language,
+                entries: [],
+                totalWords: 0,
+                isVocabularyNotebook: true
+            )
+        } catch {
+            LLLogger.error("❌ 创建生词本失败：\(error)")
+            return nil
+        }
+    }
+    
+    func vocabularyNotebook(language: LLLearningLanguage) -> WordList? {
+        if let notebook = ensureVocabularyNotebook(language: language) {
+            return list(byId: notebook.id)
+        }
+        return nil
+    }
+    
+    func containsWordInVocabularyNotebook(_ text: String, language: LLLearningLanguage) -> Bool {
+        let normalizedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !normalizedText.isEmpty,
+              let notebook = ensureVocabularyNotebook(language: language),
+              let notebookId = Int(notebook.id) else {
+            return false
+        }
+        
+        do {
+            return try LLDatabaseManager.shared.getWord(inWordListId: notebookId, word: normalizedText) != nil
+        } catch {
+            LLLogger.error("❌ 查询生词失败：\(error)")
+            return false
+        }
+    }
+    
+    @discardableResult
+    func addWordToVocabularyNotebook(text: String, meaning: String, phonetic: String?, language: LLLearningLanguage) -> Bool {
+        let normalizedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let normalizedMeaning = meaning.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !normalizedText.isEmpty, !normalizedMeaning.isEmpty,
+              let notebook = ensureVocabularyNotebook(language: language),
+              let notebookId = Int(notebook.id) else {
+            return false
+        }
+        
+        do {
+            if try LLDatabaseManager.shared.getWord(inWordListId: notebookId, word: normalizedText) != nil {
+                return false
+            }
+            
+            let dbWord = LLDBWord(
+                wordListId: notebookId,
+                word: normalizedText,
+                translation: normalizedMeaning,
+                usPhonetic: phonetic,
+                ukPhonetic: nil
+            )
+            try LLDatabaseManager.shared.insertWord(dbWord)
+            
+            let totalCount = try LLDatabaseManager.shared.getWordCount(forWordListId: notebookId)
+            let learnedCount = try LLDatabaseManager.shared.getLearnedWordCount(forWordListId: notebookId)
+            try LLDatabaseManager.shared.updateWordListStats(id: notebookId, totalWords: totalCount, learnedWords: learnedCount)
+            
+            NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
+            return true
+        } catch {
+            LLLogger.error("❌ 添加生词失败：\(error)")
+            return false
         }
     }
     
@@ -170,8 +264,10 @@ final class LLWordListStorage {
         
         // 获取分类名称
         var categoryName = "未分类"
-        if let categoryId = dbWordList.categoryId,
-           let category = try? LLDatabaseManager.shared.getCategoryById(categoryId) {
+        if dbWordList.description == Self.vocabularyNotebookDescription {
+            categoryName = "内置"
+        } else if let categoryId = dbWordList.categoryId,
+                  let category = try? LLDatabaseManager.shared.getCategoryById(categoryId) {
             categoryName = category.name
         }
         
@@ -208,7 +304,8 @@ final class LLWordListStorage {
             language: .english, // TODO: 从词库获取语言
             entries: entries,
             createdAt: Date(timeIntervalSince1970: dbWordList.createdAt),
-            totalWords: dbWordList.totalWords
+            totalWords: dbWordList.totalWords,
+            isVocabularyNotebook: dbWordList.description == Self.vocabularyNotebookDescription
         )
     }
     

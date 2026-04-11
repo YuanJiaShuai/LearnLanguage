@@ -8,6 +8,7 @@
 import AppKit
 import SnapKit
 import WebKit
+import Ink
 
 private struct LLGrammarArticleMeta: Decodable {
     let id: String
@@ -124,7 +125,11 @@ final class LLGrammarNotesHomeViewController: NSViewController {
     private let sidebarStackView = NSStackView()
     private let contentContainer = NSView()
     private let webView = WKWebView(frame: .zero)
+    private let markdownParser = MarkdownParser()
+    private lazy var sidebarToggleButton = makeFloatingIconButton(symbolName: "sidebar.left", action: #selector(toggleSidebar))
     private var sidebarWidthConstraint: Constraint?
+    private var sidebarToggleLeadingConstraint: Constraint?
+    private var contentLeadingConstraint: Constraint?
 
     init(onBack: @escaping () -> Void) {
         self.onBack = onBack
@@ -199,11 +204,10 @@ final class LLGrammarNotesHomeViewController: NSViewController {
             self.sidebarWidthConstraint = make.width.equalTo(280).constraint
         }
 
-        let sidebarToggleButton = makeFloatingIconButton(symbolName: "sidebar.left", action: #selector(toggleSidebar))
         sidebarContainer.addSubview(sidebarToggleButton)
         sidebarToggleButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(14)
-            make.leading.equalToSuperview().offset(14)
+            self.sidebarToggleLeadingConstraint = make.leading.equalToSuperview().offset(14).constraint
             make.width.height.equalTo(34)
         }
 
@@ -241,7 +245,7 @@ final class LLGrammarNotesHomeViewController: NSViewController {
         splitContainer.addSubview(contentContainer)
         contentContainer.snp.makeConstraints { make in
             make.top.trailing.bottom.equalToSuperview()
-            make.leading.equalTo(sidebarContainer.snp.trailing).offset(18)
+            self.contentLeadingConstraint = make.leading.equalTo(sidebarContainer.snp.trailing).offset(18).constraint
         }
 
         webView.setValue(false, forKey: "drawsBackground")
@@ -296,11 +300,18 @@ final class LLGrammarNotesHomeViewController: NSViewController {
 
     @objc private func toggleSidebar() {
         isSidebarCollapsed.toggle()
-        sidebarWidthConstraint?.update(offset: isSidebarCollapsed ? 56 : 280)
-        sidebarScrollView.alphaValue = isSidebarCollapsed ? 0 : 1
+
+        sidebarWidthConstraint?.update(offset: isSidebarCollapsed ? 72 : 280)
+        sidebarToggleLeadingConstraint?.update(offset: isSidebarCollapsed ? 19 : 14)
+        contentLeadingConstraint?.update(offset: isSidebarCollapsed ? 12 : 18)
+        sidebarScrollView.animator().alphaValue = isSidebarCollapsed ? 0 : 1
+        sidebarToggleButton.image = NSImage(
+            systemSymbolName: isSidebarCollapsed ? "sidebar.right" : "sidebar.left",
+            accessibilityDescription: nil
+        )
 
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.22
+            context.duration = 0.24
             context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             self.view.layoutSubtreeIfNeeded()
         }
@@ -368,7 +379,7 @@ final class LLGrammarNotesHomeViewController: NSViewController {
     }
 
     private func buildHTML(from markdown: String) -> String {
-        let body = renderMarkdownBody(from: markdown)
+        let body = markdownParser.html(from: markdown)
         return """
         <!doctype html>
         <html>
@@ -376,81 +387,31 @@ final class LLGrammarNotesHomeViewController: NSViewController {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <style>
-            body { margin: 0; padding: 26px 28px 40px; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; color: #1f2937; background: #ffffff; line-height: 1.8; font-size: 16px; }
-            h1, h2, h3 { color: #111827; line-height: 1.25; margin: 0 0 16px; }
+            body { margin: 0; padding: 26px 28px 40px; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; color: #1f2937; background: #ffffff; line-height: 1.8; font-size: 16px; -webkit-font-smoothing: antialiased; }
+            h1, h2, h3 { color: #111827; line-height: 1.25; margin: 0 0 16px; letter-spacing: -0.02em; }
             h1 { font-size: 28px; }
             h2 { font-size: 22px; margin-top: 26px; }
             h3 { font-size: 18px; margin-top: 22px; }
             p { margin: 0 0 14px; }
+            ul, ol { margin: 0 0 16px 20px; padding: 0; }
+            li { margin: 0 0 8px; }
             img { display: block; max-width: 100%; height: auto; margin: 18px auto; border-radius: 14px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }
             blockquote { margin: 18px 0; padding: 10px 14px; border-left: 4px solid rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.06); border-radius: 8px; }
-            code { background: rgba(15, 23, 42, 0.06); padding: 2px 6px; border-radius: 6px; font-size: 0.94em; }
+            pre { margin: 18px 0; padding: 18px 20px; background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 100%); color: #1e293b; border: 1px solid rgba(148, 163, 184, 0.22); border-radius: 14px; overflow-x: auto; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+            pre code { display: block; background: transparent; padding: 0; color: inherit; font-family: SFMono-Regular, SF Mono, ui-monospace, Menlo, Monaco, Consolas, monospace; font-size: 13px; line-height: 1.7; white-space: pre; }
+            code { background: rgba(15, 23, 42, 0.06); padding: 2px 6px; border-radius: 6px; font-size: 0.94em; font-family: SFMono-Regular, SF Mono, ui-monospace, Menlo, Monaco, Consolas, monospace; }
             strong { color: #111827; }
             em { color: #334155; }
+            a { color: #2563eb; text-decoration: none; }
+            hr { border: none; border-top: 1px solid rgba(148, 163, 184, 0.25); margin: 28px 0; }
+            table { width: 100%; border-collapse: collapse; margin: 18px 0; }
+            th, td { border: 1px solid rgba(148, 163, 184, 0.3); padding: 10px 12px; text-align: left; }
+            th { background: rgba(15, 23, 42, 0.04); }
           </style>
         </head>
         <body>\(body)</body>
         </html>
         """
-    }
-
-    private func renderMarkdownBody(from markdown: String) -> String {
-        let normalized = markdown.replacingOccurrences(of: "\r\n", with: "\n")
-        let blocks = normalized.components(separatedBy: "\n\n")
-        return blocks.map { renderMarkdownBlock($0) }.joined(separator: "\n")
-    }
-
-    private func renderMarkdownBlock(_ block: String) -> String {
-        let trimmed = block.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return "" }
-
-        if trimmed.hasPrefix("<") {
-            return trimmed
-        }
-
-        if trimmed.hasPrefix("### ") {
-            return "<h3>\(renderInlineMarkdown(String(trimmed.dropFirst(4))))</h3>"
-        }
-
-        if trimmed.hasPrefix("## ") {
-            return "<h2>\(renderInlineMarkdown(String(trimmed.dropFirst(3))))</h2>"
-        }
-
-        if trimmed.hasPrefix("# ") {
-            return "<h1>\(renderInlineMarkdown(String(trimmed.dropFirst(2))))</h1>"
-        }
-
-        if trimmed.hasPrefix(">") {
-            let quote = trimmed
-                .split(separator: "\n")
-                .map { line in
-                    let text = line.trimmingCharacters(in: CharacterSet(charactersIn: "> "))
-                    return renderInlineMarkdown(text)
-                }
-                .joined(separator: "<br>")
-            return "<blockquote>\(quote)</blockquote>"
-        }
-
-        let lines = trimmed
-            .split(separator: "\n", omittingEmptySubsequences: false)
-            .map { renderInlineMarkdown(String($0)) }
-            .joined(separator: "<br>")
-        return "<p>\(lines)</p>"
-    }
-
-    private func renderInlineMarkdown(_ text: String) -> String {
-        var html = escapeHTML(text)
-        html = html.replacingOccurrences(of: "`([^`]+)`", with: "<code>$1</code>", options: .regularExpression)
-        html = html.replacingOccurrences(of: "\\*\\*([^*]+)\\*\\*", with: "<strong>$1</strong>", options: .regularExpression)
-        html = html.replacingOccurrences(of: "\\*([^*]+)\\*", with: "<em>$1</em>", options: .regularExpression)
-        return html
-    }
-
-    private func escapeHTML(_ text: String) -> String {
-        text
-            .replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
     }
 
     @objc private func onBackTapped() {

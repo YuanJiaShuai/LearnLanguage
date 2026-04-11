@@ -173,6 +173,26 @@ final class LLTranslateViewModel {
         isSpeaking = false
         onSpeakChanged?(false)
     }
+    
+    @discardableResult
+    func addCurrentSourceToVocabularyNotebook() -> Bool {
+        guard isTranslationCompleted,
+              !sourceString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !targetString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return false
+        }
+        
+        return LLWordListStorage.shared.addWordToVocabularyNotebook(
+            text: sourceString,
+            meaning: targetString,
+            phonetic: wordPhonetics,
+            language: LLSettingsStore.shared.currentLanguage
+        )
+    }
+    
+    var isCurrentSourceInVocabularyNotebook: Bool {
+        LLWordListStorage.shared.containsWordInVocabularyNotebook(sourceString, language: LLSettingsStore.shared.currentLanguage)
+    }
 
     // MARK: - Window Management
 

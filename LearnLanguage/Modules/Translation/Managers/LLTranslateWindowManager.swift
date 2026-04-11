@@ -64,6 +64,13 @@ final class LLTranslateWindowManager {
             pb.setString(text, forType: .string)
             self?.contentView?.showCopiedFeedback()
         }
+        cv.onAddVocabulary = { [weak self, weak viewModel] in
+            guard let self, let viewModel else { return }
+            let added = viewModel.addCurrentSourceToVocabularyNotebook()
+            if added || viewModel.isCurrentSourceInVocabularyNotebook {
+                self.contentView?.showAddedToVocabularyFeedback()
+            }
+        }
 
         // 绑定 ViewModel 回调
         viewModel.onTranslationUpdated = { [weak cv, weak viewModel] text, phonetic, completed in

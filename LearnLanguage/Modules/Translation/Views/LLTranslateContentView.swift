@@ -21,6 +21,7 @@ final class LLTranslateContentView: NSView {
     var onPin: (() -> Void)?
     var onSpeak: (() -> Void)?
     var onCopy: (() -> Void)?
+    var onAddVocabulary: (() -> Void)?
 
     // MARK: - UI
 
@@ -75,6 +76,15 @@ final class LLTranslateContentView: NSView {
         btn.contentTintColor = NSColor.white.withAlphaComponent(0.6)
         btn.target = self
         btn.action = #selector(didTapCopy)
+        btn.isHidden = true
+        return btn
+    }()
+
+    private lazy var addVocabularyButton: NSButton = {
+        let btn = NSButton(title: "生词", target: self, action: #selector(didTapAddVocabulary))
+        btn.isBordered = false
+        btn.font = NSFont.systemFont(ofSize: 12, weight: .semibold)
+        btn.contentTintColor = NSColor.systemOrange
         btn.isHidden = true
         return btn
     }()
@@ -142,6 +152,7 @@ final class LLTranslateContentView: NSView {
 
         toolbarView.addSubview(speakButton)
         toolbarView.addSubview(copyButton)
+        toolbarView.addSubview(addVocabularyButton)
         toolbarView.addSubview(pinButton)
 
         speakButton.snp.makeConstraints { make in
@@ -155,9 +166,14 @@ final class LLTranslateContentView: NSView {
             make.centerY.equalToSuperview()
             make.width.height.equalTo(20)
         }
+        
+        addVocabularyButton.snp.makeConstraints { make in
+            make.leading.equalTo(copyButton.snp.trailing).offset(12)
+            make.centerY.equalToSuperview()
+        }
 
         pinButton.snp.makeConstraints { make in
-            make.leading.equalTo(copyButton.snp.trailing).offset(12)
+            make.leading.equalTo(addVocabularyButton.snp.trailing).offset(12)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(20)
         }
@@ -190,6 +206,8 @@ final class LLTranslateContentView: NSView {
 
         speakButton.isHidden = false
         copyButton.isHidden = false
+        addVocabularyButton.isHidden = false
+        setVocabularyButtonAdded(false)
         updateScrollViewHeight()
         layoutSubtreeIfNeeded()
     }
@@ -214,11 +232,24 @@ final class LLTranslateContentView: NSView {
             self?.copyButton.image = NSImage(systemSymbolName: "document.on.document", accessibilityDescription: nil)
         }
     }
+    
+    func showAddedToVocabularyFeedback() {
+        addVocabularyButton.title = "已添加"
+        addVocabularyButton.contentTintColor = NSColor.white.withAlphaComponent(0.55)
+        addVocabularyButton.isEnabled = false
+    }
+    
+    func setVocabularyButtonAdded(_ added: Bool) {
+        addVocabularyButton.title = added ? "已添加" : "生词"
+        addVocabularyButton.contentTintColor = added ? NSColor.white.withAlphaComponent(0.55) : NSColor.systemOrange
+        addVocabularyButton.isEnabled = !added
+    }
 
     // MARK: - Actions
 
     @objc private func didTapSpeak() { onSpeak?() }
     @objc private func didTapCopy()  { onCopy?() }
+    @objc private func didTapAddVocabulary() { onAddVocabulary?() }
     @objc private func didTapPin()   { onPin?() }
 
     // MARK: - Layout Helper

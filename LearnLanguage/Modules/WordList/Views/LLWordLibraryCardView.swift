@@ -17,6 +17,7 @@ final class LLWordLibraryCardView: NSView {
     private let iconContainerView = NSView()
     private let iconView = NSImageView()
     private let categoryBadgeLabel = NSTextField(labelWithString: "")
+    private let specialBadgeLabel = NSTextField(labelWithString: "")
     private let nameLabel = NSTextField(labelWithString: "词库名称")
     private let learnedCountLabel = NSTextField(labelWithString: "0")
     private let totalCountLabel = NSTextField(labelWithString: "/ 0 词")
@@ -28,6 +29,7 @@ final class LLWordLibraryCardView: NSView {
     private var tracking: NSTrackingArea?
 
     var data: WordList? { didSet { updateUI() } }
+    var badgeTitle: String? { didSet { updateUI() } }
     var learnedCount: Int = 0 { didSet { updateUI() } }
     var layoutMode: LayoutMode = .grid { didSet { updateLayoutMode() } }
     var isSelected: Bool = false { didSet { updateCardAppearance(animated: true) } }
@@ -83,6 +85,20 @@ final class LLWordLibraryCardView: NSView {
         categoryBadgeLabel.layer?.cornerRadius = 6
         categoryBadgeLabel.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainer.withAlphaComponent(0.85).cgColor
         addSubview(categoryBadgeLabel)
+        
+        specialBadgeLabel.font = NSFont.inter(10, .bold)
+        specialBadgeLabel.textColor = .white
+        specialBadgeLabel.alignment = .center
+        specialBadgeLabel.cell = LLVerticalCenterTextFieldCell(textCell: "")
+        specialBadgeLabel.cell?.alignment = .center
+        specialBadgeLabel.cell?.usesSingleLineMode = true
+        specialBadgeLabel.cell?.wraps = false
+        specialBadgeLabel.lineBreakMode = .byTruncatingTail
+        specialBadgeLabel.wantsLayer = true
+        specialBadgeLabel.layer?.cornerRadius = 6
+        specialBadgeLabel.layer?.backgroundColor = NSColor.systemOrange.cgColor
+        specialBadgeLabel.isHidden = true
+        addSubview(specialBadgeLabel)
 
         nameLabel.textColor = LLAppearanceManager.shared.colors.primaryText
         nameLabel.lineBreakMode = .byTruncatingTail
@@ -126,7 +142,7 @@ final class LLWordLibraryCardView: NSView {
     }
 
     private func updateLayoutMode() {
-        [iconContainerView, categoryBadgeLabel, nameLabel, learnedCountLabel, totalCountLabel, progressTitleLabel, progressPercentLabel, progressBar].forEach { $0.snp.removeConstraints() }
+        [iconContainerView, categoryBadgeLabel, specialBadgeLabel, nameLabel, learnedCountLabel, totalCountLabel, progressTitleLabel, progressPercentLabel, progressBar].forEach { $0.snp.removeConstraints() }
 
         switch layoutMode {
         case .grid:
@@ -142,6 +158,12 @@ final class LLWordLibraryCardView: NSView {
                 make.trailing.equalToSuperview().offset(-24)
                 make.height.equalTo(22)
                 make.width.greaterThanOrEqualTo(74)
+            }
+            specialBadgeLabel.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(24)
+                make.trailing.equalTo(categoryBadgeLabel.snp.leading).offset(-8)
+                make.height.equalTo(22)
+                make.width.greaterThanOrEqualTo(62)
             }
             nameLabel.snp.makeConstraints { make in
                 make.top.equalTo(iconContainerView.snp.bottom).offset(20)
@@ -185,10 +207,16 @@ final class LLWordLibraryCardView: NSView {
                 make.height.equalTo(22)
                 make.width.greaterThanOrEqualTo(74)
             }
+            specialBadgeLabel.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(20)
+                make.trailing.equalTo(categoryBadgeLabel.snp.leading).offset(-8)
+                make.height.equalTo(22)
+                make.width.greaterThanOrEqualTo(62)
+            }
             nameLabel.snp.makeConstraints { make in
                 make.top.equalToSuperview().offset(22)
                 make.leading.equalTo(iconContainerView.snp.trailing).offset(18)
-                make.trailing.lessThanOrEqualTo(categoryBadgeLabel.snp.leading).offset(-16)
+                make.trailing.lessThanOrEqualTo(specialBadgeLabel.snp.leading).offset(-16)
             }
             learnedCountLabel.snp.makeConstraints { make in
                 make.top.equalTo(nameLabel.snp.bottom).offset(10)
@@ -224,8 +252,18 @@ final class LLWordLibraryCardView: NSView {
         guard let data else { return }
         let totalCount = max(data.entryCount, data.totalWords ?? data.entryCount)
         let progress = totalCount > 0 ? CGFloat(learnedCount) / CGFloat(totalCount) : 0
+        let isVocabularyNotebook = data.isVocabularyNotebook
         nameLabel.stringValue = data.name
         categoryBadgeLabel.stringValue = data.category
+        specialBadgeLabel.stringValue = badgeTitle ?? ""
+        specialBadgeLabel.isHidden = (badgeTitle?.isEmpty ?? true)
+        iconView.image = NSImage(systemSymbolName: isVocabularyNotebook ? "text.book.closed.fill" : "translate", accessibilityDescription: nil)
+        iconView.contentTintColor = isVocabularyNotebook ? .systemOrange : LLAppearanceManager.shared.colors.accentColor
+        iconContainerView.layer?.backgroundColor = (isVocabularyNotebook
+            ? NSColor.systemOrange.withAlphaComponent(0.14)
+            : LLAppearanceManager.shared.colors.accentColor.withAlphaComponent(0.1)).cgColor
+        learnedCountLabel.textColor = isVocabularyNotebook ? .systemOrange : LLAppearanceManager.shared.colors.accentColor
+        progressFill.layer?.backgroundColor = (isVocabularyNotebook ? NSColor.systemOrange : LLAppearanceManager.shared.colors.accentColor).cgColor
         learnedCountLabel.stringValue = "\(learnedCount)"
         totalCountLabel.stringValue = "/ \(totalCount) \(NSLocalizedString("words", comment: "Words unit"))"
         progressPercentLabel.stringValue = String(format: "%.1f%%", progress * 100)
@@ -236,8 +274,9 @@ final class LLWordLibraryCardView: NSView {
 
     private func updateCardAppearance(animated: Bool) {
         let changes = {
-            if self.isSelected || self.isCurrentLearning {
-                self.layer?.borderColor = LLAppearanceManager.shared.colors.accentColor.withAlphaComponent(0.28).cgColor
+            if self.isSelected || self.isCurrentLearning || (self.data?.isVocabularyNotebook == true) {
+                let highlightColor = self.data?.isVocabularyNotebook == true ? NSColor.systemOrange : LLAppearanceManager.shared.colors.accentColor
+                self.layer?.borderColor = highlightColor.withAlphaComponent(0.28).cgColor
                 self.layer?.shadowColor = NSColor.black.withAlphaComponent(0.08).cgColor
                 self.layer?.shadowRadius = 16
                 self.layer?.shadowOffset = CGSize(width: 0, height: -4)

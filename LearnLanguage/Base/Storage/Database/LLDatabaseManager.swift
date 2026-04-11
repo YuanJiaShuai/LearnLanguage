@@ -164,6 +164,22 @@ final class LLDatabaseManager {
         return try database.getObject(on: LLDBWordList.Properties.all, fromTable: wordListsTable, where: LLDBWordList.Properties.id == id)
     }
     
+    func getWordList(description: String) throws -> LLDBWordList? {
+        return try database.getObject(
+            on: LLDBWordList.Properties.all,
+            fromTable: wordListsTable,
+            where: LLDBWordList.Properties.description == description
+        )
+    }
+    
+    func getWordList(name: String) throws -> LLDBWordList? {
+        return try database.getObject(
+            on: LLDBWordList.Properties.all,
+            fromTable: wordListsTable,
+            where: LLDBWordList.Properties.name == name
+        )
+    }
+    
     func getWordListByCategoryId(_ categoryId: Int) throws -> [LLDBWordList] {
         return try database.getObjects(
             on: LLDBWordList.Properties.all,
@@ -211,6 +227,11 @@ final class LLDatabaseManager {
     /// 批量插入单词
     func insertWords(_ words: [LLDBWord]) throws {
         try database.insert(objects: words, intoTable: wordsTable)
+    }
+    
+    /// 插入单个单词
+    func insertWord(_ word: LLDBWord) throws {
+        try database.insert(objects: word, intoTable: wordsTable)
     }
     
     /// 获取词库的所有单词
@@ -288,6 +309,14 @@ final class LLDatabaseManager {
             fromTable: wordsTable,
             where: condition,
             limit: 100
+        )
+    }
+    
+    func getWord(inWordListId wordListId: Int, word: String) throws -> LLDBWord? {
+        return try database.getObject(
+            on: LLDBWord.Properties.all,
+            fromTable: wordsTable,
+            where: LLDBWord.Properties.wordListId == wordListId && LLDBWord.Properties.word == word
         )
     }
     
