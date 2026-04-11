@@ -10,6 +10,9 @@ import UniformTypeIdentifiers
 
 final class LLWordListTabViewController: NSViewController {
     
+    var onRequestOpenVocabularyNotebook: (() -> Void)?
+    var onRequestCreateWordList: (() -> Void)?
+    
     private enum ViewMode {
         case grid
         case list
@@ -115,6 +118,18 @@ final class LLWordListTabViewController: NSViewController {
     // 主内容容器（卡片背景）
     private lazy var contentContainerView: NSView = {
         let view = NSView()
+        return view
+    }()
+    
+    private lazy var guideTaskCardView: LLGuideTaskCardView = {
+        let view = LLGuideTaskCardView()
+        view.isHidden = true
+        view.onPrimaryAction = { [weak self] in
+            self?.handleGuidePrimaryAction()
+        }
+        view.onSecondaryAction = { [weak self] in
+            self?.didClickVocabularyNotebook()
+        }
         return view
     }()
     
@@ -231,6 +246,7 @@ final class LLWordListTabViewController: NSViewController {
         setupCollectionView()
         updateViewModeUI()
         loadAndFilterData()
+        updateGuideTaskCard()
         
         NotificationCenter.default.addObserver(
             self,
@@ -341,6 +357,13 @@ final class LLWordListTabViewController: NSViewController {
             make.bottom.equalToSuperview().offset(-32)
         }
         
+        view.addSubview(guideTaskCardView)
+        guideTaskCardView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(32)
+            make.right.equalToSuperview().offset(-32)
+            make.top.equalTo(controlsContainerView.snp.bottom).offset(28)
+        }
+        
         contentContainerView.addSubview(collectionScrollView)
         collectionScrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -402,6 +425,22 @@ final class LLWordListTabViewController: NSViewController {
     private func refreshSummaryTexts() {
         cardTitleLabel.stringValue = String(format: NSLocalizedString("Word Libraries Summary", comment: "Word libraries summary"), filteredLists.count)
         heroSubtitleLabel.stringValue = String(format: NSLocalizedString("Word Libraries Summary", comment: "Word libraries summary"), filteredLists.count)
+    }
+    
+    private func updateGuideTaskCard() {
+        let hasCurrentList = LLSettingsStore.shared.currentListId != nil
+        guideTaskCardView.configure(hasCurrentList: hasCurrentList, hasAnyWordList: !allLists.isEmpty)
+        let shouldShow = !hasCurrentList
+        guideTaskCardView.isHidden = !shouldShow
+        contentContainerView.isHidden = shouldShow
+    }
+    
+    private func handleGuidePrimaryAction() {
+        if allLists.isEmpty {
+            didClickNewWordLib()
+        } else if let firstList = filteredLists.first ?? allLists.first {
+            showWordListDetail(wordList: firstList)
+        }
     }
     
     private var currentItemsPerRow: CGFloat {
@@ -471,6 +510,7 @@ final class LLWordListTabViewController: NSViewController {
         
         // 应用筛选
         applyFilters()
+        updateGuideTaskCard()
     }
     
     private func orderedLists(_ lists: [WordList]) -> [WordList] {
@@ -543,6 +583,14 @@ final class LLWordListTabViewController: NSViewController {
     }
     
     @objc private func didClickVocabularyNotebook() {
+        if LLGuideManager.shared.shouldShowTip(.vocabularyNotebookEntry) {
+            let alert = NSAlert()
+            alert.messageText = "生词本会集中保存你在翻译中收藏的词"
+            alert.informativeText = "你可以通过搜索翻译，或者双击复制后的翻译弹窗，把不会的词加入这里。"
+            alert.addButton(withTitle: "知道了")
+            alert.runModal()
+            LLGuideManager.shared.markTipShown(.vocabularyNotebookEntry)
+        }
         guard let notebook = LLWordListStorage.shared.vocabularyNotebook(language: LLSettingsStore.shared.currentLanguage) else { return }
         showWordListDetail(wordList: notebook)
     }

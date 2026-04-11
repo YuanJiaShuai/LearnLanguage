@@ -26,6 +26,7 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
     private let overlayContainerView = NSView()
     private var overlayStack: [NSViewController] = []
     private var isOverlayTransitioning = false
+    private var hasAttemptedPresentWelcomeGuide = false
 
     override func loadView() {
         view = NSView(frame: NSRect(x: 0, y: 0, width: 1100, height: 620))
@@ -34,6 +35,11 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        presentWelcomeGuideIfNeeded()
     }
 
     private func setupUI() {
@@ -72,6 +78,15 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
         overlayContainerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    private func presentWelcomeGuideIfNeeded() {
+        guard !hasAttemptedPresentWelcomeGuide else { return }
+        hasAttemptedPresentWelcomeGuide = true
+        guard LLGuideManager.shared.shouldShowWelcomeGuide else { return }
+        
+        let guideVC = LLWelcomeGuideViewController()
+        presentAsModalWindow(guideVC)
     }
     
     private func openLearningLabRoute(_ route: LLLearningLabRoute) {

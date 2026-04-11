@@ -262,6 +262,9 @@
 		84EE92CF2F88F81A0082A167 /* adjective_to_noun_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A82F88F81A0082A167 /* adjective_to_noun_9.png */; };
 		84EE92D02F88F81A0082A167 /* grammar_23.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92012F88F81A0082A167 /* grammar_23.png */; };
 		84EE92D12F88F81A0082A167 /* sentence_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE923C2F88F81A0082A167 /* sentence_article.md */; };
+		84F100001111111111111111 /* LLGuideManager.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111111 /* LLGuideManager.swift */; };
+		84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111112 /* LLGuideTaskCardView.swift */; };
+		84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111113 /* LLWelcomeGuideViewController.swift */; };
 		84F36D532F89E47100142F1D /* ll_h.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D3F2F89E47100142F1D /* ll_h.mp3 */; };
 		84F36D542F89E47100142F1D /* ll_w.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D4E2F89E47100142F1D /* ll_w.mp3 */; };
 		84F36D552F89E47100142F1D /* ll_k.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D422F89E47100142F1D /* ll_k.mp3 */; };
@@ -289,6 +292,9 @@
 		84F36D6C2F89E47100142F1D /* ll_u.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D4C2F89E47100142F1D /* ll_u.mp3 */; };
 		84F36D6D2F89E47100142F1D /* ll_e.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D3C2F89E47100142F1D /* ll_e.mp3 */; };
 		84F36D702F8A3A0C00142F1D /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = 84F36D6F2F8A3A0C00142F1D /* Ink */; };
+		84F36D792F8A52AB00142F1D /* LLWelcomeGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F36D742F8A52AB00142F1D /* LLWelcomeGuideViewController.swift */; };
+		84F36D7A2F8A52AB00142F1D /* LLGuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F36D722F8A52AB00142F1D /* LLGuideManager.swift */; };
+		84F36D7B2F8A52AB00142F1D /* LLGuideTaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F36D762F8A52AB00142F1D /* LLGuideTaskCardView.swift */; };
 		A85192832F51E908006CEA04 /* LLDBLearningProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */; };
 		A873E7882F87ED4A00CEA380 /* LLFilterChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A873E7872F87ED4A00CEA380 /* LLFilterChipView.swift */; };
 		A88C88242F3CA10D005ACFA6 /* LLShortcutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88C88222F3CA10D005ACFA6 /* LLShortcutCardView.swift */; };
@@ -567,6 +573,9 @@
 		84EE923A2F88F81A0082A167 /* sentence_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_16.png; sourceTree = "<group>"; };
 		84EE923C2F88F81A0082A167 /* sentence_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sentence_article.md; sourceTree = "<group>"; };
 		84EE923F2F88F81A0082A167 /* grammar-index.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "grammar-index.json"; sourceTree = "<group>"; };
+		84F200001111111111111111 /* LLGuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideManager.swift; sourceTree = "<group>"; };
+		84F200001111111111111112 /* LLGuideTaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideTaskCardView.swift; sourceTree = "<group>"; };
+		84F200001111111111111113 /* LLWelcomeGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWelcomeGuideViewController.swift; sourceTree = "<group>"; };
 		84F36D382F89E47100142F1D /* ll_a.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_a.mp3; sourceTree = "<group>"; };
 		84F36D392F89E47100142F1D /* ll_b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_b.mp3; sourceTree = "<group>"; };
 		84F36D3A2F89E47100142F1D /* ll_c.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_c.mp3; sourceTree = "<group>"; };
@@ -593,6 +602,9 @@
 		84F36D4F2F89E47100142F1D /* ll_x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_x.mp3; sourceTree = "<group>"; };
 		84F36D502F89E47100142F1D /* ll_y.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_y.mp3; sourceTree = "<group>"; };
 		84F36D512F89E47100142F1D /* ll_z.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_z.mp3; sourceTree = "<group>"; };
+		84F36D722F8A52AB00142F1D /* LLGuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideManager.swift; sourceTree = "<group>"; };
+		84F36D742F8A52AB00142F1D /* LLWelcomeGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWelcomeGuideViewController.swift; sourceTree = "<group>"; };
+		84F36D762F8A52AB00142F1D /* LLGuideTaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideTaskCardView.swift; sourceTree = "<group>"; };
 		8F7924CFE36F820B30511F8A /* Pods-LearnLanguage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LearnLanguage.debug.xcconfig"; path = "Target Support Files/Pods-LearnLanguage/Pods-LearnLanguage.debug.xcconfig"; sourceTree = "<group>"; };
 		A80BC32D2F378E8900A40D9B /* 划水记词.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "划水记词.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningProgress.swift; sourceTree = "<group>"; };
@@ -955,16 +967,17 @@
 		849226D62F3C878F00447E0C /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				84EE8F322F88EFC10082A167 /* GrammarNotes */,
-				84EE8F352F88EFC10082A167 /* MoreFeatures */,
-				84EE8F382F88EFC10082A167 /* SimilarWords */,
-				84D21B9F2F70F20600AFFE2C /* Translation */,
-				84E1E39D2F4D53A300D1B7B6 /* TypingPractice */,
 				849226AC2F3C878F00447E0C /* Data */,
+				84EE8F322F88EFC10082A167 /* GrammarNotes */,
+				84F36D782F8A52AB00142F1D /* Guide */,
 				849226B22F3C878F00447E0C /* Main */,
+				84EE8F352F88EFC10082A167 /* MoreFeatures */,
 				849226BE2F3C878F00447E0C /* Progress */,
 				849226C22F3C878F00447E0C /* Settings */,
+				84EE8F382F88EFC10082A167 /* SimilarWords */,
 				849226C72F3C878F00447E0C /* StatusBar */,
+				84D21B9F2F70F20600AFFE2C /* Translation */,
+				84E1E39D2F4D53A300D1B7B6 /* TypingPractice */,
 				849226D52F3C878F00447E0C /* WordList */,
 			);
 			path = Modules;
@@ -1425,6 +1438,50 @@
 			path = "letter-sound";
 			sourceTree = "<group>";
 		};
+		84F36D712F8A525A00142F1D /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				84F200001111111111111111 /* LLGuideManager.swift */,
+				84F200001111111111111112 /* LLGuideTaskCardView.swift */,
+				84F200001111111111111113 /* LLWelcomeGuideViewController.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		84F36D732F8A52AB00142F1D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				84F36D722F8A52AB00142F1D /* LLGuideManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		84F36D752F8A52AB00142F1D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				84F36D742F8A52AB00142F1D /* LLWelcomeGuideViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		84F36D772F8A52AB00142F1D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				84F36D762F8A52AB00142F1D /* LLGuideTaskCardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		84F36D782F8A52AB00142F1D /* Guide */ = {
+			isa = PBXGroup;
+			children = (
+				84F36D732F8A52AB00142F1D /* Managers */,
+				84F36D752F8A52AB00142F1D /* ViewControllers */,
+				84F36D772F8A52AB00142F1D /* Views */,
+			);
+			path = Guide;
+			sourceTree = "<group>";
+		};
 		981E8A615B7D4282436F0768 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1440,6 +1497,7 @@
 				A80BC32E2F378E8900A40D9B /* Products */,
 				28E60DFBC17BA4ACF2D62A96 /* Pods */,
 				981E8A615B7D4282436F0768 /* Frameworks */,
+				84F36D712F8A525A00142F1D /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1548,6 +1606,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F100001111111111111111 /* LLGuideManager.swift in Resources */,
+				84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */,
+				84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */,
 				849227082F3C878F00447E0C /* Assets.xcassets in Resources */,
 				840D1E6E2F67B6A6002C330E /* Localizable.strings in Resources */,
 				849227092F3C878F00447E0C /* Main.storyboard in Resources */,
@@ -1835,6 +1896,9 @@
 				849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */,
 				849226E62F3C878F00447E0C /* LLSidebarViewController.swift in Sources */,
 				849226E72F3C878F00447E0C /* LLSettingsTabViewController.swift in Sources */,
+				84F36D792F8A52AB00142F1D /* LLWelcomeGuideViewController.swift in Sources */,
+				84F36D7A2F8A52AB00142F1D /* LLGuideManager.swift in Sources */,
+				84F36D7B2F8A52AB00142F1D /* LLGuideTaskCardView.swift in Sources */,
 				84EE8F392F88EFC10082A167 /* LLMoreFeaturesHomeViewController.swift in Sources */,
 				84EE8F3A2F88EFC10082A167 /* LLSimilarWordsHomeViewController.swift in Sources */,
 				84EE8F3B2F88EFC10082A167 /* LLGrammarNotesHomeViewController.swift in Sources */,

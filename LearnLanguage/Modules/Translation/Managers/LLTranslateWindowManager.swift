@@ -66,6 +66,14 @@ final class LLTranslateWindowManager {
         }
         cv.onAddVocabulary = { [weak self, weak viewModel] in
             guard let self, let viewModel else { return }
+            if LLGuideManager.shared.shouldShowTip(.translateAddToVocabulary) {
+                let alert = NSAlert()
+                alert.messageText = "翻译结果可以直接加入生词本"
+                alert.informativeText = "这样你就能把临时查到的不会词集中沉淀下来，后续再统一复习。"
+                alert.addButton(withTitle: "知道了")
+                alert.runModal()
+                LLGuideManager.shared.markTipShown(.translateAddToVocabulary)
+            }
             let added = viewModel.addCurrentSourceToVocabularyNotebook()
             if added || viewModel.isCurrentSourceInVocabularyNotebook {
                 self.contentView?.showAddedToVocabularyFeedback()
