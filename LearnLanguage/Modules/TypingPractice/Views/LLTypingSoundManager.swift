@@ -15,8 +15,10 @@ class LLTypingSoundManager {
     // MARK: - Properties
     
     private var keyPlayer: AVAudioPlayer?
-    private var correctPlayer: AVAudioPlayer?
     private var wrongPlayer: AVAudioPlayer?
+    private var completeSound: NSSound?
+    private var wrongSound: NSSound?
+    private var letterPlayers: [Character: AVAudioPlayer] = [:]
     
     private var isEnabled: Bool = true
     
@@ -39,6 +41,31 @@ class LLTypingSoundManager {
         } else {
             LLLogger.warn("⚠️ 未找到按键音效文件 click.wav")
         }
+        
+        wrongSound = NSSound(named: "Basso")
+        completeSound = NSSound(named: "Glass")
+        preloadLetterSounds()
+    }
+    
+    private func preloadLetterSounds() {
+        for scalar in UnicodeScalar("a").value...UnicodeScalar("z").value {
+            guard let unicodeScalar = UnicodeScalar(scalar) else { continue }
+            let letter = Character(unicodeScalar)
+            let resourceName = "ll_\(letter)"
+            
+            guard let url = Bundle.main.url(forResource: resourceName, withExtension: "mp3") else {
+                LLLogger.warn("⚠️ 未找到字母音频文件 \(resourceName).mp3")
+                continue
+            }
+            
+            do {
+                let player = try AVAudioPlayer(contentsOf: url)
+                player.prepareToPlay()
+                letterPlayers[letter] = player
+            } catch {
+                LLLogger.error("❌ 加载字母音频失败：\(resourceName).mp3 - \(error)")
+            }
+        }
     }
     
     // MARK: - Public Methods
@@ -56,30 +83,29 @@ class LLTypingSoundManager {
         keyPlayer.play()
     }
     
-    /// 播放正确音效
-    func playCorrectSound() {
+    /// 播放字母音效
+    func playLetterSound(for char: Character) {
         guard isEnabled else { return }
-        // 使用系统音效
-        if let sound = NSSound(named: "Tink") {
-            sound.play()
+        let lowercased = Character(String(char).lowercased())
+        guard lowercased >= "a" && lowercased <= "z" else { return }
+        guard let player = letterPlayers[lowercased] else {
+            LLLogger.warn("⚠️ 未找到字母音频播放器：\(lowercased)")
+            return
         }
+        
+        player.currentTime = 0
+        player.play()
     }
     
     /// 播放错误音效
     func playWrongSound() {
         guard isEnabled else { return }
-        // 使用系统音效
-        if let sound = NSSound(named: "Basso") {
-            sound.play()
-        }
+        wrongSound?.play()
     }
     
     /// 播放完成音效
     func playCompleteSound() {
         guard isEnabled else { return }
-        if let sound = NSSound(named: "Glass") {
-            sound.play()
-        }
+        completeSound?.play()
     }
 }
-

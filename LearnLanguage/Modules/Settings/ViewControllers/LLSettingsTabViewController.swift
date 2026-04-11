@@ -102,6 +102,7 @@ final class LLSettingsTabViewController: NSViewController {
     private var fontPreviewLabel: NSTextField!
     private var typingDictationModeCheck: NSButton!
     private var typingPracticeShowMeaningCheck: NSButton!
+    private var typingFollowLetterSoundCheck: NSButton!
     private var typingInputStylePopup: NSPopUpButton!
     private var autoShowAnswerPopup: NSPopUpButton!
     
@@ -394,8 +395,9 @@ final class LLSettingsTabViewController: NSViewController {
         
         typingDictationModeCheck = NSButton(checkboxWithTitle: NSLocalizedString("Dictation Mode", comment: ""), target: self, action: #selector(saveSettings))
         typingPracticeShowMeaningCheck = NSButton(checkboxWithTitle: NSLocalizedString("Show Meaning", comment: ""), target: self, action: #selector(saveSettings))
+        typingFollowLetterSoundCheck = NSButton(checkboxWithTitle: "跟播字母发音", target: self, action: #selector(saveSettings))
         
-        let typingStack = NSStackView(views: [typingDictationModeCheck, typingPracticeShowMeaningCheck])
+        let typingStack = NSStackView(views: [typingDictationModeCheck, typingPracticeShowMeaningCheck, typingFollowLetterSoundCheck])
         typingStack.orientation = .horizontal
         typingStack.spacing = 16
         
@@ -628,6 +630,7 @@ final class LLSettingsTabViewController: NSViewController {
         }
         typingDictationModeCheck.state = s.typingDictationMode ? .on : .off
         typingPracticeShowMeaningCheck.state = s.typingPracticeShowMeaning ? .on : .off
+        typingFollowLetterSoundCheck.state = s.typingFollowLetterSoundEnabled ? .on : .off
         if let index = LLTypingInputStyle.allCases.firstIndex(of: s.typingInputStyle) {
             typingInputStylePopup.selectItem(at: index)
         }
@@ -747,6 +750,7 @@ final class LLSettingsTabViewController: NSViewController {
         }
         s.typingDictationMode = typingDictationModeCheck.state == .on
         s.typingPracticeShowMeaning = typingPracticeShowMeaningCheck.state == .on
+        s.typingFollowLetterSoundEnabled = typingFollowLetterSoundCheck.state == .on
         
         // 打字练习输入框样式
         let inputStyleIndex = typingInputStylePopup.indexOfSelectedItem

@@ -142,7 +142,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         
         // 播放发音
         let settings = LLSettingsStore.shared.settings
-        if settings.pronunciationEnabled {
+        if settings.pronunciationEnabled && !settings.typingFollowLetterSoundEnabled {
             LLPronunciationManager.shared.speak(word: entry.text)
         }
         
@@ -206,7 +206,12 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         
         if isCorrect {
             // 正确输入
-            LLTypingSoundManager.shared.playKeySound()
+            let settings = LLSettingsStore.shared.settings
+            if settings.typingFollowLetterSoundEnabled {
+                LLTypingSoundManager.shared.playLetterSound(for: char)
+            } else {
+                LLTypingSoundManager.shared.playKeySound()
+            }
             // 检查是否完成
             if displayView.isFinished {
                 handleWordCompleted()

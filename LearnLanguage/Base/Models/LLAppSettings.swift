@@ -333,6 +333,7 @@ struct LLAppSettings: Codable {
     var reminderEnabled: Bool
     var reminderTime: Date
     var typingPracticeShowMeaning: Bool
+    var typingFollowLetterSoundEnabled: Bool
     var typingDictationMode: Bool  // 听写模式（隐藏单词）
     var typingInputStyle: LLTypingInputStyle  // 打字练习输入框样式
     var autoShowAnswerAfterErrors: Int  // 自动显示答案（错误N次后）
@@ -379,6 +380,7 @@ struct LLAppSettings: Codable {
         reminderEnabled: false,
         reminderTime: Calendar.current.date(from: DateComponents(hour: 9, minute: 0)) ?? Date(),
         typingPracticeShowMeaning: true,
+        typingFollowLetterSoundEnabled: false,
         typingDictationMode: false,
         typingInputStyle: .perLetter,
         autoShowAnswerAfterErrors: 3,
