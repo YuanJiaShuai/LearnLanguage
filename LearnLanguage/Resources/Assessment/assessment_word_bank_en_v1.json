@@ -3,42 +3,42 @@
   "title": "英语标准词汇测评词库",
   "language": "en",
   "version": 1,
-  "description": "用于词汇量评估的标准分层词库。当前为 V1 starter 数据，后续可继续扩充并基于 band 动态抽题。",
+  "description": "用于词汇量评估的标准分层词库。基于原始词典数据做严格筛选，优先保留词性清晰、释义较干净、适合测评的英文内容词，并按词频近似分层。",
   "bands": [
     {
       "id": "high",
       "label": "高频词",
-      "range": "1-2000"
+      "range": "近似高频"
     },
     {
       "id": "mid",
       "label": "中频词",
-      "range": "2001-5000"
+      "range": "近似中频"
     },
     {
       "id": "low",
       "label": "低频词",
-      "range": "5001+"
+      "range": "近似低频"
     }
   ],
   "entries": [
     {
       "id": "en_high_001",
-      "word": "build",
+      "word": "support",
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "建造",
-      "alternatives": ["建立", "发展"]
+      "meaning": "支撑",
+      "alternatives": []
     },
     {
       "id": "en_high_002",
-      "word": "decide",
+      "word": "record",
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "决定",
-      "alternatives": ["下决心", "判定"]
+      "meaning": "履历",
+      "alternatives": []
     },
     {
       "id": "en_high_003",
@@ -46,8 +46,8 @@
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "分享",
-      "alternatives": ["分担", "共享"]
+      "meaning": "共享",
+      "alternatives": []
     },
     {
       "id": "en_high_004",
@@ -55,17 +55,17 @@
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "返回",
-      "alternatives": ["归还", "回来"]
+      "meaning": "回来",
+      "alternatives": []
     },
     {
       "id": "en_high_005",
-      "word": "accept",
+      "word": "increase",
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "接受",
-      "alternatives": ["认可", "接纳"]
+      "meaning": "增加",
+      "alternatives": []
     },
     {
       "id": "en_high_006",
@@ -73,224 +73,8054 @@
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "提供",
-      "alternatives": ["提出", "给予"]
+      "meaning": "出价",
+      "alternatives": []
     },
     {
       "id": "en_high_007",
-      "word": "record",
+      "word": "build",
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "记录",
-      "alternatives": ["录下", "记载"]
+      "meaning": "建造",
+      "alternatives": []
     },
     {
       "id": "en_high_008",
-      "word": "improve",
+      "word": "respect",
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
-      "meaning": "改善",
-      "alternatives": ["提高", "改进"]
+      "meaning": "尊敬",
+      "alternatives": []
     },
     {
       "id": "en_high_009",
+      "word": "create",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "创造",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_010",
       "word": "travel",
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
       "meaning": "旅行",
-      "alternatives": ["出行", "游历"]
+      "alternatives": []
     },
     {
-      "id": "en_high_010",
+      "id": "en_high_011",
+      "word": "knowledge",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "知识",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_012",
+      "word": "approach",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "接近",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_013",
+      "word": "protect",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "保护",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_014",
       "word": "choose",
       "band": "high",
       "difficulty": 1,
       "partOfSpeech": "verb",
       "meaning": "选择",
-      "alternatives": ["挑选", "选定"]
+      "alternatives": []
+    },
+    {
+      "id": "en_high_015",
+      "word": "accept",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "接受",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_016",
+      "word": "improve",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "改善",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_017",
+      "word": "decide",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "决定",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_018",
+      "word": "require",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "需要",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_019",
+      "word": "develop",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "发展",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_020",
+      "word": "suggest",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "建议",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_021",
+      "word": "reduce",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "减少",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_022",
+      "word": "maintain",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "维持",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_023",
+      "word": "achieve",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "完成",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_024",
+      "word": "assume",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "假定",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_025",
+      "word": "identify",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "识别",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_026",
+      "word": "manage",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "处理",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_027",
+      "word": "contain",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "包含",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_028",
+      "word": "establish",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "建立",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_029",
+      "word": "compare",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "比较",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_030",
+      "word": "discover",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "发现",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_031",
+      "word": "know",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "知道",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_032",
+      "word": "want",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "想要",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_033",
+      "word": "life",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "生命",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_034",
+      "word": "great",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "伟大的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_035",
+      "word": "find",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "找到",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_036",
+      "word": "help",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "帮忙",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_037",
+      "word": "high",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "高度",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_038",
+      "word": "little",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "少许",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_039",
+      "word": "since",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "以后",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_040",
+      "word": "game",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "比赛",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_041",
+      "word": "give",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "弹性",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_042",
+      "word": "place",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "地方",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_043",
+      "word": "school",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "学校",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_044",
+      "word": "next",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "下次的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_045",
+      "word": "found",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "建立",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_046",
+      "word": "show",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "表示",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_047",
+      "word": "family",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "家庭",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_048",
+      "word": "keep",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "保持",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_049",
+      "word": "please",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "满足的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_050",
+      "word": "money",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "货币",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_051",
+      "word": "free",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "自由的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_052",
+      "word": "someone",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "有人",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_053",
+      "word": "name",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "名字",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_054",
+      "word": "real",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "真的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_055",
+      "word": "different",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "不同的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_056",
+      "word": "thought",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "思考",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_057",
+      "word": "government",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "政府",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_058",
+      "word": "public",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "公众",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_059",
+      "word": "women",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "女人",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_060",
+      "word": "business",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "商业",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_061",
+      "word": "care",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "注意",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_062",
+      "word": "start",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "动身",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_063",
+      "word": "system",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "系统",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_064",
+      "word": "times",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "时期",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_065",
+      "word": "week",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "星期",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_066",
+      "word": "change",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "改变",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_067",
+      "word": "enough",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "足够的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_068",
+      "word": "mean",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "低劣的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_069",
+      "word": "once",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "一次",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_070",
+      "word": "tell",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "告诉",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_071",
+      "word": "music",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "音乐",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_072",
+      "word": "stop",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "停止",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_073",
+      "word": "call",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "喊声",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_074",
+      "word": "national",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "国家的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_075",
+      "word": "small",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "小的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_076",
+      "word": "white",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "白色",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_077",
+      "word": "though",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "虽然",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_078",
+      "word": "actually",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "实际上",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_079",
+      "word": "service",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "服务",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_080",
+      "word": "shit",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "拉屎",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_081",
+      "word": "thank",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "感谢",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_082",
+      "word": "children",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "孩子",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_083",
+      "word": "everyone",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "每个人",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_084",
+      "word": "general",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "普通",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_085",
+      "word": "area",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "范围",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_086",
+      "word": "black",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "黑色",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_087",
+      "word": "kind",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "种类",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_088",
+      "word": "maybe",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "大概",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_089",
+      "word": "president",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "总统",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_090",
+      "word": "story",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "故事",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_091",
+      "word": "course",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "过程",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_092",
+      "word": "health",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "健康",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_093",
+      "word": "hope",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "希望",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_094",
+      "word": "important",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "重要的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_095",
+      "word": "means",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "手段",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_096",
+      "word": "news",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "新闻",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_097",
+      "word": "early",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "早的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_098",
+      "word": "fact",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "事实",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_099",
+      "word": "half",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "一半",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_100",
+      "word": "level",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "水平",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_101",
+      "word": "mind",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "头脑",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_102",
+      "word": "single",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "单一的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_103",
+      "word": "become",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "变成",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_104",
+      "word": "body",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "身体",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_105",
+      "word": "control",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "控制",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_106",
+      "word": "food",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "食物",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_107",
+      "word": "office",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "办公室",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_108",
+      "word": "problem",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "问题",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_109",
+      "word": "south",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "南部",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_110",
+      "word": "true",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "真实的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_111",
+      "word": "almost",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "几乎",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_112",
+      "word": "fuck",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "性交",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_113",
+      "word": "history",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "历史",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_114",
+      "word": "known",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "知名的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_115",
+      "word": "large",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "大的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_116",
+      "word": "lost",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "失去的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_117",
+      "word": "research",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "研究",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_118",
+      "word": "room",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "房间",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_119",
+      "word": "several",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "几个",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_120",
+      "word": "wrong",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "错误的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_121",
+      "word": "along",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "往前",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_122",
+      "word": "anyone",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "任何一个",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_123",
+      "word": "else",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "别的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_124",
+      "word": "girl",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "女孩",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_125",
+      "word": "john",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "约翰",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_126",
+      "word": "pretty",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "漂亮的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_127",
+      "word": "friend",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "朋友",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_128",
+      "word": "nice",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "美好的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_129",
+      "word": "probably",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "大概",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_130",
+      "word": "class",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "班级",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_131",
+      "word": "idea",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "想法",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_132",
+      "word": "past",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "过去",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_133",
+      "word": "possible",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "可能的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_134",
+      "word": "cause",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "原因",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_135",
+      "word": "happy",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "快乐的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_136",
+      "word": "move",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "移动",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_137",
+      "word": "question",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "问题",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_138",
+      "word": "series",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "连续",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_139",
+      "word": "wait",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "等待",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_140",
+      "word": "woman",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "女人",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_141",
+      "word": "community",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "公社",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_142",
+      "word": "late",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "迟的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_143",
+      "word": "leave",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "许可",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_144",
+      "word": "special",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "特派员",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_145",
+      "word": "future",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "未来",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_146",
+      "word": "million",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "百万",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_147",
+      "word": "police",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "警察队",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_148",
+      "word": "short",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "简略",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_149",
+      "word": "stay",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "逗留",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_150",
+      "word": "deal",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "交易",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_151",
+      "word": "reason",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "理由",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_152",
+      "word": "report",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "报告",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_153",
+      "word": "turn",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "转动",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_154",
+      "word": "check",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "阻止",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_155",
+      "word": "development",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "发展",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_156",
+      "word": "form",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "形状",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_157",
+      "word": "myself",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "我自己",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_158",
+      "word": "yourself",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "你自己",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_159",
+      "word": "child",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "孩子",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_160",
+      "word": "media",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "媒体",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_161",
+      "word": "phone",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "电话",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_162",
+      "word": "behind",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "在后地",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_163",
+      "word": "easy",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "容易的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_164",
+      "word": "market",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "市场",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_165",
+      "word": "near",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "亲近的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_166",
+      "word": "plan",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "计划",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_167",
+      "word": "political",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "政治的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_168",
+      "word": "quite",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "相当",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_169",
+      "word": "available",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "可用到的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_170",
+      "word": "education",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "教育",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_171",
+      "word": "final",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "结局",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_172",
+      "word": "front",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "前面",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_173",
+      "word": "list",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "目录",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_174",
+      "word": "ready",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "有准备的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_175",
+      "word": "current",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "当前的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_176",
+      "word": "example",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "例子",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_177",
+      "word": "experience",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "经验",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_178",
+      "word": "london",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "伦敦",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_179",
+      "word": "program",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "节目",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_180",
+      "word": "type",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "类型",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_181",
+      "word": "baby",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "婴孩",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_182",
+      "word": "chance",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "机会",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_183",
+      "word": "process",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "过程",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_184",
+      "word": "study",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "学习",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_185",
+      "word": "action",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "动作",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_186",
+      "word": "clear",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "清楚的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_187",
+      "word": "himself",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "他自己",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_188",
+      "word": "outside",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "外面",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_189",
+      "word": "board",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "木板",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_190",
+      "word": "cost",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "成本",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_191",
+      "word": "field",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "原野",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_192",
+      "word": "instead",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "代替",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_193",
+      "word": "main",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "主要部分",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_194",
+      "word": "moment",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "片刻的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_195",
+      "word": "town",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "市镇",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_196",
+      "word": "fight",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "打架",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_197",
+      "word": "fine",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "美好的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_198",
+      "word": "force",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "力量",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_199",
+      "word": "hear",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "听到",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_200",
+      "word": "issue",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "出版",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_201",
+      "word": "price",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "价格",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_202",
+      "word": "space",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "空间",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_203",
+      "word": "term",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "学期",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_204",
+      "word": "wife",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "妻子",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_205",
+      "word": "beautiful",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "美丽的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_206",
+      "word": "date",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "日期",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_207",
+      "word": "land",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "陆地",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_208",
+      "word": "miss",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "过错",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_209",
+      "word": "project",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "计划",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_210",
+      "word": "shot",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "开枪",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_211",
+      "word": "site",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "地点",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_212",
+      "word": "believe",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "有坚定的宗教信仰",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_213",
+      "word": "account",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "计算",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_214",
+      "word": "especially",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "特别",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_215",
+      "word": "include",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "包括",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_216",
+      "word": "period",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "时期",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_217",
+      "word": "position",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "位置",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_218",
+      "word": "similar",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "相似的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_219",
+      "word": "total",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "总数",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_220",
+      "word": "club",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "俱乐部",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_221",
+      "word": "film",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "薄膜",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_222",
+      "word": "lead",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "领导",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_223",
+      "word": "likely",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "很可能的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_224",
+      "word": "military",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "军事的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_225",
+      "word": "perfect",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "完成式",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_226",
+      "word": "personal",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "私人的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_227",
+      "word": "security",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "安全",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_228",
+      "word": "dead",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "死的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_229",
+      "word": "english",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "英文的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_230",
+      "word": "happen",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "发生",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_231",
+      "word": "hold",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "把握",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_232",
+      "word": "industry",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "工业",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_233",
+      "word": "inside",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "里面",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_234",
+      "word": "online",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "联机",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_235",
+      "word": "private",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "私人的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_236",
+      "word": "sense",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "官能",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_237",
+      "word": "view",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "景色",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_238",
+      "word": "event",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "事件",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_239",
+      "word": "hour",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "小时",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_240",
+      "word": "result",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "结果",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_241",
+      "word": "sorry",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "遗憾的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_242",
+      "word": "design",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "设计",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_243",
+      "word": "finally",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "最后",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_244",
+      "word": "guess",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "猜测",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_245",
+      "word": "policy",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "政策",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_246",
+      "word": "society",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "社会",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_247",
+      "word": "alone",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "单独的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_248",
+      "word": "average",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "平均",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_249",
+      "word": "bank",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "银行",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_250",
+      "word": "certain",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "确定的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_251",
+      "word": "east",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "东方",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_252",
+      "word": "medical",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "医生",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_253",
+      "word": "movie",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "电影",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_254",
+      "word": "original",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "最初的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_255",
+      "word": "park",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "公园",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_256",
+      "word": "performance",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "履行",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_257",
+      "word": "role",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "角色",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_258",
+      "word": "themselves",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "他们自己",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_259",
+      "word": "worth",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "相当",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_260",
+      "word": "bill",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "帐单",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_261",
+      "word": "cool",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "凉爽",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_262",
+      "word": "exactly",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "正确地",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_263",
+      "word": "provide",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "供应",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_264",
+      "word": "source",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "来源",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_265",
+      "word": "usually",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "通常",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_266",
+      "word": "follow",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "跟随",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_267",
+      "word": "production",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "生产",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_268",
+      "word": "stuff",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "原料",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_269",
+      "word": "amount",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "数量",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_270",
+      "word": "blue",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "蓝色",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_271",
+      "word": "david",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "大卫",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_272",
+      "word": "drive",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "驾车",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_273",
+      "word": "fall",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "秋天",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_274",
+      "word": "green",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "绿色",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_275",
+      "word": "management",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "经营",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_276",
+      "word": "match",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "火柴",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_277",
+      "word": "model",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "样式",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_278",
+      "word": "size",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "大小",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_279",
+      "word": "step",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "脚步",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_280",
+      "word": "trust",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "信任",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_281",
+      "word": "central",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "中心的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_282",
+      "word": "england",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "英格兰",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_283",
+      "word": "range",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "山脉",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_284",
+      "word": "review",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "回顾",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_285",
+      "word": "science",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "科学",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_286",
+      "word": "trade",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "贸易",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_287",
+      "word": "various",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "不同的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_288",
+      "word": "attention",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "注意",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_289",
+      "word": "chief",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "首领",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_290",
+      "word": "football",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "足球",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_291",
+      "word": "hate",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "憎恨",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_292",
+      "word": "james",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "詹姆士",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_293",
+      "word": "natural",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "自然的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_294",
+      "word": "property",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "财产",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_295",
+      "word": "quality",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "质量",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_296",
+      "word": "style",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "风格",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_297",
+      "word": "vote",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "投票",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_298",
+      "word": "china",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "中国",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_299",
+      "word": "complete",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "全部的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_300",
+      "word": "economic",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "经济",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_301",
+      "word": "hell",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "地狱",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_302",
+      "word": "itself",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "它本身",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_303",
+      "word": "language",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "语言",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_304",
+      "word": "serious",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "严肃的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_305",
+      "word": "stage",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "舞台",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_306",
+      "word": "title",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "头衔",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_307",
+      "word": "article",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "文章",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_308",
+      "word": "attack",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "进攻",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_309",
+      "word": "born",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "天生的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_310",
+      "word": "damn",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "谴责",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_311",
+      "word": "decision",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "决定",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_312",
+      "word": "enjoy",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "享受",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_313",
+      "word": "entire",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "全部的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_314",
+      "word": "french",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "法国人",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_315",
+      "word": "kill",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "杀死",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_316",
+      "word": "perhaps",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "或许",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_317",
+      "word": "poor",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "adjective",
+      "meaning": "贫穷的",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_318",
+      "word": "release",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "释放",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_319",
+      "word": "situation",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "情形",
+      "alternatives": []
+    },
+    {
+      "id": "en_high_320",
+      "word": "technology",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "noun",
+      "meaning": "工艺",
+      "alternatives": []
     },
     {
       "id": "en_mid_001",
-      "word": "maintain",
+      "word": "notion",
       "band": "mid",
       "difficulty": 2,
-      "partOfSpeech": "verb",
-      "meaning": "维持",
-      "alternatives": ["保养", "坚持"]
+      "partOfSpeech": "noun",
+      "meaning": "概念",
+      "alternatives": []
     },
     {
       "id": "en_mid_002",
-      "word": "approach",
+      "word": "subtle",
       "band": "mid",
       "difficulty": 2,
-      "partOfSpeech": "verb",
-      "meaning": "接近",
-      "alternatives": ["着手处理", "临近"]
+      "partOfSpeech": "adjective",
+      "meaning": "狡猾的",
+      "alternatives": []
     },
     {
       "id": "en_mid_003",
-      "word": "assume",
+      "word": "obsolete",
       "band": "mid",
       "difficulty": 2,
-      "partOfSpeech": "verb",
-      "meaning": "假设",
-      "alternatives": ["设想", "认为"]
+      "partOfSpeech": "noun",
+      "meaning": "荒废的",
+      "alternatives": []
     },
     {
       "id": "en_mid_004",
-      "word": "require",
+      "word": "terminate",
       "band": "mid",
       "difficulty": 2,
       "partOfSpeech": "verb",
-      "meaning": "需要",
-      "alternatives": ["要求", "规定"]
+      "meaning": "停止",
+      "alternatives": []
     },
     {
       "id": "en_mid_005",
-      "word": "reduce",
+      "word": "derive",
       "band": "mid",
       "difficulty": 2,
       "partOfSpeech": "verb",
-      "meaning": "减少",
-      "alternatives": ["降低", "缩小"]
+      "meaning": "得自",
+      "alternatives": []
     },
     {
       "id": "en_mid_006",
-      "word": "identify",
+      "word": "compile",
       "band": "mid",
       "difficulty": 2,
       "partOfSpeech": "verb",
-      "meaning": "识别",
-      "alternatives": ["确认", "鉴定"]
+      "meaning": "编译",
+      "alternatives": []
     },
     {
       "id": "en_mid_007",
-      "word": "establish",
+      "word": "plausible",
       "band": "mid",
       "difficulty": 2,
-      "partOfSpeech": "verb",
-      "meaning": "建立",
-      "alternatives": ["设立", "确立"]
+      "partOfSpeech": "adjective",
+      "meaning": "似是而非的",
+      "alternatives": []
     },
     {
       "id": "en_mid_008",
-      "word": "suggest",
+      "word": "coherent",
       "band": "mid",
       "difficulty": 2,
-      "partOfSpeech": "verb",
-      "meaning": "建议",
-      "alternatives": ["暗示", "提议"]
+      "partOfSpeech": "adjective",
+      "meaning": "粘在一起的",
+      "alternatives": []
     },
     {
       "id": "en_mid_009",
-      "word": "achieve",
+      "word": "allocate",
       "band": "mid",
       "difficulty": 2,
       "partOfSpeech": "verb",
-      "meaning": "实现",
-      "alternatives": ["达到", "取得"]
+      "meaning": "分派",
+      "alternatives": []
     },
     {
       "id": "en_mid_010",
-      "word": "contain",
+      "word": "meticulous",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "小心翼翼的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_011",
+      "word": "absence",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "不在",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_012",
+      "word": "blues",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "抑郁",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_013",
+      "word": "bruce",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "布鲁斯",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_014",
+      "word": "contribute",
       "band": "mid",
       "difficulty": 2,
       "partOfSpeech": "verb",
-      "meaning": "包含",
-      "alternatives": ["容纳", "控制"]
+      "meaning": "捐助",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_015",
+      "word": "delicious",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "美味的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_016",
+      "word": "deny",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "否认",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_017",
+      "word": "ease",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "安逸",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_018",
+      "word": "fame",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "名声",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_019",
+      "word": "flood",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "洪水",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_020",
+      "word": "genetic",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "遗传的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_021",
+      "word": "glasses",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "眼镜",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_022",
+      "word": "instant",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "立即的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_023",
+      "word": "kate",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "的昵称",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_024",
+      "word": "liberty",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "自由",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_025",
+      "word": "principle",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "法则",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_026",
+      "word": "progressive",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "改革论者",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_027",
+      "word": "punishment",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "惩罚",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_028",
+      "word": "rally",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "重整旗鼓",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_029",
+      "word": "rapidly",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "迅速地",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_030",
+      "word": "tail",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "尾部",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_031",
+      "word": "alert",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "提防的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_032",
+      "word": "arena",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "竞技场",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_033",
+      "word": "billy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "棍棒",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_034",
+      "word": "boom",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "繁荣",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_035",
+      "word": "boots",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "擦靴人",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_036",
+      "word": "brave",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "勇敢的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_037",
+      "word": "column",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "圆柱",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_038",
+      "word": "composition",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "写作",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_039",
+      "word": "density",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "密度",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_040",
+      "word": "difficulty",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "困难",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_041",
+      "word": "ethnic",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "人种的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_042",
+      "word": "expenses",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "费用",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_043",
+      "word": "fundamental",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "基础的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_044",
+      "word": "genius",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "天才",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_045",
+      "word": "guidance",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "指导",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_046",
+      "word": "intention",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "意图",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_047",
+      "word": "mechanical",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "机械的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_048",
+      "word": "nigeria",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "尼日利亚",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_049",
+      "word": "periods",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "周期",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_050",
+      "word": "precious",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "宝贵的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_051",
+      "word": "pregnancy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "怀孕",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_052",
+      "word": "premium",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "额外费用",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_053",
+      "word": "pretend",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "假装",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_054",
+      "word": "prominent",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "卓越的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_055",
+      "word": "radical",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "根本的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_056",
+      "word": "residential",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "住宅的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_057",
+      "word": "reward",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "报酬",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_058",
+      "word": "robin",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "知更鸟",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_059",
+      "word": "russell",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "拉塞尔",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_060",
+      "word": "satellite",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "人造卫星",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_061",
+      "word": "shake",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "摇动",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_062",
+      "word": "substantial",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "坚固的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_063",
+      "word": "teen",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "悲哀",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_064",
+      "word": "trap",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "圈套",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_065",
+      "word": "uniform",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "统一的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_066",
+      "word": "wooden",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "木制的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_067",
+      "word": "aggressive",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "好斗的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_068",
+      "word": "apparent",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "显然的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_069",
+      "word": "bang",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "重击",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_070",
+      "word": "blast",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "一阵",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_071",
+      "word": "bones",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "骨骼",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_072",
+      "word": "complaint",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "诉苦",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_073",
+      "word": "component",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "成分",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_074",
+      "word": "courage",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "勇气",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_075",
+      "word": "cure",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "治愈",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_076",
+      "word": "diversity",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "差异",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_077",
+      "word": "duties",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "关税",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_078",
+      "word": "feedback",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "回授",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_079",
+      "word": "frozen",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "冻结的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_080",
+      "word": "humanity",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "人性",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_081",
+      "word": "innovation",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "改革",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_082",
+      "word": "jacket",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "短上衣",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_083",
+      "word": "legislative",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "立法的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_084",
+      "word": "manual",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "手册",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_085",
+      "word": "operator",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "操作员",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_086",
+      "word": "painful",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "疼痛的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_087",
+      "word": "preparation",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "准备",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_088",
+      "word": "punch",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "冲压机",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_089",
+      "word": "purple",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "紫色的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_090",
+      "word": "railroad",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "铁路",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_091",
+      "word": "rick",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "干草堆",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_092",
+      "word": "romance",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "冒险故事",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_093",
+      "word": "sufficient",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "充分的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_094",
+      "word": "ukraine",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "乌克兰",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_095",
+      "word": "underground",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "地下的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_096",
+      "word": "arsenal",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "兵工厂",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_097",
+      "word": "biological",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "生物学的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_098",
+      "word": "chip",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "碎片",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_099",
+      "word": "dare",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "挑战",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_100",
+      "word": "database",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "数据库",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_101",
+      "word": "define",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "定义",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_102",
+      "word": "documentary",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "记录片",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_103",
+      "word": "domain",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "领土",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_104",
+      "word": "dynamic",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "动力的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_105",
+      "word": "engagement",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "约会",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_106",
+      "word": "explore",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "探险",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_107",
+      "word": "favour",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "亲切",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_108",
+      "word": "grave",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "墓穴",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_109",
+      "word": "investigate",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "调查",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_110",
+      "word": "laboratory",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "实验室",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_111",
+      "word": "lincoln",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "林肯",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_112",
+      "word": "literary",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "文学",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_113",
+      "word": "mask",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "面具",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_114",
+      "word": "midnight",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "午夜",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_115",
+      "word": "oscar",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "奥斯卡",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_116",
+      "word": "piano",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "钢琴",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_117",
+      "word": "praise",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "赞扬",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_118",
+      "word": "psychology",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "心理学",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_119",
+      "word": "relation",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "关系",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_120",
+      "word": "rocket",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "火箭",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_121",
+      "word": "ruin",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "破产",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_122",
+      "word": "sean",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "矿脉",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_123",
+      "word": "slave",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "奴隶",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_124",
+      "word": "stability",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "稳定性",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_125",
+      "word": "steady",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "稳固的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_126",
+      "word": "symbol",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "符号",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_127",
+      "word": "terminal",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "终点站",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_128",
+      "word": "toilet",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "盥洗室",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_129",
+      "word": "treaty",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "条约",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_130",
+      "word": "triple",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "三倍数",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_131",
+      "word": "unlikely",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "未必的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_132",
+      "word": "vietnam",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "越南",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_133",
+      "word": "affair",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "事务",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_134",
+      "word": "agenda",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "议程",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_135",
+      "word": "calendar",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "日历",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_136",
+      "word": "cape",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "海角",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_137",
+      "word": "collective",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "集体的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_138",
+      "word": "cooperation",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "合作",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_139",
+      "word": "craft",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "工艺",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_140",
+      "word": "darkness",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "黑暗",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_141",
+      "word": "devil",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "魔鬼",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_142",
+      "word": "edit",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "编辑",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_143",
+      "word": "enable",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "使能够",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_144",
+      "word": "equity",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "公平",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_145",
+      "word": "fortune",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "财富",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_146",
+      "word": "graham",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "全麦",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_147",
+      "word": "hardware",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "五金器具",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_148",
+      "word": "invite",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "邀请",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_149",
+      "word": "involvement",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "连累",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_150",
+      "word": "kentucky",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "肯塔基州",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_151",
+      "word": "madrid",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "马德里",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_152",
+      "word": "nuts",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "热衷的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_153",
+      "word": "partly",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "部分",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_154",
+      "word": "petition",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "请愿",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_155",
+      "word": "phrase",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "短语",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_156",
+      "word": "physically",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "身体上地",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_157",
+      "word": "racial",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "人种的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_158",
+      "word": "regime",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "政体",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_159",
+      "word": "sauce",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "沙司",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_160",
+      "word": "seal",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "封铅",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_161",
+      "word": "shield",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "防护物",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_162",
+      "word": "similarly",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "同样地",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_163",
+      "word": "slide",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "滑动",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_164",
+      "word": "summit",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "顶点",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_165",
+      "word": "throat",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "咽喉",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_166",
+      "word": "wisdom",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "智慧",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_167",
+      "word": "alien",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "外侨",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_168",
+      "word": "awkward",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "难使用的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_169",
+      "word": "beef",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "牛肉",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_170",
+      "word": "candy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "糖果",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_171",
+      "word": "celebration",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "庆祝",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_172",
+      "word": "celebrity",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "名声",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_173",
+      "word": "certificate",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "证书",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_174",
+      "word": "clay",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "粘土",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_175",
+      "word": "default",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "默认",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_176",
+      "word": "dialogue",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "对话",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_177",
+      "word": "distinct",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "清楚的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_178",
+      "word": "estimate",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "估计",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_179",
+      "word": "execution",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "实行",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_180",
+      "word": "fifty",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "五十",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_181",
+      "word": "fool",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "愚人",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_182",
+      "word": "framework",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "构架",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_183",
+      "word": "franchise",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "特权",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_184",
+      "word": "furniture",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "家具",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_185",
+      "word": "intelligent",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "聪明的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_186",
+      "word": "interaction",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "交互作用",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_187",
+      "word": "mall",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "购物商场",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_188",
+      "word": "overseas",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "海外",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_189",
+      "word": "polish",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "磨光",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_190",
+      "word": "relax",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "放松",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_191",
+      "word": "reliable",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "可靠的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_192",
+      "word": "rely",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "依赖",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_193",
+      "word": "remarkable",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "不平常的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_194",
+      "word": "sacrifice",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "牺牲",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_195",
+      "word": "sole",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "单独的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_196",
+      "word": "tale",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "故事",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_197",
+      "word": "worship",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "崇拜",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_198",
+      "word": "worthy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "杰出人物",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_199",
+      "word": "alarm",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "警报",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_200",
+      "word": "bass",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "低音部",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_201",
+      "word": "bloody",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "血腥的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_202",
+      "word": "dependent",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "依靠的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_203",
+      "word": "dual",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "双的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_204",
+      "word": "edinburgh",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "爱丁堡",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_205",
+      "word": "globe",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "球体",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_206",
+      "word": "greece",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "希腊",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_207",
+      "word": "gulf",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "海湾",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_208",
+      "word": "intent",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "意图",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_209",
+      "word": "involve",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "包括",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_210",
+      "word": "judgment",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "判断",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_211",
+      "word": "kennedy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "肯尼迪",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_212",
+      "word": "knight",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "骑士",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_213",
+      "word": "larry",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "拉里",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_214",
+      "word": "logo",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "标识语",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_215",
+      "word": "malaysia",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "马来群岛",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_216",
+      "word": "mature",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "成熟的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_217",
+      "word": "moore",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "摩尔",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_218",
+      "word": "nazi",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "纳粹党人",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_219",
+      "word": "netherlands",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "荷兰",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_220",
+      "word": "peaceful",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "和平的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_221",
+      "word": "philip",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "菲利普",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_222",
+      "word": "prevention",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "预防",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_223",
+      "word": "publicly",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "公然地",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_224",
+      "word": "revenge",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "报仇",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_225",
+      "word": "spare",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "多余的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_226",
+      "word": "specialist",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "专门医师",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_227",
+      "word": "submit",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "服从",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_228",
+      "word": "tourism",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "观光事业",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_229",
+      "word": "turkish",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "土耳其语",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_230",
+      "word": "acceptable",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "可接受的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_231",
+      "word": "allies",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "联盟国",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_232",
+      "word": "auction",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "拍卖",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_233",
+      "word": "bonds",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "镣铐",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_234",
+      "word": "chaos",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "混乱",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_235",
+      "word": "dawn",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "黎明",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_236",
+      "word": "dispute",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "争论",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_237",
+      "word": "earnings",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "所得",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_238",
+      "word": "hilarious",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "欢闹的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_239",
+      "word": "isis",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "伊希斯",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_240",
+      "word": "maryland",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "马里兰",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_241",
+      "word": "moderate",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "中等的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_242",
+      "word": "opera",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "歌剧",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_243",
+      "word": "overcome",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "战胜",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_244",
+      "word": "parallel",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "平行的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_245",
+      "word": "passage",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "通过",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_246",
+      "word": "radiation",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "发散",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_247",
+      "word": "tokyo",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "东京",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_248",
+      "word": "tune",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "曲调",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_249",
+      "word": "utility",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "效用",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_250",
+      "word": "acquisition",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "获得",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_251",
+      "word": "alice",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "艾丽丝",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_252",
+      "word": "anime",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "芳香树脂",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_253",
+      "word": "announce",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "宣布",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_254",
+      "word": "autumn",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "秋天",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_255",
+      "word": "bold",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "大胆的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_256",
+      "word": "breathe",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "呼吸",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_257",
+      "word": "classical",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "古典的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_258",
+      "word": "clip",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "夹子",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_259",
+      "word": "conspiracy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "共谋",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_260",
+      "word": "controversy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "论争",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_261",
+      "word": "convince",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "使确信",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_262",
+      "word": "equality",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "等同性",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_263",
+      "word": "exam",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "考试",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_264",
+      "word": "examination",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "考试",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_265",
+      "word": "federation",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "同盟",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_266",
+      "word": "fiscal",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "财政的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_267",
+      "word": "guardian",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "护卫者",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_268",
+      "word": "homeless",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "无家的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_269",
+      "word": "instrument",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "工具",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_270",
+      "word": "jerry",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "草率的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_271",
+      "word": "mainstream",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "主流",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_272",
+      "word": "menu",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "菜单",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_273",
+      "word": "mutual",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "相互的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_274",
+      "word": "offense",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "进攻",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_275",
+      "word": "oral",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "口头的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_276",
+      "word": "panic",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "惊慌",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_277",
+      "word": "pursue",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "追赶",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_278",
+      "word": "realise",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "觉悟",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_279",
+      "word": "requirement",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "需求",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_280",
+      "word": "scope",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "范围",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_281",
+      "word": "terror",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "恐怖",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_282",
+      "word": "venture",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "冒险",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_283",
+      "word": "virtually",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "事实上",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_284",
+      "word": "warren",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "养兔场",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_285",
+      "word": "worn",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "用旧的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_286",
+      "word": "adams",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "亚当斯",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_287",
+      "word": "arrangement",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "排列",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_288",
+      "word": "danny",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "丹尼",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_289",
+      "word": "emperor",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "皇帝",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_290",
+      "word": "enormous",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "巨大的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_291",
+      "word": "forgive",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "原谅",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_292",
+      "word": "garage",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "汽车间",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_293",
+      "word": "guidelines",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "指导方针",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_294",
+      "word": "indonesia",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "印尼",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_295",
+      "word": "inquiry",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "质询",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_296",
+      "word": "inspector",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "检查员",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_297",
+      "word": "khan",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "可汗",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_298",
+      "word": "lion",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "狮子",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_299",
+      "word": "lonely",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "孤独的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_300",
+      "word": "mercy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "仁慈",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_301",
+      "word": "promises",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "承诺",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_302",
+      "word": "racism",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "种族主义",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_303",
+      "word": "rude",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "粗鲁的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_304",
+      "word": "screw",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "螺丝钉",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_305",
+      "word": "signature",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "签名",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_306",
+      "word": "tribute",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "贡品",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_307",
+      "word": "vary",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "改变",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_308",
+      "word": "venue",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "犯罪地点",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_309",
+      "word": "abortion",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "流产",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_310",
+      "word": "accuracy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "精确性",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_311",
+      "word": "albert",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "艾伯特",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_312",
+      "word": "artificial",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "人造的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_313",
+      "word": "bullet",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "子弹",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_314",
+      "word": "burns",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "络腮胡子",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_315",
+      "word": "carl",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "乡下人",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_316",
+      "word": "conversion",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "变换",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_317",
+      "word": "copyright",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "版权",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_318",
+      "word": "deposit",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "堆积物",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_319",
+      "word": "destination",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "目的地",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_320",
+      "word": "dirt",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "污垢",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_321",
+      "word": "diverse",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "不同的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_322",
+      "word": "divine",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "神的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_323",
+      "word": "exclusively",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "排外地",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_324",
+      "word": "export",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "输出",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_325",
+      "word": "formerly",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "从前",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_326",
+      "word": "functional",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "功能的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_327",
+      "word": "habit",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "习惯",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_328",
+      "word": "jealous",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "妒忌的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_329",
+      "word": "laura",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "劳拉",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_330",
+      "word": "lazy",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "懒惰的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_331",
+      "word": "mama",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "妈妈",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_332",
+      "word": "marshall",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "马歇尔",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_333",
+      "word": "mitchell",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "米切尔",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_334",
+      "word": "municipal",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "市政的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_335",
+      "word": "naval",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "海军的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_336",
+      "word": "neutral",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "中立者",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_337",
+      "word": "noble",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "高尚的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_338",
+      "word": "poland",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "波兰",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_339",
+      "word": "popularity",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "普及",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_340",
+      "word": "relate",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "叙述",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_341",
+      "word": "robot",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "机器人",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_342",
+      "word": "securities",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "有价证券",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_343",
+      "word": "susan",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "苏珊",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_344",
+      "word": "terrorism",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "恐怖主义",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_345",
+      "word": "terry",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "厚绒布",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_346",
+      "word": "toxic",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "有毒的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_347",
+      "word": "treasury",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "财政部",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_348",
+      "word": "tunnel",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "隧道",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_349",
+      "word": "upgrade",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "升级",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_350",
+      "word": "warrant",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "授权",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_351",
+      "word": "wound",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "创伤",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_352",
+      "word": "actively",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "活跃地",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_353",
+      "word": "afghanistan",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "阿富汗",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_354",
+      "word": "asset",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "资产",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_355",
+      "word": "barcelona",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "巴塞罗纳",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_356",
+      "word": "brazilian",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "巴西人",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_357",
+      "word": "brush",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "刷子",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_358",
+      "word": "burden",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "担子",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_359",
+      "word": "casual",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "adjective",
+      "meaning": "偶然的",
+      "alternatives": []
+    },
+    {
+      "id": "en_mid_360",
+      "word": "chef",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "noun",
+      "meaning": "厨师",
+      "alternatives": []
     },
     {
       "id": "en_low_001",
-      "word": "allocate",
-      "band": "low",
-      "difficulty": 3,
-      "partOfSpeech": "verb",
-      "meaning": "分配",
-      "alternatives": ["拨给", "调配"]
-    },
-    {
-      "id": "en_low_002",
-      "word": "meticulous",
-      "band": "low",
-      "difficulty": 3,
-      "partOfSpeech": "adjective",
-      "meaning": "一丝不苟的",
-      "alternatives": ["严谨细致的", "非常认真的"]
-    },
-    {
-      "id": "en_low_003",
-      "word": "obsolete",
-      "band": "low",
-      "difficulty": 3,
-      "partOfSpeech": "adjective",
-      "meaning": "过时的",
-      "alternatives": ["废弃的", "陈旧的"]
-    },
-    {
-      "id": "en_low_004",
-      "word": "coherent",
-      "band": "low",
-      "difficulty": 3,
-      "partOfSpeech": "adjective",
-      "meaning": "连贯的",
-      "alternatives": ["条理清晰的", "一致的"]
-    },
-    {
-      "id": "en_low_005",
-      "word": "notion",
+      "word": "agitation",
       "band": "low",
       "difficulty": 3,
       "partOfSpeech": "noun",
-      "meaning": "概念",
-      "alternatives": ["观念", "想法"]
+      "meaning": "激动",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_002",
+      "word": "airway",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "空中航线",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_003",
+      "word": "algebraic",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "代数的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_004",
+      "word": "amaze",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "使吃惊",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_005",
+      "word": "assertive",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "断定的",
+      "alternatives": []
     },
     {
       "id": "en_low_006",
-      "word": "subtle",
+      "word": "augment",
       "band": "low",
       "difficulty": 3,
-      "partOfSpeech": "adjective",
-      "meaning": "微妙的",
-      "alternatives": ["细微的", "不易察觉的"]
+      "partOfSpeech": "verb",
+      "meaning": "增加",
+      "alternatives": []
     },
     {
       "id": "en_low_007",
-      "word": "derive",
+      "word": "avalon",
       "band": "low",
       "difficulty": 3,
-      "partOfSpeech": "verb",
-      "meaning": "获得",
-      "alternatives": ["源于", "推导出"]
+      "partOfSpeech": "noun",
+      "meaning": "阿瓦隆",
+      "alternatives": []
     },
     {
       "id": "en_low_008",
-      "word": "plausible",
+      "word": "backseat",
       "band": "low",
       "difficulty": 3,
-      "partOfSpeech": "adjective",
-      "meaning": "看似合理的",
-      "alternatives": ["貌似可信的", "有道理的"]
+      "partOfSpeech": "noun",
+      "meaning": "后座",
+      "alternatives": []
     },
     {
       "id": "en_low_009",
-      "word": "terminate",
+      "word": "breakaway",
       "band": "low",
       "difficulty": 3,
-      "partOfSpeech": "verb",
-      "meaning": "终止",
-      "alternatives": ["结束", "使停止"]
+      "partOfSpeech": "noun",
+      "meaning": "分离",
+      "alternatives": []
     },
     {
       "id": "en_low_010",
-      "word": "compile",
+      "word": "breathless",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "无声息的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_011",
+      "word": "caricature",
       "band": "low",
       "difficulty": 3,
       "partOfSpeech": "verb",
-      "meaning": "汇编",
-      "alternatives": ["编制", "收集整理"]
+      "meaning": "讽刺画",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_012",
+      "word": "carton",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "硬纸盒",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_013",
+      "word": "celeste",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "天蓝色",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_014",
+      "word": "chute",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "瀑布",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_015",
+      "word": "clot",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "凝块",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_016",
+      "word": "complacent",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "自满的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_017",
+      "word": "coolant",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "冷冻剂",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_018",
+      "word": "counteract",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "抵消",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_019",
+      "word": "courtship",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "求爱",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_020",
+      "word": "craven",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "懦夫",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_021",
+      "word": "deepen",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "加深",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_022",
+      "word": "deprive",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "剥夺",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_023",
+      "word": "derry",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "民谣",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_024",
+      "word": "devise",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "设计",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_025",
+      "word": "downturn",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "低迷时期",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_026",
+      "word": "entourage",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "周围",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_027",
+      "word": "epoch",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "新纪元",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_028",
+      "word": "exaggerate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "夸大",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_029",
+      "word": "foggy",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "雾深的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_030",
+      "word": "forgery",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "伪造物",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_031",
+      "word": "furiously",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "狂暴地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_032",
+      "word": "gentry",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "贵族们",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_033",
+      "word": "gimmick",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "暗机关",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_034",
+      "word": "glossary",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "术语表",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_035",
+      "word": "groundwork",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "地基",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_036",
+      "word": "gymnasium",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "健身房",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_037",
+      "word": "imposition",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "强迫接受",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_038",
+      "word": "impromptu",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "即席演出",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_039",
+      "word": "indulgence",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "放任",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_040",
+      "word": "intersect",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "横断",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_041",
+      "word": "jameson",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "詹姆士",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_042",
+      "word": "keel",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "龙骨",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_043",
+      "word": "lewd",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "淫荡的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_044",
+      "word": "lifeboat",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "救生艇",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_045",
+      "word": "liturgy",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "圣餐仪式",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_046",
+      "word": "magma",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "稀糊",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_047",
+      "word": "mammalian",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "哺乳动物",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_048",
+      "word": "marcia",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "玛西娅",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_049",
+      "word": "motorbike",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "摩托车",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_050",
+      "word": "nonexistent",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "不存在的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_051",
+      "word": "notoriety",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "恶名",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_052",
+      "word": "nuclei",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "的复数形",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_053",
+      "word": "nutty",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "多坚果的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_054",
+      "word": "obedient",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "服从的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_055",
+      "word": "ornate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "装饰的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_056",
+      "word": "palpable",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "可触知的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_057",
+      "word": "paramedic",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "伞兵军医",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_058",
+      "word": "perk",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "昂首",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_059",
+      "word": "perpetuate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "使永存",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_060",
+      "word": "perverse",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "不正当的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_061",
+      "word": "photons",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "光子",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_062",
+      "word": "plume",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "羽毛",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_063",
+      "word": "plump",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "圆胖的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_064",
+      "word": "prequel",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "先行篇",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_065",
+      "word": "prophetic",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "预言的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_066",
+      "word": "provocation",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "激怒",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_067",
+      "word": "raffle",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "抽彩售货",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_068",
+      "word": "recoil",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "畏缩",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_069",
+      "word": "redo",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "再做重做",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_070",
+      "word": "rejoin",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "使再结合",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_071",
+      "word": "remission",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "免除",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_072",
+      "word": "renounce",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "断绝关系",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_073",
+      "word": "repentance",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "后悔",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_074",
+      "word": "resonate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "共鸣",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_075",
+      "word": "restitution",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "归还",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_076",
+      "word": "sacrament",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "圣礼",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_077",
+      "word": "scholastic",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "学校的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_078",
+      "word": "shrub",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "灌木",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_079",
+      "word": "slag",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "矿渣",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_080",
+      "word": "sneeze",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "喷嚏",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_081",
+      "word": "sobriety",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "清醒",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_082",
+      "word": "sorely",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "强烈地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_083",
+      "word": "sprite",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "鬼怪",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_084",
+      "word": "stagnation",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "停滞",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_085",
+      "word": "stead",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "替代",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_086",
+      "word": "swag",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "摇晃",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_087",
+      "word": "tori",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "花床",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_088",
+      "word": "uniformly",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "一律地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_089",
+      "word": "unravel",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "拆开",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_090",
+      "word": "variously",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "不同地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_091",
+      "word": "wasteland",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "荒地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_092",
+      "word": "watchdog",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "看门狗",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_093",
+      "word": "watery",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "水的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_094",
+      "word": "zeke",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "齐克",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_095",
+      "word": "zoology",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "动物学",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_096",
+      "word": "abstinence",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "节制",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_097",
+      "word": "aeroplane",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "飞机",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_098",
+      "word": "allege",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "宣称",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_099",
+      "word": "arduous",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "费劲的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_100",
+      "word": "bagel",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "百吉饼",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_101",
+      "word": "britannia",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "大不列颠",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_102",
+      "word": "bruise",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "瘀伤",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_103",
+      "word": "bullion",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "金银",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_104",
+      "word": "bumpy",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "颠簸的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_105",
+      "word": "carp",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "鲤鱼",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_106",
+      "word": "castor",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "调味瓶",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_107",
+      "word": "cleverly",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "聪明地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_108",
+      "word": "codex",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "抄本",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_109",
+      "word": "composure",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "镇静",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_110",
+      "word": "concur",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "同时发生",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_111",
+      "word": "conte",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "小故事",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_112",
+      "word": "davy",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "的昵称",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_113",
+      "word": "delicacy",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "微妙",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_114",
+      "word": "demolish",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "毁坏",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_115",
+      "word": "deport",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "举止",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_116",
+      "word": "dilute",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "冲淡",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_117",
+      "word": "doha",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "多哈",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_118",
+      "word": "exploratory",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "探险的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_119",
+      "word": "finesse",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "手腕",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_120",
+      "word": "flannel",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "法兰绒",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_121",
+      "word": "foresee",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "预见",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_122",
+      "word": "frantically",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "狂暴地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_123",
+      "word": "gaston",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "加斯顿",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_124",
+      "word": "genoa",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "热那亚",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_125",
+      "word": "geothermal",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "地热的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_126",
+      "word": "gist",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "要点",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_127",
+      "word": "heres",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "继承者",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_128",
+      "word": "hookup",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "连接",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_129",
+      "word": "hopelessly",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "无望地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_130",
+      "word": "howl",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "嚎叫",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_131",
+      "word": "hydration",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "水合",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_132",
+      "word": "ibiza",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "伊比沙岛",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_133",
+      "word": "impunity",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "不受惩罚",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_134",
+      "word": "infertility",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "不肥沃",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_135",
+      "word": "insolvency",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "无力偿还",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_136",
+      "word": "jody",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "乔迪",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_137",
+      "word": "jokingly",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "开玩笑地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_138",
+      "word": "laughable",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "可笑的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_139",
+      "word": "lucius",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "卢修斯",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_140",
+      "word": "makeshift",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "将就",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_141",
+      "word": "marquee",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "大帐篷",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_142",
+      "word": "masturbate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "进行手淫",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_143",
+      "word": "mobilize",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "动员",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_144",
+      "word": "nativity",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "出生",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_145",
+      "word": "nook",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "隐蔽处",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_146",
+      "word": "overdrive",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "驱使过度",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_147",
+      "word": "pant",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "气喘",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_148",
+      "word": "perilous",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "危险的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_149",
+      "word": "polytechnic",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "工艺的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_150",
+      "word": "popularly",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "一般地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_151",
+      "word": "rename",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "重新命名",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_152",
+      "word": "repulsive",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "推斥的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_153",
+      "word": "respite",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "暂缓",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_154",
+      "word": "sadistic",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "虐待狂的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_155",
+      "word": "samba",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "桑巴舞",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_156",
+      "word": "slant",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "倾斜",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_157",
+      "word": "sleepless",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "失眠的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_158",
+      "word": "slur",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "忽视",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_159",
+      "word": "snowball",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "雪球",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_160",
+      "word": "streamline",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "流线型的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_161",
+      "word": "sulphur",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "硫磺",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_162",
+      "word": "tacky",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "有些粘的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_163",
+      "word": "tamara",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "塔玛拉",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_164",
+      "word": "terminus",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "终点",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_165",
+      "word": "tessa",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "泰萨",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_166",
+      "word": "texan",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "德克萨斯",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_167",
+      "word": "thaw",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "解冻",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_168",
+      "word": "throughput",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "生产量",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_169",
+      "word": "tout",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "吹捧",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_170",
+      "word": "tripod",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "三脚桌",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_171",
+      "word": "unbeatable",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "无敌的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_172",
+      "word": "vulture",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "秃鹰",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_173",
+      "word": "waterway",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "水路",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_174",
+      "word": "absentee",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "缺席者",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_175",
+      "word": "alden",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "奥尔登",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_176",
+      "word": "aldo",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "奥尔多",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_177",
+      "word": "anecdotal",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "轶话的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_178",
+      "word": "anemia",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "贫血",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_179",
+      "word": "animosity",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "仇恨",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_180",
+      "word": "beggar",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "乞丐",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_181",
+      "word": "bertrand",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "伯特兰",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_182",
+      "word": "bouncy",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "快活的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_183",
+      "word": "canteen",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "小卖部",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_184",
+      "word": "capacitor",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "电容器",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_185",
+      "word": "chauffeur",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "司机",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_186",
+      "word": "circulate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "流通",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_187",
+      "word": "clergyman",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "牧师",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_188",
+      "word": "coliseum",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "大体育馆",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_189",
+      "word": "commandment",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "戒律",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_190",
+      "word": "conceivable",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "可能的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_191",
+      "word": "concordia",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "肯考迪娅",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_192",
+      "word": "condone",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "宽恕",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_193",
+      "word": "contiguous",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "邻近的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_194",
+      "word": "cosmo",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "科兹莫",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_195",
+      "word": "councilman",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "议员",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_196",
+      "word": "croft",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "小田地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_197",
+      "word": "custard",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "奶油蛋羹",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_198",
+      "word": "darby",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "钞票",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_199",
+      "word": "deflect",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "偏斜",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_200",
+      "word": "desolate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "荒凉的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_201",
+      "word": "devour",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "吞吃",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_202",
+      "word": "disarmament",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "裁军",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_203",
+      "word": "dishonesty",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "不诚实",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_204",
+      "word": "divergence",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "分歧",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_205",
+      "word": "dorian",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "多里斯",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_206",
+      "word": "doubly",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "二倍地",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_207",
+      "word": "doughnut",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "油炸圈饼",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_208",
+      "word": "embody",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "具体表达",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_209",
+      "word": "envision",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "想象",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_210",
+      "word": "esoteric",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "深奥",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_211",
+      "word": "euthanasia",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "安乐死",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_212",
+      "word": "fabian",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "费边式的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_213",
+      "word": "felon",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "重罪人",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_214",
+      "word": "flammable",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "易燃的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_215",
+      "word": "footnote",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "脚注",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_216",
+      "word": "garnet",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "石榴石",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_217",
+      "word": "grapefruit",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "柚子",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_218",
+      "word": "grate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "壁炉",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_219",
+      "word": "hilly",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "多小山的",
+      "alternatives": []
+    },
+    {
+      "id": "en_low_220",
+      "word": "howie",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "豪伊",
+      "alternatives": []
     }
   ]
 }

@@ -221,9 +221,10 @@ final class LLDataTabViewController: NSViewController {
     }()
     
     private let learningLabItemIdentifier = NSUserInterfaceItemIdentifier("LLLearningLabCollectionItem")
-    private let learningLabItemSpacing: CGFloat = 20
-    private let learningLabItemsPerRow: CGFloat = 3
-    private let learningLabSectionInsets = NSEdgeInsets(top: 0, left: 0, bottom: 24, right: 4)
+    private let learningLabItemSpacing: CGFloat = 16
+    private let learningLabItemsPerRow = 3
+    private let learningLabItemHeight: CGFloat = 244
+    private let learningLabSectionInsets = NSEdgeInsets(top: 0, left: 0, bottom: 24, right: 0)
     
     private let learningLabItems: [LLLearningLabItem] = [
         LLLearningLabItem(
@@ -234,6 +235,15 @@ final class LLDataTabViewController: NSViewController {
             tintColor: NSColor.systemBlue,
             badge: "优先",
             route: .grammarNotes
+        ),
+        LLLearningLabItem(
+            title: "词汇量评估",
+            subtitle: "Vocabulary Assessment",
+            description: "基于标准词库做 20 题快速测评，帮助你先估算当前词汇水平。",
+            symbolName: "chart.bar.doc.horizontal.fill",
+            tintColor: NSColor.systemTeal,
+            badge: "新功能",
+            route: .vocabularyAssessment
         ),
         LLLearningLabItem(
             title: "相似词练习",
@@ -368,6 +378,7 @@ final class LLDataTabViewController: NSViewController {
         flowLayout.minimumInteritemSpacing = learningLabItemSpacing
         flowLayout.minimumLineSpacing = learningLabItemSpacing
         flowLayout.sectionInset = learningLabSectionInsets
+        flowLayout.itemSize = learningLabItemSize(for: learningLabScrollView.contentView.bounds.width)
         
         learningLabCollectionView.collectionViewLayout = flowLayout
         learningLabCollectionView.delegate = self
@@ -379,6 +390,45 @@ final class LLDataTabViewController: NSViewController {
             LLLearningLabCollectionItem.self,
             forItemWithIdentifier: learningLabItemIdentifier
         )
+    }
+    
+    override func viewDidLayout() {
+        super.viewDidLayout()
+        updateLearningLabLayoutIfNeeded()
+    }
+    
+    private func updateLearningLabLayoutIfNeeded() {
+        guard let flowLayout = learningLabCollectionView.collectionViewLayout as? NSCollectionViewFlowLayout else { return }
+        let contentWidth = learningLabScrollView.contentView.bounds.width
+        let itemSize = learningLabItemSize(for: contentWidth)
+        guard itemSize.width > 0 else { return }
+        
+        flowLayout.minimumInteritemSpacing = learningLabItemSpacing
+        flowLayout.minimumLineSpacing = learningLabItemSpacing
+        flowLayout.sectionInset = learningLabSectionInsets
+        flowLayout.itemSize = itemSize
+        flowLayout.invalidateLayout()
+        
+        let rowCount = ceil(CGFloat(learningLabItems.count) / CGFloat(learningLabItemsPerRow))
+        let totalHeight = learningLabSectionInsets.top
+            + learningLabSectionInsets.bottom
+            + rowCount * learningLabItemHeight
+            + max(0, rowCount - 1) * learningLabItemSpacing
+        
+        learningLabCollectionView.frame = NSRect(
+            x: 0,
+            y: 0,
+            width: contentWidth,
+            height: totalHeight
+        )
+    }
+    
+    private func learningLabItemSize(for containerWidth: CGFloat) -> NSSize {
+        let usableWidth = max(containerWidth, 0)
+        let totalSpacing = learningLabSectionInsets.left + learningLabSectionInsets.right + (learningLabItemSpacing * CGFloat(learningLabItemsPerRow - 1))
+        let rawItemWidth = (usableWidth - totalSpacing) / CGFloat(learningLabItemsPerRow)
+        let itemWidth = max(floor(rawItemWidth), 180)
+        return NSSize(width: itemWidth, height: learningLabItemHeight)
     }
     
     @objc private func switchToDataManagementTab() {
@@ -794,13 +844,7 @@ extension LLDataTabViewController: NSCollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        let scrollView = collectionView.enclosingScrollView
-        let visibleWidth = scrollView?.documentVisibleRect.width ?? collectionView.bounds.width
-        let scrollerWidth: CGFloat = scrollView?.verticalScroller?.isHidden == false ? NSScroller.scrollerWidth(for: .regular, scrollerStyle: .overlay) : 0
-        let totalSpacing = learningLabSectionInsets.left + learningLabSectionInsets.right + (learningLabItemSpacing * (learningLabItemsPerRow - 1))
-        let availableWidth = visibleWidth - totalSpacing - scrollerWidth
-        let itemWidth = (availableWidth / learningLabItemsPerRow).rounded(.down)
-        return NSSize(width: itemWidth, height: 244)
+        return learningLabItemSize(for: learningLabContainer.bounds.width)
     }
 }
 

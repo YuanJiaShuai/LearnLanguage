@@ -267,6 +267,7 @@
 		84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111113 /* LLWelcomeGuideViewController.swift */; };
 		84F100001111111111111114 /* LLInlineGuideTipView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111114 /* LLInlineGuideTipView.swift */; };
 		84F34EF32F8C939400E79B09 /* LLInlineGuideTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */; };
+		84F34EF72F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F34EF42F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift */; };
 		84F36D532F89E47100142F1D /* ll_h.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D3F2F89E47100142F1D /* ll_h.mp3 */; };
 		84F36D542F89E47100142F1D /* ll_w.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D4E2F89E47100142F1D /* ll_w.mp3 */; };
 		84F36D552F89E47100142F1D /* ll_k.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D422F89E47100142F1D /* ll_k.mp3 */; };
@@ -580,6 +581,7 @@
 		84F200001111111111111113 /* LLWelcomeGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWelcomeGuideViewController.swift; sourceTree = "<group>"; };
 		84F200001111111111111114 /* LLInlineGuideTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLInlineGuideTipView.swift; sourceTree = "<group>"; };
 		84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLInlineGuideTipView.swift; sourceTree = "<group>"; };
+		84F34EF42F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLVocabularyAssessmentViewController.swift; sourceTree = "<group>"; };
 		84F36D382F89E47100142F1D /* ll_a.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_a.mp3; sourceTree = "<group>"; };
 		84F36D392F89E47100142F1D /* ll_b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_b.mp3; sourceTree = "<group>"; };
 		84F36D3A2F89E47100142F1D /* ll_c.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_c.mp3; sourceTree = "<group>"; };
@@ -982,6 +984,7 @@
 				849226C72F3C878F00447E0C /* StatusBar */,
 				84D21B9F2F70F20600AFFE2C /* Translation */,
 				84E1E39D2F4D53A300D1B7B6 /* TypingPractice */,
+				84F34EF62F8CE8DE00E79B09 /* VocabularyAssessment */,
 				849226D52F3C878F00447E0C /* WordList */,
 			);
 			path = Modules;
@@ -1407,6 +1410,22 @@
 				84EE923F2F88F81A0082A167 /* grammar-index.json */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		84F34EF52F8CE8DE00E79B09 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				84F34EF42F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		84F34EF62F8CE8DE00E79B09 /* VocabularyAssessment */ = {
+			isa = PBXGroup;
+			children = (
+				84F34EF52F8CE8DE00E79B09 /* ViewControllers */,
+			);
+			path = VocabularyAssessment;
 			sourceTree = "<group>";
 		};
 		84F36D522F89E47100142F1D /* letter-sound */ = {
@@ -1960,6 +1979,7 @@
 				849227002F3C878F00447E0C /* LLAppSettings.swift in Sources */,
 				840D1E9A2F67F517002C330E /* LLLocalizationManager.swift in Sources */,
 				840D1E9B2F67F517002C330E /* LLAudioCacheManager.swift in Sources */,
+				84F34EF72F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift in Sources */,
 				849227012F3C878F00447E0C /* LLDBWordListCategory.swift in Sources */,
 				849227022F3C878F00447E0C /* LLMainContentViewController.swift in Sources */,
 				84E1E32D2F3D671D00D1B7B6 /* LLWordLibraryCardItem.swift in Sources */,

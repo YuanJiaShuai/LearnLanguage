@@ -10,6 +10,7 @@ import SnapKit
 enum LLLearningLabRoute {
     case grammarNotes
     case similarWords
+    case vocabularyAssessment
     case moreFeatures
 }
 
@@ -182,6 +183,10 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
             }
         case .similarWords:
             viewController = LLSimilarWordsHomeViewController { [weak self] in
+                self?.popOverlayPage(animated: true)
+            }
+        case .vocabularyAssessment:
+            viewController = LLVocabularyAssessmentViewController { [weak self] in
                 self?.popOverlayPage(animated: true)
             }
         case .moreFeatures:
