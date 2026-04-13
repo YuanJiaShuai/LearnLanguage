@@ -15,12 +15,15 @@ class LLTypingSoundManager {
     // MARK: - Properties
     
     private var keyPlayer: AVAudioPlayer?
-    private var wrongPlayer: AVAudioPlayer?
     private var completeSound: NSSound?
     private var wrongSound: NSSound?
     private var letterPlayers: [Character: AVAudioPlayer] = [:]
     
     private var isEnabled: Bool = true
+    
+    private var appAudioVolume: Float {
+        min(max(LLSettingsStore.shared.settings.appAudioVolume, 0), 1)
+    }
     
     // MARK: - Initialization
     
@@ -34,6 +37,7 @@ class LLTypingSoundManager {
         if let url = Bundle.main.url(forResource: "click", withExtension: "wav") {
             do {
                 keyPlayer = try AVAudioPlayer(contentsOf: url)
+                keyPlayer?.volume = appAudioVolume
                 keyPlayer?.prepareToPlay()
             } catch {
                 LLLogger.error("❌ 加载按键音效失败：\(error)")
@@ -60,6 +64,7 @@ class LLTypingSoundManager {
             
             do {
                 let player = try AVAudioPlayer(contentsOf: url)
+                player.volume = appAudioVolume
                 player.prepareToPlay()
                 letterPlayers[letter] = player
             } catch {
@@ -79,6 +84,7 @@ class LLTypingSoundManager {
     func playKeySound() {
         guard isEnabled else { return }
         guard let keyPlayer = keyPlayer else { return }
+        keyPlayer.volume = appAudioVolume
         keyPlayer.currentTime = 0
         keyPlayer.play()
     }
@@ -93,6 +99,7 @@ class LLTypingSoundManager {
             return
         }
         
+        player.volume = appAudioVolume
         player.currentTime = 0
         player.play()
     }
@@ -100,12 +107,14 @@ class LLTypingSoundManager {
     /// 播放错误音效
     func playWrongSound() {
         guard isEnabled else { return }
+        wrongSound?.volume = appAudioVolume
         wrongSound?.play()
     }
     
     /// 播放完成音效
     func playCompleteSound() {
         guard isEnabled else { return }
+        completeSound?.volume = appAudioVolume
         completeSound?.play()
     }
 }

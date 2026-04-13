@@ -265,6 +265,8 @@
 		84F100001111111111111111 /* LLGuideManager.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111111 /* LLGuideManager.swift */; };
 		84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111112 /* LLGuideTaskCardView.swift */; };
 		84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111113 /* LLWelcomeGuideViewController.swift */; };
+		84F100001111111111111114 /* LLInlineGuideTipView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111114 /* LLInlineGuideTipView.swift */; };
+		84F34EF32F8C939400E79B09 /* LLInlineGuideTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */; };
 		84F36D532F89E47100142F1D /* ll_h.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D3F2F89E47100142F1D /* ll_h.mp3 */; };
 		84F36D542F89E47100142F1D /* ll_w.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D4E2F89E47100142F1D /* ll_w.mp3 */; };
 		84F36D552F89E47100142F1D /* ll_k.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D422F89E47100142F1D /* ll_k.mp3 */; };
@@ -576,6 +578,8 @@
 		84F200001111111111111111 /* LLGuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideManager.swift; sourceTree = "<group>"; };
 		84F200001111111111111112 /* LLGuideTaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideTaskCardView.swift; sourceTree = "<group>"; };
 		84F200001111111111111113 /* LLWelcomeGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWelcomeGuideViewController.swift; sourceTree = "<group>"; };
+		84F200001111111111111114 /* LLInlineGuideTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLInlineGuideTipView.swift; sourceTree = "<group>"; };
+		84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLInlineGuideTipView.swift; sourceTree = "<group>"; };
 		84F36D382F89E47100142F1D /* ll_a.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_a.mp3; sourceTree = "<group>"; };
 		84F36D392F89E47100142F1D /* ll_b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_b.mp3; sourceTree = "<group>"; };
 		84F36D3A2F89E47100142F1D /* ll_c.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_c.mp3; sourceTree = "<group>"; };
@@ -1443,6 +1447,7 @@
 			children = (
 				84F200001111111111111111 /* LLGuideManager.swift */,
 				84F200001111111111111112 /* LLGuideTaskCardView.swift */,
+				84F200001111111111111114 /* LLInlineGuideTipView.swift */,
 				84F200001111111111111113 /* LLWelcomeGuideViewController.swift */,
 			);
 			name = "Recovered References";
@@ -1468,6 +1473,7 @@
 			isa = PBXGroup;
 			children = (
 				84F36D762F8A52AB00142F1D /* LLGuideTaskCardView.swift */,
+				84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1606,6 +1612,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F100001111111111111114 /* LLInlineGuideTipView.swift in Resources */,
 				84F100001111111111111111 /* LLGuideManager.swift in Resources */,
 				84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */,
 				84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */,
@@ -1891,6 +1898,7 @@
 				84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */,
 				8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */,
 				84C0D9DD2F6BE97F00F96737 /* LLDBLearningHistory.swift in Sources */,
+				84F34EF32F8C939400E79B09 /* LLInlineGuideTipView.swift in Sources */,
 				849226E32F3C878F00447E0C /* LLSettingsStore.swift in Sources */,
 				A8CBFCD42F7420CE00BF926A /* LLOCRService.swift in Sources */,
 				849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */,

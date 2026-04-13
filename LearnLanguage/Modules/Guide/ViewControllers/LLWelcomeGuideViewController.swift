@@ -260,7 +260,6 @@ final class LLWelcomeGuideViewController: NSViewController {
     
     private func finishGuide() {
         LLGuideManager.shared.markWelcomeGuideCompleted()
-        dismiss(self)
         onFinished?()
     }
 }

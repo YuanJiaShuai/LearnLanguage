@@ -8,6 +8,10 @@ import Foundation
 import AVFoundation
 import AppKit
 
+private extension Float {
+    var llClampedAudioVolume: Float { min(max(self, 0), 1) }
+}
+
 // MARK: - 发音提供者协议
 
 /// 发音提供者协议，所有发音实现都需要遵循此协议
@@ -60,7 +64,8 @@ final class LLLocalPronunciationProvider: NSObject, LLPronunciationProviderProto
         utterance.rate = 0.5
         
         // 设置音量和音调
-        utterance.volume = 1.0
+        let appAudioVolume = LLSettingsStore.shared.settings.appAudioVolume.llClampedAudioVolume
+        utterance.volume = appAudioVolume
         utterance.pitchMultiplier = 1.0
         
         // 开始发音
@@ -185,6 +190,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             audioPlayer?.prepareToPlay()
             audioPlayer?.enableRate = true
             audioPlayer?.rate = rate
+            audioPlayer?.volume = LLSettingsStore.shared.settings.appAudioVolume.llClampedAudioVolume
             
             let success = audioPlayer?.play() ?? false
             if success {

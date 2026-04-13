@@ -102,8 +102,8 @@ final class LLAppInitializer {
         if isFirstLaunch {
             LLLogger.info("   🎉 首次启动，设置默认配置...")
             
-            // 设置默认词库（如果有的话）
-            setDefaultWordList()
+            // 随机选择一个普通词库作为首次推荐学习内容
+            setRandomDefaultWordList()
             
             // 标记已启动
             LLMMKVManager.shared.hasLaunched = true
@@ -115,18 +115,17 @@ final class LLAppInitializer {
         }
     }
     
-    /// 设置默认词库
-    private func setDefaultWordList() {
-        // 尝试获取第一个词库作为默认词库
+    /// 随机设置一个普通词库作为首次学习推荐
+    private func setRandomDefaultWordList() {
         do {
             let db = LLDatabaseManager.shared
             let wordLists = try db.getAllWordLists()
+                .filter { $0.description != LLWordListStorage.vocabularyNotebookDescription }
             
-            if let firstList = wordLists.first, let id = firstList.id {
-                LLSettingsStore.shared.currentListId = String(id)
-            }
+            guard let randomList = wordLists.randomElement(), let id = randomList.id else { return }
+            LLSettingsStore.shared.currentListId = String(id)
         } catch {
-            LLLogger.warn("   ⚠️ 设置默认词库失败：\(error)")
+            LLLogger.warn("   ⚠️ 设置首次推荐词库失败：\(error)")
         }
     }
     

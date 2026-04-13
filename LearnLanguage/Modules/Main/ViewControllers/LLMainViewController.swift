@@ -24,6 +24,10 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
     private let sidebarVC = LLSidebarViewController()
     private let contentVC = LLMainContentViewController()
     private let overlayContainerView = NSView()
+    private let guideOverlayView = NSView()
+    private let guideMaskView = NSView()
+    private let guideHostView = NSView()
+    private var welcomeGuideViewController: LLWelcomeGuideViewController?
     private var overlayStack: [NSViewController] = []
     private var isOverlayTransitioning = false
     private var hasAttemptedPresentWelcomeGuide = false
@@ -78,15 +82,94 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
         overlayContainerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        setupGuideOverlay()
+    }
+    
+    private func setupGuideOverlay() {
+        guideOverlayView.wantsLayer = true
+        guideOverlayView.isHidden = true
+        guideOverlayView.alphaValue = 0
+        
+        guideMaskView.wantsLayer = true
+        guideMaskView.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.34).cgColor
+        
+        guideHostView.wantsLayer = true
+        guideHostView.alphaValue = 0
+        
+        view.addSubview(guideOverlayView)
+        guideOverlayView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        guideOverlayView.addSubview(guideMaskView)
+        guideMaskView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        guideOverlayView.addSubview(guideHostView)
+        guideHostView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(620)
+            make.height.equalTo(420)
+        }
     }
     
     private func presentWelcomeGuideIfNeeded() {
         guard !hasAttemptedPresentWelcomeGuide else { return }
         hasAttemptedPresentWelcomeGuide = true
         guard LLGuideManager.shared.shouldShowWelcomeGuide else { return }
+        guard welcomeGuideViewController == nil else { return }
         
         let guideVC = LLWelcomeGuideViewController()
-        presentAsModalWindow(guideVC)
+        guideVC.onFinished = { [weak self] in
+            self?.dismissWelcomeGuideOverlay(animated: true)
+        }
+        welcomeGuideViewController = guideVC
+        
+        addChild(guideVC)
+        guideHostView.addSubview(guideVC.view)
+        guideVC.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        guideOverlayView.isHidden = false
+        guideOverlayView.alphaValue = 0
+        guideHostView.alphaValue = 0
+        
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.24
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            self.guideOverlayView.animator().alphaValue = 1
+            self.guideHostView.animator().alphaValue = 1
+        }
+    }
+    
+    private func dismissWelcomeGuideOverlay(animated: Bool) {
+        guard let guideVC = welcomeGuideViewController else { return }
+        
+        let cleanup = {
+            guideVC.view.removeFromSuperview()
+            guideVC.removeFromParent()
+            self.welcomeGuideViewController = nil
+            self.guideOverlayView.isHidden = true
+            self.guideOverlayView.alphaValue = 0
+            self.guideHostView.alphaValue = 0
+        }
+        
+        guard animated else {
+            cleanup()
+            return
+        }
+        
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.2
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            self.guideOverlayView.animator().alphaValue = 0
+            self.guideHostView.animator().alphaValue = 0
+        } completionHandler: {
+            cleanup()
+        }
     }
     
     private func openLearningLabRoute(_ route: LLLearningLabRoute) {

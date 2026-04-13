@@ -92,6 +92,8 @@ final class LLSettingsTabViewController: NSViewController {
     private var pronunciationProviderPopup: NSPopUpButton!
     private var pronunciationAccentPopup: NSPopUpButton!
     private var pronunciationRatePopup: NSPopUpButton!
+    private var appAudioVolumeSlider: NSSlider!
+    private var appAudioVolumeLabel: NSTextField!
     
     // 浮窗设置卡片
     private var panelAlphaSlider: NSSlider!
@@ -339,6 +341,25 @@ final class LLSettingsTabViewController: NSViewController {
         statusBarPlaybackIntervalPopup.target = self
         statusBarPlaybackIntervalPopup.action = #selector(saveSettings)
         statusBarPlaybackIntervalPopup.addItems(withTitles: LLPlaybackInterval.allDisplayNames)
+        
+        appAudioVolumeSlider = NSSlider(value: 100, minValue: 0, maxValue: 100, target: self, action: #selector(onAppAudioVolumeChanged))
+        appAudioVolumeSlider.isContinuous = true
+        
+        appAudioVolumeLabel = NSTextField(labelWithString: "100%")
+        appAudioVolumeLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
+        appAudioVolumeLabel.textColor = NSColor(white: 0.4, alpha: 1.0)
+        appAudioVolumeLabel.alignment = .right
+        appAudioVolumeLabel.snp.makeConstraints { make in
+            make.width.equalTo(44)
+        }
+        
+        let volumeStack = NSStackView(views: [appAudioVolumeSlider, appAudioVolumeLabel])
+        volumeStack.orientation = .horizontal
+        volumeStack.spacing = 8
+        volumeStack.distribution = .fill
+        appAudioVolumeSlider.snp.makeConstraints { make in
+            make.width.greaterThanOrEqualTo(200)
+        }
 
         card.addFormItem(label: NSLocalizedString("Enable Pronunciation", comment: ""), control: pronunciationCheck)
         card.addFormRow(items: [
@@ -348,6 +369,7 @@ final class LLSettingsTabViewController: NSViewController {
         // 临时隐藏语速设置（保留代码，后续可恢复）
         // card.addFormItem(label: NSLocalizedString("Speech Rate", comment: ""), control: pronunciationRatePopup)
         card.addFormItem(label: NSLocalizedString("Playback Interval", comment: ""), control: statusBarPlaybackIntervalPopup)
+        card.addFormItem(label: "播放音量", control: volumeStack)
         
         return card
     }
@@ -536,6 +558,12 @@ final class LLSettingsTabViewController: NSViewController {
         translateFontSizeLabel.stringValue = "\(val) pt"
         saveSettings()
     }
+    
+    @objc private func onAppAudioVolumeChanged() {
+        let value = Int(appAudioVolumeSlider.doubleValue.rounded())
+        appAudioVolumeLabel.stringValue = "\(value)%"
+        saveSettings()
+    }
 
     private func createOtherCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: NSLocalizedString("Other Settings", comment: ""), icon: "⚙️")
@@ -617,6 +645,8 @@ final class LLSettingsTabViewController: NSViewController {
         if let index = LLSpeechRate.allCases.firstIndex(of: speechRate) {
             pronunciationRatePopup.selectItem(at: index)
         }
+        appAudioVolumeSlider.doubleValue = Double(s.appAudioVolume * 100)
+        appAudioVolumeLabel.stringValue = "\(Int((s.appAudioVolume * 100).rounded()))%"
         
         // 其他设置
         panelAlphaSlider.doubleValue = s.floatingPanelAlpha
@@ -735,6 +765,7 @@ final class LLSettingsTabViewController: NSViewController {
         if rateIndex >= 0 && rateIndex < LLSpeechRate.allCases.count {
             s.pronunciationRate = LLSpeechRate.allCases[rateIndex].rawValue
         }
+        s.appAudioVolume = Float(appAudioVolumeSlider.doubleValue / 100.0)
         
         // 其他设置
         s.floatingPanelAlpha = panelAlphaSlider.doubleValue

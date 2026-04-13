@@ -328,6 +328,7 @@ struct LLAppSettings: Codable {
     var pronunciationProvider: LLPronunciationProvider
     var pronunciationAccent: LLPronunciationAccent
     var pronunciationRate: Float  // 语速 0.0-1.0
+    var appAudioVolume: Float  // 应用内播放音量 0.0-1.0
     var newWordsPerDay: Int
     var reviewCountPerDay: Int
     var reminderEnabled: Bool
@@ -375,6 +376,7 @@ struct LLAppSettings: Codable {
         pronunciationProvider: .local,
         pronunciationAccent: .uk,
         pronunciationRate: 1.0,
+        appAudioVolume: 1.0,
         newWordsPerDay: 20,
         reviewCountPerDay: 50,
         reminderEnabled: false,

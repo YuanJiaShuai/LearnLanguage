@@ -262,11 +262,13 @@ final class LLSearchWordView: NSView {
     
     @objc private func addToVocabularyNotebook() {
         if LLGuideManager.shared.shouldShowTip(.translateAddToVocabulary) {
-            let alert = NSAlert()
-            alert.messageText = "翻译结果可以直接加入生词本"
-            alert.informativeText = "这样你就能把临时查到的不会词集中沉淀下来，后续再统一复习。"
-            alert.addButton(withTitle: "知道了")
-            alert.runModal()
+            LLInlineGuideTipView.show(
+                in: self,
+                title: "翻译结果可以直接加入生词本",
+                message: "把临时查到的不会词沉淀下来，后续就能集中复习。",
+                topInset: 56,
+                autoDismissAfter: 2.2
+            )
             LLGuideManager.shared.markTipShown(.translateAddToVocabulary)
         }
         

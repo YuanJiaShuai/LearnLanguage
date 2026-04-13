@@ -239,6 +239,10 @@ final class LLTranslateContentView: NSView {
         addVocabularyButton.isEnabled = false
     }
     
+    func showGuideTip(title: String, message: String) {
+        LLInlineGuideTipView.show(in: self, title: title, message: message, topInset: 10, autoDismissAfter: 2.2)
+    }
+    
     func setVocabularyButtonAdded(_ added: Bool) {
         addVocabularyButton.title = added ? "已添加" : "生词"
         addVocabularyButton.contentTintColor = added ? NSColor.white.withAlphaComponent(0.55) : NSColor.systemOrange

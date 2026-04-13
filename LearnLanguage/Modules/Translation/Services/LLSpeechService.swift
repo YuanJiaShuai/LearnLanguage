@@ -47,7 +47,7 @@ final class LLSpeechService: NSObject {
             let utterance = AVSpeechUtterance(string: text)
             utterance.voice = AVSpeechSynthesisVoice(language: language)
             utterance.rate = 0.5
-            utterance.volume = 1.0
+            utterance.volume = min(max(LLSettingsStore.shared.settings.appAudioVolume, 0), 1)
 
             DispatchQueue.main.async { self.isSpeaking = true }
             self.synthesizer.speak(utterance)
