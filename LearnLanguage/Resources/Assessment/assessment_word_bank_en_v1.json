@@ -1,0 +1,296 @@
+{
+  "id": "assessment_word_bank_en_v1",
+  "title": "英语标准词汇测评词库",
+  "language": "en",
+  "version": 1,
+  "description": "用于词汇量评估的标准分层词库。当前为 V1 starter 数据，后续可继续扩充并基于 band 动态抽题。",
+  "bands": [
+    {
+      "id": "high",
+      "label": "高频词",
+      "range": "1-2000"
+    },
+    {
+      "id": "mid",
+      "label": "中频词",
+      "range": "2001-5000"
+    },
+    {
+      "id": "low",
+      "label": "低频词",
+      "range": "5001+"
+    }
+  ],
+  "entries": [
+    {
+      "id": "en_high_001",
+      "word": "build",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "建造",
+      "alternatives": ["建立", "发展"]
+    },
+    {
+      "id": "en_high_002",
+      "word": "decide",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "决定",
+      "alternatives": ["下决心", "判定"]
+    },
+    {
+      "id": "en_high_003",
+      "word": "share",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "分享",
+      "alternatives": ["分担", "共享"]
+    },
+    {
+      "id": "en_high_004",
+      "word": "return",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "返回",
+      "alternatives": ["归还", "回来"]
+    },
+    {
+      "id": "en_high_005",
+      "word": "accept",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "接受",
+      "alternatives": ["认可", "接纳"]
+    },
+    {
+      "id": "en_high_006",
+      "word": "offer",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "提供",
+      "alternatives": ["提出", "给予"]
+    },
+    {
+      "id": "en_high_007",
+      "word": "record",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "记录",
+      "alternatives": ["录下", "记载"]
+    },
+    {
+      "id": "en_high_008",
+      "word": "improve",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "改善",
+      "alternatives": ["提高", "改进"]
+    },
+    {
+      "id": "en_high_009",
+      "word": "travel",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "旅行",
+      "alternatives": ["出行", "游历"]
+    },
+    {
+      "id": "en_high_010",
+      "word": "choose",
+      "band": "high",
+      "difficulty": 1,
+      "partOfSpeech": "verb",
+      "meaning": "选择",
+      "alternatives": ["挑选", "选定"]
+    },
+    {
+      "id": "en_mid_001",
+      "word": "maintain",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "维持",
+      "alternatives": ["保养", "坚持"]
+    },
+    {
+      "id": "en_mid_002",
+      "word": "approach",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "接近",
+      "alternatives": ["着手处理", "临近"]
+    },
+    {
+      "id": "en_mid_003",
+      "word": "assume",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "假设",
+      "alternatives": ["设想", "认为"]
+    },
+    {
+      "id": "en_mid_004",
+      "word": "require",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "需要",
+      "alternatives": ["要求", "规定"]
+    },
+    {
+      "id": "en_mid_005",
+      "word": "reduce",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "减少",
+      "alternatives": ["降低", "缩小"]
+    },
+    {
+      "id": "en_mid_006",
+      "word": "identify",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "识别",
+      "alternatives": ["确认", "鉴定"]
+    },
+    {
+      "id": "en_mid_007",
+      "word": "establish",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "建立",
+      "alternatives": ["设立", "确立"]
+    },
+    {
+      "id": "en_mid_008",
+      "word": "suggest",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "建议",
+      "alternatives": ["暗示", "提议"]
+    },
+    {
+      "id": "en_mid_009",
+      "word": "achieve",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "实现",
+      "alternatives": ["达到", "取得"]
+    },
+    {
+      "id": "en_mid_010",
+      "word": "contain",
+      "band": "mid",
+      "difficulty": 2,
+      "partOfSpeech": "verb",
+      "meaning": "包含",
+      "alternatives": ["容纳", "控制"]
+    },
+    {
+      "id": "en_low_001",
+      "word": "allocate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "分配",
+      "alternatives": ["拨给", "调配"]
+    },
+    {
+      "id": "en_low_002",
+      "word": "meticulous",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "一丝不苟的",
+      "alternatives": ["严谨细致的", "非常认真的"]
+    },
+    {
+      "id": "en_low_003",
+      "word": "obsolete",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "过时的",
+      "alternatives": ["废弃的", "陈旧的"]
+    },
+    {
+      "id": "en_low_004",
+      "word": "coherent",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "连贯的",
+      "alternatives": ["条理清晰的", "一致的"]
+    },
+    {
+      "id": "en_low_005",
+      "word": "notion",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "noun",
+      "meaning": "概念",
+      "alternatives": ["观念", "想法"]
+    },
+    {
+      "id": "en_low_006",
+      "word": "subtle",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "微妙的",
+      "alternatives": ["细微的", "不易察觉的"]
+    },
+    {
+      "id": "en_low_007",
+      "word": "derive",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "获得",
+      "alternatives": ["源于", "推导出"]
+    },
+    {
+      "id": "en_low_008",
+      "word": "plausible",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "adjective",
+      "meaning": "看似合理的",
+      "alternatives": ["貌似可信的", "有道理的"]
+    },
+    {
+      "id": "en_low_009",
+      "word": "terminate",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "终止",
+      "alternatives": ["结束", "使停止"]
+    },
+    {
+      "id": "en_low_010",
+      "word": "compile",
+      "band": "low",
+      "difficulty": 3,
+      "partOfSpeech": "verb",
+      "meaning": "汇编",
+      "alternatives": ["编制", "收集整理"]
+    }
+  ]
+}
