@@ -9,164 +9,279 @@ import AppKit
 import SnapKit
 
 final class LLVocabularyAssessmentViewController: NSViewController {
-    
+    private struct WordBank: Decodable { let entries: [Entry] }
+    private struct Entry: Decodable { let id: String; let word: String; let band: String; let difficulty: Int; let meaning: String }
+    private struct Question { let entry: Entry; let options: [String]; let answer: Int }
+
     private let onBack: () -> Void
-    
+
+    private var bank: WordBank?
+    private var usedIDs = Set<String>()
+    private var theta: Double = 0
+    private var questions: [Question] = []
+    private var results: [(band: String, correct: Bool)] = []
+    private var recent: [Bool] = []
+    private var selectedOption: Int?
+
+    private let minQuestions = 10
+    private let maxQuestions = 20
+    private let recentWindow = 5
+    private let maxWrongInWindow = 4
+
+    private let card = NSView()
+    private let statusLabel = NSTextField(labelWithString: "")
+    private let wordLabel = NSTextField(labelWithString: "")
+    private let feedbackLabel = NSTextField(labelWithString: "")
+    private let startButton = NSButton(title: "开始测试", target: nil, action: nil)
+    private let nextButton = NSButton(title: "下一题", target: nil, action: nil)
+    private var optionButtons: [NSButton] = []
+
     init(onBack: @escaping () -> Void) {
         self.onBack = onBack
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         view = NSView(frame: NSRect(x: 0, y: 0, width: 1100, height: 620))
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        loadWordBank()
+        renderIntro()
     }
-    
+
     private func setupUI() {
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.white.cgColor
-        
+
         let backButton = NSButton(title: "返回", target: self, action: #selector(onBackTapped))
         backButton.isBordered = false
-        backButton.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
+        backButton.font = .systemFont(ofSize: 14, weight: .semibold)
         backButton.image = NSImage(systemSymbolName: "chevron.left", accessibilityDescription: nil)
         backButton.imagePosition = .imageLeading
         backButton.contentTintColor = .systemTeal
         view.addSubview(backButton)
-        backButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(28)
-            make.leading.equalToSuperview().offset(28)
-        }
-        
-        let iconWrap = NSView()
-        iconWrap.wantsLayer = true
-        iconWrap.layer?.cornerRadius = 16
-        iconWrap.layer?.backgroundColor = NSColor.systemTeal.withAlphaComponent(0.12).cgColor
-        view.addSubview(iconWrap)
-        iconWrap.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(40)
-            make.leading.equalToSuperview().offset(40)
-            make.width.height.equalTo(72)
-        }
-        
-        let iconView = NSImageView()
-        iconView.image = NSImage(systemSymbolName: "text.book.closed.fill", accessibilityDescription: nil)
-        iconView.contentTintColor = .systemTeal
-        iconWrap.addSubview(iconView)
-        iconView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.height.equalTo(32)
-        }
-        
+        backButton.snp.makeConstraints { $0.top.equalToSuperview().offset(28); $0.leading.equalToSuperview().offset(28) }
+
         let titleLabel = NSTextField(labelWithString: "词汇量评估")
-        titleLabel.font = NSFont.systemFont(ofSize: 34, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
         titleLabel.textColor = LLAppearanceManager.shared.colors.primaryText
         view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(iconWrap.snp.bottom).offset(28)
-            make.leading.equalToSuperview().offset(40)
-        }
-        
-        let subtitleLabel = NSTextField(labelWithString: "Vocabulary Assessment")
-        subtitleLabel.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
+        titleLabel.snp.makeConstraints { $0.top.equalTo(backButton.snp.bottom).offset(28); $0.leading.equalToSuperview().offset(40) }
+
+        let subtitleLabel = NSTextField(labelWithString: "Vocabulary Assessment · Swift IRT")
+        subtitleLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         subtitleLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.62)
         view.addSubview(subtitleLabel)
-        subtitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(40)
-        }
-        
-        let card = NSView()
+        subtitleLabel.snp.makeConstraints { $0.top.equalTo(titleLabel.snp.bottom).offset(10); $0.leading.equalToSuperview().offset(40) }
+
         card.wantsLayer = true
         card.layer?.cornerRadius = 20
         card.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
         card.layer?.borderWidth = 1
         card.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.4).cgColor
         view.addSubview(card)
-        card.snp.makeConstraints { make in
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(28)
-            make.leading.trailing.equalToSuperview().inset(40)
-            make.bottom.equalToSuperview().offset(-40)
+        card.snp.makeConstraints { $0.top.equalTo(subtitleLabel.snp.bottom).offset(24); $0.leading.trailing.equalToSuperview().inset(40); $0.bottom.equalToSuperview().offset(-40) }
+
+        statusLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        statusLabel.maximumNumberOfLines = 0
+        statusLabel.lineBreakMode = .byWordWrapping
+        card.addSubview(statusLabel)
+        statusLabel.snp.makeConstraints { $0.top.leading.trailing.equalToSuperview().inset(28) }
+
+        wordLabel.font = .systemFont(ofSize: 32, weight: .bold)
+        wordLabel.textColor = LLAppearanceManager.shared.colors.primaryText
+        card.addSubview(wordLabel)
+        wordLabel.snp.makeConstraints { $0.top.equalTo(statusLabel.snp.bottom).offset(16); $0.leading.trailing.equalToSuperview().inset(28) }
+
+        var prev: NSView = wordLabel
+        for i in 0..<4 {
+            let btn = NSButton(title: "", target: self, action: #selector(onOptionTapped(_:)))
+            btn.tag = i
+            btn.isBordered = true
+            btn.bezelStyle = .rounded
+            btn.font = .systemFont(ofSize: 14, weight: .medium)
+            btn.contentTintColor = LLAppearanceManager.shared.colors.primaryText
+            optionButtons.append(btn)
+            card.addSubview(btn)
+            btn.snp.makeConstraints {
+                $0.top.equalTo(prev.snp.bottom).offset(12)
+                $0.leading.trailing.equalToSuperview().inset(28)
+                $0.height.equalTo(40)
+            }
+            prev = btn
         }
-        
-        let detailLabel = NSTextField(labelWithString: "这里是词汇量评估模块首页。当前会基于内置标准词库抽取题目，适合先做 20 题快速测试。后续可以继续扩展标准测试、结果页分析和错词沉淀能力。")
-        detailLabel.font = NSFont.systemFont(ofSize: 16, weight: .regular)
-        detailLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
-        detailLabel.lineBreakMode = .byWordWrapping
-        detailLabel.maximumNumberOfLines = 0
-        card.addSubview(detailLabel)
-        detailLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview().inset(28)
-        }
-        
-        let hintLabel = NSTextField(labelWithString: "下一步建议：测试首页 / 20题抽题逻辑 / 结果页与错词回流")
-        hintLabel.font = NSFont.systemFont(ofSize: 13, weight: .medium)
-        hintLabel.textColor = NSColor.systemTeal.withAlphaComponent(0.9)
-        card.addSubview(hintLabel)
-        hintLabel.snp.makeConstraints { make in
-            make.top.equalTo(detailLabel.snp.bottom).offset(18)
-            make.leading.trailing.equalToSuperview().inset(28)
-        }
-        
-        let summaryWrap = NSStackView()
-        summaryWrap.orientation = .vertical
-        summaryWrap.spacing = 12
-        summaryWrap.alignment = .leading
-        card.addSubview(summaryWrap)
-        summaryWrap.snp.makeConstraints { make in
-            make.top.equalTo(hintLabel.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview().inset(28)
-        }
-        
-        [
-            "内置标准词库：当前已筛出 900 个候选评估词",
-            "推荐流程：快速测试 20 题，高频 / 中频 / 低频分层抽样",
-            "后续可扩展：标准测试、拼写测试、错词加入生词本"
-        ].forEach { text in
-            let label = NSTextField(labelWithString: "• \(text)")
-            label.font = NSFont.systemFont(ofSize: 14, weight: .regular)
-            label.textColor = LLAppearanceManager.shared.colors.primaryText.withAlphaComponent(0.86)
-            label.lineBreakMode = .byWordWrapping
-            label.maximumNumberOfLines = 0
-            summaryWrap.addArrangedSubview(label)
-        }
-        
-        let startButton = NSButton(title: "开始设计测试流程", target: nil, action: nil)
-        startButton.isEnabled = false
-        startButton.bezelStyle = .rounded
-        startButton.font = NSFont.systemFont(ofSize: 14, weight: .semibold)
-        startButton.contentTintColor = .white
-        startButton.wantsLayer = true
-        startButton.layer?.backgroundColor = NSColor.systemTeal.withAlphaComponent(0.9).cgColor
-        startButton.layer?.cornerRadius = 8
+
+        feedbackLabel.font = .systemFont(ofSize: 13, weight: .medium)
+        feedbackLabel.maximumNumberOfLines = 0
+        feedbackLabel.lineBreakMode = .byWordWrapping
+        card.addSubview(feedbackLabel)
+        feedbackLabel.snp.makeConstraints { $0.top.equalTo(prev.snp.bottom).offset(12); $0.leading.trailing.equalToSuperview().inset(28) }
+
+        startButton.target = self
+        startButton.action = #selector(onStartTapped)
         card.addSubview(startButton)
-        startButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(28)
-            make.bottom.equalToSuperview().offset(-28)
-            make.height.equalTo(38)
-            make.width.greaterThanOrEqualTo(150)
-        }
-        
-        let helperLabel = NSTextField(labelWithString: "入口已就位，下一步可直接接题目页与抽题逻辑。")
-        helperLabel.font = NSFont.systemFont(ofSize: 12, weight: .medium)
-        helperLabel.textColor = LLAppearanceManager.shared.colors.secondaryText.withAlphaComponent(0.72)
-        card.addSubview(helperLabel)
-        helperLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(startButton)
-            make.leading.equalTo(startButton.snp.trailing).offset(14)
-            make.trailing.lessThanOrEqualToSuperview().offset(-28)
-        }
+        startButton.snp.makeConstraints { $0.leading.equalToSuperview().offset(28); $0.bottom.equalToSuperview().offset(-28); $0.height.equalTo(36) }
+
+        nextButton.target = self
+        nextButton.action = #selector(onNextTapped)
+        card.addSubview(nextButton)
+        nextButton.snp.makeConstraints { $0.leading.equalTo(startButton.snp.trailing).offset(12); $0.centerY.equalTo(startButton) }
     }
-    
-    @objc private func onBackTapped() {
-        onBack()
+
+    private func loadWordBank() {
+        let u = Bundle.main.url(forResource: "assessment_word_bank_en_v1", withExtension: "json", subdirectory: "Assessment")
+            ?? Bundle.main.url(forResource: "assessment_word_bank_en_v1", withExtension: "json")
+        guard let url = u, let data = try? Data(contentsOf: url), let decoded = try? JSONDecoder().decode(WordBank.self, from: data) else {
+            statusLabel.stringValue = "词库加载失败，请检查 assessment_word_bank_en_v1.json"
+            return
+        }
+        bank = decoded
+        startButton.isEnabled = true
     }
+
+    private func renderIntro() {
+        wordLabel.isHidden = true
+        optionButtons.forEach { $0.isHidden = true }
+        feedbackLabel.isHidden = true
+        nextButton.isHidden = true
+        startButton.isHidden = false
+
+        statusLabel.stringValue = "将使用 Swift 原生 IRT 风格逻辑进行评估。\n词库数量：\(bank?.entries.count ?? 0)\n点击“开始测试”后按能力值动态出题。"
+    }
+
+    private func startTest() {
+        usedIDs.removeAll(); questions.removeAll(); results.removeAll(); recent.removeAll()
+        theta = 0; selectedOption = nil
+        nextRound()
+    }
+
+    private func nextRound() {
+        if shouldStop() { renderResult(); return }
+        guard let q = makeQuestion() else { renderResult(); return }
+        questions.append(q)
+        renderQuestion(q)
+    }
+
+    private func makeQuestion() -> Question? {
+        guard let all = bank?.entries, !all.isEmpty else { return nil }
+        let target = Int(round(max(1, min(7, theta))))
+        func avail(_ d: Int) -> [Entry] { all.filter { $0.difficulty == d && !usedIDs.contains($0.id) } }
+
+        var c = avail(target)
+        if c.isEmpty {
+            for s in 1...3 {
+                c = avail(max(1, target - s)); if !c.isEmpty { break }
+                c = avail(min(7, target + s)); if !c.isEmpty { break }
+            }
+        }
+        if c.isEmpty { usedIDs.removeAll(); c = avail(target) }
+        guard let e = c.randomElement() else { return nil }
+        usedIDs.insert(e.id)
+
+        var pool = all.filter { $0.id != e.id && $0.meaning != e.meaning && $0.difficulty == e.difficulty }
+        if pool.count < 3 { pool = all.filter { $0.id != e.id && $0.meaning != e.meaning } }
+        let ds = Array(Set(pool.shuffled().prefix(12).map(\ .meaning))).prefix(3)
+        guard ds.count == 3 else { return nil }
+
+        var opts = Array(ds)
+        opts.append(e.meaning)
+        opts.shuffle()
+        guard let ans = opts.firstIndex(of: e.meaning) else { return nil }
+        return Question(entry: e, options: opts, answer: ans)
+    }
+
+    private func renderQuestion(_ q: Question) {
+        selectedOption = nil
+        startButton.isHidden = true
+        nextButton.isHidden = false
+        wordLabel.isHidden = false
+        optionButtons.forEach { $0.isHidden = false; $0.isEnabled = true }
+        feedbackLabel.isHidden = false
+
+        statusLabel.stringValue = "第 \(questions.count) 题  ·  能力值 θ \(String(format: "%.2f", theta))"
+        wordLabel.stringValue = q.entry.word
+        for (i, b) in optionButtons.enumerated() { b.title = q.options[i] }
+        feedbackLabel.stringValue = "请选择最接近的中文释义"
+        feedbackLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
+        nextButton.title = "请先作答"
+        nextButton.isEnabled = false
+    }
+
+    private func submit(_ selected: Int) {
+        guard selectedOption == nil, let q = questions.last else { return }
+        selectedOption = selected
+        let ok = selected == q.answer
+
+        results.append((q.entry.band, ok))
+        recent.append(ok); if recent.count > recentWindow { recent.removeFirst() }
+        updateTheta(diff: Double(q.entry.difficulty), ok: ok)
+
+        for (i, b) in optionButtons.enumerated() {
+            b.isEnabled = false
+            if i == q.answer { b.contentTintColor = .systemGreen }
+            else if i == selected { b.contentTintColor = .systemRed }
+            else { b.contentTintColor = LLAppearanceManager.shared.colors.secondaryText }
+        }
+
+        feedbackLabel.textColor = ok ? .systemGreen : .systemRed
+        feedbackLabel.stringValue = ok ? "回答正确：\(q.entry.word) = \(q.entry.meaning)" : "回答错误：正确答案是“\(q.entry.meaning)”"
+        nextButton.title = shouldStop() ? "查看结果" : "下一题"
+        nextButton.isEnabled = true
+    }
+
+    private func updateTheta(diff b: Double, ok: Bool) {
+        let a = 1.2, lr = 0.05, penalty = 0.6
+        let ex = max(-20.0, min(20.0, a * (theta - b)))
+        let p = 1.0 / (1.0 + exp(-ex))
+        let info = max(1e-8, p * (1 - p))
+        let delta = lr * (1 - p) / info
+        theta += ok ? delta : -delta * penalty
+        theta = max(0.0, min(7.5, theta))
+    }
+
+    private func shouldStop() -> Bool {
+        let n = results.count
+        if n >= maxQuestions { return true }
+        if n >= max(minQuestions, recentWindow), recent.filter({ !$0 }).count >= maxWrongInWindow { return true }
+        return false
+    }
+
+    private func renderResult() {
+        wordLabel.isHidden = true
+        optionButtons.forEach { $0.isHidden = true }
+        nextButton.isHidden = true
+        startButton.isHidden = true
+        feedbackLabel.isHidden = false
+
+        let c = results.filter { $0.correct }.count
+        let t = max(results.count, 1)
+        let acc = Double(c) / Double(t)
+        statusLabel.stringValue = "测试完成"
+        feedbackLabel.textColor = LLAppearanceManager.shared.colors.primaryText
+        feedbackLabel.stringValue = String(format: "得分：%d/%d\n能力值 θ=%.2f\n正确率 %.0f%%\n估算词汇量约 %d", c, results.count, theta, acc * 100, estimateVocab(theta))
+    }
+
+    private func estimateVocab(_ a: Double) -> Int {
+        let m = [1: 200, 2: 500, 3: 1200, 4: 2800, 5: 3500, 6: 4500, 7: 6000]
+        let l = Int(floor(a))
+        let f = a - Double(l)
+        if l >= 7 { return m[7] ?? 6000 }
+        if l < 1 { return Int(round(f * Double(m[1] ?? 200))) }
+        let c = m[l] ?? 200
+        let n = m[min(7, l + 1)] ?? 6000
+        return Int(round(Double(c) + f * Double(n - c)))
+    }
+
+    @objc private func onBackTapped() { onBack() }
+    @objc private func onStartTapped() { startTest() }
+    @objc private func onOptionTapped(_ sender: NSButton) { submit(sender.tag) }
+    @objc private func onNextTapped() { guard selectedOption != nil else { return }; nextRound() }
 }
+
