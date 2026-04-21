@@ -14,6 +14,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     // MARK: - Properties
     
     private var displayView: LLTypingDisplayView!
+    private let learnIndicatorView = LLStatusLearnIndicatorView(frame: .zero)
     private let meaningLabel = NSTextField()
     private let hintLabel = NSTextField()
     
@@ -59,6 +60,12 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     private func setupUI() {
         // 获取浮窗尺寸
         let settings = LLSettingsStore.shared.settings
+        
+        view.addSubview(learnIndicatorView)
+        learnIndicatorView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.leading.equalToSuperview().offset(14)
+        }
         
         // 从设置读取字体和字号
         let fontSize: CGFloat = settings.floatingPanelFontSize
@@ -136,6 +143,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         isWaitingForNextWord = false
         pendingFeedback = nil
         displayView.reset(word: entry.text)
+        updateLearnIndicator()
         
         updateMeaningVisibility(forceShow: false)
         updateCompletionHint(isVisible: false)
@@ -154,6 +162,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     /// 重置视图
     func resetView() {
+        learnIndicatorView.reviewCount = 0
         meaningLabel.stringValue = "点击切换到练习"
         updateCompletionHint(isVisible: false)
     }
@@ -305,6 +314,21 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             }, completionHandler: {
                 self.hintLabel.isHidden = true
             })
+        }
+    }
+    
+    private func updateLearnIndicator() {
+        guard let entry = currentEntry, let listId = currentListId else {
+            learnIndicatorView.reviewCount = 0
+            return
+        }
+        
+        do {
+            let progress = try LLDatabaseManager.shared.getLearningProgress(wordId: entry.id, wordListId: listId)
+            learnIndicatorView.reviewCount = progress?.reviewCount ?? 0
+        } catch {
+            LLLogger.warn("⚠️ 获取打字浮窗学习进度失败: \(error)")
+            learnIndicatorView.reviewCount = 0
         }
     }
     
