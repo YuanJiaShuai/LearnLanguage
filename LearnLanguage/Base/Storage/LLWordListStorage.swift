@@ -240,16 +240,24 @@ final class LLWordListStorage {
         }
         
         do {
+            try LLDatabaseManager.shared.deleteLearningHistory(wordListId: id)
+            try LLDatabaseManager.shared.deleteLearningProgress(wordListId: id)
+            
             // 先删除单词
             try LLDatabaseManager.shared.deleteWords(forWordListId: numericId)
             
             // 再删除词库
             try LLDatabaseManager.shared.deleteWordList(id: numericId)
             
+            if LLSettingsStore.shared.currentListId == id {
+                LLSettingsStore.shared.currentListId = nil
+            }
+            
             LLLogger.info("✅ 词库删除成功")
             
             // 发送通知
             NotificationCenter.default.post(name: .learnLanguageReloadWordLists, object: nil)
+            NotificationCenter.default.post(name: .learnLanguageRefreshStatus, object: nil)
             
         } catch {
             LLLogger.error("❌ 删除词库失败：\(error)")

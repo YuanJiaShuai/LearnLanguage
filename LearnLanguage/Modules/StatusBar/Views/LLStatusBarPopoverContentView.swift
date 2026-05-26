@@ -290,6 +290,7 @@ final class LLStatusBarPopoverContentView: NSView {
     @objc private func onLearnAnotherBatch() {
         LLDailyLearningManager.shared.learnAnotherBatch()
         LLStatusBarManager.shared.refreshStatusBar()
+        LLStatusBarTypingPractice.shared.syncWithStatusBarCurrentWord()
         onClose?()
     }
 

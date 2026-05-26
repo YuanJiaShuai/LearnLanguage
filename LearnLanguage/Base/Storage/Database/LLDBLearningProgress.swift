@@ -115,16 +115,20 @@ final class LLDBLearningProgress: TableCodable {
         // 根据反馈设置状态和计数
         switch feedback {
         case "know":
-            self.status = 2  // 已掌握
+            self.status = 1  // 学习中，累计 4 次认识后才算掌握
             self.correctCount = 1
+            self.reviewCount = 1
         case "unclear":
             self.status = 1  // 学习中
             self.unclearCount = 1
+            self.reviewCount = 0
         case "unknown":
             self.status = 1  // 学习中
             self.wrongCount = 1
+            self.reviewCount = 0
         default:
             self.status = 0
+            self.reviewCount = 0
         }
         
         self.firstSeenAt = now
@@ -133,7 +137,6 @@ final class LLDBLearningProgress: TableCodable {
         self.updatedAt = now
         
         // 初始化复习调度字段
-        self.reviewCount = 0
         self.easeFactor = 1.3
         self.interval = 1
         self.nextReviewAt = now + 86400  // 默认明天复习

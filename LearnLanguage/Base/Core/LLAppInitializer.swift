@@ -133,50 +133,15 @@ final class LLAppInitializer {
     func performReset() {
         LLLogger.warn("\n⚠️ 开始重置所有数据...")
         
-        // 关闭数据库
         LLDatabaseManager.shared.closeDatabase()
-        
-        // 清除数据库
         LLDatabaseInitializer.shared.forceReinitialize()
-        
-        // 清除学习记录
         clearLearningRecords()
-        
-        // 清除 MMKV 设置
         clearSettings()
-        
-        // 重新初始化数据库
-        LLDatabaseInitializer.shared.initializeDatabase()
         LLDatabaseManager.shared.openDatabase()
+        setRandomDefaultWordList()
         
         LLLogger.info("✅ 重置完成")
-    
-        LLLogger.warn("\n⚠️ 强制重新初始化所有数据...")
-        
-        let alert = NSAlert()
-        alert.messageText = "确认重新初始化"
-        alert.informativeText = "这将清除所有本地数据并重新初始化。学习进度将会丢失！"
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "确认")
-        alert.addButton(withTitle: "取消")
-        
-        if alert.runModal() == .alertFirstButtonReturn {
-            // 清除数据库
-            LLDatabaseInitializer.shared.forceReinitialize()
-            
-            // 清除学习记录
-            clearLearningRecords()
-            
-            // 清除设置
-            clearSettings()
-            
-            LLLogger.info("✅ 重新初始化完成")
-            
-            // 显示通知
-            showNotification(title: "重新初始化完成", message: "所有数据已重置")
-        } else {
-            LLLogger.info("❌ 用户取消了重新初始化")
-        }
+        showNotification(title: "重新初始化完成", message: "所有数据已重置")
     }
     
     /// 清除学习记录
@@ -356,4 +321,3 @@ final class LLAppInitializer {
         return stats
     }
 }
-

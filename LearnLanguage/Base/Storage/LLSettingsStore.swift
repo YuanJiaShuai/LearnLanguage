@@ -46,6 +46,7 @@ final class LLSettingsStore {
             settings = s
             // 发送通知，让界面更新
             NotificationCenter.default.post(name: .learnLanguageCurrentListChanged, object: nil)
+            NotificationCenter.default.post(name: .currentWordListChanged, object: nil)
         }
     }
     

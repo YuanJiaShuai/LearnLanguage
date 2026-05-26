@@ -38,6 +38,14 @@ final class LLTranslateViewModel {
     var isLanguageReversed: Bool {
         LLSettingsStore.shared.settings.translateLanguageReversed
     }
+    
+    private var currentTranslationDirection: LLTranslationManager.Direction {
+        let settings = LLSettingsStore.shared.settings
+        return LLTranslationManager.Direction.preferred(
+            for: settings.currentLanguage,
+            reversed: settings.translateLanguageReversed
+        )
+    }
 
     // MARK: - Private
 
@@ -134,8 +142,7 @@ final class LLTranslateViewModel {
         wordPhonetics = nil
         onTranslationUpdated?(targetString, nil, false)
 
-        // 根据当前学习语言自动选择翻译方向
-        let direction = LLSettingsStore.shared.currentLanguage.translationDirection
+        let direction = currentTranslationDirection
 
         LLTranslationManager.shared.translate(sourceString, direction: direction) { [weak self] result in
             guard let self else { return }
@@ -158,14 +165,21 @@ final class LLTranslateViewModel {
     // MARK: - Speech
 
     func speakSource() {
-        let lang = LLSettingsStore.shared.currentLanguage.speechLanguageCode
+        if LLSpeechService.shared.isSpeaking {
+            stopSpeaking()
+            return
+        }
+        
+        let lang = currentTranslationDirection.speechLanguageCode
         LLSpeechService.shared.onDidFinish = { [weak self] in
             self?.isSpeaking = false
             self?.onSpeakChanged?(false)
         }
-        LLSpeechService.shared.speak(sourceString, language: lang)
-        isSpeaking = true
-        onSpeakChanged?(true)
+        
+        if LLSpeechService.shared.speak(sourceString, language: lang) {
+            isSpeaking = true
+            onSpeakChanged?(true)
+        }
     }
 
     func stopSpeaking() {

@@ -637,7 +637,8 @@ final class LLWordListTabViewController: NSViewController {
     }
     
     @objc private func onCurrentWordListChanged() {
-        // 当前词库变化时，只需要刷新 CollectionView 来更新徽章显示
+        // 当前词库变化时，需要退出首次空状态，并刷新 CollectionView 的当前学习标记
+        updateGuideTaskCard()
         collectionView.reloadData()
     }
 }
@@ -709,5 +710,4 @@ extension LLWordListTabViewController {
         presentAsSheet(detailVC)
     }
 }
-
 

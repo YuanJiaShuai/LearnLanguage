@@ -178,8 +178,7 @@ class LLStatusBarTypingPractice {
                     if let nextWord = LLTypingPracticeManager.shared.getCurrentStatusBarWord() {
                         vc.startPractice(with: nextWord, listId: currentListId)
                     } else {
-                        vc.resetView()
-                        vc.targetWordLabel.stringValue = "没有更多单词了！"
+                        vc.showCompletionState()
                     }
                 }
             }

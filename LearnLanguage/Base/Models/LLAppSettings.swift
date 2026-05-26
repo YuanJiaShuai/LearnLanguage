@@ -301,6 +301,21 @@ struct LLShortcutConfig: Codable {
     )
 }
 
+extension LLShortcutConfig {
+    init(from decoder: Decoder) throws {
+        let fallback = Self.default
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        showMainWindow = container.decodeOrDefault(LLKeyCombo.self, forKey: .showMainWindow, default: fallback.showMainWindow)
+        nextWord = container.decodeOrDefault(LLKeyCombo.self, forKey: .nextWord, default: fallback.nextWord)
+        markKnow = container.decodeOrDefault(LLKeyCombo.self, forKey: .markKnow, default: fallback.markKnow)
+        markUnclear = container.decodeOrDefault(LLKeyCombo.self, forKey: .markUnclear, default: fallback.markUnclear)
+        markUnknown = container.decodeOrDefault(LLKeyCombo.self, forKey: .markUnknown, default: fallback.markUnknown)
+        playPronunciation = container.decodeOrDefault(LLKeyCombo.self, forKey: .playPronunciation, default: fallback.playPronunciation)
+        toggleTypingMode = container.decodeOrDefault(LLKeyCombo.self, forKey: .toggleTypingMode, default: fallback.toggleTypingMode)
+    }
+}
+
 /// 应用设置（本地存储）
 struct LLAppSettings: Codable {
     var displayLanguage: LLDisplayLanguage  // 应用显示语言
@@ -394,4 +409,57 @@ struct LLAppSettings: Codable {
         translateLanguageReversed: false,
         translateFontSize: 14
     )
+}
+
+extension LLAppSettings {
+    init(from decoder: Decoder) throws {
+        let fallback = Self.default
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        displayLanguage = container.decodeOrDefault(LLDisplayLanguage.self, forKey: .displayLanguage, default: fallback.displayLanguage)
+        currentLanguage = container.decodeOrDefault(LLLearningLanguage.self, forKey: .currentLanguage, default: fallback.currentLanguage)
+        currentListId = container.decodeOrDefault(String?.self, forKey: .currentListId, default: fallback.currentListId)
+        statusBarShowPhonetic = container.decodeOrDefault(Bool.self, forKey: .statusBarShowPhonetic, default: fallback.statusBarShowPhonetic)
+        statusBarMaxLength = container.decodeOrDefault(Int.self, forKey: .statusBarMaxLength, default: fallback.statusBarMaxLength)
+        statusBarShowContent = container.decodeOrDefault(Bool.self, forKey: .statusBarShowContent, default: fallback.statusBarShowContent)
+        statusBarContentWidth = container.decodeOrDefault(Int.self, forKey: .statusBarContentWidth, default: fallback.statusBarContentWidth)
+        showFeedbackButtons = container.decodeOrDefault(Bool.self, forKey: .showFeedbackButtons, default: fallback.showFeedbackButtons)
+        statusBarShowWord = container.decodeOrDefault(Bool.self, forKey: .statusBarShowWord, default: fallback.statusBarShowWord)
+        statusBarShowPhoneticSymbol = container.decodeOrDefault(Bool.self, forKey: .statusBarShowPhoneticSymbol, default: fallback.statusBarShowPhoneticSymbol)
+        statusBarShowMeaning = container.decodeOrDefault(Bool.self, forKey: .statusBarShowMeaning, default: fallback.statusBarShowMeaning)
+        statusBarAutoScroll = container.decodeOrDefault(Bool.self, forKey: .statusBarAutoScroll, default: fallback.statusBarAutoScroll)
+        statusBarPlaybackInterval = container.decodeOrDefault(Int.self, forKey: .statusBarPlaybackInterval, default: fallback.statusBarPlaybackInterval)
+        floatingPanelAlpha = container.decodeOrDefault(Double.self, forKey: .floatingPanelAlpha, default: fallback.floatingPanelAlpha)
+        floatingPanelWidth = container.decodeOrDefault(CGFloat.self, forKey: .floatingPanelWidth, default: fallback.floatingPanelWidth)
+        floatingPanelHeight = container.decodeOrDefault(CGFloat.self, forKey: .floatingPanelHeight, default: fallback.floatingPanelHeight)
+        floatingPanelFontName = container.decodeOrDefault(String.self, forKey: .floatingPanelFontName, default: fallback.floatingPanelFontName)
+        floatingPanelFontSize = container.decodeOrDefault(CGFloat.self, forKey: .floatingPanelFontSize, default: fallback.floatingPanelFontSize)
+        pronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .pronunciationEnabled, default: fallback.pronunciationEnabled)
+        pronunciationProvider = container.decodeOrDefault(LLPronunciationProvider.self, forKey: .pronunciationProvider, default: fallback.pronunciationProvider)
+        pronunciationAccent = container.decodeOrDefault(LLPronunciationAccent.self, forKey: .pronunciationAccent, default: fallback.pronunciationAccent)
+        pronunciationRate = container.decodeOrDefault(Float.self, forKey: .pronunciationRate, default: fallback.pronunciationRate)
+        appAudioVolume = container.decodeOrDefault(Float.self, forKey: .appAudioVolume, default: fallback.appAudioVolume)
+        newWordsPerDay = container.decodeOrDefault(Int.self, forKey: .newWordsPerDay, default: fallback.newWordsPerDay)
+        reviewCountPerDay = container.decodeOrDefault(Int.self, forKey: .reviewCountPerDay, default: fallback.reviewCountPerDay)
+        reminderEnabled = container.decodeOrDefault(Bool.self, forKey: .reminderEnabled, default: fallback.reminderEnabled)
+        reminderTime = container.decodeOrDefault(Date.self, forKey: .reminderTime, default: fallback.reminderTime)
+        typingPracticeShowMeaning = container.decodeOrDefault(Bool.self, forKey: .typingPracticeShowMeaning, default: fallback.typingPracticeShowMeaning)
+        typingFollowLetterSoundEnabled = container.decodeOrDefault(Bool.self, forKey: .typingFollowLetterSoundEnabled, default: fallback.typingFollowLetterSoundEnabled)
+        typingDictationMode = container.decodeOrDefault(Bool.self, forKey: .typingDictationMode, default: fallback.typingDictationMode)
+        typingInputStyle = container.decodeOrDefault(LLTypingInputStyle.self, forKey: .typingInputStyle, default: fallback.typingInputStyle)
+        autoShowAnswerAfterErrors = container.decodeOrDefault(Int.self, forKey: .autoShowAnswerAfterErrors, default: fallback.autoShowAnswerAfterErrors)
+        launchAtLogin = container.decodeOrDefault(Bool.self, forKey: .launchAtLogin, default: fallback.launchAtLogin)
+        shortcutConfig = container.decodeOrDefault(LLShortcutConfig.self, forKey: .shortcutConfig, default: fallback.shortcutConfig)
+        translateDoubleCopyEnabled = container.decodeOrDefault(Bool.self, forKey: .translateDoubleCopyEnabled, default: fallback.translateDoubleCopyEnabled)
+        translateDoubleCopyInterval = container.decodeOrDefault(Double.self, forKey: .translateDoubleCopyInterval, default: fallback.translateDoubleCopyInterval)
+        translateClipboardOCREnabled = container.decodeOrDefault(Bool.self, forKey: .translateClipboardOCREnabled, default: fallback.translateClipboardOCREnabled)
+        translateLanguageReversed = container.decodeOrDefault(Bool.self, forKey: .translateLanguageReversed, default: fallback.translateLanguageReversed)
+        translateFontSize = container.decodeOrDefault(CGFloat.self, forKey: .translateFontSize, default: fallback.translateFontSize)
+    }
+}
+
+private extension KeyedDecodingContainer {
+    func decodeOrDefault<T: Decodable>(_ type: T.Type, forKey key: Key, default defaultValue: T) -> T {
+        (try? decodeIfPresent(type, forKey: key)) ?? defaultValue
+    }
 }

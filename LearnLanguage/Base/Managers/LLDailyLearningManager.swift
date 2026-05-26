@@ -117,9 +117,9 @@ final class LLDailyLearningManager {
                 guard let self = self else { return }
                 if reviewCount < 4 {
                     if isFromReviewQueue {
-                        self.reviewQueue.append(wordEntry)
+                        Self.appendIfNeeded(wordEntry, to: &self.reviewQueue)
                     } else {
-                        self.newLearnWordQueue.append(wordEntry)
+                        Self.appendIfNeeded(wordEntry, to: &self.newLearnWordQueue)
                     }
                 } else {
                     NotificationCenter.default.post(name: .wrongWordsCountChanged, object: nil)
@@ -127,26 +127,28 @@ final class LLDailyLearningManager {
             }
             
         case .unclear:
-            updateProgress(entry: entry, feedback: feedback, keepToday: true)
-            if isFromReviewQueue {
-                // 历史复习词标记模糊：留在复习队列尾部继续循环
-                reviewQueue.append(entry)
-            } else if isFromNewLearnQueue {
-                // 今日新学未达标词标记模糊：留在今日新学队列尾部继续循环
-                newLearnWordQueue.append(entry)
+            updateProgress(entry: entry, feedback: feedback, keepToday: true) { [weak self] wordEntry, _ in
+                guard let self = self else { return }
+                if isFromReviewQueue {
+                    // 历史复习词标记模糊：留在复习队列尾部继续循环
+                    Self.appendIfNeeded(wordEntry, to: &self.reviewQueue)
+                } else {
+                    // 今日新词/今日新学词未达标：进入今日新学队列继续循环
+                    Self.appendIfNeeded(wordEntry, to: &self.newLearnWordQueue)
+                }
             }
-            // 今日新词标记模糊：不加入复习队列，继续学下一个新词
             
         case .unknown:
-            updateProgress(entry: entry, feedback: feedback, keepToday: true)
-            if isFromReviewQueue {
-                // 历史复习词标记不认识：留在复习队列尾部继续循环
-                reviewQueue.append(entry)
-            } else if isFromNewLearnQueue {
-                // 今日新学未达标词标记不认识：留在今日新学队列尾部继续循环
-                newLearnWordQueue.append(entry)
+            updateProgress(entry: entry, feedback: feedback, keepToday: true) { [weak self] wordEntry, _ in
+                guard let self = self else { return }
+                if isFromReviewQueue {
+                    // 历史复习词标记不认识：留在复习队列尾部继续循环
+                    Self.appendIfNeeded(wordEntry, to: &self.reviewQueue)
+                } else {
+                    // 今日新词/今日新学词未达标：进入今日新学队列继续循环
+                    Self.appendIfNeeded(wordEntry, to: &self.newLearnWordQueue)
+                }
             }
-            // 今日新词标记不认识：不加入复习队列，继续学下一个新词
         }
         
         let source: String = {
@@ -244,13 +246,10 @@ final class LLDailyLearningManager {
     /// 从数据库加载今日复习队列
     private func loadReviewQueue() {
         do {
-            let reviewProgress = try LLDatabaseManager.shared.getTodayReviewWords()
+            let reviewProgress = try LLDatabaseManager.shared.getTodayReviewWords(wordListId: currentListId)
             reviewQueue = reviewProgress.compactMap { progress -> LLWordEntry? in
-                guard let wordId = progress.wordId,
-                      let listId = progress.wordListId,
-                      let wordList = LLWordListStorage.shared.list(byId: listId) else { return nil }
-                let emtrys = wordList.entries.first(where: { $0.id == wordId })
-                return emtrys
+                guard let wordId = progress.wordId else { return nil }
+                return currentWordList?.entries.first(where: { $0.id == wordId })
             }
         } catch {
             LLLogger.error("❌ 加载今日复习队列失败：\(error)")
@@ -278,7 +277,7 @@ final class LLDailyLearningManager {
     /// 从数据库加载今日新学未达标队列
     private func loadNewLearnWordQueue(wordList: WordList, listId: String) {
         do {
-            let newLearnWordProgress = try LLDatabaseManager.shared.getTodayNewLearnWords()
+            let newLearnWordProgress = try LLDatabaseManager.shared.getTodayNewLearnWords(wordListId: listId)
             newLearnWordQueue = newLearnWordProgress.compactMap { progress -> LLWordEntry? in
                 guard let wordId = progress.wordId else { return nil }
                 return wordList.entries.first(where: { $0.id == wordId })
@@ -290,7 +289,7 @@ final class LLDailyLearningManager {
     }
     
     /// 更新数据库中的学习进度
-    private func updateProgress(entry: LLWordEntry, feedback: LLWordFeedback, keepToday: Bool, onKnownWithLowReviewCount: ((LLWordEntry, Int) -> Void)? = nil) {
+    private func updateProgress(entry: LLWordEntry, feedback: LLWordFeedback, keepToday: Bool, onProgressUpdated: ((LLWordEntry, Int) -> Void)? = nil) {
         do {
             let listId = entry.wordListId
             let existing = try LLDatabaseManager.shared.getLearningProgress(
@@ -317,7 +316,7 @@ final class LLDailyLearningManager {
                         interval = max(1, Int(Double(interval) * easeFactor))
                         record.nextReviewAt = now + Double(interval) * 86400
                     }
-                    record.status = 2
+                    record.status = (record.reviewCount ?? 0) >= 4 ? 2 : 1
                 case .unclear:
                     // 小幅下降，今天继续
                     easeFactor = max(1.3, easeFactor - 0.1)
@@ -370,7 +369,7 @@ final class LLDailyLearningManager {
                 let history = LLDBLearningHistory(wordId: entry.id, wordListId: listId, feedback: feedback.rawValue, sessionType: "learn")
                 try LLDatabaseManager.shared.database.insert(objects: [history], intoTable: "learning_history")
                 // 发送回掉 更新侧边栏
-                onKnownWithLowReviewCount?(entry, record.reviewCount ?? 0)
+                onProgressUpdated?(entry, record.reviewCount ?? 0)
             } else {
                 // 无记录：首次学习，插入新记录
                 let newRecord = LLDBLearningProgress(
@@ -395,10 +394,17 @@ final class LLDailyLearningManager {
                 // 插入学习明细记录
                 let history = LLDBLearningHistory(wordId: entry.id, wordListId: listId, feedback: feedback.rawValue, sessionType: "learn")
                 try LLDatabaseManager.shared.database.insert(objects: [history], intoTable: "learning_history")
+                
+                onProgressUpdated?(entry, newRecord.reviewCount ?? 0)
             }
             
         } catch {
             LLLogger.error("❌ 更新学习进度失败：\(error)")
         }
+    }
+    
+    private static func appendIfNeeded(_ entry: LLWordEntry, to queue: inout [LLWordEntry]) {
+        guard !queue.contains(where: { $0.id == entry.id }) else { return }
+        queue.append(entry)
     }
 }

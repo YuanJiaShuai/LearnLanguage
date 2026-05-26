@@ -162,9 +162,21 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     /// 重置视图
     func resetView() {
+        currentEntry = nil
+        currentListId = nil
+        currentWordErrorCount = 0
+        hasRecordedFeedback = false
+        isWaitingForNextWord = false
+        pendingFeedback = nil
+        displayView.reset(word: "")
         learnIndicatorView.reviewCount = 0
         meaningLabel.stringValue = "点击切换到练习"
         updateCompletionHint(isVisible: false)
+    }
+    
+    func showCompletionState() {
+        resetView()
+        meaningLabel.stringValue = "今日完成，可以从状态栏菜单再学一组"
     }
     
     // 保留这个属性用于外部访问（兼容性）

@@ -34,12 +34,13 @@ final class LLSpeechService: NSObject {
     /// - Parameters:
     ///   - text: 要朗读的文字
     ///   - language: 语言代码，默认英文 "en-US"，中文传 "zh-CN"
-    func speak(_ text: String, language: String = "en-US") {
-        guard !text.isEmpty else { return }
+    @discardableResult
+    func speak(_ text: String, language: String = "en-US") -> Bool {
+        guard !text.isEmpty else { return false }
 
         if synthesizer.isSpeaking {
             stop()
-            return
+            return false
         }
 
         speechQueue.async { [weak self] in
@@ -52,6 +53,8 @@ final class LLSpeechService: NSObject {
             DispatchQueue.main.async { self.isSpeaking = true }
             self.synthesizer.speak(utterance)
         }
+        
+        return true
     }
 
     /// 停止朗读

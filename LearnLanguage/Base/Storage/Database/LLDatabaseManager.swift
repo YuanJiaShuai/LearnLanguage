@@ -707,32 +707,42 @@ final class LLDatabaseManager {
     // MARK: - 每日学习任务
     
     /// 获取今日需要复习的词汇（nextReviewAt <= 今天结束时间戳，且 createdAt 不是今天，即历史学过的词）
-    func getTodayReviewWords() throws -> [LLDBLearningProgress] {
+    func getTodayReviewWords(wordListId: String? = nil) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: Date()).timeIntervalSince1970
         let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!.timeIntervalSince1970
         
+        var condition = LLDBLearningProgress.Properties.nextReviewAt <= endOfDay
+            && LLDBLearningProgress.Properties.createdAt < startOfDay  // 排除今天新学的词
+        if let wordListId {
+            condition = condition && LLDBLearningProgress.Properties.wordListId == wordListId
+        }
+        
         return try database.getObjects(
             on: LLDBLearningProgress.Properties.all,
             fromTable: learningProgressTable,
-            where: LLDBLearningProgress.Properties.nextReviewAt <= endOfDay
-                && LLDBLearningProgress.Properties.createdAt < startOfDay,  // 排除今天新学的词
+            where: condition,
             orderBy: [LLDBLearningProgress.Properties.nextReviewAt.asOrder(by: .ascending)]
         )
     }
     
     /// 获取今日新学习的词汇(createdAt <= 今天结束时间戳 && >= 今天开始时间戳，且reviewCount < 4的词汇)
-    func getTodayNewLearnWords() throws -> [LLDBLearningProgress] {
+    func getTodayNewLearnWords(wordListId: String? = nil) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: Date()).timeIntervalSince1970
         let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!.timeIntervalSince1970
         
+        var condition = LLDBLearningProgress.Properties.createdAt >= startOfDay
+            && LLDBLearningProgress.Properties.createdAt <= endOfDay
+            && LLDBLearningProgress.Properties.reviewCount < 4
+        if let wordListId {
+            condition = condition && LLDBLearningProgress.Properties.wordListId == wordListId
+        }
+        
         return try database.getObjects(
             on: LLDBLearningProgress.Properties.all,
             fromTable: learningProgressTable,
-            where: LLDBLearningProgress.Properties.createdAt >= startOfDay
-                && LLDBLearningProgress.Properties.createdAt <= endOfDay
-                && LLDBLearningProgress.Properties.reviewCount < 4,
+            where: condition,
             orderBy: [LLDBLearningProgress.Properties.createdAt.asOrder(by: .descending)]
         )
     }
@@ -855,6 +865,14 @@ final class LLDatabaseManager {
         try database.delete(
             fromTable: learningProgressTable,
             where: LLDBLearningProgress.Properties.wordListId == wordListId
+        )
+    }
+    
+    /// 删除某个词库的所有学习明细
+    func deleteLearningHistory(wordListId: String) throws {
+        try database.delete(
+            fromTable: learningHistoryTable,
+            where: LLDBLearningHistory.Properties.wordListId == wordListId
         )
     }
     

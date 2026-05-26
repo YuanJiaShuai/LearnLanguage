@@ -118,6 +118,15 @@ final class LLSearchWordView: NSView {
     private var lastSearchedText = ""
     private var lastTranslatedText = ""
     private var lastPhonetics: String?
+    private var lastDirection: LLTranslationManager.Direction?
+    
+    private var currentTranslationDirection: LLTranslationManager.Direction {
+        let settings = LLSettingsStore.shared.settings
+        return LLTranslationManager.Direction.preferred(
+            for: settings.currentLanguage,
+            reversed: settings.translateLanguageReversed
+        )
+    }
 
     /// 高度变化回调，菜单项需要监听此回调来更新尺寸
     var onHeightChanged: ((CGFloat) -> Void)?
@@ -256,7 +265,7 @@ final class LLSearchWordView: NSView {
     @objc private func speakWord() {
         let word = lastSearchedText
         guard !word.isEmpty else { return }
-        let lang = LLSettingsStore.shared.currentLanguage.speechLanguageCode
+        let lang = (lastDirection ?? currentTranslationDirection).speechLanguageCode
         LLSpeechService.shared.speak(word, language: lang)
     }
     
@@ -296,8 +305,8 @@ final class LLSearchWordView: NSView {
         showLoading(true)
         hideResult()
 
-        // 根据当前学习语言自动选择翻译方向
-        let direction = LLSettingsStore.shared.currentLanguage.translationDirection
+        let direction = currentTranslationDirection
+        lastDirection = direction
 
         LLTranslationManager.shared.translate(text, direction: direction) { [weak self] result in
             guard let self else { return }
@@ -417,6 +426,7 @@ final class LLSearchWordView: NSView {
         resultLabel.stringValue = ""
         lastTranslatedText = ""
         lastPhonetics = nil
+        lastDirection = nil
         onHeightChanged?(LLSearchWordView.viewHeight)
     }
 
