@@ -340,6 +340,8 @@ struct LLAppSettings: Codable {
     var floatingPanelFontName: String  // 浮窗字体名称
     var floatingPanelFontSize: CGFloat  // 浮窗字体大小
     var pronunciationEnabled: Bool
+    var chineseMeaningPronunciationEnabled: Bool
+    var randomPronunciationEnabled: Bool
     var pronunciationProvider: LLPronunciationProvider
     var pronunciationAccent: LLPronunciationAccent
     var pronunciationRate: Float  // 语速 0.0-1.0
@@ -388,6 +390,8 @@ struct LLAppSettings: Codable {
         floatingPanelFontName: "Bangers-Regular",
         floatingPanelFontSize: 24,
         pronunciationEnabled: true,
+        chineseMeaningPronunciationEnabled: false,
+        randomPronunciationEnabled: false,
         pronunciationProvider: .local,
         pronunciationAccent: .uk,
         pronunciationRate: 1.0,
@@ -435,6 +439,8 @@ extension LLAppSettings {
         floatingPanelFontName = container.decodeOrDefault(String.self, forKey: .floatingPanelFontName, default: fallback.floatingPanelFontName)
         floatingPanelFontSize = container.decodeOrDefault(CGFloat.self, forKey: .floatingPanelFontSize, default: fallback.floatingPanelFontSize)
         pronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .pronunciationEnabled, default: fallback.pronunciationEnabled)
+        chineseMeaningPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .chineseMeaningPronunciationEnabled, default: fallback.chineseMeaningPronunciationEnabled)
+        randomPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .randomPronunciationEnabled, default: fallback.randomPronunciationEnabled)
         pronunciationProvider = container.decodeOrDefault(LLPronunciationProvider.self, forKey: .pronunciationProvider, default: fallback.pronunciationProvider)
         pronunciationAccent = container.decodeOrDefault(LLPronunciationAccent.self, forKey: .pronunciationAccent, default: fallback.pronunciationAccent)
         pronunciationRate = container.decodeOrDefault(Float.self, forKey: .pronunciationRate, default: fallback.pronunciationRate)

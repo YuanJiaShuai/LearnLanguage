@@ -12,6 +12,98 @@ private extension Float {
     var llClampedAudioVolume: Float { min(max(self, 0), 1) }
 }
 
+private struct LLChineseMeaningSpeechNormalizer {
+    
+    private static let partOfSpeechReplacements: [(tokens: [String], text: String)] = [
+        (["adj.", "a."], "形容词，"),
+        (["adv."], "副词，"),
+        (["n."], "名词，"),
+        (["v."], "动词，"),
+        (["vt."], "及物动词，"),
+        (["vi."], "不及物动词，"),
+        (["prep."], "介词，"),
+        (["pron."], "代词，"),
+        (["conj."], "连词，"),
+        (["interj.", "int."], "感叹词，"),
+        (["aux."], "助动词，"),
+        (["num."], "数词，"),
+        (["art."], "冠词，"),
+        (["abbr."], "缩写，"),
+        (["pl."], "复数，"),
+        (["sing."], "单数，"),
+        (["phr."], "短语，"),
+        (["idiom."], "习语，")
+    ]
+    
+    static func normalize(_ meaning: String) -> String {
+        var text = meaning.trimmingCharacters(in: .whitespacesAndNewlines)
+        text = replacePartOfSpeech(in: text)
+        
+        let punctuationReplacements: [(String, String)] = [
+            ("\n", "，"),
+            ("\r", "，"),
+            (";", "，"),
+            ("；", "，"),
+            (",", "，"),
+            ("/", "，"),
+            ("、", "，")
+        ]
+        for (source, target) in punctuationReplacements {
+            text = text.replacingOccurrences(of: source, with: target)
+        }
+        
+        text = text.replacingOccurrences(
+            of: "\\s+",
+            with: " ",
+            options: .regularExpression
+        )
+        text = text.replacingOccurrences(
+            of: "，\\s*，+",
+            with: "，",
+            options: .regularExpression
+        )
+        text = text.replacingOccurrences(
+            of: "\\s*，\\s*",
+            with: "，",
+            options: .regularExpression
+        )
+        
+        return text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "，")))
+    }
+    
+    private static func replacePartOfSpeech(in text: String) -> String {
+        var result = text
+        for replacement in partOfSpeechReplacements {
+            for token in replacement.tokens {
+                result = replaceToken(token, with: replacement.text, in: result)
+            }
+        }
+        return result
+    }
+    
+    private static func replaceToken(_ token: String, with replacement: String, in text: String) -> String {
+        let escapedToken = NSRegularExpression.escapedPattern(for: token)
+        let pattern = "(?i)(^|[\\s\\n\\r,，;；/\\(\\[（【])\(escapedToken)(?=$|[^A-Za-z0-9])"
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return text }
+        
+        let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
+        let matches = regex.matches(in: text, range: nsRange)
+        guard !matches.isEmpty else { return text }
+        
+        var result = text
+        for match in matches.reversed() {
+            guard
+                let fullRange = Range(match.range(at: 0), in: result),
+                let prefixRange = Range(match.range(at: 1), in: result)
+            else { continue }
+            
+            let prefix = String(result[prefixRange])
+            result.replaceSubrange(fullRange, with: prefix + replacement)
+        }
+        return result
+    }
+}
+
 // MARK: - 发音提供者协议
 
 /// 发音提供者协议，所有发音实现都需要遵循此协议
@@ -44,11 +136,8 @@ final class LLLocalPronunciationProvider: NSObject, LLPronunciationProviderProto
     }
     
     func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
-        // 停止当前发音（在后台线程执行，避免主线程 QoS 优先级反转警告）
         if synthesizer.isSpeaking {
-            DispatchQueue.global(qos: .default).async { [weak self] in
-                self?.synthesizer.stopSpeaking(at: .immediate)
-            }
+            synthesizer.stopSpeaking(at: .immediate)
         }
         
         self.completion = completion
@@ -76,9 +165,7 @@ final class LLLocalPronunciationProvider: NSObject, LLPronunciationProviderProto
     
     func stop() {
         if synthesizer.isSpeaking {
-            DispatchQueue.global(qos: .default).async { [weak self] in
-                self?.synthesizer.stopSpeaking(at: .immediate)
-            }
+            synthesizer.stopSpeaking(at: .immediate)
         }
     }
     
@@ -104,7 +191,7 @@ extension LLLocalPronunciationProvider: AVSpeechSynthesizerDelegate {
 
 // MARK: - 有道发音提供者
 
-final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
+final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProtocol, AVAudioPlayerDelegate {
     
     private var audioPlayer: AVAudioPlayer?
     private var completion: ((Bool, Error?) -> Void)?
@@ -187,6 +274,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
     private func playAudioData(_ data: Data, rate: Float) {
         do {
             audioPlayer = try AVAudioPlayer(data: data)
+            audioPlayer?.delegate = self
             audioPlayer?.prepareToPlay()
             audioPlayer?.enableRate = true
             audioPlayer?.rate = rate
@@ -195,6 +283,7 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
             let success = audioPlayer?.play() ?? false
             if success {
                 LLLogger.info("✅ 播放成功")
+                return
             } else {
                 LLLogger.error("❌ 播放失败：无法启动播放器")
             }
@@ -214,6 +303,16 @@ final class LLYoudaoPronunciationProvider: LLPronunciationProviderProtocol {
     
     var isSpeaking: Bool {
         return audioPlayer?.isPlaying ?? false
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        completion?(flag, nil)
+        completion = nil
+    }
+    
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        completion?(false, error)
+        completion = nil
     }
 }
 
@@ -260,6 +359,7 @@ final class LLAzurePronunciationProvider: LLPronunciationProviderProtocol {
 final class LLPronunciationManager {
     
     static let shared = LLPronunciationManager()
+    private static let chineseAfterEnglishDelay: TimeInterval = 0.12
     
     // 所有发音提供者
     private var providers: [LLPronunciationProvider: LLPronunciationProviderProtocol] = [:]
@@ -298,16 +398,7 @@ final class LLPronunciationManager {
             return
         }
         
-        // 更新当前提供者
-        updateCurrentProvider()
-        
-        // 使用当前提供者播放
-        currentProvider?.speak(
-            word: word,
-            accent: settings.pronunciationAccent,
-            rate: settings.pronunciationRate,
-            completion: completion
-        )
+        speakEnglishWord(word, accent: settings.pronunciationAccent, rate: settings.pronunciationRate, completion: completion)
     }
     
     /// 播放单词发音（指定口音）
@@ -324,14 +415,7 @@ final class LLPronunciationManager {
             return
         }
         
-        updateCurrentProvider()
-        
-        currentProvider?.speak(
-            word: word,
-            accent: accent,
-            rate: settings.pronunciationRate,
-            completion: completion
-        )
+        speakEnglishWord(word, accent: accent, rate: settings.pronunciationRate, completion: completion)
     }
     
     /// 播放单词发音（完全自定义）
@@ -345,14 +429,112 @@ final class LLPronunciationManager {
         providers[provider]?.speak(word: word, accent: accent, rate: rate, completion: completion)
     }
     
+    /// 手动播放英文单词发音，不受英文/中文/随机朗读开关影响
+    func speakEnglishManually(word: String, completion: ((Bool, Error?) -> Void)? = nil) {
+        let text = word.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else {
+            completion?(false, NSError(domain: "LLPronunciation", code: -103, userInfo: [NSLocalizedDescriptionKey: "单词为空"]))
+            return
+        }
+        
+        stop()
+        let settings = LLSettingsStore.shared.settings
+        speakEnglishWord(
+            text,
+            accent: settings.pronunciationAccent,
+            rate: settings.pronunciationRate,
+            completion: completion
+        )
+    }
+    
+    /// 根据朗读模式播放学习项：英文、中文释义、或随机二选一
+    func speak(entry: LLWordEntry, completion: ((Bool, Error?) -> Void)? = nil) {
+        let settings = LLSettingsStore.shared.settings
+        let shouldSpeakEnglish = settings.pronunciationEnabled
+        let shouldSpeakChinese = settings.chineseMeaningPronunciationEnabled
+        stop()
+        
+        if settings.randomPronunciationEnabled {
+            if Bool.random() {
+                speakEnglishWord(
+                    entry.text,
+                    accent: settings.pronunciationAccent,
+                    rate: settings.pronunciationRate,
+                    completion: completion
+                )
+            } else {
+                speakChineseMeaning(entry.meaning, completion: completion)
+            }
+            return
+        }
+        
+        switch (shouldSpeakEnglish, shouldSpeakChinese) {
+        case (true, true):
+            speakEnglishWord(entry.text, accent: settings.pronunciationAccent, rate: settings.pronunciationRate) { [weak self] success, error in
+                guard success else {
+                    completion?(success, error)
+                    return
+                }
+                self?.speakChineseMeaningAfterEnglishStops(entry.meaning, completion: completion)
+            }
+        case (true, false):
+            speakEnglishWord(entry.text, accent: settings.pronunciationAccent, rate: settings.pronunciationRate, completion: completion)
+        case (false, true):
+            speakChineseMeaning(entry.meaning, completion: completion)
+        case (false, false):
+            completion?(false, NSError(domain: "LLPronunciation", code: -101, userInfo: [NSLocalizedDescriptionKey: "朗读功能未启用"]))
+        }
+    }
+    
+    /// 原生朗读中文释义
+    func speakChineseMeaning(_ meaning: String, completion: ((Bool, Error?) -> Void)? = nil) {
+        let text = LLChineseMeaningSpeechNormalizer.normalize(meaning)
+        guard !text.isEmpty else {
+            completion?(false, NSError(domain: "LLPronunciation", code: -102, userInfo: [NSLocalizedDescriptionKey: "中文释义为空"]))
+            return
+        }
+        LLLogger.debug("🔊 中文释义朗读：\(text)")
+        
+        LLSpeechService.shared.onDidFinish = {
+            completion?(true, nil)
+        }
+        
+        let didStart = LLSpeechService.shared.speak(text, language: "zh-CN")
+        if !didStart {
+            completion?(false, nil)
+        }
+    }
+    
     /// 停止当前发音
     func stop() {
         currentProvider?.stop()
+        LLSpeechService.shared.stop()
     }
     
     /// 是否正在发音
     var isSpeaking: Bool {
-        return currentProvider?.isSpeaking ?? false
+        return (currentProvider?.isSpeaking ?? false) || LLSpeechService.shared.isSpeaking
+    }
+    
+    private func speakEnglishWord(_ word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)? = nil) {
+        updateCurrentProvider()
+        currentProvider?.speak(
+            word: word,
+            accent: accent,
+            rate: rate,
+            completion: completion
+        )
+    }
+    
+    private func speakChineseMeaningAfterEnglishStops(_ meaning: String, completion: ((Bool, Error?) -> Void)? = nil) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.chineseAfterEnglishDelay) { [weak self] in
+            guard let self else { return }
+            if self.currentProvider?.isSpeaking == true {
+                self.speakChineseMeaningAfterEnglishStops(meaning, completion: completion)
+                return
+            }
+            self.speakChineseMeaning(meaning, completion: completion)
+        }
     }
     
     /// 获取可用的发音提供者列表
@@ -372,4 +554,3 @@ final class LLPronunciationManager {
         }
     }
 }
-

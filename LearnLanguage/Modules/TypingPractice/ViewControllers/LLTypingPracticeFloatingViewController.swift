@@ -150,8 +150,8 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         
         // 播放发音
         let settings = LLSettingsStore.shared.settings
-        if settings.pronunciationEnabled && !settings.typingFollowLetterSoundEnabled {
-            LLPronunciationManager.shared.speak(word: entry.text)
+        if !settings.typingFollowLetterSoundEnabled {
+            LLPronunciationManager.shared.speak(entry: entry)
         }
         
         // 确保窗口获得焦点

@@ -152,8 +152,8 @@ final class LLWordPhoneticView: NSView {
     
     @objc private func onClicked() {
         guard !word.isEmpty, word != NSLocalizedString("Loading", comment: "Loading indicator") else { return }
-        LLLogger.info("🔊 点击播放发音：\(word)")
-        LLPronunciationManager.shared.speak(word: word)
+        LLLogger.info("🔊 点击播放英文发音：\(word)")
+        LLPronunciationManager.shared.speakEnglishManually(word: word)
     }
     
     // MARK: - Intrinsic Content Size
@@ -176,4 +176,3 @@ final class LLWordPhoneticView: NSView {
         return NSSize(width: width, height: height)
     }
 }
-

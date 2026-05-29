@@ -363,6 +363,11 @@ extension LLStatusBarContentView: NSMenuDelegate {
             return
         }
         
+        if wordPhoneticView.frame.contains(loc) {
+            LLStatusBarManager.shared.playCurrentWordPronunciation()
+            return
+        }
+        
         // 点击其他区域也弹出 panel（保持原有行为）
         LLStatusBarPopoverPanel.shared.toggle(relativeTo: self)
     }

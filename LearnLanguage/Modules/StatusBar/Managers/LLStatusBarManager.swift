@@ -34,6 +34,15 @@ final class LLStatusBarManager {
     /// 播放定时器
     private var playbackTimer: Timer?
     
+    /// 状态栏自动朗读是否正在进行
+    private var isStatusBarPronunciationPlaying = false
+    
+    /// 定时器到点时如果还在朗读，延迟到朗读结束后再切换
+    private var shouldAdvanceAfterCurrentPronunciation = false
+    
+    /// 当前自动朗读序号，用来忽略旧回调
+    private var pronunciationPlaybackToken = 0
+    
     /// 是否处于打字练习模式
     var isTypingPracticeMode = false {
         didSet {
@@ -181,14 +190,14 @@ final class LLStatusBarManager {
         
         // 根据发音设置播放单词发音
         let interval = settings.statusBarPlaybackInterval
-        if settings.pronunciationEnabled && interval >= 0 {
-            LLPronunciationManager.shared.speak(word: word)
+        if interval >= 0 {
+            playStatusBarPronunciation(for: next)
         }
     }
     
     /// 记录反馈
     func recordFeedback(_ feedback: LLWordFeedback) {
-        guard let entry = currentEntry, let listId = currentListId else {
+        guard let entry = currentEntry, currentListId != nil else {
             LLLogger.warn("⚠️ 没有当前单词，无法记录反馈")
             return
         }
@@ -224,7 +233,7 @@ final class LLStatusBarManager {
     /// 播放当前单词发音
     func playCurrentWordPronunciation() {
         guard let entry = currentEntry else { return }
-        LLPronunciationManager.shared.speak(word: entry.text)
+        LLPronunciationManager.shared.speakEnglishManually(word: entry.text)
     }
     
     /// 切换打字练习模式
@@ -252,8 +261,7 @@ final class LLStatusBarManager {
             withTimeInterval: TimeInterval(interval),
             repeats: true
         ) { [weak self] _ in
-            LLLogger.debug("⏱ 定时器触发，切换下一个单词")
-            self?.refreshStatusBar()
+            self?.handlePlaybackTimerFired()
         }
         
         // 加入 RunLoop 确保在滚动等场景下也能触发
@@ -265,7 +273,46 @@ final class LLStatusBarManager {
     private func stopPlaybackTimer() {
         playbackTimer?.invalidate()
         playbackTimer = nil
+        isStatusBarPronunciationPlaying = false
+        shouldAdvanceAfterCurrentPronunciation = false
+        pronunciationPlaybackToken += 1
         LLLogger.info("⏱ 播放定时器已停止")
+    }
+    
+    private func handlePlaybackTimerFired() {
+        if isStatusBarPronunciationPlaying {
+            shouldAdvanceAfterCurrentPronunciation = true
+            LLLogger.debug("⏱ 定时器触发，但当前仍在朗读，等待朗读结束后切换")
+            return
+        }
+        
+        if LLPronunciationManager.shared.isSpeaking {
+            LLLogger.debug("⏱ 定时器触发，但其他朗读仍在进行，本轮暂不切换")
+            return
+        }
+        
+        LLLogger.debug("⏱ 定时器触发，切换下一个单词")
+        refreshStatusBar()
+    }
+    
+    private func playStatusBarPronunciation(for entry: LLWordEntry) {
+        pronunciationPlaybackToken += 1
+        let token = pronunciationPlaybackToken
+        isStatusBarPronunciationPlaying = true
+        shouldAdvanceAfterCurrentPronunciation = false
+        
+        LLPronunciationManager.shared.speak(entry: entry) { [weak self] _, _ in
+            DispatchQueue.main.async {
+                guard let self, self.pronunciationPlaybackToken == token else { return }
+                self.isStatusBarPronunciationPlaying = false
+                
+                if self.shouldAdvanceAfterCurrentPronunciation {
+                    self.shouldAdvanceAfterCurrentPronunciation = false
+                    LLLogger.debug("⏱ 当前朗读结束，执行延迟的下一词切换")
+                    self.refreshStatusBar()
+                }
+            }
+        }
     }
     
     // MARK: - Private Methods
@@ -307,4 +354,3 @@ final class LLStatusBarManager {
         onStatusBarClicked?()
     }
 }
-

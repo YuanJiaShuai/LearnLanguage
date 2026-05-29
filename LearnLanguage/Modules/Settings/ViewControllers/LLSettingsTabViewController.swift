@@ -89,6 +89,8 @@ final class LLSettingsTabViewController: NSViewController {
     
     // 发音设置卡片
     private var pronunciationCheck: NSButton!
+    private var chineseMeaningPronunciationCheck: NSButton!
+    private var randomPronunciationCheck: NSButton!
     private var pronunciationProviderPopup: NSPopUpButton!
     private var pronunciationAccentPopup: NSPopUpButton!
     private var pronunciationRatePopup: NSPopUpButton!
@@ -315,7 +317,9 @@ final class LLSettingsTabViewController: NSViewController {
     private func createPronunciationCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: NSLocalizedString("Pronunciation Settings", comment: ""), icon: "🔊")
         
-        pronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Enable Pronunciation", comment: ""), target: self, action: #selector(saveSettings))
+        pronunciationCheck = NSButton(checkboxWithTitle: "英文朗读", target: self, action: #selector(onPronunciationModeChanged(_:)))
+        chineseMeaningPronunciationCheck = NSButton(checkboxWithTitle: "中文释义朗读", target: self, action: #selector(onPronunciationModeChanged(_:)))
+        randomPronunciationCheck = NSButton(checkboxWithTitle: "随机朗读", target: self, action: #selector(onPronunciationModeChanged(_:)))
         
         pronunciationProviderPopup = NSPopUpButton()
         pronunciationProviderPopup.target = self
@@ -361,7 +365,15 @@ final class LLSettingsTabViewController: NSViewController {
             make.width.greaterThanOrEqualTo(200)
         }
 
-        card.addFormItem(label: NSLocalizedString("Enable Pronunciation", comment: ""), control: pronunciationCheck)
+        let pronunciationModeStack = NSStackView(views: [
+            pronunciationCheck,
+            chineseMeaningPronunciationCheck,
+            randomPronunciationCheck
+        ])
+        pronunciationModeStack.orientation = .horizontal
+        pronunciationModeStack.spacing = 14
+        pronunciationModeStack.alignment = .centerY
+        card.addFormItem(label: "朗读模式", control: pronunciationModeStack)
         card.addFormRow(items: [
             (label: NSLocalizedString("Pronunciation Provider", comment: ""), control: pronunciationProviderPopup),
             (label: NSLocalizedString("Pronunciation Accent", comment: ""), control: pronunciationAccentPopup)
@@ -635,6 +647,8 @@ final class LLSettingsTabViewController: NSViewController {
         
         // 发音设置
         pronunciationCheck.state = s.pronunciationEnabled ? .on : .off
+        chineseMeaningPronunciationCheck.state = s.chineseMeaningPronunciationEnabled ? .on : .off
+        randomPronunciationCheck.state = s.randomPronunciationEnabled ? .on : .off
         if let index = LLPronunciationProvider.allCases.firstIndex(of: s.pronunciationProvider) {
             pronunciationProviderPopup.selectItem(at: index)
         }
@@ -703,6 +717,16 @@ final class LLSettingsTabViewController: NSViewController {
         updateFontPreview()
         saveSettings()
     }
+    
+    @objc private func onPronunciationModeChanged(_ sender: NSButton) {
+        if sender === randomPronunciationCheck, sender.state == .on {
+            pronunciationCheck.state = .off
+            chineseMeaningPronunciationCheck.state = .off
+        } else if sender.state == .on {
+            randomPronunciationCheck.state = .off
+        }
+        saveSettings()
+    }
 
     @objc private func saveSettings() {
         var s = LLSettingsStore.shared.settings
@@ -752,7 +776,15 @@ final class LLSettingsTabViewController: NSViewController {
         }
         
         // 发音设置
+        if randomPronunciationCheck.state == .on {
+            pronunciationCheck.state = .off
+            chineseMeaningPronunciationCheck.state = .off
+        } else if pronunciationCheck.state == .on || chineseMeaningPronunciationCheck.state == .on {
+            randomPronunciationCheck.state = .off
+        }
         s.pronunciationEnabled = pronunciationCheck.state == .on
+        s.chineseMeaningPronunciationEnabled = chineseMeaningPronunciationCheck.state == .on
+        s.randomPronunciationEnabled = randomPronunciationCheck.state == .on
         let providerIndex = pronunciationProviderPopup.indexOfSelectedItem
         if providerIndex >= 0 && providerIndex < LLPronunciationProvider.allCases.count {
             s.pronunciationProvider = LLPronunciationProvider.allCases[providerIndex]
