@@ -194,14 +194,22 @@ extension LLLocalPronunciationProvider: AVSpeechSynthesizerDelegate {
 final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProtocol, AVAudioPlayerDelegate {
     
     private var audioPlayer: AVAudioPlayer?
+    private var dataTask: URLSessionDataTask?
     private var completion: ((Bool, Error?) -> Void)?
+    private var playbackGeneration = 0
     
     func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
+        playbackGeneration += 1
+        let generation = playbackGeneration
+        dataTask?.cancel()
+        dataTask = nil
+        audioPlayer?.stop()
+        audioPlayer = nil
         self.completion = completion
         
         // 先查缓存
         if let cachedData = LLAudioCacheManager.shared.cachedAudioData(word: word, provider: .youdao, accent: accent) {
-            playAudioData(cachedData, rate: rate)
+            playAudioData(cachedData, rate: rate, generation: generation)
             return
         }
         
@@ -222,11 +230,14 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
         LLLogger.debug("🔊 有道发音：\(word) [\(accent.displayName)] - \(urlString)")
         
         // 使用 URLSession.shared，它会自动处理系统代理
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard let self = self else { return }
+            guard self.isCurrentPlayback(generation) else { return }
             
             if let error = error {
+                if (error as NSError).code == NSURLErrorCancelled { return }
                 DispatchQueue.main.async {
+                    guard self.isCurrentPlayback(generation) else { return }
                     LLLogger.error("❌ 播放失败：\(error.localizedDescription)")
                     LLLogger.info("💡 提示：请检查网络连接或代理设置，也可以尝试使用本地发音")
                     self.completion?(false, error)
@@ -240,6 +251,7 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
                 LLLogger.debug("📡 HTTP 状态码：\(httpResponse.statusCode)")
                 if httpResponse.statusCode != 200 {
                     DispatchQueue.main.async {
+                        guard self.isCurrentPlayback(generation) else { return }
                         let error = NSError(domain: "LLPronunciation", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: String(format: NSLocalizedString("Server Error", comment: "Server error message"), httpResponse.statusCode)])
                         LLLogger.error("❌ 播放失败：HTTP \(httpResponse.statusCode)")
                         self.completion?(false, error)
@@ -251,6 +263,7 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
             
             guard let data = data, !data.isEmpty else {
                 DispatchQueue.main.async {
+                    guard self.isCurrentPlayback(generation) else { return }
                     let error = NSError(domain: "LLPronunciation", code: -2, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("No Audio Data", comment: "No audio data error")])
                     LLLogger.error("❌ 播放失败：无音频数据")
                     self.completion?(false, error)
@@ -265,13 +278,17 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
             LLAudioCacheManager.shared.saveAudioData(data, word: word, provider: .youdao, accent: accent)
             
             DispatchQueue.main.async {
-                self.playAudioData(data, rate: rate)
+                guard self.isCurrentPlayback(generation) else { return }
+                self.playAudioData(data, rate: rate, generation: generation)
             }
-        }.resume()
+        }
+        dataTask = task
+        task.resume()
     }
     
     /// 播放音频数据
-    private func playAudioData(_ data: Data, rate: Float) {
+    private func playAudioData(_ data: Data, rate: Float, generation: Int) {
+        guard isCurrentPlayback(generation) else { return }
         do {
             audioPlayer = try AVAudioPlayer(data: data)
             audioPlayer?.delegate = self
@@ -297,8 +314,12 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
     }
     
     func stop() {
+        playbackGeneration += 1
+        dataTask?.cancel()
+        dataTask = nil
         audioPlayer?.stop()
         audioPlayer = nil
+        completion = nil
     }
     
     var isSpeaking: Bool {
@@ -306,13 +327,19 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        guard player === audioPlayer else { return }
         completion?(flag, nil)
         completion = nil
     }
     
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        guard player === audioPlayer else { return }
         completion?(false, error)
         completion = nil
+    }
+    
+    private func isCurrentPlayback(_ generation: Int) -> Bool {
+        playbackGeneration == generation
     }
 }
 
@@ -359,13 +386,22 @@ final class LLAzurePronunciationProvider: LLPronunciationProviderProtocol {
 final class LLPronunciationManager {
     
     static let shared = LLPronunciationManager()
-    private static let chineseAfterEnglishDelay: TimeInterval = 0.12
+    private static let englishAfterChineseDelay: TimeInterval = 0.5
+    
+    private enum PronunciationModeChoice: Equatable {
+        case english
+        case chinese
+    }
     
     // 所有发音提供者
     private var providers: [LLPronunciationProvider: LLPronunciationProviderProtocol] = [:]
     
     // 当前使用的提供者
     private var currentProvider: LLPronunciationProviderProtocol?
+    
+    // 随机朗读对当前词只随机一次，直到切换到另一个词
+    private var currentRandomChoice: (entryKey: String, choice: PronunciationModeChoice)?
+    private var playbackGeneration = 0
     
     private init() {
         // 初始化所有提供者
@@ -398,6 +434,7 @@ final class LLPronunciationManager {
             return
         }
         
+        beginPlayback()
         speakEnglishWord(word, accent: settings.pronunciationAccent, rate: settings.pronunciationRate, completion: completion)
     }
     
@@ -415,6 +452,7 @@ final class LLPronunciationManager {
             return
         }
         
+        beginPlayback()
         speakEnglishWord(word, accent: accent, rate: settings.pronunciationRate, completion: completion)
     }
     
@@ -426,6 +464,7 @@ final class LLPronunciationManager {
     ///   - rate: 语速
     ///   - completion: 完成回调
     func speak(word: String, provider: LLPronunciationProvider, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)? = nil) {
+        beginPlayback()
         providers[provider]?.speak(word: word, accent: accent, rate: rate, completion: completion)
     }
     
@@ -437,7 +476,7 @@ final class LLPronunciationManager {
             return
         }
         
-        stop()
+        beginPlayback()
         let settings = LLSettingsStore.shared.settings
         speakEnglishWord(
             text,
@@ -452,17 +491,19 @@ final class LLPronunciationManager {
         let settings = LLSettingsStore.shared.settings
         let shouldSpeakEnglish = settings.pronunciationEnabled
         let shouldSpeakChinese = settings.chineseMeaningPronunciationEnabled
-        stop()
+        let generation = beginPlayback()
         
         if settings.randomPronunciationEnabled {
-            if Bool.random() {
+            let choice = randomChoice(for: entry)
+            switch choice {
+            case .english:
                 speakEnglishWord(
                     entry.text,
                     accent: settings.pronunciationAccent,
                     rate: settings.pronunciationRate,
                     completion: completion
                 )
-            } else {
+            case .chinese:
                 speakChineseMeaning(entry.meaning, completion: completion)
             }
             return
@@ -470,12 +511,22 @@ final class LLPronunciationManager {
         
         switch (shouldSpeakEnglish, shouldSpeakChinese) {
         case (true, true):
-            speakEnglishWord(entry.text, accent: settings.pronunciationAccent, rate: settings.pronunciationRate) { [weak self] success, error in
+            speakChineseMeaning(entry.meaning) { [weak self] success, error in
+                guard let self, self.isCurrentPlayback(generation) else {
+                    completion?(false, nil)
+                    return
+                }
                 guard success else {
                     completion?(success, error)
                     return
                 }
-                self?.speakChineseMeaningAfterEnglishStops(entry.meaning, completion: completion)
+                self.speakEnglishWordAfterChineseDelay(
+                    entry.text,
+                    accent: settings.pronunciationAccent,
+                    rate: settings.pronunciationRate,
+                    generation: generation,
+                    completion: completion
+                )
             }
         case (true, false):
             speakEnglishWord(entry.text, accent: settings.pronunciationAccent, rate: settings.pronunciationRate, completion: completion)
@@ -507,6 +558,7 @@ final class LLPronunciationManager {
     
     /// 停止当前发音
     func stop() {
+        playbackGeneration += 1
         currentProvider?.stop()
         LLSpeechService.shared.stop()
     }
@@ -526,15 +578,36 @@ final class LLPronunciationManager {
         )
     }
     
-    private func speakChineseMeaningAfterEnglishStops(_ meaning: String, completion: ((Bool, Error?) -> Void)? = nil) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Self.chineseAfterEnglishDelay) { [weak self] in
-            guard let self else { return }
-            if self.currentProvider?.isSpeaking == true {
-                self.speakChineseMeaningAfterEnglishStops(meaning, completion: completion)
+    @discardableResult
+    private func beginPlayback() -> Int {
+        stop()
+        return playbackGeneration
+    }
+    
+    private func isCurrentPlayback(_ generation: Int) -> Bool {
+        playbackGeneration == generation
+    }
+    
+    private func speakEnglishWordAfterChineseDelay(_ word: String, accent: LLPronunciationAccent, rate: Float, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.englishAfterChineseDelay) { [weak self] in
+            guard let self, self.isCurrentPlayback(generation) else {
+                completion?(false, nil)
                 return
             }
-            self.speakChineseMeaning(meaning, completion: completion)
+            self.speakEnglishWord(word, accent: accent, rate: rate, completion: completion)
         }
+    }
+    
+    private func randomChoice(for entry: LLWordEntry) -> PronunciationModeChoice {
+        let entryKey = "\(entry.id)|\(entry.text)"
+        if let cached = currentRandomChoice, cached.entryKey == entryKey {
+            return cached.choice
+        }
+        
+        let choice: PronunciationModeChoice = Bool.random() ? .english : .chinese
+        currentRandomChoice = (entryKey: entryKey, choice: choice)
+        LLLogger.debug("🎲 随机朗读选择：\(entry.text) -> \(choice == .english ? "英文" : "中文")")
+        return choice
     }
     
     /// 获取可用的发音提供者列表

@@ -15,6 +15,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     private var displayView: LLTypingDisplayView!
     private let learnIndicatorView = LLStatusLearnIndicatorView(frame: .zero)
+    private let englishPronunciationButton = NSButton()
     private let meaningLabel = NSTextField()
     private let hintLabel = NSTextField()
     
@@ -66,6 +67,8 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             make.top.equalToSuperview().offset(14)
             make.leading.equalToSuperview().offset(14)
         }
+        
+        setupEnglishPronunciationButton()
         
         // 从设置读取字体和字号
         let fontSize: CGFloat = settings.floatingPanelFontSize
@@ -132,6 +135,29 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         }
     }
     
+    private func setupEnglishPronunciationButton() {
+        let config = NSImage.SymbolConfiguration(pointSize: 14, weight: .semibold)
+        englishPronunciationButton.image = NSImage(
+            systemSymbolName: "speaker.wave.2.fill",
+            accessibilityDescription: "播放英文发音"
+        )?.withSymbolConfiguration(config)
+        englishPronunciationButton.imagePosition = .imageOnly
+        englishPronunciationButton.bezelStyle = .texturedRounded
+        englishPronunciationButton.isBordered = true
+        englishPronunciationButton.focusRingType = .none
+        englishPronunciationButton.toolTip = "播放英文发音"
+        englishPronunciationButton.target = self
+        englishPronunciationButton.action = #selector(onEnglishPronunciationClicked)
+        englishPronunciationButton.isEnabled = false
+        view.addSubview(englishPronunciationButton)
+        
+        englishPronunciationButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.width.height.equalTo(28)
+        }
+    }
+    
     // MARK: - Public Methods
     
     /// 开始练习
@@ -143,6 +169,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         isWaitingForNextWord = false
         pendingFeedback = nil
         displayView.reset(word: entry.text)
+        englishPronunciationButton.isEnabled = true
         updateLearnIndicator()
         
         updateMeaningVisibility(forceShow: false)
@@ -169,6 +196,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         isWaitingForNextWord = false
         pendingFeedback = nil
         displayView.reset(word: "")
+        englishPronunciationButton.isEnabled = false
         learnIndicatorView.reviewCount = 0
         meaningLabel.stringValue = "点击切换到练习"
         updateCompletionHint(isVisible: false)
@@ -247,6 +275,15 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     }
     
     // MARK: - Private Methods
+    
+    @objc private func onEnglishPronunciationClicked() {
+        guard let entry = currentEntry else { return }
+        LLPronunciationManager.shared.speakEnglishManually(word: entry.text)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.view.window?.makeFirstResponder(self?.view)
+        }
+    }
     
     private func handleWordCompleted() {
         // 播放完成音效

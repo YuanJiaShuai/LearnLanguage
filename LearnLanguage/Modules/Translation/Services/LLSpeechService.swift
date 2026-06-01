@@ -17,6 +17,8 @@ final class LLSpeechService: NSObject {
     private let speechQueue = DispatchQueue(label: "com.learnlanguage.speech", qos: .userInitiated)
 
     private(set) var isSpeaking = false
+    private var speechGeneration = 0
+    private var currentUtterance: AVSpeechUtterance?
 
     /// 朗读完成回调
     var onDidFinish: (() -> Void)?
@@ -42,6 +44,9 @@ final class LLSpeechService: NSObject {
             stop()
             return false
         }
+        
+        speechGeneration += 1
+        let generation = speechGeneration
 
         speechQueue.async { [weak self] in
             guard let self else { return }
@@ -50,8 +55,12 @@ final class LLSpeechService: NSObject {
             utterance.rate = 0.5
             utterance.volume = min(max(LLSettingsStore.shared.settings.appAudioVolume, 0), 1)
 
-            DispatchQueue.main.async { self.isSpeaking = true }
-            self.synthesizer.speak(utterance)
+            DispatchQueue.main.async {
+                guard self.isCurrentSpeech(generation) else { return }
+                self.currentUtterance = utterance
+                self.isSpeaking = true
+                self.synthesizer.speak(utterance)
+            }
         }
         
         return true
@@ -59,10 +68,16 @@ final class LLSpeechService: NSObject {
 
     /// 停止朗读
     func stop() {
+        speechGeneration += 1
         synthesizer.stopSpeaking(at: .immediate)
         DispatchQueue.main.async { [weak self] in
             self?.isSpeaking = false
+            self?.currentUtterance = nil
         }
+    }
+    
+    private func isCurrentSpeech(_ generation: Int) -> Bool {
+        speechGeneration == generation
     }
 }
 
@@ -72,14 +87,18 @@ extension LLSpeechService: AVSpeechSynthesizerDelegate {
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         DispatchQueue.main.async { [weak self] in
-            self?.isSpeaking = false
-            self?.onDidFinish?()
+            guard let self, utterance === self.currentUtterance else { return }
+            self.isSpeaking = false
+            self.currentUtterance = nil
+            self.onDidFinish?()
         }
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
         DispatchQueue.main.async { [weak self] in
-            self?.isSpeaking = false
+            guard let self, utterance === self.currentUtterance else { return }
+            self.isSpeaking = false
+            self.currentUtterance = nil
         }
     }
 }
