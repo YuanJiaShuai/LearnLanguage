@@ -260,6 +260,7 @@ final class LLDatabaseInitializer {
         
         var totalNewWords = 0
         var updatedWordListCount = 0
+        var syncedExistingRows = 0
         
         // 遍历本地词库，检查是否需要导入单词
         for localWordList in localWordLists {
@@ -302,6 +303,54 @@ final class LLDatabaseInitializer {
                         LLLogger.info("   ✅ \(localWordList.name): 导入 \(sourceWords.count) 个单词")
                     }
                 }
+            } else {
+                let sourceWords: [LLDBWord] = try sourceDB.getObjects(
+                    on: LLDBWord.Properties.all,
+                    fromTable: wordsTable,
+                    where: LLDBWord.Properties.wordListId == sourceId
+                )
+                let localWords: [LLDBWord] = try targetDB.getObjects(
+                    on: LLDBWord.Properties.all,
+                    fromTable: wordsTable,
+                    where: LLDBWord.Properties.wordListId == localId
+                )
+                
+                var localWordMap: [String: LLDBWord] = [:]
+                for word in localWords {
+                    localWordMap[word.word.lowercased()] = word
+                }
+                
+                for sourceWord in sourceWords {
+                    let key = sourceWord.word.lowercased()
+                    guard let localWord = localWordMap[key],
+                          let localRowId = localWord.id else {
+                        continue
+                    }
+                    
+                    let sourceUS = sourceWord.usPhonetic?.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let sourceUK = sourceWord.ukPhonetic?.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let localUS = localWord.usPhonetic?.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let localUK = localWord.ukPhonetic?.trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    let shouldUpdateUS = !(sourceUS ?? "").isEmpty && sourceUS != localUS
+                    let shouldUpdateUK = !(sourceUK ?? "").isEmpty && sourceUK != localUK
+                    
+                    guard shouldUpdateUS || shouldUpdateUK else {
+                        continue
+                    }
+                    
+                    localWord.usPhonetic = shouldUpdateUS ? sourceUS : localWord.usPhonetic
+                    localWord.ukPhonetic = shouldUpdateUK ? sourceUK : localWord.ukPhonetic
+                    
+                    try targetDB.update(
+                        table: wordsTable,
+                        on: LLDBWord.Properties.usPhonetic,
+                        LLDBWord.Properties.ukPhonetic,
+                        with: localWord,
+                        where: LLDBWord.Properties.id == localRowId
+                    )
+                    syncedExistingRows += 1
+                }
             }
         }
         
@@ -309,6 +358,12 @@ final class LLDatabaseInitializer {
             LLLogger.info("   ✅ 共为 \(updatedWordListCount) 个词库导入了 \(totalNewWords) 个单词")
         } else {
             LLLogger.info("   ⏭️ 没有需要导入的单词")
+        }
+        
+        if syncedExistingRows > 0 {
+            LLLogger.info("   🔄 同步更新了 \(syncedExistingRows) 条已有单词音标")
+        } else {
+            LLLogger.info("   ⏭️ 没有需要同步的已有单词音标")
         }
     }
     
@@ -381,4 +436,3 @@ final class LLDatabaseInitializer {
         }
     }
 }
-
