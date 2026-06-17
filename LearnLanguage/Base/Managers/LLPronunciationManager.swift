@@ -214,10 +214,10 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
         }
         
         // 有道词典音频 URL
-        // 美式：http://dict.youdao.com/dictvoice?audio={word}&type=1
-        // 英式：http://dict.youdao.com/dictvoice?audio={word}&type=2
+        // 美式：https://dict.youdao.com/dictvoice?audio={word}&type=1
+        // 英式：https://dict.youdao.com/dictvoice?audio={word}&type=2
         let type = accent == .us ? "1" : "2"
-        let urlString = "http://dict.youdao.com/dictvoice?audio=\(word)&type=\(type)"
+        let urlString = "https://dict.youdao.com/dictvoice?audio=\(word)&type=\(type)"
         
         LLLogger.info("🔊 有道发音 URL：\(urlString)")
         

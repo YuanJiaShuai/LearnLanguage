@@ -715,7 +715,7 @@ final class LLDataTabViewController: NSViewController {
         }
         panel.nameFieldStringValue = "LearnLanguage_\(dateString()).\(LLBackupManager.fileExtension)"
         panel.message = NSLocalizedString("Save Panel Backup Message", comment: "")
-        panel.begin { [weak self] response in
+        panel.begin { response in
             guard response == .OK, let url = panel.url else { return }
             DispatchQueue.main.async {
                 LLBackupManager.shared.exportBackup(to: url) { errorMsg in
@@ -743,7 +743,7 @@ final class LLDataTabViewController: NSViewController {
             panel.allowedContentTypes = [type]
         }
         panel.message = NSLocalizedString("Open Panel Restore Message", comment: "")
-        panel.begin { [weak self] response in
+        panel.begin { response in
             guard response == .OK, let url = panel.url else { return }
             DispatchQueue.main.async {
                 let confirm = NSAlert()
@@ -847,4 +847,3 @@ extension LLDataTabViewController: NSCollectionViewDelegateFlowLayout {
         return learningLabItemSize(for: learningLabContainer.bounds.width)
     }
 }
-

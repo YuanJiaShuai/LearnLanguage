@@ -269,7 +269,6 @@ final class LLShortcutRecorderView: NSView {
         case 111: return "F12"
         case 122: return "F1"
         case 120: return "F2"
-        case 99:  return "F3"
         case 118: return "F4"
         default: return "\(keyCode)"
         }

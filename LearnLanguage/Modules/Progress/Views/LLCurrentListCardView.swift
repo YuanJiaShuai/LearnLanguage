@@ -189,7 +189,6 @@ final class LLCurrentListCardView: NSView {
         
         // 3列统计
         let statW = (w - 40) / 3
-        let statH: CGFloat = 60
         for (i, views) in [(stat1Icon, stat1Title, stat1Value),
                            (stat2Icon, stat2Title, stat2Value),
                            (stat3Icon, stat3Title, stat3Value)].enumerated() {

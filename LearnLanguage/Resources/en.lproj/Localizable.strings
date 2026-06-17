@@ -72,6 +72,12 @@
 "Enable Pronunciation" = "Enable Pronunciation";
 "Pronunciation Provider" = "Pronunciation Provider";
 "Pronunciation Accent" = "Pronunciation Accent";
+"Pronunciation Mode" = "Pronunciation Mode";
+"English Pronunciation" = "English Pronunciation";
+"Chinese Meaning Pronunciation" = "Chinese Meaning Pronunciation";
+"Random Pronunciation" = "Random Pronunciation";
+"Playback Volume" = "Playback Volume";
+"Pronunciation Privacy Note" = "Local pronunciation uses system voices. When Youdao pronunciation is selected, only the current word is requested for audio; learning records and word lists are not uploaded.";
 "Speech Rate" = "Speech Rate";
 "Local Pronunciation" = "Local Pronunciation";
 "Youdao Pronunciation" = "Youdao Pronunciation";
@@ -192,11 +198,14 @@
 "Double Copy Translate" = "Translate on Double ⌘+C";
 "Double Copy Interval" = "Trigger Interval";
 "Clipboard OCR Translate" = "Clipboard Screenshot OCR";
+"Double Copy Privacy Note" = "When enabled, the app reads clipboard text only after detecting consecutive copies for translation. When disabled, clipboard text is not monitored.";
+"Clipboard OCR Privacy Note" = "When enabled, the app recognizes text from clipboard images for local OCR and translation. Images are not saved to app data.";
 "Translate Direction" = "Translation Direction";
 "Translate Font Size" = "Result Font Size";
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "Keyboard shortcuts coming soon...";
+"Launch at Login Privacy Note" = "When enabled, the app registers as a login item. You can turn it off at any time; it does not create a background daemon or collect login information.";
 "Shortcut Show Main Window" = "Show Main Window";
 "Shortcut Next Word" = "Next Word";
 "Shortcut Mark Know" = "Mark as Known";

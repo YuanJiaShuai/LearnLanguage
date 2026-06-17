@@ -90,6 +90,7 @@
 		849227082F3C878F00447E0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849226D92F3C878F00447E0C /* Assets.xcassets */; };
 		849227092F3C878F00447E0C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849226DB2F3C878F00447E0C /* Main.storyboard */; };
 		8492270A2F3C878F00447E0C /* LearnLanguage.db in Resources */ = {isa = PBXBuildFile; fileRef = 849226D72F3C878F00447E0C /* LearnLanguage.db */; };
+		8492270C2F8F000100447E0C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8492270D2F8F000100447E0C /* PrivacyInfo.xcprivacy */; };
 		8492270C2F3C888800447E0C /* LLWordCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492270B2F3C888800447E0C /* LLWordCellView.swift */; };
 		84A446CA2F6A818300F0E5E7 /* LLBackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */; };
 		84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */; };
@@ -262,10 +263,6 @@
 		84EE92CF2F88F81A0082A167 /* adjective_to_noun_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A82F88F81A0082A167 /* adjective_to_noun_9.png */; };
 		84EE92D02F88F81A0082A167 /* grammar_23.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92012F88F81A0082A167 /* grammar_23.png */; };
 		84EE92D12F88F81A0082A167 /* sentence_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE923C2F88F81A0082A167 /* sentence_article.md */; };
-		84F100001111111111111111 /* LLGuideManager.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111111 /* LLGuideManager.swift */; };
-		84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111112 /* LLGuideTaskCardView.swift */; };
-		84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111113 /* LLWelcomeGuideViewController.swift */; };
-		84F100001111111111111114 /* LLInlineGuideTipView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111114 /* LLInlineGuideTipView.swift */; };
 		84F34EF32F8C939400E79B09 /* LLInlineGuideTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */; };
 		84F34EF72F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F34EF42F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift */; };
 		84F36D532F89E47100142F1D /* ll_h.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D3F2F89E47100142F1D /* ll_h.mp3 */; };
@@ -404,6 +401,7 @@
 		849226D72F3C878F00447E0C /* LearnLanguage.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = LearnLanguage.db; sourceTree = "<group>"; };
 		849226D92F3C878F00447E0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		849226DA2F3C878F00447E0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8492270D2F8F000100447E0C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8492270B2F3C888800447E0C /* LLWordCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordCellView.swift; sourceTree = "<group>"; };
 		84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLBackupManager.swift; sourceTree = "<group>"; };
 		84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLKeychainManager.swift; sourceTree = "<group>"; };
@@ -1007,6 +1005,7 @@
 				849226D92F3C878F00447E0C /* Assets.xcassets */,
 				849226DB2F3C878F00447E0C /* Main.storyboard */,
 				A85ECB032F4C2149009F8DA5 /* Info.plist */,
+				8492270D2F8F000100447E0C /* PrivacyInfo.xcprivacy */,
 				840D1E6C2F67B6A6002C330E /* Localizable.strings */,
 			);
 			path = Resources;
@@ -1631,11 +1630,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84F100001111111111111114 /* LLInlineGuideTipView.swift in Resources */,
-				84F100001111111111111111 /* LLGuideManager.swift in Resources */,
-				84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */,
-				84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */,
 				849227082F3C878F00447E0C /* Assets.xcassets in Resources */,
+				8492270C2F8F000100447E0C /* PrivacyInfo.xcprivacy in Resources */,
 				840D1E6E2F67B6A6002C330E /* Localizable.strings in Resources */,
 				849227092F3C878F00447E0C /* Main.storyboard in Resources */,
 				840D1E872F67DC76002C330E /* Gateron Red Inks.mp3 in Resources */,

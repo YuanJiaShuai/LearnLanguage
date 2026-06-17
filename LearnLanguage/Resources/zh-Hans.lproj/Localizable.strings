@@ -72,6 +72,12 @@
 "Enable Pronunciation" = "启用发音";
 "Pronunciation Provider" = "发音提供者";
 "Pronunciation Accent" = "发音口音";
+"Pronunciation Mode" = "朗读模式";
+"English Pronunciation" = "英文朗读";
+"Chinese Meaning Pronunciation" = "中文释义朗读";
+"Random Pronunciation" = "随机朗读";
+"Playback Volume" = "播放音量";
+"Pronunciation Privacy Note" = "本地发音使用系统语音；选择有道发音时，仅会向有道请求当前单词的音频，不上传学习记录或词库数据。";
 "Speech Rate" = "语速调节";
 "Local Pronunciation" = "本地发音";
 "Youdao Pronunciation" = "有道发音";
@@ -192,11 +198,14 @@
 "Double Copy Translate" = "两次 ⌘+C 触发翻译";
 "Double Copy Interval" = "触发时间间隔";
 "Clipboard OCR Translate" = "剪贴板截图 OCR 翻译";
+"Double Copy Privacy Note" = "开启后，应用只会在检测到连续复制时读取剪贴板文本用于翻译；关闭后不会监听剪贴板文本。";
+"Clipboard OCR Privacy Note" = "开启后，应用会识别剪贴板中的图片文字用于本地 OCR 和翻译；图片不会保存到应用数据中。";
 "Translate Direction" = "翻译方向";
 "Translate Font Size" = "翻译结果字体大小";
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "快捷键功能开发中，敬请期待...";
+"Launch at Login Privacy Note" = "开启后，应用会注册为登录项；可随时关闭，不会创建后台守护进程或收集登录信息。";
 "Shortcut Show Main Window" = "显示主窗口";
 "Shortcut Next Word" = "切换下一个单词";
 "Shortcut Mark Know" = "标记为认识";

@@ -72,6 +72,12 @@
 "Enable Pronunciation" = "発音を有効にする";
 "Pronunciation Provider" = "発音プロバイダー";
 "Pronunciation Accent" = "発音アクセント";
+"Pronunciation Mode" = "読み上げモード";
+"English Pronunciation" = "英語読み上げ";
+"Chinese Meaning Pronunciation" = "中国語訳の読み上げ";
+"Random Pronunciation" = "ランダム読み上げ";
+"Playback Volume" = "再生音量";
+"Pronunciation Privacy Note" = "ローカル発音はシステム音声を使用します。有道発音を選択した場合、現在の単語の音声のみをリクエストし、学習記録や単語リストはアップロードしません。";
 "Speech Rate" = "話速調整";
 "Local Pronunciation" = "ローカル発音";
 "Youdao Pronunciation" = "有道発音";
@@ -184,11 +190,14 @@
 "Double Copy Translate" = "⌘+C 二回で翻訳";
 "Double Copy Interval" = "トリガー間隔";
 "Clipboard OCR Translate" = "クリップボード画像 OCR 翻訳";
+"Double Copy Privacy Note" = "有効にすると、連続コピーを検出した場合のみ翻訳のためにクリップボードのテキストを読み取ります。無効時はテキストを監視しません。";
+"Clipboard OCR Privacy Note" = "有効にすると、クリップボード内の画像から文字を認識してローカル OCR と翻訳に使用します。画像はアプリデータに保存されません。";
 "Translate Direction" = "翻訳方向";
 "Translate Font Size" = "翻訳結果フォントサイズ";
 
 // MARK: - Settings Extra
 "Shortcut Placeholder" = "キーボードショートカットは近日公開予定...";
+"Launch at Login Privacy Note" = "有効にすると、アプリをログイン項目として登録します。いつでも無効にでき、バックグラウンドデーモンの作成やログイン情報の収集は行いません。";
 "Shortcut Show Main Window" = "メインウィンドウを表示";
 "Shortcut Next Word" = "次の単語へ";
 "Shortcut Mark Know" = "覚えた";
