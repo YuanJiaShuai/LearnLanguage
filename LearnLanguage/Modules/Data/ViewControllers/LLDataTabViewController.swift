@@ -15,6 +15,7 @@ private struct LLLearningLabItem {
     let symbolName: String
     let tintColor: NSColor
     let badge: String
+    let footer: String
     let route: LLLearningLabRoute
 }
 
@@ -36,7 +37,7 @@ private final class LLLearningLabCollectionItem: NSCollectionViewItem {
     private let titleLabel = NSTextField(labelWithString: "")
     private let subtitleLabel = NSTextField(labelWithString: "")
     private let descriptionLabel = NSTextField(labelWithString: "")
-    private let footerLabel = NSTextField(labelWithString: "统一卡片布局，后续点击进入具体功能")
+    private let footerLabel = NSTextField(labelWithString: "")
     
     override func loadView() {
         view = NSView()
@@ -143,6 +144,7 @@ private final class LLLearningLabCollectionItem: NSCollectionViewItem {
         titleLabel.stringValue = item.title
         subtitleLabel.stringValue = item.subtitle
         descriptionLabel.stringValue = item.description
+        footerLabel.stringValue = item.footer
         footerLabel.textColor = item.tintColor.withAlphaComponent(0.88)
     }
 }
@@ -230,10 +232,11 @@ final class LLDataTabViewController: NSViewController {
         LLLearningLabItem(
             title: "语法笔记",
             subtitle: "Grammar Notes",
-            description: "导入语法资料后，在这里以阅读卡片或文档页面的形式查看。",
+            description: "以阅读卡片和文档页面查看语法笔记，适合在学习间隙快速复习。",
             symbolName: "text.book.closed.fill",
             tintColor: NSColor.systemBlue,
-            badge: "优先",
+            badge: "可用",
+            footer: "打开语法笔记",
             route: .grammarNotes
         ),
         LLLearningLabItem(
@@ -242,26 +245,9 @@ final class LLDataTabViewController: NSViewController {
             description: "基于标准词库做 20 题快速测评，帮助你先估算当前词汇水平。",
             symbolName: "chart.bar.doc.horizontal.fill",
             tintColor: NSColor.systemTeal,
-            badge: "新功能",
+            badge: "可用",
+            footer: "开始评估",
             route: .vocabularyAssessment
-        ),
-        LLLearningLabItem(
-            title: "相似词练习",
-            subtitle: "Similar Words",
-            description: "用于近义词、易混词辨析训练，后面会扩展成专项练习页。",
-            symbolName: "rectangle.3.group.bubble.left.fill",
-            tintColor: NSColor.systemPurple,
-            badge: "准备中",
-            route: .similarWords
-        ),
-        LLLearningLabItem(
-            title: "更多功能",
-            subtitle: "Coming Next",
-            description: "固定搭配、词根词缀、迷你测验等后续能力都可以放在这里。",
-            symbolName: "sparkles.rectangle.stack.fill",
-            tintColor: NSColor.systemOrange,
-            badge: "预留",
-            route: .moreFeatures
         )
     ]
     

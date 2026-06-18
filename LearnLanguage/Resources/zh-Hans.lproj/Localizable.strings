@@ -81,8 +81,6 @@
 "Speech Rate" = "语速调节";
 "Local Pronunciation" = "本地发音";
 "Youdao Pronunciation" = "有道发音";
-"Google Pronunciation" = "Google 发音";
-"Azure Pronunciation" = "Azure 发音";
 
 // MARK: - Typing Practice
 "Typing Practice" = "打字练习";
@@ -185,8 +183,12 @@
 "Total Words Learned" = "累计学习单词";
 "Streak Days" = "连续学习天数";
 "No Records Today" = "今天还没有学习记录";
-"Trend Chart Placeholder" = "📊 学习曲线图表（开发中）";
+"Trend Chart Placeholder" = "学习记录积累后将在这里显示趋势";
 "Export Records Message" = "导出学习记录";
+"Export Records Success" = "导出成功";
+"Export Records Failed" = "导出失败";
+"Export Records Empty" = "暂无可导出的记录";
+"Export Records Empty Desc" = "当前筛选条件下没有学习记录。";
 "Select List Desc" = "请选择一个词库作为当前学习词库";
 
 // MARK: - Wrong Record
@@ -204,7 +206,6 @@
 "Translate Font Size" = "翻译结果字体大小";
 
 // MARK: - Settings Extra
-"Shortcut Placeholder" = "快捷键功能开发中，敬请期待...";
 "Launch at Login Privacy Note" = "开启后，应用会注册为登录项；可随时关闭，不会创建后台守护进程或收集登录信息。";
 "Shortcut Show Main Window" = "显示主窗口";
 "Shortcut Next Word" = "切换下一个单词";
@@ -275,8 +276,6 @@
 // MARK: - Enum Display Names
 "Pronunciation Local" = "本地发音";
 "Pronunciation Youdao" = "有道发音";
-"Pronunciation Google" = "Google 发音";
-"Pronunciation Azure" = "Azure 发音";
 "Accent US" = "美式发音";
 "Accent UK" = "英式发音";
 "Typing Per Letter" = "每个字母一个下划线（_ _ _ _ _）";

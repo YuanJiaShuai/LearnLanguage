@@ -97,7 +97,7 @@ final class LLSimilarWordsHomeViewController: NSViewController {
             make.bottom.equalToSuperview().offset(-40)
         }
         
-        let detailLabel = NSTextField(labelWithString: "这里是独立的相似词练习模块首页。下一步可以从固定词组开始，比如 big / large / huge、say / tell / speak，然后扩展成练习题流程。")
+        let detailLabel = NSTextField(labelWithString: "相似词练习正在整理题库和练习流程。当前版本请先使用词库学习、打字练习和语法笔记。")
         detailLabel.font = NSFont.systemFont(ofSize: 16, weight: .regular)
         detailLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
         detailLabel.lineBreakMode = .byWordWrapping
@@ -107,7 +107,7 @@ final class LLSimilarWordsHomeViewController: NSViewController {
             make.top.leading.trailing.equalToSuperview().inset(28)
         }
         
-        let hintLabel = NSTextField(labelWithString: "后续建议：词组列表 / 练习题页 / 答案反馈")
+        let hintLabel = NSTextField(labelWithString: "题库准备完成后会在学习实验室中开放。")
         hintLabel.font = NSFont.systemFont(ofSize: 13, weight: .medium)
         hintLabel.textColor = NSColor.systemPurple.withAlphaComponent(0.9)
         card.addSubview(hintLabel)

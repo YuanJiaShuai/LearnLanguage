@@ -97,7 +97,7 @@ final class LLMoreFeaturesHomeViewController: NSViewController {
             make.bottom.equalToSuperview().offset(-40)
         }
         
-        let detailLabel = NSTextField(labelWithString: "这里是独立的更多功能模块首页。后面适合放固定搭配、词根词缀、迷你测验、轻量挑战等实验性功能。")
+        let detailLabel = NSTextField(labelWithString: "更多学习工具正在整理中。当前版本请优先使用词库、学习记录、语法笔记和词汇量评估。")
         detailLabel.font = NSFont.systemFont(ofSize: 16, weight: .regular)
         detailLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
         detailLabel.lineBreakMode = .byWordWrapping
@@ -107,7 +107,7 @@ final class LLMoreFeaturesHomeViewController: NSViewController {
             make.top.leading.trailing.equalToSuperview().inset(28)
         }
         
-        let hintLabel = NSTextField(labelWithString: "后续建议：功能列表 / 开发中状态 / 实验功能入口")
+        let hintLabel = NSTextField(labelWithString: "新工具会在完成后出现在学习实验室中。")
         hintLabel.font = NSFont.systemFont(ofSize: 13, weight: .medium)
         hintLabel.textColor = NSColor.systemOrange.withAlphaComponent(0.9)
         card.addSubview(hintLabel)

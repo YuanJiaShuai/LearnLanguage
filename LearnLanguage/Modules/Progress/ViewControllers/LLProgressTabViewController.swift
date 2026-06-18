@@ -57,6 +57,22 @@ final class LLProgressTabViewController: NSViewController {
     // 当前选中的标签
     private enum Tab { case stat, todayRecord, review }
     private var currentTab: Tab = .stat
+
+    private struct ExportPayload: Codable {
+        let exportedAt: String
+        let filter: String
+        let records: [ExportRecord]
+    }
+
+    private struct ExportRecord: Codable {
+        let wordId: String
+        let wordListId: String
+        let word: String
+        let feedback: String
+        let feedbackText: String
+        let learnCount: Int
+        let lastLearnedAt: String
+    }
     
     // MARK: - Lifecycle
 
@@ -249,17 +265,80 @@ final class LLProgressTabViewController: NSViewController {
 
     
     @objc private func exportRecords() {
+        let items = todayRecordContentView.items
+        guard !items.isEmpty else {
+            showExportAlert(
+                title: NSLocalizedString("Export Records Empty", comment: ""),
+                message: NSLocalizedString("Export Records Empty Desc", comment: ""),
+                style: .informational
+            )
+            return
+        }
+
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.json]
-        savePanel.nameFieldStringValue = "学习记录_\(Date().timeIntervalSince1970).json"
+        savePanel.nameFieldStringValue = "LearningRecords_\(exportFileDateString()).json"
         savePanel.message = NSLocalizedString("Export Records Message", comment: "")
         
-        savePanel.begin { response in
+        savePanel.begin { [weak self] response in
             if response == .OK, let url = savePanel.url {
-                // TODO: 实现导出逻辑
-                LLLogger.info("导出到: \(url.path)")
+                self?.writeExportRecords(items, to: url)
             }
         }
+    }
+
+    private func writeExportRecords(_ items: [LLTodayRecordItem], to url: URL) {
+        do {
+            let formatter = ISO8601DateFormatter()
+            let payload = ExportPayload(
+                exportedAt: formatter.string(from: Date()),
+                filter: todayRecordContentView.currentFilter.rawValue,
+                records: items.map { item in
+                    ExportRecord(
+                        wordId: item.wordId,
+                        wordListId: item.wordListId,
+                        word: item.wordText,
+                        feedback: item.lastFeedback,
+                        feedbackText: LLWordFeedback(rawValue: item.lastFeedback)?.displayName ?? item.lastFeedback,
+                        learnCount: item.learnCount,
+                        lastLearnedAt: formatter.string(from: Date(timeIntervalSince1970: item.lastLearnedAt))
+                    )
+                }
+            )
+
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+            let data = try encoder.encode(payload)
+            try data.write(to: url, options: .atomic)
+
+            showExportAlert(
+                title: NSLocalizedString("Export Records Success", comment: ""),
+                message: url.path,
+                style: .informational
+            )
+            LLLogger.info("✅ 学习记录已导出到: \(url.path)")
+        } catch {
+            showExportAlert(
+                title: NSLocalizedString("Export Records Failed", comment: ""),
+                message: error.localizedDescription,
+                style: .critical
+            )
+            LLLogger.error("❌ 导出学习记录失败：\(error)")
+        }
+    }
+
+    private func showExportAlert(title: String, message: String, style: NSAlert.Style) {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = message
+        alert.alertStyle = style
+        alert.runModal()
+    }
+
+    private func exportFileDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        return formatter.string(from: Date())
     }
     
     // MARK: - Public Methods

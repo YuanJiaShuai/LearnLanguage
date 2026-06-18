@@ -81,8 +81,6 @@
 "Speech Rate" = "Speech Rate";
 "Local Pronunciation" = "Local Pronunciation";
 "Youdao Pronunciation" = "Youdao Pronunciation";
-"Google Pronunciation" = "Google Pronunciation";
-"Azure Pronunciation" = "Azure Pronunciation";
 
 // MARK: - Typing Practice
 "Typing Practice" = "Typing Practice";
@@ -185,8 +183,12 @@
 "Total Words Learned" = "Words Learned";
 "Streak Days" = "Streak Days";
 "No Records Today" = "No learning records today";
-"Trend Chart Placeholder" = "📊 Learning Trend Chart (Coming Soon)";
+"Trend Chart Placeholder" = "Learning trends will appear here as records accumulate";
 "Export Records Message" = "Export Learning Records";
+"Export Records Success" = "Export Successful";
+"Export Records Failed" = "Export Failed";
+"Export Records Empty" = "No Records to Export";
+"Export Records Empty Desc" = "There are no learning records for the current filter.";
 "Select List Desc" = "Please select a word list as your current learning list";
 
 // MARK: - Wrong Record
@@ -204,7 +206,6 @@
 "Translate Font Size" = "Result Font Size";
 
 // MARK: - Settings Extra
-"Shortcut Placeholder" = "Keyboard shortcuts coming soon...";
 "Launch at Login Privacy Note" = "When enabled, the app registers as a login item. You can turn it off at any time; it does not create a background daemon or collect login information.";
 "Shortcut Show Main Window" = "Show Main Window";
 "Shortcut Next Word" = "Next Word";
@@ -275,8 +276,6 @@
 // MARK: - Enum Display Names
 "Pronunciation Local" = "Local Pronunciation";
 "Pronunciation Youdao" = "Youdao Pronunciation";
-"Pronunciation Google" = "Google Pronunciation";
-"Pronunciation Azure" = "Azure Pronunciation";
 "Accent US" = "American English";
 "Accent UK" = "British English";
 "Typing Per Letter" = "Per Letter (_ _ _ _ _)";
