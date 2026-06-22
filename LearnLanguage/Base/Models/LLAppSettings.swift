@@ -89,8 +89,6 @@ enum LLDisplayLanguage: String, CaseIterable, Codable {
 enum LLPronunciationProvider: String, Codable, CaseIterable {
     case local = "local"           // 本地 TTS
     case youdao = "youdao"         // 有道词典
-    // case google = "google"      // Google TTS (预留，暂时下线)
-    // case azure = "azure"        // Azure Speech (预留，暂时下线)
     
     var displayName: String {
         switch self {

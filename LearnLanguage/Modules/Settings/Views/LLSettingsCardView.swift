@@ -103,6 +103,21 @@ final class LLSettingsCardView: NSView {
             make.width.equalTo(contentStackView)
         }
     }
+
+    func addNote(_ text: String) {
+        let noteLabel = NSTextField(wrappingLabelWithString: text)
+        noteLabel.font = NSFont.systemFont(ofSize: 12)
+        noteLabel.textColor = NSColor(white: 0.48, alpha: 1.0)
+        noteLabel.isEditable = false
+        noteLabel.isBezeled = false
+        noteLabel.drawsBackground = false
+        noteLabel.maximumNumberOfLines = 0
+
+        contentStackView.addArrangedSubview(noteLabel)
+        noteLabel.snp.makeConstraints { make in
+            make.width.equalTo(contentStackView)
+        }
+    }
     
     /// 左右水平布局：左边标题，右边控件
     func addFormItemInline(label: String, control: NSView) {
@@ -185,4 +200,3 @@ final class LLSettingsCardView: NSView {
         return stack
     }
 }
-

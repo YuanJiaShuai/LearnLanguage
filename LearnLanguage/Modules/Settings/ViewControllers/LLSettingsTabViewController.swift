@@ -317,9 +317,9 @@ final class LLSettingsTabViewController: NSViewController {
     private func createPronunciationCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: NSLocalizedString("Pronunciation Settings", comment: ""), icon: "🔊")
         
-        pronunciationCheck = NSButton(checkboxWithTitle: "英文朗读", target: self, action: #selector(onPronunciationModeChanged(_:)))
-        chineseMeaningPronunciationCheck = NSButton(checkboxWithTitle: "中文释义朗读", target: self, action: #selector(onPronunciationModeChanged(_:)))
-        randomPronunciationCheck = NSButton(checkboxWithTitle: "随机朗读", target: self, action: #selector(onPronunciationModeChanged(_:)))
+        pronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("English Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
+        chineseMeaningPronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Chinese Meaning Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
+        randomPronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Random Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
         
         pronunciationProviderPopup = NSPopUpButton()
         pronunciationProviderPopup.target = self
@@ -373,7 +373,8 @@ final class LLSettingsTabViewController: NSViewController {
         pronunciationModeStack.orientation = .horizontal
         pronunciationModeStack.spacing = 14
         pronunciationModeStack.alignment = .centerY
-        card.addFormItem(label: "朗读模式", control: pronunciationModeStack)
+        card.addFormItem(label: NSLocalizedString("Pronunciation Mode", comment: ""), control: pronunciationModeStack)
+        card.addNote(NSLocalizedString("Pronunciation Privacy Note", comment: ""))
         card.addFormRow(items: [
             (label: NSLocalizedString("Pronunciation Provider", comment: ""), control: pronunciationProviderPopup),
             (label: NSLocalizedString("Pronunciation Accent", comment: ""), control: pronunciationAccentPopup)
@@ -381,7 +382,7 @@ final class LLSettingsTabViewController: NSViewController {
         // 临时隐藏语速设置（保留代码，后续可恢复）
         // card.addFormItem(label: NSLocalizedString("Speech Rate", comment: ""), control: pronunciationRatePopup)
         card.addFormItem(label: NSLocalizedString("Playback Interval", comment: ""), control: statusBarPlaybackIntervalPopup)
-        card.addFormItem(label: "播放音量", control: volumeStack)
+        card.addFormItem(label: NSLocalizedString("Playback Volume", comment: ""), control: volumeStack)
         
         return card
     }
@@ -483,7 +484,7 @@ final class LLSettingsTabViewController: NSViewController {
             let recorder = LLShortcutRecorderView(frame: NSRect(x: 0, y: 0, width: 160, height: 28))
             recorder.keyCombo = config[keyPath: action.keyPath]
             let keyPath = action.keyPath
-            recorder.onChanged = { [weak self] newCombo in
+            recorder.onChanged = { newCombo in
                 var s = LLSettingsStore.shared.settings
                 s.shortcutConfig[keyPath: keyPath] = newCombo
                 LLSettingsStore.shared.settings = s
@@ -551,8 +552,10 @@ final class LLSettingsTabViewController: NSViewController {
         }
 
         card.addFormItem(label: NSLocalizedString("Double Copy Translate", comment: ""), control: translateDoubleCopyCheck)
+        card.addNote(NSLocalizedString("Double Copy Privacy Note", comment: ""))
         card.addFormItem(label: NSLocalizedString("Double Copy Interval", comment: ""), control: intervalStack)
         card.addFormItem(label: NSLocalizedString("Clipboard OCR Translate", comment: ""), control: translateClipboardOCRCheck)
+        card.addNote(NSLocalizedString("Clipboard OCR Privacy Note", comment: ""))
         card.addFormItem(label: NSLocalizedString("Translate Direction", comment: ""), control: translateLanguageDirectionSegment)
         card.addFormItem(label: NSLocalizedString("Translate Font Size", comment: ""), control: fontSizeStack)
 
@@ -590,6 +593,7 @@ final class LLSettingsTabViewController: NSViewController {
         }
         
         card.addFormItem(label: NSLocalizedString("Launch at Login", comment: ""), control: launchAtLoginCheck)
+        card.addNote(NSLocalizedString("Launch at Login Privacy Note", comment: ""))
         card.addFormItem(label: NSLocalizedString("Display Language", comment: ""), control: displayLanguagePopup)
         
         return card

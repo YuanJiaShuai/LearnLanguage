@@ -160,9 +160,7 @@ final class LLReviewContentView: NSView {
             
             // 设置"下次复习"列右对齐
             if id == "nextReview" {
-                if let headerCell = column.headerCell as? NSTableHeaderCell {
-                    headerCell.alignment = .right
-                }
+                column.headerCell.alignment = .right
             }
             
             tableView.addTableColumn(column)

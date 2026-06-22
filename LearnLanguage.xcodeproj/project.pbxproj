@@ -90,6 +90,7 @@
 		849227082F3C878F00447E0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849226D92F3C878F00447E0C /* Assets.xcassets */; };
 		849227092F3C878F00447E0C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849226DB2F3C878F00447E0C /* Main.storyboard */; };
 		8492270A2F3C878F00447E0C /* LearnLanguage.db in Resources */ = {isa = PBXBuildFile; fileRef = 849226D72F3C878F00447E0C /* LearnLanguage.db */; };
+		8492270C2F8F000100447E0C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8492270D2F8F000100447E0C /* PrivacyInfo.xcprivacy */; };
 		8492270C2F3C888800447E0C /* LLWordCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492270B2F3C888800447E0C /* LLWordCellView.swift */; };
 		84A446CA2F6A818300F0E5E7 /* LLBackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */; };
 		84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */; };
@@ -400,6 +401,7 @@
 		849226D72F3C878F00447E0C /* LearnLanguage.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = LearnLanguage.db; sourceTree = "<group>"; };
 		849226D92F3C878F00447E0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		849226DA2F3C878F00447E0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8492270D2F8F000100447E0C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8492270B2F3C888800447E0C /* LLWordCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWordCellView.swift; sourceTree = "<group>"; };
 		84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLBackupManager.swift; sourceTree = "<group>"; };
 		84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLKeychainManager.swift; sourceTree = "<group>"; };
@@ -999,6 +1001,7 @@
 				849226D92F3C878F00447E0C /* Assets.xcassets */,
 				849226DB2F3C878F00447E0C /* Main.storyboard */,
 				A85ECB032F4C2149009F8DA5 /* Info.plist */,
+				8492270D2F8F000100447E0C /* PrivacyInfo.xcprivacy */,
 				840D1E6C2F67B6A6002C330E /* Localizable.strings */,
 			);
 			path = Resources;
@@ -1612,6 +1615,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				849227082F3C878F00447E0C /* Assets.xcassets in Resources */,
+				8492270C2F8F000100447E0C /* PrivacyInfo.xcprivacy in Resources */,
 				840D1E6E2F67B6A6002C330E /* Localizable.strings in Resources */,
 				849227092F3C878F00447E0C /* Main.storyboard in Resources */,
 				840D1E872F67DC76002C330E /* Gateron Red Inks.mp3 in Resources */,

@@ -75,11 +75,15 @@
 "Enable Pronunciation" = "발음 활성화";
 "Pronunciation Provider" = "발음 제공자";
 "Pronunciation Accent" = "발음 악센트";
+"Pronunciation Mode" = "낭독 모드";
+"English Pronunciation" = "영어 낭독";
+"Chinese Meaning Pronunciation" = "중국어 뜻 낭독";
+"Random Pronunciation" = "무작위 낭독";
+"Playback Volume" = "재생 음량";
+"Pronunciation Privacy Note" = "로컬 발음은 시스템 음성을 사용합니다. 유도 발음을 선택하면 현재 단어의 오디오만 요청하며, 학습 기록이나 단어 목록은 업로드하지 않습니다.";
 "Speech Rate" = "음성 속도";
 "Local Pronunciation" = "로컬 발음";
 "Youdao Pronunciation" = "유도 발음";
-"Google Pronunciation" = "Google 발음";
-"Azure Pronunciation" = "Azure 발음";
 
 // MARK: - Typing Practice
 "Dictation Mode" = "받아쓰기 모드 (단어 숨김)";
@@ -169,8 +173,12 @@
 "Total Words Learned" = "누적 학습 단어";
 "Streak Days" = "연속 학습 일수";
 "No Records Today" = "오늘 학습 기록이 없습니다";
-"Trend Chart Placeholder" = "📊 학습 트렌드 차트 (개발 중)";
+"Trend Chart Placeholder" = "학습 기록이 쌓이면 여기에 추세가 표시됩니다";
 "Export Records Message" = "학습 기록 내보내기";
+"Export Records Success" = "내보내기 성공";
+"Export Records Failed" = "내보내기 실패";
+"Export Records Empty" = "내보낼 기록이 없습니다";
+"Export Records Empty Desc" = "현재 필터 조건에 해당하는 학습 기록이 없습니다.";
 "Select List Desc" = "현재 학습 목록으로 사용할 단어 목록을 선택하세요";
 
 // MARK: - Wrong Record
@@ -182,11 +190,13 @@
 "Double Copy Translate" = "⌘+C 두 번으로 번역";
 "Double Copy Interval" = "트리거 간격";
 "Clipboard OCR Translate" = "클립보드 스크린샷 OCR 번역";
+"Double Copy Privacy Note" = "활성화하면 연속 복사가 감지된 경우에만 번역을 위해 클립보드 텍스트를 읽습니다. 비활성화하면 클립보드 텍스트를 모니터링하지 않습니다.";
+"Clipboard OCR Privacy Note" = "활성화하면 클립보드 이미지의 텍스트를 로컬 OCR 및 번역에 사용합니다. 이미지는 앱 데이터에 저장되지 않습니다.";
 "Translate Direction" = "번역 방향";
 "Translate Font Size" = "번역 결과 글자 크기";
 
 // MARK: - Settings Extra
-"Shortcut Placeholder" = "키보드 단축키 기능 준비 중...";
+"Launch at Login Privacy Note" = "활성화하면 앱이 로그인 항목으로 등록됩니다. 언제든지 끌 수 있으며, 백그라운드 데몬을 만들거나 로그인 정보를 수집하지 않습니다.";
 "Shortcut Show Main Window" = "메인 창 표시";
 "Shortcut Next Word" = "다음 단어";
 "Shortcut Mark Know" = "알고 있음";
@@ -256,8 +266,6 @@
 // MARK: - Enum Display Names
 "Pronunciation Local" = "로컬 발음";
 "Pronunciation Youdao" = "유다오 발음";
-"Pronunciation Google" = "Google 발음";
-"Pronunciation Azure" = "Azure 발음";
 "Accent US" = "미국 영어";
 "Accent UK" = "영국 영어";
 "Typing Per Letter" = "글자별 (_ _ _ _ _)";

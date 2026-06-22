@@ -143,7 +143,7 @@ final class LLScrollingTextView: NSView {
         let attributedString = NSAttributedString(string: text, attributes: attributes)
         
         // 计算初始 X 位置（左对齐）
-        var textInitialX: CGFloat = 0
+        let textInitialX: CGFloat = 0
         // 如果文本宽度小于视图宽度，保持左对齐（不居中）
         
         // 计算垂直居中位置
@@ -280,4 +280,3 @@ final class LLScrollingTextView: NSView {
         }
     }
 }
-

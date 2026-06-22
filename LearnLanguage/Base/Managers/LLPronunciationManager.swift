@@ -214,10 +214,10 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
         }
         
         // 有道词典音频 URL
-        // 美式：http://dict.youdao.com/dictvoice?audio={word}&type=1
-        // 英式：http://dict.youdao.com/dictvoice?audio={word}&type=2
+        // 美式：https://dict.youdao.com/dictvoice?audio={word}&type=1
+        // 英式：https://dict.youdao.com/dictvoice?audio={word}&type=2
         let type = accent == .us ? "1" : "2"
-        let urlString = "http://dict.youdao.com/dictvoice?audio=\(word)&type=\(type)"
+        let urlString = "https://dict.youdao.com/dictvoice?audio=\(word)&type=\(type)"
         
         LLLogger.info("🔊 有道发音 URL：\(urlString)")
         
@@ -343,44 +343,6 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
     }
 }
 
-// MARK: - Google TTS 发音提供者（预留）
-
-final class LLGooglePronunciationProvider: LLPronunciationProviderProtocol {
-    
-    func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
-        // TODO: 实现 Google TTS
-        LLLogger.info("🔊 Google 发音：\(word) [\(accent.displayName)] - 待实现")
-        completion?(false, NSError(domain: "LLPronunciation", code: -999, userInfo: [NSLocalizedDescriptionKey: "Google TTS 尚未实现"]))
-    }
-    
-    func stop() {
-        // TODO: 实现停止逻辑
-    }
-    
-    var isSpeaking: Bool {
-        return false
-    }
-}
-
-// MARK: - Azure Speech 发音提供者（预留）
-
-final class LLAzurePronunciationProvider: LLPronunciationProviderProtocol {
-    
-    func speak(word: String, accent: LLPronunciationAccent, rate: Float, completion: ((Bool, Error?) -> Void)?) {
-        // TODO: 实现 Azure Speech
-        LLLogger.info("🔊 Azure 发音：\(word) [\(accent.displayName)] - 待实现")
-        completion?(false, NSError(domain: "LLPronunciation", code: -999, userInfo: [NSLocalizedDescriptionKey: "Azure Speech 尚未实现"]))
-    }
-    
-    func stop() {
-        // TODO: 实现停止逻辑
-    }
-    
-    var isSpeaking: Bool {
-        return false
-    }
-}
-
 // MARK: - 发音管理器
 
 final class LLPronunciationManager {
@@ -407,8 +369,6 @@ final class LLPronunciationManager {
         // 初始化所有提供者
         providers[.local] = LLLocalPronunciationProvider()
         providers[.youdao] = LLYoudaoPronunciationProvider()
-        // providers[.google] = LLGooglePronunciationProvider()
-        // providers[.azure] = LLAzurePronunciationProvider()
         
         // 设置当前提供者
         updateCurrentProvider()
