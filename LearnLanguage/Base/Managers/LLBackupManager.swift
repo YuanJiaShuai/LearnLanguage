@@ -53,20 +53,27 @@ final class LLBackupManager {
 
     // MARK: - 导出备份
 
+    private func reportProgress(_ value: Double, progress: ((Double) -> Void)?) {
+        guard let progress else { return }
+        DispatchQueue.main.async {
+            progress(value)
+        }
+    }
+
     func exportBackup(to destinationURL: URL,
                       progress: ((Double) -> Void)? = nil,
                       completion: @escaping (String?) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             do {
-                progress?(0.05)
-                let packed = try self.packFiles { p in progress?(0.05 + p * 0.55) }
-                progress?(0.6)
+                self.reportProgress(0.05, progress: progress)
+                let packed = try self.packFiles { p in self.reportProgress(0.05 + p * 0.55, progress: progress) }
+                self.reportProgress(0.6, progress: progress)
                 let encrypted = try self.encrypt(packed)
-                progress?(0.8)
+                self.reportProgress(0.8, progress: progress)
                 let output = self.buildFileData(encrypted)
                 try output.write(to: destinationURL)
-                progress?(1.0)
+                self.reportProgress(1.0, progress: progress)
                 LLLogger.info("✅ 备份成功：\(destinationURL.lastPathComponent)，大小：\(output.count / 1024) KB")
                 DispatchQueue.main.async { completion(nil) }
             } catch {
@@ -85,22 +92,22 @@ final class LLBackupManager {
             guard let self = self else { return }
             do {
                 let fileData = try Data(contentsOf: sourceURL)
-                progress?(0.1)
+                self.reportProgress(0.1, progress: progress)
                 let encrypted = try self.parseFileData(fileData)
-                progress?(0.2)
+                self.reportProgress(0.2, progress: progress)
                 let packed = try self.decrypt(encrypted)
-                progress?(0.4)
+                self.reportProgress(0.4, progress: progress)
                 DispatchQueue.main.sync {
                     LLDatabaseManager.shared.closeDatabase()
                     MMKV.default()?.clearAll()
                 }
-                progress?(0.5)
-                try self.unpackFiles(from: packed) { p in progress?(0.5 + p * 0.4) }
-                progress?(0.9)
+                self.reportProgress(0.5, progress: progress)
+                try self.unpackFiles(from: packed) { p in self.reportProgress(0.5 + p * 0.4, progress: progress) }
+                self.reportProgress(0.9, progress: progress)
                 DispatchQueue.main.sync {
                     LLDatabaseManager.shared.reopenDatabase()
                 }
-                progress?(1.0)
+                self.reportProgress(1.0, progress: progress)
                 LLLogger.info("✅ 恢复成功")
                 DispatchQueue.main.async { completion(nil) }
             } catch BackupError.invalidFile {

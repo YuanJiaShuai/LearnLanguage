@@ -3,18 +3,19 @@
 //  LearnLanguage
 //
 //  学习统计内容视图（词库卡 + 3统计卡 + 趋势图）
-//  全部 frame 布局
 
 import AppKit
+import SnapKit
 
 final class LLStatContentView: NSView {
     
     // MARK: - Layout Constants
     private let kPadding: CGFloat = 16
     private let kSpacing: CGFloat = 12
-    private let kCurrentListHeight: CGFloat = 290
-    private let kStatsRowHeight: CGFloat = 110
-    private let kTrendHeight: CGFloat = 180
+    private let kCurrentListHeight: CGFloat = 232
+    private let kStatsRowHeight: CGFloat = 104
+    private let kCompactStatsRowHeight: CGFloat = 336
+    private let kTrendHeight: CGFloat = 210
     
     // MARK: - UI Components
     
@@ -36,6 +37,7 @@ final class LLStatContentView: NSView {
     private var streakCard: LLStatCardView!
     private var trendCard: LLTrendCardView!
     private var statsRowView: NSView!
+    private var isUsingStackedStats = false
     
     // MARK: - Callbacks
     
@@ -61,9 +63,9 @@ final class LLStatContentView: NSView {
             self?.onChangeWordListClicked?()
         }
         
-        totalWordsCard = LLStatCardView(icon: "📚", description: NSLocalizedString("Total Words Learned", comment: ""))
+        totalWordsCard = LLStatCardView(icon: "text.book.closed", description: NSLocalizedString("Total Words Learned", comment: ""), detail: NSLocalizedString("words", comment: ""))
         progressCard = LLProgressCardView()
-        streakCard = LLStatCardView(icon: "🔥", description: NSLocalizedString("Streak Days", comment: ""))
+        streakCard = LLStatCardView(icon: "flame", description: NSLocalizedString("Streak Days", comment: ""), detail: NSLocalizedString("days", comment: ""))
         
         statsRowView = NSView()
         statsRowView.addSubview(totalWordsCard)
@@ -78,44 +80,88 @@ final class LLStatContentView: NSView {
         
         scrollView.documentView = documentView
         addSubview(scrollView)
+
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        documentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(scrollView)
+        }
+
+        currentListCard.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(kPadding)
+            make.leading.trailing.equalToSuperview().inset(kPadding)
+            make.height.equalTo(kCurrentListHeight)
+        }
+
+        statsRowView.snp.makeConstraints { make in
+            make.top.equalTo(currentListCard.snp.bottom).offset(kSpacing)
+            make.leading.trailing.equalToSuperview().inset(kPadding)
+            make.height.equalTo(kStatsRowHeight)
+        }
+
+        trendCard.snp.makeConstraints { make in
+            make.top.equalTo(statsRowView.snp.bottom).offset(kSpacing)
+            make.leading.trailing.equalToSuperview().inset(kPadding)
+            make.height.equalTo(kTrendHeight)
+            make.bottom.equalToSuperview().inset(kPadding)
+        }
+
+        updateStatsLayout(stacked: false)
     }
     
     // MARK: - Layout
     
     override func layout() {
         super.layout()
-        let w = bounds.width
-        guard w > 0 else { return }
-        
-        scrollView.frame = bounds
-        
-        let innerW = w - kPadding * 2
-        var y: CGFloat = kPadding
-        
-        // 1. 当前词库卡片
-        currentListCard.frame = NSRect(x: kPadding, y: y, width: innerW, height: kCurrentListHeight)
-        y += kCurrentListHeight + kSpacing
-        
-        // 2. 统计行三等分
-        statsRowView.frame = NSRect(x: kPadding, y: y, width: innerW, height: kStatsRowHeight)
-        let statW = (innerW - kSpacing * 2) / 3
-        totalWordsCard.frame = NSRect(x: 0, y: 0, width: statW, height: kStatsRowHeight)
-        progressCard.frame   = NSRect(x: statW + kSpacing, y: 0, width: statW, height: kStatsRowHeight)
-        streakCard.frame     = NSRect(x: (statW + kSpacing) * 2, y: 0, width: statW, height: kStatsRowHeight)
-        y += kStatsRowHeight + kSpacing
-        
-        // 3. 趋势图
-        trendCard.frame = NSRect(x: kPadding, y: y, width: innerW, height: kTrendHeight)
-        y += kTrendHeight + kPadding
-        
-        documentView.frame = NSRect(x: 0, y: 0, width: w, height: y)
-        
-        currentListCard.needsLayout = true
-        statsRowView.needsLayout = true
-        totalWordsCard.needsLayout = true
-        progressCard.needsLayout = true
-        streakCard.needsLayout = true
-        trendCard.needsLayout = true
+        let shouldStack = bounds.width - kPadding * 2 < 720
+        if shouldStack != isUsingStackedStats {
+            updateStatsLayout(stacked: shouldStack)
+        }
+    }
+
+    private func updateStatsLayout(stacked: Bool) {
+        isUsingStackedStats = stacked
+
+        statsRowView.snp.updateConstraints { make in
+            make.height.equalTo(stacked ? kCompactStatsRowHeight : kStatsRowHeight)
+        }
+
+        totalWordsCard.snp.remakeConstraints { make in
+            make.top.leading.equalToSuperview()
+            if stacked {
+                make.trailing.equalToSuperview()
+                make.height.equalTo(kStatsRowHeight)
+            } else {
+                make.bottom.equalToSuperview()
+            }
+        }
+
+        progressCard.snp.remakeConstraints { make in
+            if stacked {
+                make.top.equalTo(totalWordsCard.snp.bottom).offset(kSpacing)
+                make.leading.trailing.equalToSuperview()
+                make.height.equalTo(kStatsRowHeight)
+            } else {
+                make.top.bottom.equalToSuperview()
+                make.leading.equalTo(totalWordsCard.snp.trailing).offset(kSpacing)
+                make.width.equalTo(totalWordsCard)
+            }
+        }
+
+        streakCard.snp.remakeConstraints { make in
+            if stacked {
+                make.top.equalTo(progressCard.snp.bottom).offset(kSpacing)
+                make.leading.trailing.bottom.equalToSuperview()
+                make.height.equalTo(kStatsRowHeight)
+            } else {
+                make.top.bottom.trailing.equalToSuperview()
+                make.leading.equalTo(progressCard.snp.trailing).offset(kSpacing)
+                make.width.equalTo(totalWordsCard)
+            }
+        }
     }
     
     // MARK: - Public Methods

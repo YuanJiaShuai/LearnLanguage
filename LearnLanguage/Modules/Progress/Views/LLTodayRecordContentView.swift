@@ -53,10 +53,10 @@ final class LLTodayRecordContentView: NSView {
     private lazy var tableContainer: NSView = {
         let view = NSView()
         view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
+        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
         view.layer?.cornerRadius = 8
         view.layer?.borderWidth = 1
-        view.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
+        view.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         return view
     }()
     
@@ -109,7 +109,7 @@ final class LLTodayRecordContentView: NSView {
         }
         
         let filterLabel = NSTextField(labelWithString: NSLocalizedString("Time Range", comment: ""))
-        filterLabel.font = NSFont.systemFont(ofSize: 13)
+        filterLabel.font = NSFont.inter(13, .medium)
         filterLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
         toolbar.addSubview(filterLabel)
         filterLabel.snp.makeConstraints { make in
@@ -118,7 +118,7 @@ final class LLTodayRecordContentView: NSView {
         
         let popup = NSPopUpButton()
         popup.bezelStyle = .rounded
-        popup.font = NSFont.systemFont(ofSize: 13)
+        popup.font = NSFont.inter(13, .medium)
         LLTodayRecordTimeFilter.allCases.forEach { popup.addItem(withTitle: $0.displayName) }
         popup.target = self
         popup.action = #selector(filterChanged(_:))
@@ -131,6 +131,7 @@ final class LLTodayRecordContentView: NSView {
         
         let exportButton = NSButton(title: NSLocalizedString("Export Stats", comment: ""), target: self, action: #selector(exportClicked))
         exportButton.bezelStyle = .rounded
+        exportButton.font = NSFont.inter(13, .medium)
         toolbar.addSubview(exportButton)
         exportButton.snp.makeConstraints { make in
             make.trailing.centerY.equalToSuperview()
@@ -145,7 +146,7 @@ final class LLTodayRecordContentView: NSView {
         
         tableView = NSTableView()
         tableView.style = .fullWidth
-        tableView.rowHeight = 60
+        tableView.rowHeight = 58
         tableView.backgroundColor = .clear
         tableView.gridStyleMask = [.solidHorizontalGridLineMask]
         tableView.gridColor = LLAppearanceManager.shared.colors.borderColor
@@ -153,6 +154,7 @@ final class LLTodayRecordContentView: NSView {
         tableView.selectionHighlightStyle = .none
         tableView.allowsEmptySelection = true
         tableView.allowsMultipleSelection = false
+        tableView.headerView?.frame.size.height = 28
         
         setupTableColumns()
         tableView.delegate = self
@@ -161,7 +163,7 @@ final class LLTodayRecordContentView: NSView {
         scrollView.documentView = tableView
         tableContainer.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(20)
+            make.edges.equalToSuperview().inset(14)
         }
     }
     

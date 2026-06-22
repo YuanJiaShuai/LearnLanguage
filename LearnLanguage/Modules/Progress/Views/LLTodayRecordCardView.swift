@@ -5,6 +5,7 @@
 //  今日学习记录卡片视图
 
 import AppKit
+import SnapKit
 
 final class LLTodayRecordCardView: NSView {
     
@@ -24,12 +25,12 @@ final class LLTodayRecordCardView: NSView {
         let button = NSButton(title: NSLocalizedString("Export Stats", comment: ""), target: self, action: #selector(exportButtonClicked))
         button.bezelStyle = .rounded
         button.isBordered = false
-        button.font = NSFont.systemFont(ofSize: 13, weight: .medium)
+        button.font = NSFont.inter(13, .medium)
         button.wantsLayer = true
-        button.layer?.backgroundColor = NSColor(srgbRed: 0.96, green: 0.96, blue: 0.97, alpha: 1).cgColor
+        button.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainerLow.cgColor
         button.layer?.cornerRadius = 6
         button.layer?.borderWidth = 1
-        button.layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
+        button.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         button.contentTintColor = LLAppearanceManager.shared.colors.primaryText
         return button
     }()
@@ -37,10 +38,10 @@ final class LLTodayRecordCardView: NSView {
     private let listContainer: NSView = {
         let view = NSView()
         view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.white.cgColor
+        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
         view.layer?.cornerRadius = 6
         view.layer?.borderWidth = 1
-        view.layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
+        view.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         return view
     }()
     
@@ -74,40 +75,43 @@ final class LLTodayRecordCardView: NSView {
     
     private func setupViews() {
         wantsLayer = true
-        layer?.backgroundColor = NSColor(srgbRed: 0.98, green: 0.98, blue: 0.97, alpha: 1).cgColor
+        layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
         layer?.cornerRadius = 8
         layer?.borderWidth = 1
-        layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
+        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         
         addSubview(titleLabel)
         addSubview(exportButton)
         addSubview(listContainer)
         listContainer.addSubview(scrollView)
         scrollView.documentView = listView
-    }
-    
-    // MARK: - Layout
-    
-    override func layout() {
-        super.layout()
-        let w = bounds.width
-        let h = bounds.height
-        guard w > 0, h > 0 else { return }
-        
-        // header 区域
-        let headerH: CGFloat = 28
-        let headerY: CGFloat = 20
-        let btnW: CGFloat = 110
-        
-        titleLabel.frame = NSRect(x: 20, y: headerY, width: w - 40 - btnW - 8, height: headerH)
-        exportButton.frame = NSRect(x: w - 20 - btnW, y: headerY, width: btnW, height: headerH)
-        
-        // list 区域
-        let listY = headerY + headerH + 16
-        let listH = h - listY - 20
-        listContainer.frame = NSRect(x: 20, y: listY, width: w - 40, height: listH)
-        scrollView.frame = listContainer.bounds
-        listView.frame = NSRect(x: 0, y: 0, width: listContainer.bounds.width, height: max(listContainer.bounds.height, 1))
+
+        titleLabel.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview().offset(20)
+            make.trailing.lessThanOrEqualTo(exportButton.snp.leading).offset(-8)
+            make.height.equalTo(28)
+        }
+
+        exportButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().inset(20)
+            make.size.equalTo(CGSize(width: 110, height: 28))
+        }
+
+        listContainer.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.leading.trailing.bottom.equalToSuperview().inset(20)
+        }
+
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        listView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(scrollView)
+            make.height.greaterThanOrEqualTo(scrollView)
+        }
     }
     
     // MARK: - Actions

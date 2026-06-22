@@ -323,10 +323,11 @@ final class LLDatabaseManager {
     // MARK: - 错题记录管理（已迁移到 learning_progress）
     
     /// 获取复习记录（learnCount > 0 的学习进度）
-    /// 支持按时间范围筛选，不限制词库
+    /// 支持按时间范围和词库筛选
     func getReviewRecords(
         startDate: Date? = nil,
-        endDate: Date? = nil
+        endDate: Date? = nil,
+        wordListId: String? = nil
     ) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         
@@ -342,6 +343,10 @@ final class LLDatabaseManager {
             let endTimestamp = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: end)!.timeIntervalSince1970
             condition = condition && LLDBLearningProgress.Properties.updatedAt <= endTimestamp
         }
+
+        if let wordListId, !wordListId.isEmpty {
+            condition = condition && LLDBLearningProgress.Properties.wordListId == wordListId
+        }
         
         return try database.getObjects(
             on: LLDBLearningProgress.Properties.all,
@@ -354,27 +359,27 @@ final class LLDatabaseManager {
         )
     }
     
-    /// 获取今日复习记录（所有词库）
-    func getTodayReviewRecords() throws -> [LLDBLearningProgress] {
+    /// 获取今日复习记录
+    func getTodayReviewRecords(wordListId: String? = nil) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        return try getReviewRecords(startDate: today, endDate: Date())
+        return try getReviewRecords(startDate: today, endDate: Date(), wordListId: wordListId)
     }
     
-    /// 获取本周复习记录（所有词库）
-    func getWeekReviewRecords() throws -> [LLDBLearningProgress] {
+    /// 获取本周复习记录
+    func getWeekReviewRecords(wordListId: String? = nil) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let today = Date()
         let weekAgo = calendar.date(byAdding: .day, value: -7, to: today)!
-        return try getReviewRecords(startDate: weekAgo, endDate: today)
+        return try getReviewRecords(startDate: weekAgo, endDate: today, wordListId: wordListId)
     }
     
-    /// 获取本月复习记录（所有词库）
-    func getMonthReviewRecords() throws -> [LLDBLearningProgress] {
+    /// 获取本月复习记录
+    func getMonthReviewRecords(wordListId: String? = nil) throws -> [LLDBLearningProgress] {
         let calendar = Calendar.current
         let today = Date()
         let monthAgo = calendar.date(byAdding: .month, value: -1, to: today)!
-        return try getReviewRecords(startDate: monthAgo, endDate: today)
+        return try getReviewRecords(startDate: monthAgo, endDate: today, wordListId: wordListId)
     }
     
     /// 总学习天数（learning_history 表中有记录的不重复日期数）
@@ -385,9 +390,9 @@ final class LLDatabaseManager {
         return uniqueDays.count
     }
     
-    /// 获取所有复习记录（所有词库）
-    func getAllReviewRecords() throws -> [LLDBLearningProgress] {
-        return try getReviewRecords()
+    /// 获取所有复习记录
+    func getAllReviewRecords(wordListId: String? = nil) throws -> [LLDBLearningProgress] {
+        return try getReviewRecords(wordListId: wordListId)
     }
     
     // MARK: - Learning History 查询

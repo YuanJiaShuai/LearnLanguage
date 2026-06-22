@@ -31,7 +31,7 @@
 "Current Word List" = "Current List";
 "Today's Review" = "Review Due";
 "No Word List" = "No Word List";
-"No Review Words" = "No Reviews";
+"No Reviews Due" = "No Reviews";
 // MARK: - Card Views
 "No Review Words" = "No Review Words";
 "Current Learning List" = "Current Learning List";
@@ -41,8 +41,10 @@
 "Learned %d/%d words (%.1f%%)" = "Learned %d/%d words (%.1f%%)";
 "Today's Learning" = "Today's Learning";
 "Total Words" = "Total Words";
+"Current List Total Words" = "Total Words";
 "Mastered" = "Mastered";
 "words" = "words";
+"days" = "days";
 "words learned" = "words learned";
 
 // MARK: - Settings
@@ -79,9 +81,7 @@
 "Azure Pronunciation" = "Azure Pronunciation";
 
 // MARK: - Typing Practice
-"Typing Practice" = "Typing Practice";
 "Dictation Mode" = "Dictation Mode (Hide Word)";
-"Show Meaning" = "Show Meaning";
 "Input Style" = "Input Style";
 "Auto Show Answer" = "Auto Show Answer";
 "Per Letter" = "Per Letter (_ _ _ _ _)";
@@ -92,7 +92,6 @@
 "Add Word List" = "Add Word List";
 "Import Words" = "Import Words";
 "Export Words" = "Export Words";
-"Total Words" = "Total Words";
 "Learned Words" = "Learned Words";
 "Review Words" = "Review Words";
 
@@ -116,7 +115,6 @@
 // MARK: - Feedback
 "Show" = "Show";
 "Know" = "Know";
-"Unclear" = "Unclear";
 "Unknown" = "Unknown";
 
 // MARK: - Time Filter
@@ -150,7 +148,6 @@
 "All Status" = "All Status";
 "Not Started" = "Not Started";
 "Learning" = "Learning";
-"Completed" = "Completed";
 "All Types" = "All Types";
 "Uncategorized" = "Uncategorized";
 "Custom Word List" = "Custom List";

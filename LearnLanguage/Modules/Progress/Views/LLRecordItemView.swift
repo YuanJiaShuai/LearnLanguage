@@ -5,6 +5,7 @@
 //  学习记录项视图
 
 import AppKit
+import SnapKit
 
 final class LLRecordItemView: NSView {
     
@@ -60,18 +61,25 @@ final class LLRecordItemView: NSView {
         if showBorder {
             addSubview(separator)
         }
-    }
-    
-    override func layout() {
-        super.layout()
-        let w = bounds.width
-        let h = bounds.height
-        guard w > 0, h > 0 else { return }
-        
-        wordLabel.frame = NSRect(x: 12, y: h / 2, width: w - 24, height: 18)
-        timeLabel.frame = NSRect(x: 12, y: h / 2 - 18, width: w - 24, height: 16)
+
+        wordLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview().offset(-9)
+            make.height.equalTo(18)
+        }
+
+        timeLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(wordLabel)
+            make.top.equalTo(wordLabel.snp.bottom)
+            make.height.equalTo(16)
+        }
+
         if showBorder {
-            separator.frame = NSRect(x: 12, y: 0, width: w - 12, height: 1)
+            separator.snp.makeConstraints { make in
+                make.leading.equalToSuperview().offset(12)
+                make.trailing.bottom.equalToSuperview()
+                make.height.equalTo(1)
+            }
         }
     }
 }

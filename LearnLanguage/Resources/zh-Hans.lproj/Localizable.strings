@@ -31,7 +31,7 @@
 "Current Word List" = "当前词库";
 "Today's Review" = "当前需复习";
 "No Word List" = "暂无词库";
-"No Review Words" = "暂无复习";
+"No Reviews Due" = "暂无复习";
 // MARK: - Card Views
 "No Review Words" = "未复习错题";
 "Current Learning List" = "当前学习词库";
@@ -41,8 +41,10 @@
 "Learned %d/%d words (%.1f%%)" = "已学习 %d / %d 词 (%.1f%%)";
 "Today's Learning" = "今日学习";
 "Total Words" = "总词数";
+"Current List Total Words" = "总词数";
 "Mastered" = "已掌握";
 "words" = "词";
+"days" = "天";
 "words learned" = "词已学习";
 
 // MARK: - Settings
@@ -79,9 +81,7 @@
 "Azure Pronunciation" = "Azure 发音";
 
 // MARK: - Typing Practice
-"Typing Practice" = "打字练习";
 "Dictation Mode" = "听写模式（隐藏单词）";
-"Show Meaning" = "显示释义";
 "Input Style" = "输入框样式";
 "Auto Show Answer" = "自动显示答案";
 "Per Letter" = "每个字母一个下划线（_ _ _ _ _）";
@@ -92,7 +92,6 @@
 "Add Word List" = "添加词库";
 "Import Words" = "导入单词";
 "Export Words" = "导出单词";
-"Total Words" = "总单词数";
 "Learned Words" = "已学单词";
 "Review Words" = "复习单词";
 
@@ -116,7 +115,6 @@
 // MARK: - Feedback
 "Show" = "显示";
 "Know" = "认识";
-"Unclear" = "模糊";
 "Unknown" = "不认识";
 
 // MARK: - Time Filter
@@ -150,7 +148,6 @@
 "All Status" = "所有状态";
 "Not Started" = "未开始";
 "Learning" = "学习中";
-"Completed" = "已完成";
 "All Types" = "所有类型";
 "Uncategorized" = "未分类";
 "Custom Word List" = "自定义词库";

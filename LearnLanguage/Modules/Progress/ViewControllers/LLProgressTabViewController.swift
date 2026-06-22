@@ -385,13 +385,13 @@ final class LLProgressTabViewController: NSViewController {
             let allRecords: [LLDBLearningProgress]
             switch timeFilter {
             case .all:
-                allRecords = try LLDatabaseManager.shared.getAllReviewRecords()
+                allRecords = try LLDatabaseManager.shared.getAllReviewRecords(wordListId: listId)
             case .today:
-                allRecords = try LLDatabaseManager.shared.getTodayReviewRecords()
+                allRecords = try LLDatabaseManager.shared.getTodayReviewRecords(wordListId: listId)
             case .week:
-                allRecords = try LLDatabaseManager.shared.getWeekReviewRecords()
+                allRecords = try LLDatabaseManager.shared.getWeekReviewRecords(wordListId: listId)
             case .month:
-                allRecords = try LLDatabaseManager.shared.getMonthReviewRecords()
+                allRecords = try LLDatabaseManager.shared.getMonthReviewRecords(wordListId: listId)
             }
             
             LLLogger.info("📊 查询到 \(allRecords.count) 条复习记录")

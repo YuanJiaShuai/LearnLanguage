@@ -5,6 +5,7 @@
 //  学习趋势图表卡片视图
 
 import AppKit
+import SnapKit
 
 final class LLTrendCardView: NSView {
     
@@ -18,22 +19,16 @@ final class LLTrendCardView: NSView {
         return label
     }()
     
-    private let chartPlaceholder: NSView = {
-        let view = NSView()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor(srgbRed: 0.94, green: 0.94, blue: 0.96, alpha: 1).cgColor
-        view.layer?.cornerRadius = 8
-        return view
-    }()
+    private let chartPlaceholder = LLTrendPreviewView()
     
     private let placeholderText: NSTextField = {
-        let label = NSTextField(labelWithString: NSLocalizedString("Trend Chart Placeholder", comment: ""))
-        label.font = NSFont.systemFont(ofSize: 14)
-        label.textColor = LLAppearanceManager.shared.colors.secondaryText
+        let label = NSTextField(labelWithString: NSLocalizedString("Trend Chart Placeholder", comment: "").replacingOccurrences(of: "📊 ", with: ""))
+        label.font = NSFont.inter(12, .medium)
+        label.textColor = LLAppearanceManager.shared.colors.tertiaryText
         label.isEditable = false
         label.isBezeled = false
         label.drawsBackground = false
-        label.alignment = .center
+        label.alignment = .left
         return label
     }()
     
@@ -48,32 +43,83 @@ final class LLTrendCardView: NSView {
     
     private func setupViews() {
         wantsLayer = true
-        layer?.backgroundColor = NSColor(srgbRed: 0.98, green: 0.98, blue: 0.97, alpha: 1).cgColor
+        layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
         layer?.cornerRadius = 8
         layer?.borderWidth = 1
-        layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
+        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         addSubview(titleLabel)
         addSubview(chartPlaceholder)
-        chartPlaceholder.addSubview(placeholderText)
+        addSubview(placeholderText)
+
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(18)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(22)
+        }
+
+        placeholderText.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(2)
+            make.leading.trailing.equalTo(titleLabel)
+            make.height.equalTo(18)
+        }
+
+        chartPlaceholder.snp.makeConstraints { make in
+            make.top.equalTo(placeholderText.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(18)
+        }
     }
-    
-    override func layout() {
-        super.layout()
-        let w = bounds.width
-        let h = bounds.height
-        guard w > 0, h > 0 else { return }
-        
-        titleLabel.frame = NSRect(x: 20, y: 20, width: w - 40, height: 22)
-        let chartY: CGFloat = 20 + 22 + 12
-        let chartH = h - chartY - 16
-        chartPlaceholder.frame = NSRect(x: 16, y: chartY, width: w - 32, height: chartH)
-        
-        let ptW = placeholderText.intrinsicContentSize.width
-        let ptH: CGFloat = 20
-        placeholderText.frame = NSRect(
-            x: (chartPlaceholder.bounds.width - ptW) / 2,
-            y: (chartPlaceholder.bounds.height - ptH) / 2,
-            width: ptW, height: ptH
-        )
+}
+
+private final class LLTrendPreviewView: NSView {
+    override var isFlipped: Bool { true }
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        wantsLayer = true
+        layer?.cornerRadius = 8
+        layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainerLow.withAlphaComponent(0.5).cgColor
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+
+        let inset: CGFloat = 18
+        let plotRect = bounds.insetBy(dx: inset, dy: inset)
+        guard plotRect.width > 0, plotRect.height > 0 else { return }
+
+        let gridColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.55)
+        gridColor.setStroke()
+
+        for i in 0...3 {
+            let y = plotRect.minY + CGFloat(i) * plotRect.height / 3
+            let path = NSBezierPath()
+            path.move(to: NSPoint(x: plotRect.minX, y: y))
+            path.line(to: NSPoint(x: plotRect.maxX, y: y))
+            path.lineWidth = 1
+            path.stroke()
+        }
+
+        let points: [CGFloat] = [0.42, 0.38, 0.53, 0.48, 0.66, 0.61, 0.76]
+        let line = NSBezierPath()
+        for (index, value) in points.enumerated() {
+            let x = plotRect.minX + CGFloat(index) * plotRect.width / CGFloat(points.count - 1)
+            let y = plotRect.maxY - value * plotRect.height
+            let point = NSPoint(x: x, y: y)
+            if index == 0 {
+                line.move(to: point)
+            } else {
+                line.line(to: point)
+            }
+        }
+        LLAppearanceManager.shared.colors.accentColor.withAlphaComponent(0.78).setStroke()
+        line.lineWidth = 2
+        line.lineJoinStyle = .round
+        line.lineCapStyle = .round
+        line.stroke()
     }
 }

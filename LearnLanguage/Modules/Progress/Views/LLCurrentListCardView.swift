@@ -2,17 +2,17 @@
 //  LLCurrentListCardView.swift
 //  LearnLanguage
 //
-//  当前学习词库卡片 - 全部 frame 布局
+//  当前学习词库卡片
 
 import AppKit
+import SnapKit
 
 final class LLCurrentListCardView: NSView {
-    
     // MARK: - UI
     
     private let titleLabel: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("Current Learning List", comment: ""))
-        label.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = NSFont.inter(14, .semiBold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
@@ -29,7 +29,7 @@ final class LLCurrentListCardView: NSView {
     
     private let listNameLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
-        label.font = NSFont.systemFont(ofSize: 18, weight: .bold)
+        label.font = NSFont.interDisplay(24, .bold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
@@ -37,7 +37,7 @@ final class LLCurrentListCardView: NSView {
     
     private let categoryLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
-        label.font = NSFont.systemFont(ofSize: 13)
+        label.font = NSFont.inter(13, .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
@@ -46,8 +46,8 @@ final class LLCurrentListCardView: NSView {
     private let progressBarBg: NSView = {
         let v = NSView()
         v.wantsLayer = true
-        v.layer?.backgroundColor = NSColor(white: 0.9, alpha: 1).cgColor
-        v.layer?.cornerRadius = 4
+        v.layer?.backgroundColor = LLAppearanceManager.shared.colors.surfaceContainer.cgColor
+        v.layer?.cornerRadius = 3
         return v
     }()
     
@@ -55,34 +55,35 @@ final class LLCurrentListCardView: NSView {
         let v = NSView()
         v.wantsLayer = true
         v.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
-        v.layer?.cornerRadius = 4
+        v.layer?.cornerRadius = 3
         return v
     }()
     
     private let progressLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
-        label.font = NSFont.systemFont(ofSize: 12)
+        label.font = NSFont.inter(13, .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
         return label
     }()
     
     // 3个小统计
-    private let stat1Icon = NSTextField(labelWithString: "📅")
-    private let stat1Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Today's Learning", comment: "")); l.font = .systemFont(ofSize: 11); l.textColor = LLAppearanceManager.shared.colors.secondaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
-    private let stat1Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .systemFont(ofSize: 14, weight: .semibold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat1Icon = NSImageView(image: NSImage(systemSymbolName: "calendar", accessibilityDescription: nil) ?? NSImage())
+    private let stat1Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Today's Learning", comment: "")); l.font = .inter(11, .medium); l.textColor = LLAppearanceManager.shared.colors.tertiaryText; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat1Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .inter(14, .semiBold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
     
-    private let stat2Icon = NSTextField(labelWithString: "📖")
-    private let stat2Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Total Words", comment: "")); l.font = .systemFont(ofSize: 11); l.textColor = LLAppearanceManager.shared.colors.secondaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
-    private let stat2Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .systemFont(ofSize: 14, weight: .semibold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat2Icon = NSImageView(image: NSImage(systemSymbolName: "text.book.closed", accessibilityDescription: nil) ?? NSImage())
+    private let stat2Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Current List Total Words", comment: "")); l.font = .inter(11, .medium); l.textColor = LLAppearanceManager.shared.colors.tertiaryText; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat2Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .inter(14, .semiBold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
     
-    private let stat3Icon = NSTextField(labelWithString: "✅")
-    private let stat3Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Mastered", comment: "")); l.font = .systemFont(ofSize: 11); l.textColor = LLAppearanceManager.shared.colors.secondaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
-    private let stat3Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .systemFont(ofSize: 14, weight: .semibold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.alignment = .center; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat3Icon = NSImageView(image: NSImage(systemSymbolName: "checkmark.seal", accessibilityDescription: nil) ?? NSImage())
+    private let stat3Title: NSTextField = { let l = NSTextField(labelWithString: NSLocalizedString("Mastered", comment: "")); l.font = .inter(11, .medium); l.textColor = LLAppearanceManager.shared.colors.tertiaryText; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
+    private let stat3Value: NSTextField = { let l = NSTextField(labelWithString: "-"); l.font = .inter(14, .semiBold); l.textColor = LLAppearanceManager.shared.colors.primaryText; l.isEditable = false; l.isBezeled = false; l.drawsBackground = false; return l }()
     
     private lazy var changeButton: NSButton = {
         let button = NSButton(title: NSLocalizedString("Change List", comment: ""), target: self, action: #selector(didClickChangeButton))
         button.bezelStyle = .rounded
+        button.font = NSFont.inter(13, .semiBold)
         button.wantsLayer = true
         button.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentColor.cgColor
         button.layer?.cornerRadius = 6
@@ -91,7 +92,9 @@ final class LLCurrentListCardView: NSView {
     }()
     
     var onChangeButtonClicked: (() -> Void)?
+    private var statsStack: NSStackView?
     private var progressRatio: CGFloat = 0
+    private var progressFillWidthConstraint: Constraint?
     private var hasContent = false
     
     // MARK: - Init
@@ -112,17 +115,18 @@ final class LLCurrentListCardView: NSView {
     private func setupViews() {
         wantsLayer = true
         layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
-        layer?.cornerRadius = 12
+        layer?.cornerRadius = 10
         layer?.borderWidth = 1
-        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
+        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         
-        for v in [stat1Icon, stat1Title, stat1Value,
-                  stat2Icon, stat2Title, stat2Value,
-                  stat3Icon, stat3Title, stat3Value] as [NSTextField] {
+        for v in [stat1Title, stat1Value, stat2Title, stat2Value, stat3Title, stat3Value] as [NSTextField] {
             v.isEditable = false; v.isBezeled = false; v.drawsBackground = false
             v.font = v.font // keep
         }
-        [stat1Icon, stat2Icon, stat3Icon].forEach { $0.font = .systemFont(ofSize: 20); $0.alignment = .center }
+        [stat1Icon, stat2Icon, stat3Icon].forEach {
+            $0.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+            $0.imageScaling = .scaleProportionallyDown
+        }
         
         addSubview(titleLabel)
         addSubview(emptyStateLabel)
@@ -131,73 +135,94 @@ final class LLCurrentListCardView: NSView {
         addSubview(progressBarBg)
         progressBarBg.addSubview(progressBarFill)
         addSubview(progressLabel)
-        addSubview(stat1Icon); addSubview(stat1Title); addSubview(stat1Value)
-        addSubview(stat2Icon); addSubview(stat2Title); addSubview(stat2Value)
-        addSubview(stat3Icon); addSubview(stat3Title); addSubview(stat3Value)
         addSubview(changeButton)
+
+        let statsStack = NSStackView(views: [
+            makeStatRow(icon: stat1Icon, title: stat1Title, value: stat1Value),
+            makeStatRow(icon: stat2Icon, title: stat2Title, value: stat2Value),
+            makeStatRow(icon: stat3Icon, title: stat3Title, value: stat3Value)
+        ])
+        self.statsStack = statsStack
+        statsStack.orientation = .vertical
+        statsStack.alignment = .leading
+        statsStack.distribution = .fillEqually
+        statsStack.spacing = 10
+        addSubview(statsStack)
+
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(20)
+        }
+
+        changeButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(20)
+            make.top.equalToSuperview().offset(20)
+            make.size.equalTo(CGSize(width: 110, height: 30))
+        }
+
+        emptyStateLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(40)
+        }
+
+        listNameLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalTo(titleLabel.snp.bottom).offset(14)
+            make.trailing.lessThanOrEqualTo(changeButton.snp.leading).offset(-12)
+        }
+
+        categoryLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(listNameLabel)
+            make.top.equalTo(listNameLabel.snp.bottom).offset(4)
+        }
+
+        progressLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(listNameLabel)
+            make.top.equalTo(categoryLabel.snp.bottom).offset(18)
+        }
+
+        progressBarBg.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(listNameLabel)
+            make.top.equalTo(progressLabel.snp.bottom).offset(8)
+            make.height.equalTo(6)
+        }
+
+        progressBarFill.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+            progressFillWidthConstraint = make.width.equalTo(0).constraint
+        }
+
+        for view in [stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value, stat3Icon, stat3Title, stat3Value] as [NSView] {
+            view.isHidden = true
+        }
+
+        statsStack.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(22)
+        }
     }
-    
-    // MARK: - Layout
-    
+
+    private func makeStatRow(icon: NSImageView, title: NSTextField, value: NSTextField) -> NSStackView {
+        let textStack = NSStackView(views: [title, value])
+        textStack.orientation = .vertical
+        textStack.alignment = .leading
+        textStack.spacing = 2
+
+        let row = NSStackView(views: [icon, textStack])
+        row.orientation = .horizontal
+        row.alignment = .centerY
+        row.spacing = 8
+
+        icon.snp.makeConstraints { make in
+            make.size.equalTo(18)
+        }
+
+        return row
+    }
+
     override func layout() {
         super.layout()
-        let w = bounds.width
-        let h = bounds.height
-        guard w > 0, h > 0 else { return }
-        
-        // 标题
-        titleLabel.frame = NSRect(x: 20, y: 20, width: w - 40, height: 22)
-        
-        // 切换按钮
-        let btnW: CGFloat = 110
-        let btnH: CGFloat = 30
-        changeButton.frame = NSRect(x: w - 20 - btnW, y: h - 20 - btnH, width: btnW, height: btnH)
-        
-        if !hasContent {
-            emptyStateLabel.isHidden = false
-            listNameLabel.isHidden = true
-            categoryLabel.isHidden = true
-            progressBarBg.isHidden = true
-            progressLabel.isHidden = true
-            [stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
-             stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = true }
-            emptyStateLabel.frame = NSRect(x: 40, y: (h - 40) / 2, width: w - 80, height: 40)
-            return
-        }
-        
-        emptyStateLabel.isHidden = true
-        listNameLabel.isHidden = false
-        categoryLabel.isHidden = false
-        progressBarBg.isHidden = false
-        progressLabel.isHidden = false
-        [stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
-         stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = false }
-        
-        var y: CGFloat = 20 + 22 + 16
-        listNameLabel.frame = NSRect(x: 20, y: y, width: w - 40, height: 24)
-        y += 24 + 6
-        categoryLabel.frame = NSRect(x: 20, y: y, width: w - 40, height: 18)
-        y += 18 + 12
-        
-        // 进度条
-        let barW = w - 40
-        progressBarBg.frame = NSRect(x: 20, y: y, width: barW, height: 8)
-        progressBarFill.frame = NSRect(x: 0, y: 0, width: barW * progressRatio, height: 8)
-        y += 8 + 6
-        progressLabel.frame = NSRect(x: 20, y: y, width: barW, height: 16)
-        y += 16 + 16
-        
-        // 3列统计
-        let statW = (w - 40) / 3
-        let statH: CGFloat = 60
-        for (i, views) in [(stat1Icon, stat1Title, stat1Value),
-                           (stat2Icon, stat2Title, stat2Value),
-                           (stat3Icon, stat3Title, stat3Value)].enumerated() {
-            let x = 20 + CGFloat(i) * statW
-            views.0.frame = NSRect(x: x, y: y, width: statW, height: 22)
-            views.1.frame = NSRect(x: x, y: y + 22 + 2, width: statW, height: 16)
-            views.2.frame = NSRect(x: x, y: y + 22 + 2 + 16 + 2, width: statW, height: 18)
-        }
+        progressFillWidthConstraint?.update(offset: progressBarBg.bounds.width * progressRatio)
     }
     
     // MARK: - Data
@@ -211,13 +236,17 @@ final class LLCurrentListCardView: NSView {
         guard let list = LLSettingsStore.shared.currentWordList else {
             hasContent = false
             changeButton.title = NSLocalizedString("Select List", comment: "")
-            needsLayout = true
+            [listNameLabel, categoryLabel, progressBarBg, progressLabel,
+             stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
+             stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = true }
+            statsStack?.isHidden = true
+            emptyStateLabel.isHidden = false
             return
         }
         hasContent = true
         changeButton.title = NSLocalizedString("Change List", comment: "")
         listNameLabel.stringValue = list.name
-        categoryLabel.stringValue = "📚 \(list.category)"
+        categoryLabel.stringValue = list.category
         
         let progress = LLSettingsStore.shared.getCurrentListProgress()
         progressRatio = CGFloat(progress.percentage / 100.0)
@@ -235,6 +264,12 @@ final class LLCurrentListCardView: NSView {
             mastered = 0
         }
         stat3Value.stringValue = "\(mastered) " + NSLocalizedString("words", comment: "")
+        emptyStateLabel.isHidden = true
+        [listNameLabel, categoryLabel, progressBarBg, progressLabel,
+         stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
+         stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = false }
+        statsStack?.isHidden = false
+        progressFillWidthConstraint?.update(offset: progressBarBg.bounds.width * progressRatio)
         needsLayout = true
     }
     

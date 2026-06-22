@@ -31,6 +31,7 @@
 "Current Word List" = "現在の単語リスト";
 "Today's Review" = "今日のレビュー";
 "No Word List" = "単語リストなし";
+"No Reviews Due" = "レビューなし";
 
 // MARK: - Card Views
 "No Review Words" = "レビュー単語なし";
@@ -41,8 +42,10 @@
 "Learned %d/%d words (%.1f%%)" = "%d/%d 単語を学習しました (%.1f%%)";
 "Today's Learning" = "今日の学習";
 "Total Words" = "総単語数";
+"Current List Total Words" = "総単語数";
 "Mastered" = "習得済み";
 "words" = "単語";
+"days" = "日";
 "words learned" = "単語を学習しました";
 
 // MARK: - Settings
@@ -79,9 +82,7 @@
 "Azure Pronunciation" = "Azure 発音";
 
 // MARK: - Typing Practice
-"Typing Practice" = "タイピング練習";
 "Dictation Mode" = "ディクテーションモード（単語を隠す）";
-"Show Meaning" = "意味を表示";
 "Input Style" = "入力スタイル";
 "Auto Show Answer" = "自動で答えを表示";
 "Per Letter" = "1文字ずつ下線（_ _ _ _ _）";
@@ -92,7 +93,6 @@
 "Add Word List" = "単語リストを追加";
 "Import Words" = "単語をインポート";
 "Export Words" = "単語をエクスポート";
-"Total Words" = "総単語数";
 "Learned Words" = "学習済み単語";
 "Review Words" = "復習単語";
 
@@ -116,7 +116,6 @@
 // MARK: - Feedback
 "Show" = "表示";
 "Know" = "知っている";
-"Unclear" = "不明確";
 "Unknown" = "知らない";
 
 // MARK: - Time Filter
@@ -142,7 +141,6 @@
 "All Status" = "すべての状態";
 "Not Started" = "未開始";
 "Learning" = "学習中";
-"Completed" = "完了";
 "All Types" = "すべての種類";
 "Uncategorized" = "未分類";
 "Custom Word List" = "カスタムリスト";

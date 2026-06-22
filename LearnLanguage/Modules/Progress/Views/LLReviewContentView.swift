@@ -18,10 +18,10 @@ final class LLReviewContentView: NSView {
     private lazy var tableContainer: NSView = {
         let view = NSView()
         view.wantsLayer = true
-        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.sidebarBackground.cgColor
+        view.layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
         view.layer?.cornerRadius = 8
         view.layer?.borderWidth = 1
-        view.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.cgColor
+        view.layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         return view
     }()
     
@@ -95,7 +95,7 @@ final class LLReviewContentView: NSView {
         }
         
         let filterLabel = NSTextField(labelWithString: NSLocalizedString("Time Range", comment: "Time range filter label"))
-        filterLabel.font = NSFont.systemFont(ofSize: 13)
+        filterLabel.font = NSFont.inter(13, .medium)
         filterLabel.textColor = LLAppearanceManager.shared.colors.secondaryText
         toolbar.addSubview(filterLabel)
         filterLabel.snp.makeConstraints { make in
@@ -104,7 +104,7 @@ final class LLReviewContentView: NSView {
         
         let popup = NSPopUpButton()
         popup.bezelStyle = .rounded
-        popup.font = NSFont.systemFont(ofSize: 13)
+        popup.font = NSFont.inter(13, .medium)
         TimeFilter.allCases.forEach { popup.addItem(withTitle: $0.displayName) }
         popup.target = self
         popup.action = #selector(timeFilterChanged(_:))
@@ -123,7 +123,7 @@ final class LLReviewContentView: NSView {
         
         tableView = NSTableView()
         tableView.style = .fullWidth
-        tableView.rowHeight = 60
+        tableView.rowHeight = 58
         tableView.backgroundColor = .clear
         tableView.gridStyleMask = [.solidHorizontalGridLineMask]
         tableView.gridColor = LLAppearanceManager.shared.colors.borderColor
@@ -131,6 +131,7 @@ final class LLReviewContentView: NSView {
         tableView.selectionHighlightStyle = .none  // 移除选中效果
         tableView.allowsEmptySelection = true
         tableView.allowsMultipleSelection = false
+        tableView.headerView?.frame.size.height = 28
         
         setupTableColumns()
         tableView.delegate = self
@@ -139,7 +140,7 @@ final class LLReviewContentView: NSView {
         scrollView.documentView = tableView
         tableContainer.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(20)
+            make.edges.equalToSuperview().inset(14)
         }
     }
     

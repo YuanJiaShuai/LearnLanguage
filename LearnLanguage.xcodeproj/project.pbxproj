@@ -262,10 +262,6 @@
 		84EE92CF2F88F81A0082A167 /* adjective_to_noun_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE91A82F88F81A0082A167 /* adjective_to_noun_9.png */; };
 		84EE92D02F88F81A0082A167 /* grammar_23.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EE92012F88F81A0082A167 /* grammar_23.png */; };
 		84EE92D12F88F81A0082A167 /* sentence_article.md in Resources */ = {isa = PBXBuildFile; fileRef = 84EE923C2F88F81A0082A167 /* sentence_article.md */; };
-		84F100001111111111111111 /* LLGuideManager.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111111 /* LLGuideManager.swift */; };
-		84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111112 /* LLGuideTaskCardView.swift */; };
-		84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111113 /* LLWelcomeGuideViewController.swift */; };
-		84F100001111111111111114 /* LLInlineGuideTipView.swift in Resources */ = {isa = PBXBuildFile; fileRef = 84F200001111111111111114 /* LLInlineGuideTipView.swift */; };
 		84F34EF32F8C939400E79B09 /* LLInlineGuideTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */; };
 		84F34EF72F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F34EF42F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift */; };
 		84F36D532F89E47100142F1D /* ll_h.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84F36D3F2F89E47100142F1D /* ll_h.mp3 */; };
@@ -576,10 +572,6 @@
 		84EE923A2F88F81A0082A167 /* sentence_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sentence_16.png; sourceTree = "<group>"; };
 		84EE923C2F88F81A0082A167 /* sentence_article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sentence_article.md; sourceTree = "<group>"; };
 		84EE923F2F88F81A0082A167 /* grammar-index.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "grammar-index.json"; sourceTree = "<group>"; };
-		84F200001111111111111111 /* LLGuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideManager.swift; sourceTree = "<group>"; };
-		84F200001111111111111112 /* LLGuideTaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLGuideTaskCardView.swift; sourceTree = "<group>"; };
-		84F200001111111111111113 /* LLWelcomeGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLWelcomeGuideViewController.swift; sourceTree = "<group>"; };
-		84F200001111111111111114 /* LLInlineGuideTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLInlineGuideTipView.swift; sourceTree = "<group>"; };
 		84F34EF22F8C939400E79B09 /* LLInlineGuideTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLInlineGuideTipView.swift; sourceTree = "<group>"; };
 		84F34EF42F8CE8DE00E79B09 /* LLVocabularyAssessmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLVocabularyAssessmentViewController.swift; sourceTree = "<group>"; };
 		84F36D382F89E47100142F1D /* ll_a.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ll_a.mp3; sourceTree = "<group>"; };
@@ -1461,17 +1453,6 @@
 			path = "letter-sound";
 			sourceTree = "<group>";
 		};
-		84F36D712F8A525A00142F1D /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				84F200001111111111111111 /* LLGuideManager.swift */,
-				84F200001111111111111112 /* LLGuideTaskCardView.swift */,
-				84F200001111111111111114 /* LLInlineGuideTipView.swift */,
-				84F200001111111111111113 /* LLWelcomeGuideViewController.swift */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		84F36D732F8A52AB00142F1D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1522,7 +1503,6 @@
 				A80BC32E2F378E8900A40D9B /* Products */,
 				28E60DFBC17BA4ACF2D62A96 /* Pods */,
 				981E8A615B7D4282436F0768 /* Frameworks */,
-				84F36D712F8A525A00142F1D /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1631,10 +1611,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84F100001111111111111114 /* LLInlineGuideTipView.swift in Resources */,
-				84F100001111111111111111 /* LLGuideManager.swift in Resources */,
-				84F100001111111111111112 /* LLGuideTaskCardView.swift in Resources */,
-				84F100001111111111111113 /* LLWelcomeGuideViewController.swift in Resources */,
 				849227082F3C878F00447E0C /* Assets.xcassets in Resources */,
 				840D1E6E2F67B6A6002C330E /* Localizable.strings in Resources */,
 				849227092F3C878F00447E0C /* Main.storyboard in Resources */,

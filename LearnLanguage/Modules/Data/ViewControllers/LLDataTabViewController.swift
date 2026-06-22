@@ -826,10 +826,13 @@ extension LLDataTabViewController: NSCollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        let item = collectionView.makeItem(
+        guard let item = collectionView.makeItem(
             withIdentifier: learningLabItemIdentifier,
             for: indexPath
-        ) as! LLLearningLabCollectionItem
+        ) as? LLLearningLabCollectionItem else {
+            assertionFailure("Expected LLLearningLabCollectionItem for learning lab collection view")
+            return NSCollectionViewItem()
+        }
         item.configure(with: learningLabItems[indexPath.item])
         return item
     }
@@ -847,4 +850,3 @@ extension LLDataTabViewController: NSCollectionViewDelegateFlowLayout {
         return learningLabItemSize(for: learningLabContainer.bounds.width)
     }
 }
-

@@ -5,46 +5,57 @@
 //  统计卡片视图
 
 import AppKit
+import SnapKit
 
 final class LLStatCardView: NSView {
-    
-    private let iconLabel: NSTextField = {
-        let label = NSTextField(labelWithString: "")
-        label.font = NSFont.systemFont(ofSize: 20)
-        label.isEditable = false
-        label.isBezeled = false
-        label.drawsBackground = false
-        label.alignment = .center
-        return label
+    private let iconView: NSImageView = {
+        let imageView = NSImageView()
+        imageView.imageScaling = .scaleProportionallyDown
+        imageView.contentTintColor = LLAppearanceManager.shared.colors.accentColor
+        return imageView
     }()
+
+    private let iconContainer = NSView()
     
     private let numberLabel: NSTextField = {
         let label = NSTextField(labelWithString: "0")
-        label.font = NSFont.systemFont(ofSize: 26, weight: .semibold)
-        label.textColor = LLAppearanceManager.shared.colors.accentColor
+        label.font = NSFont.interDisplay(30, .bold)
+        label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false
         label.isBezeled = false
         label.drawsBackground = false
-        label.alignment = .center
+        label.alignment = .left
         return label
     }()
     
     private let descLabel: NSTextField = {
         let label = NSTextField(labelWithString: "")
-        label.font = NSFont.systemFont(ofSize: 12)
+        label.font = NSFont.inter(13, .semiBold)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false
         label.isBezeled = false
         label.drawsBackground = false
-        label.alignment = .center
+        label.alignment = .left
         label.maximumNumberOfLines = 2
         return label
     }()
+
+    private let detailLabel: NSTextField = {
+        let label = NSTextField(labelWithString: "")
+        label.font = NSFont.inter(11, .medium)
+        label.textColor = LLAppearanceManager.shared.colors.tertiaryText
+        label.isEditable = false
+        label.isBezeled = false
+        label.drawsBackground = false
+        label.alignment = .left
+        return label
+    }()
     
-    init(icon: String, description: String) {
+    init(icon: String, description: String, detail: String) {
         super.init(frame: .zero)
-        iconLabel.stringValue = icon
+        iconView.image = NSImage(systemSymbolName: icon, accessibilityDescription: nil)
         descLabel.stringValue = description
+        detailLabel.stringValue = detail
         setupViews()
     }
     
@@ -54,27 +65,50 @@ final class LLStatCardView: NSView {
     
     private func setupViews() {
         wantsLayer = true
-        layer?.backgroundColor = NSColor(srgbRed: 0.98, green: 0.98, blue: 0.97, alpha: 1).cgColor
+        layer?.backgroundColor = LLAppearanceManager.shared.colors.cardBackground.cgColor
         layer?.cornerRadius = 8
         layer?.borderWidth = 1
-        layer?.borderColor = NSColor(srgbRed: 0.9, green: 0.9, blue: 0.91, alpha: 1).cgColor
-        addSubview(iconLabel)
+        layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
+
+        iconContainer.wantsLayer = true
+        iconContainer.layer?.cornerRadius = 8
+        iconContainer.layer?.backgroundColor = LLAppearanceManager.shared.colors.accentLightBackground.withAlphaComponent(0.55).cgColor
+
+        addSubview(iconContainer)
+        iconContainer.addSubview(iconView)
         addSubview(numberLabel)
         addSubview(descLabel)
-    }
-    
-    override func layout() {
-        super.layout()
-        let w = bounds.width
-        guard w > 0 else { return }
-        let iconH: CGFloat = 26
-        let numH: CGFloat = 32
-        let descH: CGFloat = 30
-        let totalH = iconH + 6 + numH + 4 + descH
-        let startY = (bounds.height - totalH) / 2
-        iconLabel.frame   = NSRect(x: 0, y: startY, width: w, height: iconH)
-        numberLabel.frame = NSRect(x: 0, y: startY + iconH + 6, width: w, height: numH)
-        descLabel.frame   = NSRect(x: 4, y: startY + iconH + 6 + numH + 4, width: w - 8, height: descH)
+        addSubview(detailLabel)
+
+        iconContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(18)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(34)
+        }
+
+        iconView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(8)
+        }
+
+        descLabel.snp.makeConstraints { make in
+            make.leading.equalTo(iconContainer.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().inset(18)
+            make.top.equalToSuperview().offset(18)
+            make.height.equalTo(18)
+        }
+
+        numberLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(descLabel)
+            make.top.equalTo(descLabel.snp.bottom).offset(4)
+            make.height.equalTo(34)
+        }
+
+        detailLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(descLabel)
+            make.top.equalTo(numberLabel.snp.bottom).offset(1)
+            make.height.equalTo(16)
+            make.bottom.lessThanOrEqualToSuperview().inset(10)
+        }
     }
     
     func updateNumber(_ value: String) {

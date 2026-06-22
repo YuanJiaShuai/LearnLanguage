@@ -552,7 +552,7 @@ final class LLSidebarViewController: NSViewController {
         }
         
         let titleText = wrongWordCount == 0
-            ? NSLocalizedString("No Review Words", comment: "No review words placeholder")
+            ? NSLocalizedString("No Reviews Due", comment: "No review words placeholder")
             : NSLocalizedString("Today's Review", comment: "Today's review section title")
         reviewShortcutCardView.updateContent(title: titleText, badge: "\(wrongWordCount)")
     }

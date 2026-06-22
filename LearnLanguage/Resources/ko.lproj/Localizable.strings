@@ -31,6 +31,7 @@
 "Current Word List" = "현재 단어 목록";
 "Today's Review" = "오늘의 복습";
 "No Word List" = "단어 목록 없음";
+"No Reviews Due" = "복습 없음";
 
 // MARK: - Card Views
 "No Review Words" = "복습 단어 없음";
@@ -41,8 +42,10 @@
 "Learned %d/%d words (%.1f%%)" = "%d/%d 단어를 학습했습니다 (%.1f%%)";
 "Today's Learning" = "오늘의 학습";
 "Total Words" = "총 단어 수";
+"Current List Total Words" = "총 단어 수";
 "Mastered" = "습득함";
 "words" = "단어";
+"days" = "일";
 "words learned" = "단어를 학습했습니다";
 
 // MARK: - Settings
@@ -79,9 +82,7 @@
 "Azure Pronunciation" = "Azure 발음";
 
 // MARK: - Typing Practice
-"Typing Practice" = "타이핑 연습";
 "Dictation Mode" = "받아쓰기 모드 (단어 숨김)";
-"Show Meaning" = "의미 표시";
 "Input Style" = "입력 스타일";
 "Auto Show Answer" = "자동으로 답변 표시";
 "Per Letter" = "글자당 하나의 밑줄 (_ _ _ _ _)";
@@ -92,7 +93,6 @@
 "Add Word List" = "단어 목록 추가";
 "Import Words" = "단어 가져오기";
 "Export Words" = "단어 내보내기";
-"Total Words" = "총 단어 수";
 "Learned Words" = "학습한 단어";
 "Review Words" = "복습 단어";
 
@@ -116,7 +116,6 @@
 // MARK: - Feedback
 "Show" = "표시";
 "Know" = "알고 있음";
-"Unclear" = "불명확";
 "Unknown" = "모름";
 
 // MARK: - Time Filter
@@ -142,7 +141,6 @@
 "All Status" = "모든 상태";
 "Not Started" = "시작 안 함";
 "Learning" = "학습 중";
-"Completed" = "완료";
 "All Types" = "모든 유형";
 "Uncategorized" = "미분류";
 "Custom Word List" = "사용자 정의 목록";

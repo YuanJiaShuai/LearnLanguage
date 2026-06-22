@@ -652,10 +652,13 @@ extension LLWordListTabViewController: NSCollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        let item = collectionView.makeItem(
+        guard let item = collectionView.makeItem(
             withIdentifier: itemIdentifier,
             for: indexPath
-        ) as! LLWordLibraryCardItem
+        ) as? LLWordLibraryCardItem else {
+            assertionFailure("Expected LLWordLibraryCardItem for word list collection view")
+            return NSCollectionViewItem()
+        }
         
         item.layoutMode = (viewMode == .grid) ? .grid : .list
         let wordList = filteredLists[indexPath.item]
@@ -710,4 +713,3 @@ extension LLWordListTabViewController {
         presentAsSheet(detailVC)
     }
 }
-
