@@ -118,6 +118,23 @@ enum LLPronunciationAccent: String, Codable, CaseIterable {
     }
 }
 
+/// 英文和中文释义都启用时的朗读顺序
+enum LLPronunciationOrder: String, Codable, CaseIterable {
+    case chineseThenEnglish = "chinese_then_english"
+    case englishThenChinese = "english_then_chinese"
+    
+    var displayName: String {
+        switch self {
+        case .chineseThenEnglish: return NSLocalizedString("Pronunciation Order Chinese Then English", comment: "")
+        case .englishThenChinese: return NSLocalizedString("Pronunciation Order English Then Chinese", comment: "")
+        }
+    }
+    
+    static var allDisplayNames: [String] {
+        allCases.map { $0.displayName }
+    }
+}
+
 /// 打字练习输入框样式
 enum LLTypingInputStyle: String, Codable, CaseIterable {
     case perLetter = "per_letter"     // 每个字母一个下划线
@@ -317,6 +334,7 @@ extension LLShortcutConfig {
 /// 应用设置（本地存储）
 struct LLAppSettings: Codable {
     var displayLanguage: LLDisplayLanguage  // 应用显示语言
+    var lastSelectedSidebarModule: SidebarModule
     var currentLanguage: LLLearningLanguage
     var currentListId: String?
     var statusBarShowPhonetic: Bool
@@ -340,6 +358,7 @@ struct LLAppSettings: Codable {
     var pronunciationEnabled: Bool
     var chineseMeaningPronunciationEnabled: Bool
     var randomPronunciationEnabled: Bool
+    var pronunciationOrder: LLPronunciationOrder
     var pronunciationProvider: LLPronunciationProvider
     var pronunciationAccent: LLPronunciationAccent
     var pronunciationRate: Float  // 语速 0.0-1.0
@@ -370,6 +389,7 @@ struct LLAppSettings: Codable {
 
     static let `default` = LLAppSettings(
         displayLanguage: .simplifiedChinese,
+        lastSelectedSidebarModule: .wordList,
         currentLanguage: .english,
         currentListId: nil,
         statusBarShowPhonetic: false,
@@ -390,6 +410,7 @@ struct LLAppSettings: Codable {
         pronunciationEnabled: true,
         chineseMeaningPronunciationEnabled: false,
         randomPronunciationEnabled: false,
+        pronunciationOrder: .chineseThenEnglish,
         pronunciationProvider: .local,
         pronunciationAccent: .uk,
         pronunciationRate: 1.0,
@@ -419,6 +440,7 @@ extension LLAppSettings {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         displayLanguage = container.decodeOrDefault(LLDisplayLanguage.self, forKey: .displayLanguage, default: fallback.displayLanguage)
+        lastSelectedSidebarModule = container.decodeOrDefault(SidebarModule.self, forKey: .lastSelectedSidebarModule, default: fallback.lastSelectedSidebarModule)
         currentLanguage = container.decodeOrDefault(LLLearningLanguage.self, forKey: .currentLanguage, default: fallback.currentLanguage)
         currentListId = container.decodeOrDefault(String?.self, forKey: .currentListId, default: fallback.currentListId)
         statusBarShowPhonetic = container.decodeOrDefault(Bool.self, forKey: .statusBarShowPhonetic, default: fallback.statusBarShowPhonetic)
@@ -439,6 +461,7 @@ extension LLAppSettings {
         pronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .pronunciationEnabled, default: fallback.pronunciationEnabled)
         chineseMeaningPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .chineseMeaningPronunciationEnabled, default: fallback.chineseMeaningPronunciationEnabled)
         randomPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .randomPronunciationEnabled, default: fallback.randomPronunciationEnabled)
+        pronunciationOrder = container.decodeOrDefault(LLPronunciationOrder.self, forKey: .pronunciationOrder, default: fallback.pronunciationOrder)
         pronunciationProvider = container.decodeOrDefault(LLPronunciationProvider.self, forKey: .pronunciationProvider, default: fallback.pronunciationProvider)
         pronunciationAccent = container.decodeOrDefault(LLPronunciationAccent.self, forKey: .pronunciationAccent, default: fallback.pronunciationAccent)
         pronunciationRate = container.decodeOrDefault(Float.self, forKey: .pronunciationRate, default: fallback.pronunciationRate)

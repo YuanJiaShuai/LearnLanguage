@@ -166,10 +166,11 @@ final class LLStatContentView: NSView {
     
     // MARK: - Public Methods
     
-    func updateStatistics(totalWords: Int, days: Int, todayCount: Int, todayGoal: Int) {
+    func updateStatistics(totalWords: Int, days: Int, todayCount: Int, todayGoal: Int, trendPoints: [LLTrendPoint]) {
         totalWordsCard?.updateNumber("\(totalWords)")
         streakCard?.updateNumber("\(days)")
         progressCard?.updateProgress(current: todayCount, total: todayGoal)
+        trendCard?.update(points: trendPoints)
     }
 }
 

@@ -276,14 +276,17 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
     // MARK: - SidebarViewControllerDelegate
     
     func sidebarViewController(_ vc: LLSidebarViewController, didSelectModule module: SidebarModule) {
+        saveSelectedModule(module)
         contentVC.switchModule(to: module)
     }
     
     func sidebarViewController(_ vc: LLSidebarViewController, didSelectCurrentWordList: WordList?) {
+        saveSelectedModule(.wordList)
         contentVC.switchModule(to: .wordList)
     }
     
     func sidebarViewController(_ vc: LLSidebarViewController, didSelectWrongWords: ()) {
+        saveSelectedModule(.learningRecord)
         contentVC.switchModule(to: .learningRecord)
         
         // 延迟一下，确保页面已经切换
@@ -295,5 +298,11 @@ final class LLMainViewController: NSViewController, SidebarViewControllerDelegat
                 progressVC.setTimeFilter(to: .today)
             }
         }
+    }
+    
+    private func saveSelectedModule(_ module: SidebarModule) {
+        var settings = LLSettingsStore.shared.settings
+        settings.lastSelectedSidebarModule = module
+        LLSettingsStore.shared.settings = settings
     }
 }

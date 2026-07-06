@@ -91,6 +91,7 @@ final class LLSettingsTabViewController: NSViewController {
     private var pronunciationCheck: NSButton!
     private var chineseMeaningPronunciationCheck: NSButton!
     private var randomPronunciationCheck: NSButton!
+    private var pronunciationOrderSegment: NSSegmentedControl!
     private var pronunciationProviderPopup: NSPopUpButton!
     private var pronunciationAccentPopup: NSPopUpButton!
     private var pronunciationRatePopup: NSPopUpButton!
@@ -321,6 +322,8 @@ final class LLSettingsTabViewController: NSViewController {
         chineseMeaningPronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Chinese Meaning Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
         randomPronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Random Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
         
+        pronunciationOrderSegment = NSSegmentedControl(labels: LLPronunciationOrder.allDisplayNames, trackingMode: .selectOne, target: self, action: #selector(saveSettings))
+        
         pronunciationProviderPopup = NSPopUpButton()
         pronunciationProviderPopup.target = self
         pronunciationProviderPopup.action = #selector(saveSettings)
@@ -374,6 +377,7 @@ final class LLSettingsTabViewController: NSViewController {
         pronunciationModeStack.spacing = 14
         pronunciationModeStack.alignment = .centerY
         card.addFormItem(label: NSLocalizedString("Pronunciation Mode", comment: ""), control: pronunciationModeStack)
+        card.addFormItem(label: NSLocalizedString("Pronunciation Order", comment: ""), control: pronunciationOrderSegment)
         card.addNote(NSLocalizedString("Pronunciation Privacy Note", comment: ""))
         card.addFormRow(items: [
             (label: NSLocalizedString("Pronunciation Provider", comment: ""), control: pronunciationProviderPopup),
@@ -579,6 +583,13 @@ final class LLSettingsTabViewController: NSViewController {
         appAudioVolumeLabel.stringValue = "\(value)%"
         saveSettings()
     }
+    
+    private func updatePronunciationOrderSegmentState() {
+        let hasBothOrderedModes = pronunciationCheck.state == .on
+            && chineseMeaningPronunciationCheck.state == .on
+            && randomPronunciationCheck.state != .on
+        pronunciationOrderSegment.isEnabled = hasBothOrderedModes
+    }
 
     private func createOtherCard() -> LLSettingsCardView {
         let card = LLSettingsCardView(title: NSLocalizedString("Other Settings", comment: ""), icon: "⚙️")
@@ -653,6 +664,10 @@ final class LLSettingsTabViewController: NSViewController {
         pronunciationCheck.state = s.pronunciationEnabled ? .on : .off
         chineseMeaningPronunciationCheck.state = s.chineseMeaningPronunciationEnabled ? .on : .off
         randomPronunciationCheck.state = s.randomPronunciationEnabled ? .on : .off
+        if let index = LLPronunciationOrder.allCases.firstIndex(of: s.pronunciationOrder) {
+            pronunciationOrderSegment.selectedSegment = index
+        }
+        updatePronunciationOrderSegmentState()
         if let index = LLPronunciationProvider.allCases.firstIndex(of: s.pronunciationProvider) {
             pronunciationProviderPopup.selectItem(at: index)
         }
@@ -789,6 +804,11 @@ final class LLSettingsTabViewController: NSViewController {
         s.pronunciationEnabled = pronunciationCheck.state == .on
         s.chineseMeaningPronunciationEnabled = chineseMeaningPronunciationCheck.state == .on
         s.randomPronunciationEnabled = randomPronunciationCheck.state == .on
+        updatePronunciationOrderSegmentState()
+        let pronunciationOrderIndex = pronunciationOrderSegment.selectedSegment
+        if pronunciationOrderIndex >= 0 && pronunciationOrderIndex < LLPronunciationOrder.allCases.count {
+            s.pronunciationOrder = LLPronunciationOrder.allCases[pronunciationOrderIndex]
+        }
         let providerIndex = pronunciationProviderPopup.indexOfSelectedItem
         if providerIndex >= 0 && providerIndex < LLPronunciationProvider.allCases.count {
             s.pronunciationProvider = LLPronunciationProvider.allCases[providerIndex]

@@ -79,6 +79,9 @@
 "English Pronunciation" = "영어 낭독";
 "Chinese Meaning Pronunciation" = "중국어 뜻 낭독";
 "Random Pronunciation" = "무작위 낭독";
+"Pronunciation Order" = "낭독 순서";
+"Pronunciation Order Chinese Then English" = "중국어 → 영어";
+"Pronunciation Order English Then Chinese" = "영어 → 중국어";
 "Playback Volume" = "재생 음량";
 "Pronunciation Privacy Note" = "로컬 발음은 시스템 음성을 사용합니다. 유도 발음을 선택하면 현재 단어의 오디오만 요청하며, 학습 기록이나 단어 목록은 업로드하지 않습니다.";
 "Speech Rate" = "음성 속도";
@@ -172,8 +175,11 @@
 "Review Tab" = "복습 기록";
 "Total Words Learned" = "누적 학습 단어";
 "Streak Days" = "연속 학습 일수";
+"Goal Completed" = "완료";
 "No Records Today" = "오늘 학습 기록이 없습니다";
 "Trend Chart Placeholder" = "학습 기록이 쌓이면 여기에 추세가 표시됩니다";
+"Trend Chart Subtitle" = "최근 %d일 학습 %d회";
+"Trend Chart Empty" = "최근 7일 학습 기록이 없습니다";
 "Export Records Message" = "학습 기록 내보내기";
 "Export Records Success" = "내보내기 성공";
 "Export Records Failed" = "내보내기 실패";

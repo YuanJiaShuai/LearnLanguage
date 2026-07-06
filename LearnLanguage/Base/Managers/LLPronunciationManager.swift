@@ -348,7 +348,7 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
 final class LLPronunciationManager {
     
     static let shared = LLPronunciationManager()
-    private static let englishAfterChineseDelay: TimeInterval = 0.5
+    private static let orderedPronunciationDelay: TimeInterval = 0.5
     
     private enum PronunciationModeChoice: Equatable {
         case english
@@ -471,22 +471,45 @@ final class LLPronunciationManager {
         
         switch (shouldSpeakEnglish, shouldSpeakChinese) {
         case (true, true):
-            speakChineseMeaning(entry.meaning) { [weak self] success, error in
-                guard let self, self.isCurrentPlayback(generation) else {
-                    completion?(false, nil)
-                    return
+            switch settings.pronunciationOrder {
+            case .chineseThenEnglish:
+                speakChineseMeaning(entry.meaning) { [weak self] success, error in
+                    guard let self, self.isCurrentPlayback(generation) else {
+                        completion?(false, nil)
+                        return
+                    }
+                    guard success else {
+                        completion?(success, error)
+                        return
+                    }
+                    self.speakEnglishWordAfterDelay(
+                        entry.text,
+                        accent: settings.pronunciationAccent,
+                        rate: settings.pronunciationRate,
+                        generation: generation,
+                        completion: completion
+                    )
                 }
-                guard success else {
-                    completion?(success, error)
-                    return
-                }
-                self.speakEnglishWordAfterChineseDelay(
+            case .englishThenChinese:
+                speakEnglishWord(
                     entry.text,
                     accent: settings.pronunciationAccent,
-                    rate: settings.pronunciationRate,
-                    generation: generation,
-                    completion: completion
-                )
+                    rate: settings.pronunciationRate
+                ) { [weak self] success, error in
+                    guard let self, self.isCurrentPlayback(generation) else {
+                        completion?(false, nil)
+                        return
+                    }
+                    guard success else {
+                        completion?(success, error)
+                        return
+                    }
+                    self.speakChineseMeaningAfterDelay(
+                        entry.meaning,
+                        generation: generation,
+                        completion: completion
+                    )
+                }
             }
         case (true, false):
             speakEnglishWord(entry.text, accent: settings.pronunciationAccent, rate: settings.pronunciationRate, completion: completion)
@@ -548,13 +571,23 @@ final class LLPronunciationManager {
         playbackGeneration == generation
     }
     
-    private func speakEnglishWordAfterChineseDelay(_ word: String, accent: LLPronunciationAccent, rate: Float, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Self.englishAfterChineseDelay) { [weak self] in
+    private func speakEnglishWordAfterDelay(_ word: String, accent: LLPronunciationAccent, rate: Float, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.orderedPronunciationDelay) { [weak self] in
             guard let self, self.isCurrentPlayback(generation) else {
                 completion?(false, nil)
                 return
             }
             self.speakEnglishWord(word, accent: accent, rate: rate, completion: completion)
+        }
+    }
+    
+    private func speakChineseMeaningAfterDelay(_ meaning: String, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.orderedPronunciationDelay) { [weak self] in
+            guard let self, self.isCurrentPlayback(generation) else {
+                completion?(false, nil)
+                return
+            }
+            self.speakChineseMeaning(meaning, completion: completion)
         }
     }
     

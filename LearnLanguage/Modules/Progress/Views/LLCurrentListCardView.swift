@@ -32,6 +32,8 @@ final class LLCurrentListCardView: NSView {
         label.font = NSFont.interDisplay(24, .bold)
         label.textColor = LLAppearanceManager.shared.colors.primaryText
         label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
+        label.maximumNumberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
@@ -40,6 +42,8 @@ final class LLCurrentListCardView: NSView {
         label.font = NSFont.inter(13, .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
+        label.maximumNumberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
@@ -64,6 +68,8 @@ final class LLCurrentListCardView: NSView {
         label.font = NSFont.inter(13, .medium)
         label.textColor = LLAppearanceManager.shared.colors.secondaryText
         label.isEditable = false; label.isBezeled = false; label.drawsBackground = false
+        label.maximumNumberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
@@ -169,16 +175,19 @@ final class LLCurrentListCardView: NSView {
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(titleLabel.snp.bottom).offset(14)
             make.trailing.lessThanOrEqualTo(changeButton.snp.leading).offset(-12)
+            make.height.equalTo(30)
         }
 
         categoryLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(listNameLabel)
-            make.top.equalTo(listNameLabel.snp.bottom).offset(4)
+            make.top.equalTo(listNameLabel.snp.bottom).offset(6)
+            make.height.equalTo(18)
         }
 
         progressLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(listNameLabel)
-            make.top.equalTo(categoryLabel.snp.bottom).offset(18)
+            make.top.equalTo(categoryLabel.snp.bottom).offset(22)
+            make.height.equalTo(18)
         }
 
         progressBarBg.snp.makeConstraints { make in
@@ -197,8 +206,16 @@ final class LLCurrentListCardView: NSView {
         }
 
         statsStack.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(changeButton.snp.bottom).offset(22)
+            make.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(22)
+            make.width.equalTo(176)
+        }
+
+        [listNameLabel, categoryLabel, progressLabel, progressBarBg].forEach { view in
+            view.snp.makeConstraints { make in
+                make.trailing.lessThanOrEqualTo(statsStack.snp.leading).offset(-24)
+            }
         }
     }
 
@@ -249,7 +266,7 @@ final class LLCurrentListCardView: NSView {
         categoryLabel.stringValue = list.category
         
         let progress = LLSettingsStore.shared.getCurrentListProgress()
-        progressRatio = CGFloat(progress.percentage / 100.0)
+        progressRatio = min(1, max(0, CGFloat(progress.percentage / 100.0)))
         progressLabel.stringValue = String(format: NSLocalizedString("Learned %d/%d words (%.1f%%)", comment: ""), progress.learned, progress.total, progress.percentage)
         
         let todayCount = LLSettingsStore.shared.getCurrentListTodayCount()

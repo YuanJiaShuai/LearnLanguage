@@ -78,6 +78,9 @@
 "English Pronunciation" = "英文朗读";
 "Chinese Meaning Pronunciation" = "中文释义朗读";
 "Random Pronunciation" = "随机朗读";
+"Pronunciation Order" = "朗读顺序";
+"Pronunciation Order Chinese Then English" = "中文 → 英文";
+"Pronunciation Order English Then Chinese" = "英文 → 中文";
 "Playback Volume" = "播放音量";
 "Pronunciation Privacy Note" = "本地发音使用系统语音；选择有道发音时，仅会向有道请求当前单词的音频，不上传学习记录或词库数据。";
 "Speech Rate" = "语速调节";
@@ -179,8 +182,11 @@
 "Review Tab" = "复习记录";
 "Total Words Learned" = "累计学习单词";
 "Streak Days" = "连续学习天数";
+"Goal Completed" = "已完成";
 "No Records Today" = "今天还没有学习记录";
 "Trend Chart Placeholder" = "学习记录积累后将在这里显示趋势";
+"Trend Chart Subtitle" = "近 %d 天学习 %d 次";
+"Trend Chart Empty" = "近 7 天暂无学习记录";
 "Export Records Message" = "导出学习记录";
 "Export Records Success" = "导出成功";
 "Export Records Failed" = "导出失败";

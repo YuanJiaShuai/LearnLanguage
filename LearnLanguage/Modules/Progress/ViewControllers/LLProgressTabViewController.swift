@@ -393,14 +393,49 @@ final class LLProgressTabViewController: NSViewController {
             }
             let totalWords = stats.learned
             let days = (try? LLDatabaseManager.shared.totalLearningDays(wordListId: listId)) ?? 0
+            let trendPoints = recentTrendPoints(wordListId: listId)
             
-            statContentView?.updateStatistics(totalWords: totalWords, days: days, todayCount: todayCount, todayGoal: LLSettingsStore.shared.settings.newWordsPerDay)
+            statContentView?.updateStatistics(
+                totalWords: totalWords,
+                days: days,
+                todayCount: todayCount,
+                todayGoal: LLSettingsStore.shared.settings.newWordsPerDay,
+                trendPoints: trendPoints
+            )
         } catch {
             LLLogger.error("❌ 加载统计数据失败：\(error)")
         }
         
         loadTodayRecords(listId: listId)
         loadReviewRecords(listId: listId)
+    }
+    
+    private func recentTrendPoints(wordListId: String?) -> [LLTrendPoint] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let days = (0..<7).compactMap { offset in
+            calendar.date(byAdding: .day, value: offset - 6, to: today)
+        }
+        
+        var countsByDay = Dictionary(uniqueKeysWithValues: days.map { ($0, 0) })
+        do {
+            let startTime = days.first?.timeIntervalSince1970 ?? today.timeIntervalSince1970
+            let endTime = (calendar.date(byAdding: .day, value: 1, to: today) ?? Date()).timeIntervalSince1970
+            let history = try LLDatabaseManager.shared.getLearningHistory(from: startTime, to: endTime, wordListId: wordListId)
+            for item in history {
+                guard let learnedAt = item.learnedAt else { continue }
+                let day = calendar.startOfDay(for: Date(timeIntervalSince1970: learnedAt))
+                countsByDay[day, default: 0] += 1
+            }
+        } catch {
+            LLLogger.error("❌ 加载趋势数据失败：\(error)")
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/d"
+        return days.map { day in
+            LLTrendPoint(label: formatter.string(from: day), count: countsByDay[day] ?? 0)
+        }
     }
     
     private func loadTodayRecords(listId: String?) {

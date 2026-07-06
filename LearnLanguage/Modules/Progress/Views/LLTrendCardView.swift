@@ -19,7 +19,7 @@ final class LLTrendCardView: NSView {
         return label
     }()
     
-    private let chartPlaceholder = LLTrendPreviewView()
+    private let chartView = LLTrendPreviewView()
     
     private let placeholderText: NSTextField = {
         let label = NSTextField(labelWithString: NSLocalizedString("Trend Chart Placeholder", comment: "").replacingOccurrences(of: "📊 ", with: ""))
@@ -48,7 +48,7 @@ final class LLTrendCardView: NSView {
         layer?.borderWidth = 1
         layer?.borderColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.6).cgColor
         addSubview(titleLabel)
-        addSubview(chartPlaceholder)
+        addSubview(chartView)
         addSubview(placeholderText)
 
         titleLabel.snp.makeConstraints { make in
@@ -63,16 +63,33 @@ final class LLTrendCardView: NSView {
             make.height.equalTo(18)
         }
 
-        chartPlaceholder.snp.makeConstraints { make in
+        chartView.snp.makeConstraints { make in
             make.top.equalTo(placeholderText.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(18)
         }
     }
+    
+    func update(points: [LLTrendPoint]) {
+        chartView.points = points
+        let total = points.reduce(0) { $0 + $1.count }
+        placeholderText.stringValue = total > 0
+            ? String(format: NSLocalizedString("Trend Chart Subtitle", comment: ""), points.count, total)
+            : NSLocalizedString("Trend Chart Empty", comment: "")
+    }
+}
+
+struct LLTrendPoint {
+    let label: String
+    let count: Int
 }
 
 private final class LLTrendPreviewView: NSView {
     override var isFlipped: Bool { true }
+    
+    var points: [LLTrendPoint] = [] {
+        didSet { needsDisplay = true }
+    }
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -88,8 +105,27 @@ private final class LLTrendPreviewView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
-        let inset: CGFloat = 18
-        let plotRect = bounds.insetBy(dx: inset, dy: inset)
+        let horizontalInset: CGFloat = 18
+        let topInset: CGFloat = 18
+        let bottomInset: CGFloat = 28
+        let plotRect = bounds.insetBy(dx: horizontalInset, dy: 0)
+            .insetBy(dx: 0, dy: topInset)
+            .offsetBy(dx: 0, dy: 0)
+        let adjustedPlotRect = NSRect(
+            x: plotRect.minX,
+            y: topInset,
+            width: plotRect.width,
+            height: max(0, bounds.height - topInset - bottomInset)
+        )
+        
+        drawGrid(in: adjustedPlotRect)
+        
+        guard !points.isEmpty else { return }
+        drawLine(in: adjustedPlotRect)
+        drawLabels(in: adjustedPlotRect)
+    }
+    
+    private func drawGrid(in plotRect: NSRect) {
         guard plotRect.width > 0, plotRect.height > 0 else { return }
 
         let gridColor = LLAppearanceManager.shared.colors.borderColor.withAlphaComponent(0.55)
@@ -103,12 +139,19 @@ private final class LLTrendPreviewView: NSView {
             path.lineWidth = 1
             path.stroke()
         }
-
-        let points: [CGFloat] = [0.42, 0.38, 0.53, 0.48, 0.66, 0.61, 0.76]
+    }
+    
+    private func drawLine(in plotRect: NSRect) {
+        let maxCount = max(points.map(\.count).max() ?? 1, 1)
+        let normalizedValues = points.map { point in
+            CGFloat(point.count) / CGFloat(maxCount)
+        }
+        
         let line = NSBezierPath()
-        for (index, value) in points.enumerated() {
-            let x = plotRect.minX + CGFloat(index) * plotRect.width / CGFloat(points.count - 1)
-            let y = plotRect.maxY - value * plotRect.height
+        for (index, value) in normalizedValues.enumerated() {
+            let denominator = max(normalizedValues.count - 1, 1)
+            let x = plotRect.minX + CGFloat(index) * plotRect.width / CGFloat(denominator)
+            let y = plotRect.maxY - max(0.08, value) * plotRect.height
             let point = NSPoint(x: x, y: y)
             if index == 0 {
                 line.move(to: point)
@@ -121,5 +164,31 @@ private final class LLTrendPreviewView: NSView {
         line.lineJoinStyle = .round
         line.lineCapStyle = .round
         line.stroke()
+        
+        LLAppearanceManager.shared.colors.accentColor.setFill()
+        for (index, value) in normalizedValues.enumerated() {
+            let denominator = max(normalizedValues.count - 1, 1)
+            let x = plotRect.minX + CGFloat(index) * plotRect.width / CGFloat(denominator)
+            let y = plotRect.maxY - max(0.08, value) * plotRect.height
+            NSBezierPath(ovalIn: NSRect(x: x - 3, y: y - 3, width: 6, height: 6)).fill()
+        }
+    }
+    
+    private func drawLabels(in plotRect: NSRect) {
+        guard points.count > 1 else { return }
+        
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: NSFont.inter(10, .medium),
+            .foregroundColor: LLAppearanceManager.shared.colors.tertiaryText,
+            .paragraphStyle: paragraph
+        ]
+        
+        for (index, point) in points.enumerated() where index == 0 || index == points.count - 1 {
+            let x = plotRect.minX + CGFloat(index) * plotRect.width / CGFloat(points.count - 1)
+            let rect = NSRect(x: x - 36, y: plotRect.maxY + 7, width: 72, height: 14)
+            point.label.draw(in: rect, withAttributes: attrs)
+        }
     }
 }

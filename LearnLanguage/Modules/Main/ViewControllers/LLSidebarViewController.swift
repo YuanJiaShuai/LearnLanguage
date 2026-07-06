@@ -14,7 +14,7 @@ protocol SidebarViewControllerDelegate: AnyObject {
     func sidebarViewController(_ vc: LLSidebarViewController, didSelectWrongWords: ())
 }
 
-enum SidebarModule {
+enum SidebarModule: String, Codable {
     case wordList           // 词库管理
     case learningRecord     // 学习记录
     case settings          // 设置
@@ -152,7 +152,7 @@ final class LLSidebarViewController: NSViewController {
     // MARK: - Properties
     
     weak var delegate: SidebarViewControllerDelegate?
-    private var selectedModule: SidebarModule = .wordList
+    private var selectedModule: SidebarModule = LLSettingsStore.shared.settings.lastSelectedSidebarModule
     private let modules: [SidebarModule] = [.wordList, .learningRecord, .dataManagement, .settings]
     
     // 数据源
@@ -440,6 +440,7 @@ final class LLSidebarViewController: NSViewController {
     
     private func didSelectNavigation(at index: Int) {
         let module = modules[index]
+        saveSelectedModule(module)
         selectedModule = module
         updateNavigationSelection()
         delegate?.sidebarViewController(self, didSelectModule: module)
@@ -455,21 +456,32 @@ final class LLSidebarViewController: NSViewController {
         // 判断是否有当前词库
         if currentWordList == nil {
             // 没有词库：切换到词库管理 tab，显示词库管理页面
+            saveSelectedModule(.wordList)
             selectedModule = .wordList
             updateNavigationSelection()
             delegate?.sidebarViewController(self, didSelectModule: .wordList)
         } else {
             // 有词库：直接显示词库详情
+            saveSelectedModule(.wordList)
+            selectedModule = .wordList
+            updateNavigationSelection()
             delegate?.sidebarViewController(self, didSelectCurrentWordList: currentWordList)
         }
     }
     
     private func didClickWrongWords() {
         // 切换到学习记录 tab
+        saveSelectedModule(.learningRecord)
         selectedModule = .learningRecord
         updateNavigationSelection()
         delegate?.sidebarViewController(self, didSelectModule: .learningRecord)
         delegate?.sidebarViewController(self, didSelectWrongWords: ())
+    }
+    
+    private func saveSelectedModule(_ module: SidebarModule) {
+        var settings = LLSettingsStore.shared.settings
+        settings.lastSelectedSidebarModule = module
+        LLSettingsStore.shared.settings = settings
     }
     
     @objc private func onFeedbackButtonClicked() {

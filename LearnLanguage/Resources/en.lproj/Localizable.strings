@@ -78,6 +78,9 @@
 "English Pronunciation" = "English Pronunciation";
 "Chinese Meaning Pronunciation" = "Chinese Meaning Pronunciation";
 "Random Pronunciation" = "Random Pronunciation";
+"Pronunciation Order" = "Pronunciation Order";
+"Pronunciation Order Chinese Then English" = "Chinese → English";
+"Pronunciation Order English Then Chinese" = "English → Chinese";
 "Playback Volume" = "Playback Volume";
 "Pronunciation Privacy Note" = "Local pronunciation uses system voices. When Youdao pronunciation is selected, only the current word is requested for audio; learning records and word lists are not uploaded.";
 "Speech Rate" = "Speech Rate";
@@ -179,8 +182,11 @@
 "Review Tab" = "Review Records";
 "Total Words Learned" = "Words Learned";
 "Streak Days" = "Streak Days";
+"Goal Completed" = "Completed";
 "No Records Today" = "No learning records today";
 "Trend Chart Placeholder" = "Learning trends will appear here as records accumulate";
+"Trend Chart Subtitle" = "%d-day trend, %d study events";
+"Trend Chart Empty" = "No learning records in the last 7 days";
 "Export Records Message" = "Export Learning Records";
 "Export Records Success" = "Export Successful";
 "Export Records Failed" = "Export Failed";

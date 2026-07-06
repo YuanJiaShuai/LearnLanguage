@@ -142,7 +142,7 @@ final class LLProgressCardView: NSView {
         numberLabel.stringValue = "\(current)/\(total)"
         progressRatio = total > 0 ? min(1.0, CGFloat(current) / CGFloat(total)) : 0
         let percent = total > 0 ? Int(round((Double(current) / Double(total)) * 100)) : 0
-        detailLabel.stringValue = "\(percent)%"
+        detailLabel.stringValue = percent >= 100 ? NSLocalizedString("Goal Completed", comment: "") : "\(percent)%"
         progressFillWidthConstraint?.update(offset: progressBar.bounds.width * progressRatio)
         needsLayout = true
     }

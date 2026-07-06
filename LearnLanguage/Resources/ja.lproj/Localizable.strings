@@ -79,6 +79,9 @@
 "English Pronunciation" = "英語読み上げ";
 "Chinese Meaning Pronunciation" = "中国語訳の読み上げ";
 "Random Pronunciation" = "ランダム読み上げ";
+"Pronunciation Order" = "読み上げ順序";
+"Pronunciation Order Chinese Then English" = "中国語 → 英語";
+"Pronunciation Order English Then Chinese" = "英語 → 中国語";
 "Playback Volume" = "再生音量";
 "Pronunciation Privacy Note" = "ローカル発音はシステム音声を使用します。有道発音を選択した場合、現在の単語の音声のみをリクエストし、学習記録や単語リストはアップロードしません。";
 "Speech Rate" = "話速調整";
@@ -172,8 +175,11 @@
 "Review Tab" = "復習記録";
 "Total Words Learned" = "累計学習単語";
 "Streak Days" = "連続学習日数";
+"Goal Completed" = "達成済み";
 "No Records Today" = "今日の学習記録はありません";
 "Trend Chart Placeholder" = "学習記録が増えると、ここに傾向が表示されます";
+"Trend Chart Subtitle" = "直近 %d 日で %d 回学習";
+"Trend Chart Empty" = "直近 7 日間の学習記録はありません";
 "Export Records Message" = "学習記録をエクスポート";
 "Export Records Success" = "エクスポート成功";
 "Export Records Failed" = "エクスポート失敗";

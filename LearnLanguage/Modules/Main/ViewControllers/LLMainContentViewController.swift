@@ -15,7 +15,7 @@ final class LLMainContentViewController: NSViewController {
     private let containerView = NSView()
     private let emptyView = NSView()
     
-    private var currentModule: SidebarModule = .wordList
+    private var currentModule: SidebarModule = LLSettingsStore.shared.settings.lastSelectedSidebarModule
     private var currentViewController: NSViewController?
     
     // 各个模块的视图控制器（复用）
@@ -34,7 +34,7 @@ final class LLMainContentViewController: NSViewController {
             self?.onOpenLearningLabRoute?(route)
         }
         setupUI()
-        switchModule(to: .wordList)
+        switchModule(to: LLSettingsStore.shared.settings.lastSelectedSidebarModule)
     }
     
     private func setupUI() {

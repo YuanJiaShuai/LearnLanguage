@@ -427,7 +427,7 @@ final class LLDatabaseManager {
     }
     
     /// 基础查询方法
-    private func getLearningHistory(from startTime: TimeInterval?, to endTime: TimeInterval?, wordListId: String?) throws -> [LLDBLearningHistory] {
+    func getLearningHistory(from startTime: TimeInterval?, to endTime: TimeInterval?, wordListId: String?) throws -> [LLDBLearningHistory] {
         let order = [LLDBLearningHistory.Properties.learnedAt.asOrder(by: .descending)]
         
         let hasTime = startTime != nil && endTime != nil
