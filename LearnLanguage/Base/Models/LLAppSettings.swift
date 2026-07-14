@@ -359,6 +359,7 @@ struct LLAppSettings: Codable {
     var chineseMeaningPronunciationEnabled: Bool
     var randomPronunciationEnabled: Bool
     var pronunciationOrder: LLPronunciationOrder
+    var pronunciationLanguageInterval: Double  // 英文和中文释义连续朗读时的间隔（秒）
     var pronunciationProvider: LLPronunciationProvider
     var pronunciationAccent: LLPronunciationAccent
     var pronunciationRate: Float  // 语速 0.0-1.0
@@ -411,6 +412,7 @@ struct LLAppSettings: Codable {
         chineseMeaningPronunciationEnabled: false,
         randomPronunciationEnabled: false,
         pronunciationOrder: .chineseThenEnglish,
+        pronunciationLanguageInterval: 0.5,
         pronunciationProvider: .local,
         pronunciationAccent: .uk,
         pronunciationRate: 1.0,
@@ -462,6 +464,7 @@ extension LLAppSettings {
         chineseMeaningPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .chineseMeaningPronunciationEnabled, default: fallback.chineseMeaningPronunciationEnabled)
         randomPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .randomPronunciationEnabled, default: fallback.randomPronunciationEnabled)
         pronunciationOrder = container.decodeOrDefault(LLPronunciationOrder.self, forKey: .pronunciationOrder, default: fallback.pronunciationOrder)
+        pronunciationLanguageInterval = container.decodeOrDefault(Double.self, forKey: .pronunciationLanguageInterval, default: fallback.pronunciationLanguageInterval)
         pronunciationProvider = container.decodeOrDefault(LLPronunciationProvider.self, forKey: .pronunciationProvider, default: fallback.pronunciationProvider)
         pronunciationAccent = container.decodeOrDefault(LLPronunciationAccent.self, forKey: .pronunciationAccent, default: fallback.pronunciationAccent)
         pronunciationRate = container.decodeOrDefault(Float.self, forKey: .pronunciationRate, default: fallback.pronunciationRate)

@@ -348,7 +348,7 @@ final class LLYoudaoPronunciationProvider: NSObject, LLPronunciationProviderProt
 final class LLPronunciationManager {
     
     static let shared = LLPronunciationManager()
-    private static let orderedPronunciationDelay: TimeInterval = 0.5
+    private static let maxOrderedPronunciationDelay: TimeInterval = 5.0
     
     private enum PronunciationModeChoice: Equatable {
         case english
@@ -572,7 +572,7 @@ final class LLPronunciationManager {
     }
     
     private func speakEnglishWordAfterDelay(_ word: String, accent: LLPronunciationAccent, rate: Float, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Self.orderedPronunciationDelay) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + orderedPronunciationDelay) { [weak self] in
             guard let self, self.isCurrentPlayback(generation) else {
                 completion?(false, nil)
                 return
@@ -582,13 +582,18 @@ final class LLPronunciationManager {
     }
     
     private func speakChineseMeaningAfterDelay(_ meaning: String, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Self.orderedPronunciationDelay) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + orderedPronunciationDelay) { [weak self] in
             guard let self, self.isCurrentPlayback(generation) else {
                 completion?(false, nil)
                 return
             }
             self.speakChineseMeaning(meaning, completion: completion)
         }
+    }
+
+    private var orderedPronunciationDelay: TimeInterval {
+        let value = LLSettingsStore.shared.settings.pronunciationLanguageInterval
+        return min(max(value, 0), Self.maxOrderedPronunciationDelay)
     }
     
     private func randomChoice(for entry: LLWordEntry) -> PronunciationModeChoice {

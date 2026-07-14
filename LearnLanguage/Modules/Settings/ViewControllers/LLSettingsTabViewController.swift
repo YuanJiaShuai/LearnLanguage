@@ -92,6 +92,8 @@ final class LLSettingsTabViewController: NSViewController {
     private var chineseMeaningPronunciationCheck: NSButton!
     private var randomPronunciationCheck: NSButton!
     private var pronunciationOrderSegment: NSSegmentedControl!
+    private var pronunciationLanguageIntervalSlider: NSSlider!
+    private var pronunciationLanguageIntervalLabel: NSTextField!
     private var pronunciationProviderPopup: NSPopUpButton!
     private var pronunciationAccentPopup: NSPopUpButton!
     private var pronunciationRatePopup: NSPopUpButton!
@@ -323,6 +325,26 @@ final class LLSettingsTabViewController: NSViewController {
         randomPronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Random Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
         
         pronunciationOrderSegment = NSSegmentedControl(labels: LLPronunciationOrder.allDisplayNames, trackingMode: .selectOne, target: self, action: #selector(saveSettings))
+
+        pronunciationLanguageIntervalSlider = NSSlider(value: 0.5, minValue: 0, maxValue: 5, target: self, action: #selector(onPronunciationLanguageIntervalChanged))
+        pronunciationLanguageIntervalSlider.isContinuous = true
+
+        pronunciationLanguageIntervalLabel = NSTextField(labelWithString: "0.5s")
+        pronunciationLanguageIntervalLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
+        pronunciationLanguageIntervalLabel.textColor = NSColor(white: 0.4, alpha: 1.0)
+        pronunciationLanguageIntervalLabel.alignment = .right
+
+        let languageIntervalStack = NSStackView(views: [pronunciationLanguageIntervalSlider, pronunciationLanguageIntervalLabel])
+        languageIntervalStack.orientation = .horizontal
+        languageIntervalStack.spacing = 8
+        languageIntervalStack.alignment = .centerY
+        languageIntervalStack.distribution = .fill
+        pronunciationLanguageIntervalLabel.snp.makeConstraints { make in
+            make.width.equalTo(44)
+        }
+        pronunciationLanguageIntervalSlider.snp.makeConstraints { make in
+            make.width.greaterThanOrEqualTo(200)
+        }
         
         pronunciationProviderPopup = NSPopUpButton()
         pronunciationProviderPopup.target = self
@@ -378,6 +400,7 @@ final class LLSettingsTabViewController: NSViewController {
         pronunciationModeStack.alignment = .centerY
         card.addFormItem(label: NSLocalizedString("Pronunciation Mode", comment: ""), control: pronunciationModeStack)
         card.addFormItem(label: NSLocalizedString("Pronunciation Order", comment: ""), control: pronunciationOrderSegment)
+        card.addFormItem(label: NSLocalizedString("Pronunciation Language Interval", comment: ""), control: languageIntervalStack)
         card.addNote(NSLocalizedString("Pronunciation Privacy Note", comment: ""))
         card.addFormRow(items: [
             (label: NSLocalizedString("Pronunciation Provider", comment: ""), control: pronunciationProviderPopup),
@@ -583,12 +606,21 @@ final class LLSettingsTabViewController: NSViewController {
         appAudioVolumeLabel.stringValue = "\(value)%"
         saveSettings()
     }
+
+    @objc private func onPronunciationLanguageIntervalChanged() {
+        let value = (pronunciationLanguageIntervalSlider.doubleValue * 10).rounded() / 10
+        pronunciationLanguageIntervalSlider.doubleValue = value
+        pronunciationLanguageIntervalLabel.stringValue = String(format: "%.1fs", value)
+        saveSettings()
+    }
     
     private func updatePronunciationOrderSegmentState() {
         let hasBothOrderedModes = pronunciationCheck.state == .on
             && chineseMeaningPronunciationCheck.state == .on
             && randomPronunciationCheck.state != .on
         pronunciationOrderSegment.isEnabled = hasBothOrderedModes
+        pronunciationLanguageIntervalSlider.isEnabled = hasBothOrderedModes
+        pronunciationLanguageIntervalLabel.textColor = hasBothOrderedModes ? NSColor(white: 0.4, alpha: 1.0) : NSColor.disabledControlTextColor
     }
 
     private func createOtherCard() -> LLSettingsCardView {
@@ -667,6 +699,9 @@ final class LLSettingsTabViewController: NSViewController {
         if let index = LLPronunciationOrder.allCases.firstIndex(of: s.pronunciationOrder) {
             pronunciationOrderSegment.selectedSegment = index
         }
+        let pronunciationLanguageInterval = min(max(s.pronunciationLanguageInterval, 0), 5)
+        pronunciationLanguageIntervalSlider.doubleValue = pronunciationLanguageInterval
+        pronunciationLanguageIntervalLabel.stringValue = String(format: "%.1fs", pronunciationLanguageInterval)
         updatePronunciationOrderSegmentState()
         if let index = LLPronunciationProvider.allCases.firstIndex(of: s.pronunciationProvider) {
             pronunciationProviderPopup.selectItem(at: index)
@@ -809,6 +844,7 @@ final class LLSettingsTabViewController: NSViewController {
         if pronunciationOrderIndex >= 0 && pronunciationOrderIndex < LLPronunciationOrder.allCases.count {
             s.pronunciationOrder = LLPronunciationOrder.allCases[pronunciationOrderIndex]
         }
+        s.pronunciationLanguageInterval = min(max(pronunciationLanguageIntervalSlider.doubleValue, 0), 5)
         let providerIndex = pronunciationProviderPopup.indexOfSelectedItem
         if providerIndex >= 0 && providerIndex < LLPronunciationProvider.allCases.count {
             s.pronunciationProvider = LLPronunciationProvider.allCases[providerIndex]

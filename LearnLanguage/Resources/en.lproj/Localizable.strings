@@ -81,6 +81,7 @@
 "Pronunciation Order" = "Pronunciation Order";
 "Pronunciation Order Chinese Then English" = "Chinese → English";
 "Pronunciation Order English Then Chinese" = "English → Chinese";
+"Pronunciation Language Interval" = "Language Interval";
 "Playback Volume" = "Playback Volume";
 "Pronunciation Privacy Note" = "Local pronunciation uses system voices. When Youdao pronunciation is selected, only the current word is requested for audio; learning records and word lists are not uploaded.";
 "Speech Rate" = "Speech Rate";

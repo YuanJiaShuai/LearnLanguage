@@ -82,6 +82,7 @@
 "Pronunciation Order" = "낭독 순서";
 "Pronunciation Order Chinese Then English" = "중국어 → 영어";
 "Pronunciation Order English Then Chinese" = "영어 → 중국어";
+"Pronunciation Language Interval" = "언어 간격";
 "Playback Volume" = "재생 음량";
 "Pronunciation Privacy Note" = "로컬 발음은 시스템 음성을 사용합니다. 유도 발음을 선택하면 현재 단어의 오디오만 요청하며, 학습 기록이나 단어 목록은 업로드하지 않습니다.";
 "Speech Rate" = "음성 속도";

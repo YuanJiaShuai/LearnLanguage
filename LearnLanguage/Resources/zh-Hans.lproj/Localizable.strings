@@ -81,6 +81,7 @@
 "Pronunciation Order" = "朗读顺序";
 "Pronunciation Order Chinese Then English" = "中文 → 英文";
 "Pronunciation Order English Then Chinese" = "英文 → 中文";
+"Pronunciation Language Interval" = "中英朗读间隔";
 "Playback Volume" = "播放音量";
 "Pronunciation Privacy Note" = "本地发音使用系统语音；选择有道发音时，仅会向有道请求当前单词的音频，不上传学习记录或词库数据。";
 "Speech Rate" = "语速调节";
