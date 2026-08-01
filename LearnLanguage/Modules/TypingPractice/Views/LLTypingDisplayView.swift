@@ -152,6 +152,9 @@ class LLTypingDisplayView: NSView {
     }
     
     var isFinished: Bool { engine.isFinished }
+    var isExpectingSpace: Bool {
+        engine.currentTargetChar.map { $0 == " " } ?? false
+    }
     var errorCount: Int { engine.errorCount }
     var accuracy: Int { engine.accuracy }
     var speed: Int { engine.speed }

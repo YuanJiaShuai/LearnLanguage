@@ -215,11 +215,15 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     override func keyDown(with event: NSEvent) {
         // 处理特殊键
         switch event.keyCode {
-        case 49: // Space - 完成后切换到下一个单词
+        case 49: // Space - 词组内输入空格，完成后切换到下一个单词
             if isWaitingForNextWord {
                 moveToNextWord()
                 return
             }
+            if displayView.isExpectingSpace {
+                handleInput(" ")
+            }
+            return
         case 53: // ESC - 隐藏窗口
             view.window?.orderOut(nil)
             return
@@ -236,20 +240,23 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             return
         }
         
-        // 处理字符输入
         guard let chars = event.characters, chars.count == 1 else {
             super.keyDown(with: event)
             return
         }
-        
+
         let char = chars.first!
-        
-        // 忽略控制字符
+
+        // 忽略控制字符；词组中的普通空格已在上面的 Space 分支处理
         guard !char.isWhitespace && !char.isNewline else {
             super.keyDown(with: event)
             return
         }
-        
+
+        handleInput(char)
+    }
+
+    private func handleInput(_ char: Character) {
         // 处理输入
         let isCorrect = displayView.handleInput(char)
         
