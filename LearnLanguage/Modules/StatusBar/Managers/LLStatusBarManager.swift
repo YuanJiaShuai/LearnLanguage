@@ -178,7 +178,7 @@ final class LLStatusBarManager {
         do {
             let progress = try LLDatabaseManager.shared.getLearningProgress(
                 wordId: next.id,
-                wordListId: listId
+                wordListId: next.wordListId
             )
             reviewCount = progress?.reviewCount ?? 0
         } catch {

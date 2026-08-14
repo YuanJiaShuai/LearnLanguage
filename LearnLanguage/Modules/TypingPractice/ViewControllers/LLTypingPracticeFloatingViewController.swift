@@ -374,13 +374,13 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     }
     
     private func updateLearnIndicator() {
-        guard let entry = currentEntry, let listId = currentListId else {
+        guard let entry = currentEntry else {
             learnIndicatorView.reviewCount = 0
             return
         }
         
         do {
-            let progress = try LLDatabaseManager.shared.getLearningProgress(wordId: entry.id, wordListId: listId)
+            let progress = try LLDatabaseManager.shared.getLearningProgress(wordId: entry.id, wordListId: entry.wordListId)
             learnIndicatorView.reviewCount = progress?.reviewCount ?? 0
         } catch {
             LLLogger.warn("⚠️ 获取打字浮窗学习进度失败: \(error)")

@@ -116,7 +116,7 @@ final class LLStatContentView: NSView {
     
     override func layout() {
         super.layout()
-        let shouldStack = bounds.width - kPadding * 2 < 720
+        let shouldStack = bounds.width - kPadding * 2 < 680
         if shouldStack != isUsingStackedStats {
             updateStatsLayout(stacked: shouldStack)
         }

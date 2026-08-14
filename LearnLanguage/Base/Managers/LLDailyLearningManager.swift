@@ -246,10 +246,14 @@ final class LLDailyLearningManager {
     /// 从数据库加载今日复习队列
     private func loadReviewQueue() {
         do {
-            let reviewProgress = try LLDatabaseManager.shared.getTodayReviewWords(wordListId: currentListId)
+            let reviewProgress = try LLDatabaseManager.shared.getTodayReviewWords()
             reviewQueue = reviewProgress.compactMap { progress -> LLWordEntry? in
-                guard let wordId = progress.wordId else { return nil }
-                return currentWordList?.entries.first(where: { $0.id == wordId })
+                guard let wordId = progress.wordId,
+                      let wordListId = progress.wordListId,
+                      let wordList = LLWordListStorage.shared.list(byId: wordListId) else {
+                    return nil
+                }
+                return wordList.entries.first(where: { $0.id == wordId })
             }
         } catch {
             LLLogger.error("❌ 加载今日复习队列失败：\(error)")

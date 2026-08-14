@@ -96,9 +96,10 @@ final class LLCurrentListCardView: NSView {
         button.contentTintColor = .white
         return button
     }()
+
+    private let statsContainer = NSView()
     
     var onChangeButtonClicked: (() -> Void)?
-    private var statsStack: NSStackView?
     private var progressRatio: CGFloat = 0
     private var progressFillWidthConstraint: Constraint?
     private var hasContent = false
@@ -127,7 +128,7 @@ final class LLCurrentListCardView: NSView {
         
         for v in [stat1Title, stat1Value, stat2Title, stat2Value, stat3Title, stat3Value] as [NSTextField] {
             v.isEditable = false; v.isBezeled = false; v.drawsBackground = false
-            v.font = v.font // keep
+            v.font = v.font
         }
         [stat1Icon, stat2Icon, stat3Icon].forEach {
             $0.contentTintColor = LLAppearanceManager.shared.colors.accentColor
@@ -142,22 +143,17 @@ final class LLCurrentListCardView: NSView {
         progressBarBg.addSubview(progressBarFill)
         addSubview(progressLabel)
         addSubview(changeButton)
+        addSubview(statsContainer)
 
-        let statsStack = NSStackView(views: [
-            makeStatRow(icon: stat1Icon, title: stat1Title, value: stat1Value),
-            makeStatRow(icon: stat2Icon, title: stat2Title, value: stat2Value),
-            makeStatRow(icon: stat3Icon, title: stat3Title, value: stat3Value)
-        ])
-        self.statsStack = statsStack
-        statsStack.orientation = .vertical
-        statsStack.alignment = .leading
-        statsStack.distribution = .fillEqually
-        statsStack.spacing = 10
-        addSubview(statsStack)
+        let stat1Row = makeStatRow(icon: stat1Icon, title: stat1Title, value: stat1Value)
+        let stat2Row = makeStatRow(icon: stat2Icon, title: stat2Title, value: stat2Value)
+        let stat3Row = makeStatRow(icon: stat3Icon, title: stat3Title, value: stat3Value)
+        [stat1Row, stat2Row, stat3Row].forEach { statsContainer.addSubview($0) }
 
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview().offset(20)
+            make.height.equalTo(20)
         }
 
         changeButton.snp.makeConstraints { make in
@@ -174,19 +170,19 @@ final class LLCurrentListCardView: NSView {
         listNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(titleLabel.snp.bottom).offset(14)
-            make.trailing.lessThanOrEqualTo(changeButton.snp.leading).offset(-12)
-            make.height.equalTo(30)
+            make.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(34)
         }
 
         categoryLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(listNameLabel)
-            make.top.equalTo(listNameLabel.snp.bottom).offset(6)
+            make.top.equalTo(listNameLabel.snp.bottom).offset(4)
             make.height.equalTo(18)
         }
 
         progressLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(listNameLabel)
-            make.top.equalTo(categoryLabel.snp.bottom).offset(22)
+            make.top.equalTo(categoryLabel.snp.bottom).offset(18)
             make.height.equalTo(18)
         }
 
@@ -205,33 +201,58 @@ final class LLCurrentListCardView: NSView {
             view.isHidden = true
         }
 
-        statsStack.snp.makeConstraints { make in
-            make.top.equalTo(changeButton.snp.bottom).offset(22)
-            make.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(22)
-            make.width.equalTo(176)
+        statsContainer.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(progressBarBg.snp.bottom).offset(16)
+            make.bottom.equalToSuperview().inset(16)
         }
 
-        [listNameLabel, categoryLabel, progressLabel, progressBarBg].forEach { view in
-            view.snp.makeConstraints { make in
-                make.trailing.lessThanOrEqualTo(statsStack.snp.leading).offset(-24)
-            }
+        stat1Row.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+        }
+
+        stat2Row.snp.makeConstraints { make in
+            make.leading.equalTo(stat1Row.snp.trailing).offset(18)
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(stat1Row)
+        }
+
+        stat3Row.snp.makeConstraints { make in
+            make.leading.equalTo(stat2Row.snp.trailing).offset(18)
+            make.top.bottom.trailing.equalToSuperview()
+            make.width.equalTo(stat1Row)
         }
     }
 
-    private func makeStatRow(icon: NSImageView, title: NSTextField, value: NSTextField) -> NSStackView {
-        let textStack = NSStackView(views: [title, value])
-        textStack.orientation = .vertical
-        textStack.alignment = .leading
-        textStack.spacing = 2
+    private func makeStatRow(icon: NSImageView, title: NSTextField, value: NSTextField) -> NSView {
+        let row = NSView()
+        row.addSubview(icon)
+        row.addSubview(title)
+        row.addSubview(value)
 
-        let row = NSStackView(views: [icon, textStack])
-        row.orientation = .horizontal
-        row.alignment = .centerY
-        row.spacing = 8
+        title.maximumNumberOfLines = 1
+        value.maximumNumberOfLines = 1
+        title.setContentCompressionResistancePriority(.required, for: .vertical)
+        value.setContentCompressionResistancePriority(.required, for: .vertical)
 
         icon.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.size.equalTo(18)
+        }
+
+        title.snp.makeConstraints { make in
+            make.leading.equalTo(icon.snp.trailing).offset(10)
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(1)
+            make.height.equalTo(16)
+        }
+
+        value.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(title)
+            make.top.equalTo(title.snp.bottom).offset(3)
+            make.height.equalTo(18)
+            make.bottom.lessThanOrEqualToSuperview()
         }
 
         return row
@@ -256,7 +277,7 @@ final class LLCurrentListCardView: NSView {
             [listNameLabel, categoryLabel, progressBarBg, progressLabel,
              stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
              stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = true }
-            statsStack?.isHidden = true
+            statsContainer.isHidden = true
             emptyStateLabel.isHidden = false
             return
         }
@@ -285,7 +306,7 @@ final class LLCurrentListCardView: NSView {
         [listNameLabel, categoryLabel, progressBarBg, progressLabel,
          stat1Icon, stat1Title, stat1Value, stat2Icon, stat2Title, stat2Value,
          stat3Icon, stat3Title, stat3Value].forEach { $0.isHidden = false }
-        statsStack?.isHidden = false
+        statsContainer.isHidden = false
         progressFillWidthConstraint?.update(offset: progressBarBg.bounds.width * progressRatio)
         needsLayout = true
     }

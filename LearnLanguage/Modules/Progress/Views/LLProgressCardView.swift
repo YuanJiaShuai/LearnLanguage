@@ -117,7 +117,7 @@ final class LLProgressCardView: NSView {
         numberLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(descLabel)
             make.top.equalTo(descLabel.snp.bottom).offset(4)
-            make.height.equalTo(34)
+            make.height.equalTo(36)
         }
 
         detailLabel.snp.makeConstraints { make in

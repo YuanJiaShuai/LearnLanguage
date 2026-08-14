@@ -94,13 +94,14 @@ final class LLStatCardView: NSView {
             make.leading.equalTo(iconContainer.snp.trailing).offset(12)
             make.trailing.equalToSuperview().inset(18)
             make.top.equalToSuperview().offset(18)
-            make.height.equalTo(18)
+            make.height.greaterThanOrEqualTo(18)
+            make.height.lessThanOrEqualTo(36)
         }
 
         numberLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(descLabel)
             make.top.equalTo(descLabel.snp.bottom).offset(4)
-            make.height.equalTo(34)
+            make.height.equalTo(36)
         }
 
         detailLabel.snp.makeConstraints { make in
