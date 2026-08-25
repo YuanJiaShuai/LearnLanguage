@@ -16,6 +16,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     private var displayView: LLTypingDisplayView!
     private let learnIndicatorView = LLStatusLearnIndicatorView(frame: .zero)
     private let englishPronunciationButton = NSButton()
+    private let exampleLabel = NSTextField()
     private let meaningLabel = NSTextField()
     private let hintLabel = NSTextField()
     
@@ -73,6 +74,22 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         // 从设置读取字体和字号
         let fontSize: CGFloat = settings.floatingPanelFontSize
         
+        // 例句标签
+        exampleLabel.isBezeled = false
+        exampleLabel.drawsBackground = false
+        exampleLabel.isEditable = false
+        exampleLabel.isSelectable = false
+        exampleLabel.alignment = .center
+        exampleLabel.font = NSFont.systemFont(ofSize: 13, weight: .medium)
+        exampleLabel.textColor = NSColor.secondaryLabelColor.withAlphaComponent(0.9)
+        exampleLabel.lineBreakMode = .byWordWrapping
+        exampleLabel.maximumNumberOfLines = 3
+        exampleLabel.cell?.wraps = true
+        exampleLabel.cell?.isScrollable = false
+        exampleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        exampleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        exampleLabel.isHidden = true
+
         // 单词显示视图
         displayView = LLTypingDisplayView(word: "", fontSize: fontSize, fontName: settings.floatingPanelFontName)
         
@@ -85,7 +102,7 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         meaningLabel.font = NSFont.systemFont(ofSize: 16)
         meaningLabel.textColor = .secondaryLabelColor
         meaningLabel.lineBreakMode = .byWordWrapping
-        meaningLabel.maximumNumberOfLines = 3
+        meaningLabel.maximumNumberOfLines = settings.floatingPanelHeight <= 220 ? 2 : 3
         meaningLabel.cell?.wraps = true
         meaningLabel.cell?.isScrollable = false
         meaningLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -103,18 +120,24 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         hintLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         // StackView 作为父视图，垂直排列，整体居中
-        let stackView = NSStackView(views: [displayView, meaningLabel, hintLabel])
+        let stackView = NSStackView(views: [exampleLabel, displayView, meaningLabel, hintLabel])
         stackView.orientation = .vertical
         stackView.alignment = .centerX
-        stackView.spacing = 12
+        stackView.spacing = 8
+        stackView.setCustomSpacing(8, after: exampleLabel)
         stackView.setCustomSpacing(10, after: displayView)
         stackView.setCustomSpacing(6, after: meaningLabel)
         stackView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         view.addSubview(stackView)
         
         let horizontalPadding: CGFloat = 12
-        let displayHeight: CGFloat = 80.0
+        let displayHeight: CGFloat = settings.floatingPanelHeight <= 220 ? 64.0 : 80.0
         
+        exampleLabel.snp.makeConstraints { make in
+            make.width.equalTo(stackView)
+            make.height.lessThanOrEqualTo(settings.floatingPanelHeight <= 220 ? 50 : 56)
+        }
+
         displayView.snp.makeConstraints { make in
             make.height.equalTo(displayHeight)
             make.width.equalTo(stackView)
@@ -132,6 +155,8 @@ class LLTypingPracticeFloatingViewController: NSViewController {
             make.center.equalToSuperview()
             make.left.equalToSuperview().offset(horizontalPadding)
             make.right.equalToSuperview().offset(-horizontalPadding)
+            make.top.greaterThanOrEqualToSuperview().offset(40)
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
         }
     }
     
@@ -162,23 +187,25 @@ class LLTypingPracticeFloatingViewController: NSViewController {
     
     /// 开始练习
     func startPractice(with entry: LLWordEntry, listId: String? = nil) {
-        currentEntry = entry
+        let entryWithExamples = entry.enrichedWithExamplesIfNeeded()
+        currentEntry = entryWithExamples
         currentListId = listId
         currentWordErrorCount = 0  // 重置错误计数
         hasRecordedFeedback = false  // 重置反馈记录标记
         isWaitingForNextWord = false
         pendingFeedback = nil
-        displayView.reset(word: entry.text)
+        displayView.reset(word: entryWithExamples.text)
         englishPronunciationButton.isEnabled = true
         updateLearnIndicator()
         
+        updateExampleVisibility()
         updateMeaningVisibility(forceShow: false)
         updateCompletionHint(isVisible: false)
         
         // 播放发音
         let settings = LLSettingsStore.shared.settings
         if !settings.typingFollowLetterSoundEnabled {
-            LLPronunciationManager.shared.speak(entry: entry)
+            LLPronunciationManager.shared.speak(entry: entryWithExamples)
         }
         
         // 确保窗口获得焦点
@@ -198,6 +225,8 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         displayView.reset(word: "")
         englishPronunciationButton.isEnabled = false
         learnIndicatorView.reviewCount = 0
+        exampleLabel.stringValue = ""
+        exampleLabel.isHidden = true
         meaningLabel.stringValue = "点击切换到练习"
         updateCompletionHint(isVisible: false)
     }
@@ -348,6 +377,43 @@ class LLTypingPracticeFloatingViewController: NSViewController {
         
         let settings = LLSettingsStore.shared.settings
         meaningLabel.stringValue = (forceShow || settings.typingPracticeShowMeaning) ? entry.meaning : ""
+    }
+
+    private func updateExampleVisibility() {
+        guard let entry = currentEntry,
+              let example = entry.examples.first,
+              !example.sentenceEn.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            exampleLabel.stringValue = ""
+            exampleLabel.isHidden = true
+            return
+        }
+
+        let settings = LLSettingsStore.shared.settings
+        let sentence = settings.typingDictationMode
+            ? maskedExampleSentence(example.sentenceEn, targetWord: entry.text)
+            : example.sentenceEn
+
+        exampleLabel.stringValue = displayExampleSentence(sentence)
+        exampleLabel.isHidden = sentence.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func displayExampleSentence(_ sentence: String) -> String {
+        return sentence
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func maskedExampleSentence(_ sentence: String, targetWord: String) -> String {
+        let word = targetWord.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !word.isEmpty else { return sentence }
+
+        let escapedWord = NSRegularExpression.escapedPattern(for: word)
+        let pattern = "(?i)(?<![A-Za-z])\(escapedWord)(?![A-Za-z])"
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return sentence }
+
+        let nsRange = NSRange(sentence.startIndex..<sentence.endIndex, in: sentence)
+        let mask = String(repeating: "_", count: max(4, min(word.count, 12)))
+        return regex.stringByReplacingMatches(in: sentence, range: nsRange, withTemplate: mask)
     }
     
     private func updateCompletionHint(isVisible: Bool) {

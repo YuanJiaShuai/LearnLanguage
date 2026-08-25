@@ -58,6 +58,7 @@
 		849226DF2F3C878F00447E0C /* LLWordFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226972F3C878F00447E0C /* LLWordFeedback.swift */; };
 		849226E12F3C878F00447E0C /* LLDataTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226A92F3C878F00447E0C /* LLDataTabViewController.swift */; };
 		849226E22F3C878F00447E0C /* LLDBWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492269B2F3C878F00447E0C /* LLDBWord.swift */; };
+		849226E02F3C878F00447E0C /* LLDBWordExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492269F2F3C878F00447E0C /* LLDBWordExample.swift */; };
 		849226E32F3C878F00447E0C /* LLSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226A12F3C878F00447E0C /* LLSettingsStore.swift */; };
 		849226E42F3C878F00447E0C /* LLProgressCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226B62F3C878F00447E0C /* LLProgressCardView.swift */; };
 		849226E62F3C878F00447E0C /* LLSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849226AF2F3C878F00447E0C /* LLSidebarViewController.swift */; };
@@ -374,6 +375,7 @@
 		849226992F3C878F00447E0C /* LLDatabaseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDatabaseInitializer.swift; sourceTree = "<group>"; };
 		8492269A2F3C878F00447E0C /* LLDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDatabaseManager.swift; sourceTree = "<group>"; };
 		8492269B2F3C878F00447E0C /* LLDBWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWord.swift; sourceTree = "<group>"; };
+		8492269F2F3C878F00447E0C /* LLDBWordExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWordExample.swift; sourceTree = "<group>"; };
 		8492269C2F3C878F00447E0C /* LLDBWordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWordList.swift; sourceTree = "<group>"; };
 		8492269D2F3C878F00447E0C /* LLDBWordListCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBWordListCategory.swift; sourceTree = "<group>"; };
 		849226A02F3C878F00447E0C /* LLMMKVManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMMKVManager.swift; sourceTree = "<group>"; };
@@ -753,6 +755,7 @@
 				8492269A2F3C878F00447E0C /* LLDatabaseManager.swift */,
 				A85192822F51E908006CEA04 /* LLDBLearningProgress.swift */,
 				8492269B2F3C878F00447E0C /* LLDBWord.swift */,
+				8492269F2F3C878F00447E0C /* LLDBWordExample.swift */,
 				8492269C2F3C878F00447E0C /* LLDBWordList.swift */,
 				8492269D2F3C878F00447E0C /* LLDBWordListCategory.swift */,
 				84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */,
@@ -1893,6 +1896,7 @@
 				849226E12F3C878F00447E0C /* LLDataTabViewController.swift in Sources */,
 				84E1E3312F3D760200D1B7B6 /* LLScrollingTextView.swift in Sources */,
 				849226E22F3C878F00447E0C /* LLDBWord.swift in Sources */,
+				849226E02F3C878F00447E0C /* LLDBWordExample.swift in Sources */,
 				84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */,
 				84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */,
 				8466295E2F56D6AB004466B1 /* LLLogger.swift in Sources */,

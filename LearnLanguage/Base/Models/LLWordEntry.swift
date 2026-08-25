@@ -13,14 +13,123 @@ struct LLWordEntry: Codable, Identifiable, Equatable {
     var meaning: String        // 释义
     var phonetic: String?     // 音标，如 "/ˈæpl/"
     var language: LLLearningLanguage
+    var examples: [LLWordExample]
 
-    init(id: String = UUID().uuidString, wordListId: String, text: String, meaning: String, phonetic: String? = nil, language: LLLearningLanguage) {
+    init(
+        id: String = UUID().uuidString,
+        wordListId: String,
+        text: String,
+        meaning: String,
+        phonetic: String? = nil,
+        language: LLLearningLanguage,
+        examples: [LLWordExample] = []
+    ) {
         self.id = id
         self.wordListId = wordListId
         self.text = text
         self.meaning = meaning
         self.phonetic = phonetic
         self.language = language
+        self.examples = examples
+    }
+}
+
+/// 单词例句（全局例句库按 wordText 匹配）
+struct LLWordExample: Codable, Identifiable, Equatable {
+    var id: String
+    var wordText: String
+    var sentenceEn: String
+    var sentenceCn: String?
+    var heat: Int
+    var difficultyLevel: Int
+}
+
+extension LLWordEntry {
+    func enrichedWithExamplesIfNeeded(limit: Int = 3) -> LLWordEntry {
+        guard examples.isEmpty else { return self }
+
+        let difficultyLevel: Int = {
+            do {
+                let reviewCount = try LLDatabaseManager.shared
+                    .getLearningProgress(wordId: id, wordListId: wordListId)?
+                    .reviewCount ?? 0
+                return min(max(reviewCount + 1, 1), 4)
+            } catch {
+                LLLogger.warn("⚠️ 获取例句难度失败：\(text), \(error)")
+                return 1
+            }
+        }()
+
+        let loadedExamples = LLWordExampleCache.shared.examples(
+            for: text,
+            difficultyLevel: difficultyLevel,
+            limit: limit
+        )
+        guard !loadedExamples.isEmpty else { return self }
+
+        var entry = self
+        entry.examples = loadedExamples
+        return entry
+    }
+}
+
+private final class LLWordExampleCache {
+    static let shared = LLWordExampleCache()
+
+    private var cache: [String: [LLWordExample]] = [:]
+
+    private init() {}
+
+    func examples(for wordText: String, difficultyLevel: Int, limit: Int) -> [LLWordExample] {
+        let key = wordText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !key.isEmpty else { return [] }
+
+        let cacheKey = "\(key)#\(difficultyLevel)"
+        if let cached = cache[cacheKey] {
+            return Array(cached.prefix(limit))
+        }
+
+        do {
+            var examples = try LLDatabaseManager.shared.getExamples(
+                forWordText: key,
+                difficultyLevel: difficultyLevel,
+                limit: limit
+            ).map {
+                LLWordExample(
+                    id: "\($0.id ?? 0)",
+                    wordText: $0.wordText,
+                    sentenceEn: $0.sentenceEn,
+                    sentenceCn: $0.sentenceCn,
+                    heat: $0.heat,
+                    difficultyLevel: $0.difficultyLevel
+                )
+            }
+
+            // 生成内容缺失时，保留外部例句作为兜底，不影响正常学习。
+            if examples.isEmpty {
+                examples = try LLDatabaseManager.shared.getExamples(
+                    forWordText: key,
+                    difficultyLevel: 0,
+                    limit: limit
+                ).map {
+                    LLWordExample(
+                        id: "\($0.id ?? 0)",
+                        wordText: $0.wordText,
+                        sentenceEn: $0.sentenceEn,
+                        sentenceCn: $0.sentenceCn,
+                        heat: $0.heat,
+                        difficultyLevel: $0.difficultyLevel
+                    )
+                }
+            }
+
+            cache[cacheKey] = examples
+            return examples
+        } catch {
+            LLLogger.warn("⚠️ 按需加载例句失败：\(wordText), \(error)")
+            cache[cacheKey] = []
+            return []
+        }
     }
 }
 

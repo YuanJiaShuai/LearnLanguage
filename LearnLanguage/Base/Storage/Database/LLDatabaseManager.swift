@@ -19,6 +19,7 @@ final class LLDatabaseManager {
     private let wordsTable = "words"
     private let learningProgressTable = "learning_progress"
     private let learningHistoryTable = "learning_history"
+    private let wordExamplesTable = "word_examples"
     
     private init() {
         let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
@@ -48,6 +49,7 @@ final class LLDatabaseManager {
         
         // 检查并创建学习进度表（如果不存在）
         createLearningProgressTableIfNeeded()
+        createWordExamplesTableIfNeeded()
         
         LLLogger.info("✅ 数据库连接已打开")
     }
@@ -78,6 +80,16 @@ final class LLDatabaseManager {
             LLLogger.info("✅ 学习明细表检查完成")
         } catch {
             LLLogger.warn("⚠️ 学习明细表创建失败（可能已存在）：\(error)")
+        }
+    }
+
+    /// 检查并创建全局例句表（如果不存在）
+    private func createWordExamplesTableIfNeeded() {
+        do {
+            try database.create(table: wordExamplesTable, of: LLDBWordExample.self)
+            LLLogger.info("✅ 单词例句表检查完成")
+        } catch {
+            LLLogger.warn("⚠️ 单词例句表创建失败（可能已存在）：\(error)")
         }
     }
     
@@ -317,6 +329,33 @@ final class LLDatabaseManager {
             on: LLDBWord.Properties.all,
             fromTable: wordsTable,
             where: LLDBWord.Properties.wordListId == wordListId && LLDBWord.Properties.word == word
+        )
+    }
+
+    // MARK: - 例句管理
+
+    func getExamples(
+        forWordText wordText: String,
+        difficultyLevel: Int? = nil,
+        limit: Int = 3
+    ) throws -> [LLDBWordExample] {
+        let normalized = wordText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !normalized.isEmpty else { return [] }
+
+        var condition = LLDBWordExample.Properties.wordText == normalized
+        if let difficultyLevel {
+            condition = condition && LLDBWordExample.Properties.difficultyLevel == difficultyLevel
+        }
+
+        return try database.getObjects(
+            on: LLDBWordExample.Properties.all,
+            fromTable: wordExamplesTable,
+            where: condition,
+            orderBy: [
+                LLDBWordExample.Properties.heat.asOrder(by: .descending),
+                LLDBWordExample.Properties.id.asOrder(by: .ascending)
+            ],
+            limit: limit
         )
     }
     

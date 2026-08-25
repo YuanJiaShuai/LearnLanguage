@@ -354,6 +354,13 @@ final class LLPronunciationManager {
         case english
         case chinese
     }
+
+    private enum PronunciationStep {
+        case englishWord(String)
+        case chineseMeaning(String)
+        case englishExample(String)
+        case chineseExample(String)
+    }
     
     // 所有发音提供者
     private var providers: [LLPronunciationProvider: LLPronunciationProviderProtocol] = [:]
@@ -446,11 +453,9 @@ final class LLPronunciationManager {
         )
     }
     
-    /// 根据朗读模式播放学习项：英文、中文释义、或随机二选一
+    /// 根据朗读模式播放学习项：英文、中文释义、例句，或随机二选一
     func speak(entry: LLWordEntry, completion: ((Bool, Error?) -> Void)? = nil) {
         let settings = LLSettingsStore.shared.settings
-        let shouldSpeakEnglish = settings.pronunciationEnabled
-        let shouldSpeakChinese = settings.chineseMeaningPronunciationEnabled
         let generation = beginPlayback()
         
         if settings.randomPronunciationEnabled {
@@ -468,56 +473,15 @@ final class LLPronunciationManager {
             }
             return
         }
-        
-        switch (shouldSpeakEnglish, shouldSpeakChinese) {
-        case (true, true):
-            switch settings.pronunciationOrder {
-            case .chineseThenEnglish:
-                speakChineseMeaning(entry.meaning) { [weak self] success, error in
-                    guard let self, self.isCurrentPlayback(generation) else {
-                        completion?(false, nil)
-                        return
-                    }
-                    guard success else {
-                        completion?(success, error)
-                        return
-                    }
-                    self.speakEnglishWordAfterDelay(
-                        entry.text,
-                        accent: settings.pronunciationAccent,
-                        rate: settings.pronunciationRate,
-                        generation: generation,
-                        completion: completion
-                    )
-                }
-            case .englishThenChinese:
-                speakEnglishWord(
-                    entry.text,
-                    accent: settings.pronunciationAccent,
-                    rate: settings.pronunciationRate
-                ) { [weak self] success, error in
-                    guard let self, self.isCurrentPlayback(generation) else {
-                        completion?(false, nil)
-                        return
-                    }
-                    guard success else {
-                        completion?(success, error)
-                        return
-                    }
-                    self.speakChineseMeaningAfterDelay(
-                        entry.meaning,
-                        generation: generation,
-                        completion: completion
-                    )
-                }
-            }
-        case (true, false):
-            speakEnglishWord(entry.text, accent: settings.pronunciationAccent, rate: settings.pronunciationRate, completion: completion)
-        case (false, true):
-            speakChineseMeaning(entry.meaning, completion: completion)
-        case (false, false):
+
+        let entryWithExamples = entry.enrichedWithExamplesIfNeeded()
+        let steps = pronunciationSteps(for: entryWithExamples, settings: settings)
+        guard !steps.isEmpty else {
             completion?(false, NSError(domain: "LLPronunciation", code: -101, userInfo: [NSLocalizedDescriptionKey: "朗读功能未启用"]))
+            return
         }
+
+        playSteps(steps, generation: generation, completion: completion)
     }
     
     /// 原生朗读中文释义
@@ -589,6 +553,120 @@ final class LLPronunciationManager {
             }
             self.speakChineseMeaning(meaning, completion: completion)
         }
+    }
+
+    private func speakEnglishExample(_ sentence: String, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        let text = sentence.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else {
+            completion?(false, NSError(domain: "LLPronunciation", code: -104, userInfo: [NSLocalizedDescriptionKey: "英文例句为空"]))
+            return
+        }
+
+        LLSpeechService.shared.onDidFinish = {
+            completion?(true, nil)
+        }
+
+        let didStart = LLSpeechService.shared.speak(text, language: "en-US")
+        if !didStart {
+            completion?(false, nil)
+        }
+    }
+
+    private func speakChineseExample(_ sentence: String, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        let text = sentence.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else {
+            completion?(false, NSError(domain: "LLPronunciation", code: -105, userInfo: [NSLocalizedDescriptionKey: "例句中文为空"]))
+            return
+        }
+
+        LLSpeechService.shared.onDidFinish = {
+            completion?(true, nil)
+        }
+
+        let didStart = LLSpeechService.shared.speak(text, language: "zh-CN")
+        if !didStart {
+            completion?(false, nil)
+        }
+    }
+
+    private func playSteps(_ steps: [PronunciationStep], generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        playStep(0, steps: steps, generation: generation, completion: completion)
+    }
+
+    private func playStep(_ index: Int, steps: [PronunciationStep], generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        guard isCurrentPlayback(generation) else {
+            completion?(false, nil)
+            return
+        }
+
+        guard index < steps.count else {
+            completion?(true, nil)
+            return
+        }
+
+        let finishStep: (Bool, Error?) -> Void = { [weak self] success, error in
+            guard let self, self.isCurrentPlayback(generation) else {
+                completion?(false, nil)
+                return
+            }
+            guard success else {
+                completion?(success, error)
+                return
+            }
+            self.playNextStep(after: index, steps: steps, generation: generation, completion: completion)
+        }
+
+        switch steps[index] {
+        case .englishWord(let word):
+            let settings = LLSettingsStore.shared.settings
+            speakEnglishWord(word, accent: settings.pronunciationAccent, rate: settings.pronunciationRate, completion: finishStep)
+        case .chineseMeaning(let meaning):
+            speakChineseMeaning(meaning, completion: finishStep)
+        case .englishExample(let sentence):
+            speakEnglishExample(sentence, generation: generation, completion: finishStep)
+        case .chineseExample(let sentence):
+            speakChineseExample(sentence, generation: generation, completion: finishStep)
+        }
+    }
+
+    private func playNextStep(after index: Int, steps: [PronunciationStep], generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + orderedPronunciationDelay) { [weak self] in
+            self?.playStep(index + 1, steps: steps, generation: generation, completion: completion)
+        }
+    }
+
+    private func pronunciationSteps(for entry: LLWordEntry, settings: LLAppSettings) -> [PronunciationStep] {
+        var steps: [PronunciationStep] = []
+        let firstExample = entry.examples.first
+        let hasExample = firstExample?.sentenceEn.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+
+        switch settings.pronunciationOrder {
+        case .chineseThenEnglish:
+            if settings.chineseMeaningPronunciationEnabled {
+                steps.append(.chineseMeaning(entry.meaning))
+            }
+            if settings.pronunciationEnabled {
+                steps.append(.englishWord(entry.text))
+            }
+        case .englishThenChinese:
+            if settings.pronunciationEnabled {
+                steps.append(.englishWord(entry.text))
+            }
+            if settings.chineseMeaningPronunciationEnabled {
+                steps.append(.chineseMeaning(entry.meaning))
+            }
+        }
+
+        if settings.exampleSentencePronunciationEnabled, hasExample, let example = firstExample {
+            steps.append(.englishExample(example.sentenceEn))
+            if settings.exampleSentenceTranslationPronunciationEnabled,
+               let sentenceCn = example.sentenceCn?.trimmingCharacters(in: .whitespacesAndNewlines),
+               !sentenceCn.isEmpty {
+                steps.append(.chineseExample(sentenceCn))
+            }
+        }
+
+        return steps
     }
 
     private var orderedPronunciationDelay: TimeInterval {

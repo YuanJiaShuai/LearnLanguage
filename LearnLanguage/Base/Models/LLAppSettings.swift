@@ -357,6 +357,8 @@ struct LLAppSettings: Codable {
     var floatingPanelFontSize: CGFloat  // 浮窗字体大小
     var pronunciationEnabled: Bool
     var chineseMeaningPronunciationEnabled: Bool
+    var exampleSentencePronunciationEnabled: Bool
+    var exampleSentenceTranslationPronunciationEnabled: Bool
     var randomPronunciationEnabled: Bool
     var pronunciationOrder: LLPronunciationOrder
     var pronunciationLanguageInterval: Double  // 英文和中文释义连续朗读时的间隔（秒）
@@ -410,6 +412,8 @@ struct LLAppSettings: Codable {
         floatingPanelFontSize: 24,
         pronunciationEnabled: true,
         chineseMeaningPronunciationEnabled: false,
+        exampleSentencePronunciationEnabled: false,
+        exampleSentenceTranslationPronunciationEnabled: false,
         randomPronunciationEnabled: false,
         pronunciationOrder: .chineseThenEnglish,
         pronunciationLanguageInterval: 0.5,
@@ -462,6 +466,8 @@ extension LLAppSettings {
         floatingPanelFontSize = container.decodeOrDefault(CGFloat.self, forKey: .floatingPanelFontSize, default: fallback.floatingPanelFontSize)
         pronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .pronunciationEnabled, default: fallback.pronunciationEnabled)
         chineseMeaningPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .chineseMeaningPronunciationEnabled, default: fallback.chineseMeaningPronunciationEnabled)
+        exampleSentencePronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .exampleSentencePronunciationEnabled, default: fallback.exampleSentencePronunciationEnabled)
+        exampleSentenceTranslationPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .exampleSentenceTranslationPronunciationEnabled, default: fallback.exampleSentenceTranslationPronunciationEnabled)
         randomPronunciationEnabled = container.decodeOrDefault(Bool.self, forKey: .randomPronunciationEnabled, default: fallback.randomPronunciationEnabled)
         pronunciationOrder = container.decodeOrDefault(LLPronunciationOrder.self, forKey: .pronunciationOrder, default: fallback.pronunciationOrder)
         pronunciationLanguageInterval = container.decodeOrDefault(Double.self, forKey: .pronunciationLanguageInterval, default: fallback.pronunciationLanguageInterval)

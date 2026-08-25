@@ -90,6 +90,8 @@ final class LLSettingsTabViewController: NSViewController {
     // 发音设置卡片
     private var pronunciationCheck: NSButton!
     private var chineseMeaningPronunciationCheck: NSButton!
+    private var exampleSentencePronunciationCheck: NSButton!
+    private var exampleSentenceTranslationPronunciationCheck: NSButton!
     private var randomPronunciationCheck: NSButton!
     private var pronunciationOrderSegment: NSSegmentedControl!
     private var pronunciationLanguageIntervalSlider: NSSlider!
@@ -322,6 +324,8 @@ final class LLSettingsTabViewController: NSViewController {
         
         pronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("English Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
         chineseMeaningPronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Chinese Meaning Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
+        exampleSentencePronunciationCheck = NSButton(checkboxWithTitle: "英文例句", target: self, action: #selector(onPronunciationModeChanged(_:)))
+        exampleSentenceTranslationPronunciationCheck = NSButton(checkboxWithTitle: "例句中文", target: self, action: #selector(onPronunciationModeChanged(_:)))
         randomPronunciationCheck = NSButton(checkboxWithTitle: NSLocalizedString("Random Pronunciation", comment: ""), target: self, action: #selector(onPronunciationModeChanged(_:)))
         
         pronunciationOrderSegment = NSSegmentedControl(labels: LLPronunciationOrder.allDisplayNames, trackingMode: .selectOne, target: self, action: #selector(saveSettings))
@@ -393,6 +397,8 @@ final class LLSettingsTabViewController: NSViewController {
         let pronunciationModeStack = NSStackView(views: [
             pronunciationCheck,
             chineseMeaningPronunciationCheck,
+            exampleSentencePronunciationCheck,
+            exampleSentenceTranslationPronunciationCheck,
             randomPronunciationCheck
         ])
         pronunciationModeStack.orientation = .horizontal
@@ -695,6 +701,8 @@ final class LLSettingsTabViewController: NSViewController {
         // 发音设置
         pronunciationCheck.state = s.pronunciationEnabled ? .on : .off
         chineseMeaningPronunciationCheck.state = s.chineseMeaningPronunciationEnabled ? .on : .off
+        exampleSentencePronunciationCheck.state = s.exampleSentencePronunciationEnabled ? .on : .off
+        exampleSentenceTranslationPronunciationCheck.state = s.exampleSentenceTranslationPronunciationEnabled ? .on : .off
         randomPronunciationCheck.state = s.randomPronunciationEnabled ? .on : .off
         if let index = LLPronunciationOrder.allCases.firstIndex(of: s.pronunciationOrder) {
             pronunciationOrderSegment.selectedSegment = index
@@ -776,6 +784,13 @@ final class LLSettingsTabViewController: NSViewController {
         if sender === randomPronunciationCheck, sender.state == .on {
             pronunciationCheck.state = .off
             chineseMeaningPronunciationCheck.state = .off
+            exampleSentencePronunciationCheck.state = .off
+            exampleSentenceTranslationPronunciationCheck.state = .off
+        } else if sender === exampleSentenceTranslationPronunciationCheck, sender.state == .on {
+            exampleSentencePronunciationCheck.state = .on
+            randomPronunciationCheck.state = .off
+        } else if sender === exampleSentencePronunciationCheck, sender.state == .off {
+            exampleSentenceTranslationPronunciationCheck.state = .off
         } else if sender.state == .on {
             randomPronunciationCheck.state = .off
         }
@@ -833,11 +848,20 @@ final class LLSettingsTabViewController: NSViewController {
         if randomPronunciationCheck.state == .on {
             pronunciationCheck.state = .off
             chineseMeaningPronunciationCheck.state = .off
+            exampleSentencePronunciationCheck.state = .off
+            exampleSentenceTranslationPronunciationCheck.state = .off
         } else if pronunciationCheck.state == .on || chineseMeaningPronunciationCheck.state == .on {
             randomPronunciationCheck.state = .off
+        } else if exampleSentencePronunciationCheck.state == .on || exampleSentenceTranslationPronunciationCheck.state == .on {
+            randomPronunciationCheck.state = .off
+        }
+        if exampleSentencePronunciationCheck.state == .off {
+            exampleSentenceTranslationPronunciationCheck.state = .off
         }
         s.pronunciationEnabled = pronunciationCheck.state == .on
         s.chineseMeaningPronunciationEnabled = chineseMeaningPronunciationCheck.state == .on
+        s.exampleSentencePronunciationEnabled = exampleSentencePronunciationCheck.state == .on
+        s.exampleSentenceTranslationPronunciationEnabled = exampleSentenceTranslationPronunciationCheck.state == .on
         s.randomPronunciationEnabled = randomPronunciationCheck.state == .on
         updatePronunciationOrderSegmentState()
         let pronunciationOrderIndex = pronunciationOrderSegment.selectedSegment
