@@ -36,8 +36,9 @@ final class LLSpeechService: NSObject {
     /// - Parameters:
     ///   - text: 要朗读的文字
     ///   - language: 语言代码，默认英文 "en-US"，中文传 "zh-CN"
+    ///   - rate: 语速
     @discardableResult
-    func speak(_ text: String, language: String = "en-US") -> Bool {
+    func speak(_ text: String, language: String = "en-US", rate: Float = 0.5) -> Bool {
         guard !text.isEmpty else { return false }
 
         if synthesizer.isSpeaking {
@@ -52,7 +53,7 @@ final class LLSpeechService: NSObject {
             guard let self else { return }
             let utterance = AVSpeechUtterance(string: text)
             utterance.voice = AVSpeechSynthesisVoice(language: language)
-            utterance.rate = 0.5
+            utterance.rate = rate
             utterance.volume = min(max(LLSettingsStore.shared.settings.appAudioVolume, 0), 1)
 
             DispatchQueue.main.async {

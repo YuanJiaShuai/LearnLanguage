@@ -96,6 +96,7 @@
 		84A446CA2F6A818300F0E5E7 /* LLBackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */; };
 		84A446CD2F6AA7BC00F0E5E7 /* LLKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */; };
 		84A446CE2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */; };
+		84F7A1D72FAE100100000001 /* LLSystemDictionaryLookupTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F7A1D62FAE100100000001 /* LLSystemDictionaryLookupTool.swift */; };
 		84C0D9DB2F6BDFA800F96737 /* LLTodayRecordContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0D9DA2F6BDFA800F96737 /* LLTodayRecordContentView.swift */; };
 		84C0D9DD2F6BE97F00F96737 /* LLDBLearningHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */; };
 		84D21BA02F70F20600AFFE2C /* LLSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D21B9A2F70F20600AFFE2C /* LLSpeechService.swift */; };
@@ -408,6 +409,7 @@
 		84A446C92F6A818300F0E5E7 /* LLBackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLBackupManager.swift; sourceTree = "<group>"; };
 		84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLKeychainManager.swift; sourceTree = "<group>"; };
 		84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLShortcutRecorderView.swift; sourceTree = "<group>"; };
+		84F7A1D62FAE100100000001 /* LLSystemDictionaryLookupTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSystemDictionaryLookupTool.swift; sourceTree = "<group>"; };
 		84C0D9DA2F6BDFA800F96737 /* LLTodayRecordContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTodayRecordContentView.swift; sourceTree = "<group>"; };
 		84C0D9DC2F6BE97F00F96737 /* LLDBLearningHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLDBLearningHistory.swift; sourceTree = "<group>"; };
 		84D21B972F70F20600AFFE2C /* LLTranslationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLTranslationManager.swift; sourceTree = "<group>"; };
@@ -781,6 +783,7 @@
 				849226A42F3C878F00447E0C /* LLKeyboardShortcutManager.swift */,
 				84A446CB2F6AA7BC00F0E5E7 /* LLKeychainManager.swift */,
 				84A446CC2F6AA7BC00F0E5E7 /* LLShortcutRecorderView.swift */,
+				84F7A1D62FAE100100000001 /* LLSystemDictionaryLookupTool.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1972,6 +1975,7 @@
 				849227042F3C878F00447E0C /* LLTodayRecordCardView.swift in Sources */,
 				849227052F3C878F00447E0C /* LLKeyboardShortcutManager.swift in Sources */,
 				849227072F3C878F00447E0C /* LLStatusBarFeedbackView.swift in Sources */,
+				84F7A1D72FAE100100000001 /* LLSystemDictionaryLookupTool.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

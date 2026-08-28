@@ -104,6 +104,41 @@ private struct LLChineseMeaningSpeechNormalizer {
     }
 }
 
+private struct LLEnglishExampleSpeechNormalizer {
+    
+    static func normalize(_ sentence: String) -> String {
+        var text = sentence.trimmingCharacters(in: .whitespacesAndNewlines)
+        text = text.replacingOccurrences(of: "\u{00a0}", with: " ")
+        text = text.replacingOccurrences(
+            of: #"(?i)^(?:OK|BrE|NAmE)(?=[A-Z])"#,
+            with: "",
+            options: .regularExpression
+        )
+        text = text.replacingOccurrences(
+            of: #"\s*\((?:=|especially|also|British English|North American English|formal|informal|old-fashioned|slang)[^)]+\)"#,
+            with: "",
+            options: [.regularExpression, .caseInsensitive]
+        )
+        text = text.replacingOccurrences(
+            of: #"\s*\(=[^)]+\)"#,
+            with: "",
+            options: .regularExpression
+        )
+        text = text.replacingOccurrences(of: "/", with: " or ")
+        text = text.replacingOccurrences(
+            of: #"\s+"#,
+            with: " ",
+            options: .regularExpression
+        )
+        text = text.replacingOccurrences(
+            of: #"\s+([,.!?;:])"#,
+            with: "$1",
+            options: .regularExpression
+        )
+        return text.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
 // MARK: - 发音提供者协议
 
 /// 发音提供者协议，所有发音实现都需要遵循此协议
@@ -349,6 +384,8 @@ final class LLPronunciationManager {
     
     static let shared = LLPronunciationManager()
     private static let maxOrderedPronunciationDelay: TimeInterval = 5.0
+    private static let englishExampleSpeechRate: Float = 0.42
+    private static let chineseExampleSpeechRate: Float = 0.45
     
     private enum PronunciationModeChoice: Equatable {
         case english
@@ -556,7 +593,7 @@ final class LLPronunciationManager {
     }
 
     private func speakEnglishExample(_ sentence: String, generation: Int, completion: ((Bool, Error?) -> Void)? = nil) {
-        let text = sentence.trimmingCharacters(in: .whitespacesAndNewlines)
+        let text = LLEnglishExampleSpeechNormalizer.normalize(sentence)
         guard !text.isEmpty else {
             completion?(false, NSError(domain: "LLPronunciation", code: -104, userInfo: [NSLocalizedDescriptionKey: "英文例句为空"]))
             return
@@ -566,7 +603,7 @@ final class LLPronunciationManager {
             completion?(true, nil)
         }
 
-        let didStart = LLSpeechService.shared.speak(text, language: "en-US")
+        let didStart = LLSpeechService.shared.speak(text, language: "en-US", rate: Self.englishExampleSpeechRate)
         if !didStart {
             completion?(false, nil)
         }
@@ -583,7 +620,7 @@ final class LLPronunciationManager {
             completion?(true, nil)
         }
 
-        let didStart = LLSpeechService.shared.speak(text, language: "zh-CN")
+        let didStart = LLSpeechService.shared.speak(text, language: "zh-CN", rate: Self.chineseExampleSpeechRate)
         if !didStart {
             completion?(false, nil)
         }
