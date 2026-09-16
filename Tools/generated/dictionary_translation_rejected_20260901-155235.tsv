@@ -1,0 +1,10 @@
+id	word_list_id	word	status	old_translation	candidate
+1	1	cancel	parse_failed	取消， 撤销； 删去	
+17	1	sake	parse_failed	缘故， 理由	
+29	1	analysis	parse_failed	分析， 分析报告； 分解； 解析	
+42	1	chapter	parse_failed	章， 回， 篇	
+46	1	cliff	parse_failed	悬崖， 峭壁	
+57	1	connect	parse_failed	连接， 结合， 联系； 给…接通电话	
+65	1	artistic	parse_failed	艺术的， 艺术家的； 富有艺术性的， 精美的； 精彩的	
+68	1	halt	parse_failed	停止，立定；停住	
+75	1	wrap	parse_failed	裹，包，捆；披肩	

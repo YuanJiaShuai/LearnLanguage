@@ -86,7 +86,6 @@ final class LLWordPhoneticView: NSView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         setupUI()
-        setupClickGesture()
         
         // 设置默认文本以便调试
         word = NSLocalizedString("Loading", comment: "Loading indicator")
@@ -136,24 +135,11 @@ final class LLWordPhoneticView: NSView {
         phoneticBlurOverlay.isHidden = !blurred
     }
     
-    // MARK: - Click Gesture
-    
-    private func setupClickGesture() {
-        let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(onClicked))
-        addGestureRecognizer(clickGesture)
-        // 显示手型光标，提示用户可点击
-        addCursorRect(bounds, cursor: .pointingHand)
-    }
-    
+    // MARK: - Cursor
+
     override func resetCursorRects() {
         super.resetCursorRects()
         addCursorRect(bounds, cursor: .pointingHand)
-    }
-    
-    @objc private func onClicked() {
-        guard !word.isEmpty, word != NSLocalizedString("Loading", comment: "Loading indicator") else { return }
-        LLLogger.info("🔊 点击播放英文发音：\(word)")
-        LLPronunciationManager.shared.speakEnglishManually(word: word)
     }
     
     // MARK: - Intrinsic Content Size

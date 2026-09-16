@@ -162,6 +162,28 @@ final class LLStatusBarContentView: NSControl {
             make.width.equalTo(Self.feedbackWidth)
         }
     }
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        let location = currentPointerLocation() ?? point
+        guard bounds.contains(location) else { return nil }
+
+        // Keep the feedback controls interactive; route all other clicks through mouseDown below.
+        if !feedbackView.isHidden,
+           feedbackView.alphaValue > 0.5,
+           feedbackView.frame.contains(location) {
+            return feedbackView
+        }
+        return self
+    }
+
+    private func currentPointerLocation() -> NSPoint? {
+        guard let window else { return nil }
+        let pointInWindow = window.convertFromScreen(
+            NSRect(origin: NSEvent.mouseLocation, size: .zero)
+        ).origin
+        let point = convert(pointInWindow, from: nil)
+        return bounds.contains(point) ? point : nil
+    }
     
     override func updateTrackingAreas() {
         super.updateTrackingAreas()
@@ -332,33 +354,17 @@ final class LLStatusBarContentView: NSControl {
 extension LLStatusBarContentView: NSMenuDelegate {
     
     override func mouseDown(with event: NSEvent) {
-        let loc = convert(event.locationInWindow, from: nil)
-        
-        // 如果点击在 feedbackView 区域内且 feedbackView 可见，把事件传给它
-        if !feedbackView.isHidden && feedbackView.alphaValue > 0.5 {
-            let feedbackFrame = feedbackView.frame
-            if feedbackFrame.contains(loc) {
-                let localEvent = NSEvent.mouseEvent(
-                    with: event.type,
-                    location: feedbackView.convert(loc, from: self),
-                    modifierFlags: event.modifierFlags,
-                    timestamp: event.timestamp,
-                    windowNumber: event.windowNumber,
-                    context: nil,
-                    eventNumber: event.eventNumber,
-                    clickCount: event.clickCount,
-                    pressure: event.pressure
-                )
-                if let localEvent = localEvent {
-                    feedbackView.mouseDown(with: localEvent)
-                }
-                return
-            }
-        }
-        
-        // 点击菜单图标区域（左侧扩大热区）弹出 panel
-        let iconHitArea = menuIconView.frame.insetBy(dx: -6, dy: -4)
-        if iconHitArea.contains(loc) {
+        let eventLoc = convert(event.locationInWindow, from: nil)
+        let loc = currentPointerLocation() ?? eventLoc
+
+        // Menu icon is anchored at the left; do not use a sibling's frame for its hit area.
+        let menuHitArea = NSRect(
+            x: 0,
+            y: 0,
+            width: Self.menuLeftInset + Self.menuIconSize + Self.menuToWordSpacing,
+            height: bounds.height
+        )
+        if menuHitArea.contains(loc) {
             LLStatusBarPopoverPanel.shared.toggle(relativeTo: self)
             return
         }

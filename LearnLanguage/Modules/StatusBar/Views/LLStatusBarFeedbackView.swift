@@ -89,7 +89,7 @@ final class LLStatusBarFeedbackView: NSView {
     // MARK: - Mouse Events
     
     override func mouseDown(with event: NSEvent) {
-        let loc = convert(event.locationInWindow, from: nil)
+        let loc = currentPointerLocation() ?? convert(event.locationInWindow, from: nil)
         let i = index(at: loc)
         
         if i == 0 {
@@ -146,7 +146,7 @@ final class LLStatusBarFeedbackView: NSView {
     }
     
     private func updateHover(with event: NSEvent) {
-        let loc = convert(event.locationInWindow, from: nil)
+        let loc = currentPointerLocation() ?? convert(event.locationInWindow, from: nil)
         let newHover = index(at: loc)
         
         if newHover != hoverIndex {
@@ -154,5 +154,13 @@ final class LLStatusBarFeedbackView: NSView {
             needsDisplay = true
         }
     }
-}
 
+    private func currentPointerLocation() -> NSPoint? {
+        guard let window else { return nil }
+        let pointInWindow = window.convertFromScreen(
+            NSRect(origin: NSEvent.mouseLocation, size: .zero)
+        ).origin
+        let point = convert(pointInWindow, from: nil)
+        return bounds.contains(point) ? point : nil
+    }
+}
